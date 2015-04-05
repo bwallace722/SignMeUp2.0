@@ -63,7 +63,8 @@ public class Database {
     ps.setString(2, subcategory);
     ps.setDate(3, (java.sql.Date) startDate);
     ps.setDate(4, (java.sql.Date) endDate);
-    ps.executeQuery();
+    ps.executeUpdate();
+    ps.close();
   }
   /**
    * This method inserts an entry into the lab table.
@@ -79,7 +80,8 @@ public class Database {
     ps.setString(1, category);
     ps.setDate(2, (java.sql.Date) startDate);
     ps.setDate(3, (java.sql.Date) endDate);
-    ps.executeQuery();
+    ps.executeUpdate();
+    ps.close();
   }
   /**
    * This method inserts an entry into the lab table. student_login TEXT,
@@ -91,14 +93,44 @@ public class Database {
    * @param endDate - the date this project is due
    * @throws SQLException - when there is an SQL error
    */
-  public
-      void
-      addStudent(String studentLogin, String studentName, String studentEmail,
-          String studentPassword, Date startDate, Date endDate)
-          throws SQLException {
-    String query = "INSERT INTO project VALUES (?,?,?)";
+  public void addStudent(String studentLogin, String studentName,
+      String studentEmail, String studentPassword, String contactMethod)
+      throws SQLException {
+    String query = "INSERT INTO student VALUES (?,?,?,?,?,?,?,?)";
     PreparedStatement ps = conn.prepareStatement(query);
-    ps.executeQuery();
+    ps.setString(1, studentLogin);
+    ps.setString(2, studentName);
+    ps.setString(3, studentEmail);
+    ps.setString(4, studentPassword);
+    ps.setInt(5, 0);
+    ps.setInt(6, 0);
+    ps.setInt(7, 0);
+    ps.setString(8, contactMethod);
+    ps.executeUpdate();
+    ps.close();
+  }
+  /**
+   * This method updates the time spent at hours and number of questions asked
+   * for any given student.
+   * @param timeAtHours - the total spent at hours by this student
+   * @param timeOnProject - the time spent on a particular project by a student.
+   *        Will we need a foreign key to link to the project in the project
+   *        table?
+   * @param questionsAsked - the total number of questions asked by the given
+   *        student
+   * @throws SQLException On SQL error
+   */
+  public void updateStudent(String studentLogin, int timeAtHours,
+      int timeOnProject, int questionsAsked) throws SQLException {
+    String query =
+        "UPDATE student SET time_spent_at_hours=?, time_spent_curr_project=?, questions_asked=? WHERE student_login=?";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setInt(1, timeAtHours);
+    ps.setInt(2, timeOnProject);
+    ps.setInt(3, questionsAsked);
+    ps.setString(4, studentLogin);
+    ps.executeUpdate();
+    ps.close();
   }
   /**
    * Creates a new table according to the schema.
