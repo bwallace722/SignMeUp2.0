@@ -27,12 +27,28 @@ public class Database {
     conn = DriverManager.getConnection(urlToDB);
     Statement stat = conn.createStatement();
     stat.executeUpdate("PRAGMA foreign_keys = ON;");
+    stat.execute("DROP TABLE IF EXISTS course");
+    stat.execute("DROP TABLE IF EXISTS assignment");
+    stat.execute("DROP TABLE IF EXISTS exam");
+    stat.execute("DROP TABLE IF EXISTS lab");
     stat.execute("DROP TABLE IF EXISTS ta");
     stat.execute("DROP TABLE IF EXISTS project");
     stat.execute("DROP TABLE IF EXISTS student");
     stat.execute("DROP TABLE IF EXISTS attendance");
     stat.close();
     String schema =
+        "CREATE TABLE course(course_id TEXT PRIMARY KEY, course_title TEXT);";
+    buildTable(schema);
+    schema =
+        "CREATE TABLE assignment(id INT NOT NULL AUTO_INCREMENT, assignment_name TEXT, start_date DATE, end_date DATE, course_id TEXT FOREIGN KEY REFERENCES course(course_id);";
+    buildTable(schema);
+    schema =
+        "CREATE TABLE exam(id INT NOT NULL AUTO_INCREMENT, exam_name TEXT, start_date DATE, end_date DATE, course_id TEXT FOREIGN KEY REFERENCES course(course_id));";
+    buildTable(schema);
+    schema =
+        "CREATE TABLE lab(id INT NOT NULL AUTO_INCREMENT, lab_name TEXT, start_date DATE, end_date DATE, course_id TEXT FOREIGN KEY REFERENCES course(course_id));";
+    buildTable(schema);
+    schema =
         "CREATE TABLE ta(ta_login TEXT, ta_name TEXT, ta_email TEXT, ta_password TEXT);";
     buildTable(schema);
     schema =
@@ -41,45 +57,48 @@ public class Database {
     schema = "CREATE TABLE attendance(ta_on_block TEXT);";
     buildTable(schema);
     schema =
-        "CREATE TABLE project(id INT NOT NULL AUTO_INCREMENT, category TEXT, subcategory TEXT, startdate DATE, enddate DATE);";
-    buildTable(schema);
-    schema =
-        "CREATE TABLE lab(id INT NOT NULL AUTO_INCREMENT, category TEXT, startdate DATE, enddate DATE);";
+        "CREATE TABLE questions(assessment_item_name TEXT, question_section TEXT, question TEXT, course_id TEXT FOREIGN KEY REFERENCES course(course_id));";
     buildTable(schema);
   }
   /**
-   * This method inserts an entry into the project table.
-   * @param category - the main grouping for this insertion
-   * @param subcategory - the subgroup for this insertion
-   * @param startDate - the start date for this project
-   * @param endDate - the date this project is due
-   * @throws SQLException - when there is an SQL error
+   * This method inserts a question prepared by TAs into the questions table.
+   * @param assessmentName - the name of the project, exam, or lab
+   * @param questionSection - the particular item beign asked about for the
+   *        question
+   * @param question - the actual question
+   * @param course - the course number of the course under which this question
+   *        is being asked
+   * @throws SQLException on SQL error
    */
-  public void addProject(String category, String subcategory, Date startDate,
-      Date endDate) throws SQLException {
-    String query = "INSERT INTO project VALUES (?,?,?,?)";
+  public void addQuestion(String assessmentName, String questionSection,
+      String question, String course) throws SQLException {
+    String query = "INSERT INTO questions VALUES (?,?,?,?)";
     PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, category);
-    ps.setString(2, subcategory);
-    ps.setDate(3, (java.sql.Date) startDate);
-    ps.setDate(4, (java.sql.Date) endDate);
+    ps.setString(1, assessmentName);
+    ps.setString(2, questionSection);
+    ps.setString(3, question);
+    ps.setString(4, course);
     ps.executeUpdate();
     ps.close();
   }
   /**
-   * This method inserts an entry into the lab table.
-   * @param category - the main grouping for this insertion
+   * This method inserts an entry into the lab table. This assessment item can
+   * be either an assignment, an exam, or a lab.
+   * @param name - the name for this assessment mode
    * @param startDate - the start date for this project
-   * @param endDate - the date this project is due
+   * @param endDate - the date this lab is due
+   * @param courseId - the course number for the course udner which this
+   *        assessment item is assigned
    * @throws SQLException - when there is an SQL error
    */
-  public void addLab(String category, String subcategory, Date startDate,
-      Date endDate) throws SQLException {
-    String query = "INSERT INTO project VALUES (?,?,?)";
+  public void addAssessmentItem(String name, Date startDate, Date endDate,
+      String courseId) throws SQLException {
+    String query = "INSERT INTO project VALUES (?,?,?,?)";
     PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, category);
+    ps.setString(1, name);
     ps.setDate(2, (java.sql.Date) startDate);
     ps.setDate(3, (java.sql.Date) endDate);
+    ps.setString(4, courseId);
     ps.executeUpdate();
     ps.close();
   }
@@ -110,6 +129,27 @@ public class Database {
     ps.close();
   }
   /**
+   * This method adds a ta into the ta table.
+   * @param taLogin - the login of the teaching assistant
+   * @param taName - the name of the teaching assistant
+   * @param email - the email of the teaching assistant
+   * @param password - the password to the teaching assistant's account
+   * @throws SQLException on SQL error
+   */
+  public
+      void
+      addTA(String taLogin, String taName, String email, String password)
+          throws SQLException {
+    String query = "INSERT INTO ta VALUES (?,?,?,?)";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, taLogin);
+    ps.setString(2, taName);
+    ps.setString(3, email);
+    ps.setString(4, password);
+    ps.executeUpdate();
+    ps.close();
+  }
+  /**
    * This method updates the time spent at hours and number of questions asked
    * for any given student.
    * @param timeAtHours - the total spent at hours by this student
@@ -122,9 +162,9 @@ public class Database {
    */
   public void updateStudent(String studentLogin, int timeAtHours,
       int timeOnProject, int questionsAsked) throws SQLException {
-    String query =
+    String update =
         "UPDATE student SET time_spent_at_hours=?, time_spent_curr_project=?, questions_asked=? WHERE student_login=?";
-    PreparedStatement ps = conn.prepareStatement(query);
+    PreparedStatement ps = conn.prepareStatement(update);
     ps.setInt(1, timeAtHours);
     ps.setInt(2, timeOnProject);
     ps.setInt(3, questionsAsked);
