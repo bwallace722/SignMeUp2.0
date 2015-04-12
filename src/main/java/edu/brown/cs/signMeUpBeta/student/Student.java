@@ -1,8 +1,8 @@
-package edu.brown.cs.kb25.student;
+package edu.brown.cs.signMeUpBeta.student;
 
 import java.util.List;
 
-import edu.brown.cs.kb25.project.Question;
+import edu.brown.cs.signMeUpBeta.project.Question;
 
 public class Student {
 
