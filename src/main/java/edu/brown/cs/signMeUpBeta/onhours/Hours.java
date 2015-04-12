@@ -1,9 +1,9 @@
-package edu.brown.cs.kb25.onhours;
+package edu.brown.cs.signMeUpBeta.onhours;
 
 import java.util.List;
 
-import edu.brown.cs.kb25.project.Question;
-import edu.brown.cs.kb25.student.Appointment;
+import edu.brown.cs.signMeUpBeta.project.Question;
+import edu.brown.cs.signMeUpBeta.student.Appointment;
 
 public class Hours {
   public Hours() {}

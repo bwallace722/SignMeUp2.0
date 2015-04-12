@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <title>${title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- In real-world webapps, css is usually minified and
+         concatenated. Here, separate normalize from our code, and
+         avoid minification for clarity. -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/html5bp.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <!--need to change home href constantly-->
+          <a class="navbar-brand" href="taOnHours.html">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">My Classes <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="#">Class1</a></li>
+                <li><a href="#">Class2</a></li>
+                <li><a href="#">Class3</a></li>
+                <li class="divider"></li>
+                <li><a href="#">See all classes</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="landingPage.html">Sign Out</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+  <div class="container">
+  <div class="row">
+  <div class="col-sm-12 setUp">
+
+     <h1> ${class} Hours</h1>
+
+  <!--NOTE: each time the page is reloaded, each of these divs must be repopulated-->
+    <!--div for stduents in line-->
+     <div class="col-sm-7">
+     <div class="queue">
+       <h3>Queue</h3>
+        <!--div for queue, loop through-->
+        <div class="row studentOnQueue">
+         <div class="col-sm-5 col-sm-push-1">
+         <h5>student</h5>
+         </div>
+         <div class="col-sm-4 col-sm-push-4">
+         <h5>login</h5>
+         </div>
+         <br>
+         <hr>
+        </div>
+        <div class="row studentOnQueue">
+         <div class="col-sm-5 col-sm-push-1">
+         <h5>student</h5>
+         </div>
+         <div class="col-sm-4 col-sm-push-4">
+         <h5>login</h5>
+         </div>
+         <br>
+         <hr>
+        </div>
+
+        <div class="row studentOnQueue">
+         <div class="col-sm-5 col-sm-push-1">
+         <h5>student</h5>
+         </div>
+         <div class="col-sm-4 col-sm-push-4">
+         <h5>login</h5>
+         </div>
+         <br>
+         <hr>
+        </div>
+                <div class="row studentOnQueue">
+         <div class="col-sm-5 col-sm-push-1">
+         <h5>student</h5>
+         </div>
+         <div class="col-sm-4 col-sm-push-4">
+         <h5>login</h5>
+         </div>
+         <br>
+         <hr>
+        </div>
+</div>
+        </div>
+
+
+      <div class="col-sm-5">
+      <!--loop through questions from db-->
+     <section class="onHoursBlock" id="currQs">
+      <h3>Current Questions</h3>
+      <div class="row question">
+      <div class="col-sm-4  col-sm-push-1">
+      <h5>Gui</h5>
+      </div>
+      <div class="col-sm-4 col-sm-push-2">
+         <h5>login</h5>
+      </div>
+         <br>
+         <hr>
+      </div>
+      <div class="row question">
+      <div class="col-sm-4 col-sm-push-1">
+      <h5>Dijkstras</h5>
+      </div>
+         <br>
+         <hr>
+      </div>
+     </section>
+     <section class="onHoursBlock" id="popularQs">
+     <h3>Popular Questions</h3>
+           <div class="row question">
+      <div class="col-sm-4 col-sm-push-1">
+      <h5>Dijkstras</h5>
+      </div>
+         <br>
+         <hr>
+      </div>
+     </section>
+    <!--loop through analyzed questions list-->
+     <section class="onHoursBlock" id="clinicSuggs">
+     <h3>Clinic Suggestions</h3>
+           <div class="row question">
+      <div class="col-sm-4 col-sm-push-1">
+      <h5>Dijkstras</h5>
+      </div>
+         <br>
+         <hr>
+      </div>
+     </section>
+<br>
+    <!--loop through popular questions list-->
+
+     <br>
+
+
+
+     <div class="setUp row">
+            <a class="btn btn-success" href="taHoursSetUp.html">Return to SetUp</a>
+     </div>
+          </div>
+     </div>
+       </div>
+</div>
+
+
+     <!-- Again, we're serving up the unminified source for clarity. -->
+     <script src="js/jquery-2.1.1.js"></script>
+     <script src="js/main.js"></script>
+     <script src="js/bootstrap.min.js"></script>
+  </body>
+  <!-- See http://html5boilerplate.com/ for a good place to start
+       dealing with real world issues like old browsers.  -->
+</html>

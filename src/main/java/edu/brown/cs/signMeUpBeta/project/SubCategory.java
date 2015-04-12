@@ -1,4 +1,4 @@
-package edu.brown.cs.kb25.project;
+package edu.brown.cs.signMeUpBeta.project;
 
 import java.util.List;
 

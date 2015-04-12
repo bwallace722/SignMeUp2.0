@@ -1,4 +1,4 @@
-package edu.brown.cs.kb25.onhours;
+package edu.brown.cs.signMeUpBeta.onhours;
 
 import java.util.List;
 

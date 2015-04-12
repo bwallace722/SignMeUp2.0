@@ -1,4 +1,4 @@
-package edu.brown.cs.kb25.student;
+package edu.brown.cs.signMeUpBeta.student;
 
 public class Appointment {
   

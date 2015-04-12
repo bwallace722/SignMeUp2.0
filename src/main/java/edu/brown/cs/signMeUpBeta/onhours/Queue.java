@@ -1,6 +1,6 @@
-package edu.brown.cs.kb25.onhours;
+package edu.brown.cs.signMeUpBeta.onhours;
 
-import edu.brown.cs.kb25.student.Student;
+import edu.brown.cs.signMeUpBeta.student.Student;
 
 public class Queue {
   public Queue() {}
