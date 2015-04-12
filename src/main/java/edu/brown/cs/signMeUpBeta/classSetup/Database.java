@@ -1,11 +1,11 @@
 package edu.brown.cs.signMeUpBeta.classSetup;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.Date;
 
 /**
  * This class handles the setup of the databases and tables used in the project.
@@ -63,6 +63,21 @@ public class Database {
     buildTable(schema);
   }
   /**
+   * This methods inserts a class into the course table.
+   * @param courseNumber - eg CS032
+   * @param courseTitle - eg Intro To Software Engineering
+   * @throws SQLException on SQL error
+   */
+  public void addCourse(String courseNumber, String courseTitle)
+      throws SQLException {
+    String query = "INSERT INTO course VALUES (?, ?)";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, courseNumber);
+    ps.setString(2, courseTitle);
+    ps.executeUpdate();
+    ps.close();
+  }
+  /**
    * This method inserts a question prepared by TAs into the questions table.
    * @param assessmentName - the name of the project, exam, or lab
    * @param questionSection - the particular item beign asked about for the
@@ -101,21 +116,23 @@ public class Database {
   /**
    * This method inserts an entry into the lab table. This assessment item can
    * be either an assignment, an exam, or a lab.
-   * @param name - the name for this assessment mode
+   * @param table - the table name in which the assessment item will be inserted
+   * @param name - the name for this assessment item
    * @param startDate - the start date for this project
    * @param endDate - the date this lab is due
    * @param courseId - the course number for the course udner which this
    *        assessment item is assigned
    * @throws SQLException - when there is an SQL error
    */
-  public void addAssessmentItem(String name, Date startDate, Date endDate,
-      String courseId) throws SQLException {
-    String query = "INSERT INTO project VALUES (?,?,?,?)";
+  public void addAssessmentItem(String table, String name, Date startDate,
+      Date endDate, String courseId) throws SQLException {
+    String query = "INSERT INTO ? VALUES (?,?,?,?)";
     PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, name);
-    ps.setDate(2, (java.sql.Date) startDate);
-    ps.setDate(3, (java.sql.Date) endDate);
-    ps.setString(4, courseId);
+    ps.setString(1, table);
+    ps.setString(2, name);
+    ps.setDate(3, (java.sql.Date) startDate);
+    ps.setDate(4, (java.sql.Date) endDate);
+    ps.setString(5, courseId);
     ps.executeUpdate();
     ps.close();
   }
