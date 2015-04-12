@@ -32,8 +32,8 @@ public class Database {
     stat.execute("DROP TABLE IF EXISTS exam");
     stat.execute("DROP TABLE IF EXISTS lab");
     stat.execute("DROP TABLE IF EXISTS ta");
-    stat.execute("DROP TABLE IF EXISTS project");
     stat.execute("DROP TABLE IF EXISTS student");
+    stat.execute("DROP TABLE IF EXISTS student_course");
     stat.execute("DROP TABLE IF EXISTS attendance");
     stat.close();
     String schema =
@@ -59,6 +59,8 @@ public class Database {
     schema =
         "CREATE TABLE questions(assessment_item_name TEXT, question_section TEXT, question TEXT, course_id TEXT FOREIGN KEY REFERENCES course(course_id));";
     buildTable(schema);
+    schema = "CREATE TABLE student_course(student_id TEXT, course_id TEXT);";
+    buildTable(schema);
   }
   /**
    * This method inserts a question prepared by TAs into the questions table.
@@ -78,6 +80,21 @@ public class Database {
     ps.setString(2, questionSection);
     ps.setString(3, question);
     ps.setString(4, course);
+    ps.executeUpdate();
+    ps.close();
+  }
+  /**
+   * This method adds a student-course entry to the student_course table.
+   * @param studentId - the student's login
+   * @param courseId - the course number
+   * @throws SQLException on SQL error
+   */
+  public void addStudentCoursePair(String studentId, String courseId)
+      throws SQLException {
+    String query = "INSERT INTO student_course VALUES (?, ?)";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, studentId);
+    ps.setString(2, courseId);
     ps.executeUpdate();
     ps.close();
   }
