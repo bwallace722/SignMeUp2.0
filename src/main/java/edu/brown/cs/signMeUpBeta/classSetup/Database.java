@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import edu.brown.cs.signMeUpBeta.student.Student;
 
 /**
  * This class handles the setup of the databases and tables used in the project.
@@ -32,13 +35,13 @@ public class Database {
         "CREATE TABLE course(course_id TEXT PRIMARY KEY, course_title TEXT);";
     buildTable(schema);
     schema =
-        "CREATE TABLE assignment(id INT NOT NULL AUTO_INCREMENT, assignment_name TEXT, start_date DATE, end_date DATE, course_id TEXT FOREIGN KEY REFERENCES course(course_id);";
+        "CREATE TABLE assignment(id INT AUTO_INCREMENT, assignment_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id);";
     buildTable(schema);
     schema =
-        "CREATE TABLE exam(id INT NOT NULL AUTO_INCREMENT, exam_name TEXT, start_date DATE, end_date DATE, course_id TEXT FOREIGN KEY REFERENCES course(course_id));";
+        "CREATE TABLE exam(id INT AUTO_INCREMENT, exam_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
     buildTable(schema);
     schema =
-        "CREATE TABLE lab(id INT NOT NULL AUTO_INCREMENT, lab_name TEXT, start_date DATE, end_date DATE, course_id TEXT FOREIGN KEY REFERENCES course(course_id));";
+        "CREATE TABLE lab(id INT AUTO_INCREMENT, lab_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
     buildTable(schema);
     schema =
         "CREATE TABLE ta(ta_login TEXT, ta_name TEXT, ta_email TEXT, ta_password TEXT);";
@@ -49,7 +52,7 @@ public class Database {
     schema = "CREATE TABLE attendance(ta_on_block TEXT);";
     buildTable(schema);
     schema =
-        "CREATE TABLE questions(assessment_item_name TEXT, question_section TEXT, question TEXT, course_id TEXT FOREIGN KEY REFERENCES course(course_id));";
+        "CREATE TABLE questions(assessment_item_name TEXT, question_section TEXT, question TEXT, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
     buildTable(schema);
     schema = "CREATE TABLE student_course(student_id TEXT, course_id TEXT);";
     buildTable(schema);
@@ -149,7 +152,7 @@ public class Database {
     ps.setInt(5, 0);
     ps.setInt(6, 0);
     ps.setInt(7, 0);
-    //ps.setString(8, contactMethod);
+    // ps.setString(8, contactMethod);
     ps.executeUpdate();
     ps.close();
   }
@@ -196,6 +199,30 @@ public class Database {
     ps.setString(4, studentLogin);
     ps.executeUpdate();
     ps.close();
+  }
+  /**
+   * This method checks the input credentials and returns a student object if
+   * the credentials are approved.
+   * @param studentId
+   * @param password
+   * @return
+   * @throws SQLException
+   */
+  public Student getStudentByLogin(String studentId, String password)
+      throws SQLException {
+    String query =
+        "SELECT * FROM student WHERE student.student_login = ? AND student.student_password = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, studentId);
+    ps.setString(2, password);
+    ResultSet rs = ps.executeQuery();
+    if (rs.next()) {
+      Student loggedInStudent =
+          new Student(rs.getString(1), rs.getString(2), rs.getString(3), rs
+              .getString(4), rs.getInt(5), rs.getInt(6), rs.getInt(7));
+      return loggedInStudent;
+    }
+    return null;
   }
   /**
    * Creates a new table according to the schema.

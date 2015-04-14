@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
+import edu.brown.cs.signMeUpBeta.student.Student;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -32,7 +33,7 @@ public class AllHandlers {
     Spark.get("/addExam", new AssessmentHandler("lab"));
     Spark.get("/addNewCourse", new CourseSetupHandler());
     Spark.get("/addNewStudent", new StudentSetupHandler());
-    // Spark.get("/studentLogin", new StudentLoginHandler());
+    Spark.get("/studentLogin", new StudentLoginHandler());
   }
   /**
    * This class handles the insertion of assessment items into the database
@@ -105,7 +106,6 @@ public class AllHandlers {
         String studentName = (String) toInsert.get("student_name");
         String studentEmail = (String) toInsert.get("student_email");
         String studentPassword = (String) toInsert.get("student_password");
-        // String studentContact = (String) toInsert.get("student_contact");
         db.addStudent(studentLogin, studentName, studentEmail, studentPassword);
       } catch (SQLException | ParseException e) {
         System.out.println("ERROR: "
@@ -114,16 +114,27 @@ public class AllHandlers {
       return null;
     }
   }
-  // private static class StudentLoginHandler implements Route {
-  // @Override
-  // public Object handle(Request req, Response res) {
-  // QueryParamsMap qm = req.queryMap();
-  // String login = qm.value("student_credentials");
-  // JSONParser parser = new JSONParser();
-  // try {
-  // JSONObject to
-  // }
-  // return null;
-  // }
-  // }
+  /**
+   * This method handles the logging in of a student checking the input login
+   * and password.
+   * @author omadarik
+   */
+  private static class StudentLoginHandler implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String login = qm.value("student_credentials");
+      JSONParser parser = new JSONParser();
+      try {
+        JSONObject credentials = (JSONObject) parser.parse(login);
+        String inputLogin = (String) credentials.get("student_login");
+        String inputPassword = (String) credentials.get("student_password");
+        Student loggedIn = db.getStudentByLogin(inputLogin, inputPassword);
+      } catch (SQLException | ParseException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
+      return null;
+    }
+  }
 }
