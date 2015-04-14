@@ -30,8 +30,8 @@ public class AllHandlers {
     Spark.get("/addAssignment", new AssessmentHandler("assignment"));
     Spark.get("/addLab", new AssessmentHandler("exam"));
     Spark.get("/addExam", new AssessmentHandler("lab"));
-    Spark.get("/addClass", new CourseHandler());
-    // Spark.get("/addStudent", new StudentHandler());
+    Spark.get("/addNewClass", new CourseSetupHandler());
+    Spark.get("/addNewStudent", new StudentSetupHandler());
   }
   /**
    * This class handles the insertion of assessment items into the database
@@ -67,7 +67,7 @@ public class AllHandlers {
    * This class is where I add courses to the database.
    * @author omadarik
    */
-  private static class CourseHandler implements Route {
+  private static class CourseSetupHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
@@ -86,23 +86,27 @@ public class AllHandlers {
       return null;
     }
   }
-  // private static class StudentHandler implements Route {
-  // @Override
-  // public Object handle(Request req, Response res) {
-  // QueryParamsMap qm = req.queryMap();
-  // String student = qm.value("student");
-  // JSONParser parser = new JSONParser();
-  // try {
-  // JSONArray studentArray = (JSONArray) parser.parse(student);
-  // JSONObject toInsert = (JSONObject) studentArray.get(0);
-  // String studentLogin = (String) toInsert.get("student_login");
-  // String studentLogin = (String) toInsert.get("student_login")
-  // db.addCourse(courseId, courseName);
-  // } catch (SQLException | ParseException e) {
-  // System.out.println("ERROR: "
-  // + e.getMessage());
-  // }
-  // return null;
-  // }
-  // }
+  private static class StudentSetupHandler implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String student = qm.value("new_student");
+      JSONParser parser = new JSONParser();
+      try {
+        JSONArray studentArray = (JSONArray) parser.parse(student);
+        JSONObject toInsert = (JSONObject) studentArray.get(0);
+        String studentLogin = (String) toInsert.get("student_login");
+        String studentName = (String) toInsert.get("student_name");
+        String studentEmail = (String) toInsert.get("student_email");
+        String studentPassword = (String) toInsert.get("student_password");
+        String studentContact = (String) toInsert.get("student_contact");
+        db.addStudent(studentLogin, studentName, studentEmail, studentPassword,
+            contactMethod);
+      } catch (SQLException | ParseException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
+      return null;
+    }
+  }
 }
