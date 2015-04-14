@@ -33,7 +33,7 @@ public class AllHandlers {
     Spark.get("/addExam", new AssessmentHandler("lab"));
     Spark.get("/addNewCourse", new CourseSetupHandler());
     Spark.get("/addNewStudent", new StudentSetupHandler());
-    // Spark.get("/studentLogin", new StudentLoginHandler());
+    Spark.get("/studentLogin", new StudentLoginHandler());
   }
   /**
    * This class handles the insertion of assessment items into the database
