@@ -55,6 +55,7 @@ public class AllHandlers {
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
     FreeMarkerEngine freeMarker = createEngine();
+    
     Spark.get("/addAssignment", new AssessmentHandler("assignment"));
     Spark.get("/addLab", new AssessmentHandler("exam"));
     Spark.get("/addExam", new AssessmentHandler("lab"));
@@ -80,12 +81,14 @@ public class AllHandlers {
       JSONParser parser = new JSONParser();
       try {
         JSONArray assArray = (JSONArray) parser.parse(assessmentItem);
-        JSONObject toInsert = (JSONObject) assArray.get(0);
-        String assName = (String) toInsert.get("assessment_name");
-        Date start = (Date) toInsert.get("start_date");
-        Date end = (Date) toInsert.get("end_date");
-        String courseId = (String) toInsert.get("course_id");
-        db.addAssessmentItem(tableName, assName, start, end, courseId);
+        for (int i = 0; i < assArray.size(); i++) {
+          JSONObject toInsert = (JSONObject) assArray.get(i);
+          String assName = (String) toInsert.get("assessment_name");
+          Date start = (Date) toInsert.get("start_date");
+          Date end = (Date) toInsert.get("end_date");
+          String courseId = (String) toInsert.get("course_id");
+          db.addAssessmentItem(tableName, assName, start, end, courseId);
+        }
       } catch (SQLException | ParseException e) {
         System.out.println("ERROR: "
             + e.getMessage());
