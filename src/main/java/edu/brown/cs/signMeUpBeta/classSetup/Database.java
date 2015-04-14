@@ -27,14 +27,6 @@ public class Database {
     conn = DriverManager.getConnection(urlToDB);
     Statement stat = conn.createStatement();
     stat.executeUpdate("PRAGMA foreign_keys = ON;");
-    stat.execute("DROP TABLE IF EXISTS course");
-    stat.execute("DROP TABLE IF EXISTS assignment");
-    stat.execute("DROP TABLE IF EXISTS exam");
-    stat.execute("DROP TABLE IF EXISTS lab");
-    stat.execute("DROP TABLE IF EXISTS ta");
-    stat.execute("DROP TABLE IF EXISTS student");
-    stat.execute("DROP TABLE IF EXISTS student_course");
-    stat.execute("DROP TABLE IF EXISTS attendance");
     stat.close();
     String schema =
         "CREATE TABLE course(course_id TEXT PRIMARY KEY, course_title TEXT);";
@@ -157,6 +149,7 @@ public class Database {
     ps.setInt(5, 0);
     ps.setInt(6, 0);
     ps.setInt(7, 0);
+    // ps.setString(8, contactMethod);
     ps.executeUpdate();
     ps.close();
   }
