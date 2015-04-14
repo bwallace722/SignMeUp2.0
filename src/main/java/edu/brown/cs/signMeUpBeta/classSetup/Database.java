@@ -8,8 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
-import edu.brown.cs.signMeUpBeta.onhours.TA;
-import edu.brown.cs.signMeUpBeta.student.Student;
+import edu.brown.cs.signMeUpBeta.student.Account;
 
 /**
  * This class handles the setup of the databases and tables used in the project.
@@ -133,7 +132,7 @@ public class Database {
    * @param endDate - the date this project is due
    * @throws SQLException - when there is an SQL error
    */
-  public void addStudent(String studentLogin, String studentName,
+  public void addAccount(String studentLogin, String studentName,
       String studentEmail, String studentPassword) throws SQLException {
     String query = "INSERT INTO student VALUES (?,?,?,?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
@@ -148,27 +147,27 @@ public class Database {
     ps.executeUpdate();
     ps.close();
   }
-  /**
-   * This method adds a ta into the ta table.
-   * @param taLogin - the login of the teaching assistant
-   * @param taName - the name of the teaching assistant
-   * @param email - the email of the teaching assistant
-   * @param password - the password to the teaching assistant's account
-   * @throws SQLException on SQL error
-   */
-  public
-      void
-      addTA(String taLogin, String taName, String email, String password)
-          throws SQLException {
-    String query = "INSERT INTO ta VALUES (?,?,?,?);";
-    PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, taLogin);
-    ps.setString(2, taName);
-    ps.setString(3, email);
-    ps.setString(4, password);
-    ps.executeUpdate();
-    ps.close();
-  }
+//  /**
+//   * This method adds a ta into the ta table.
+//   * @param taLogin - the login of the teaching assistant
+//   * @param taName - the name of the teaching assistant
+//   * @param email - the email of the teaching assistant
+//   * @param password - the password to the teaching assistant's account
+//   * @throws SQLException on SQL error
+//   */
+//  public
+//      void
+//      addTA(String taLogin, String taName, String email, String password)
+//          throws SQLException {
+//    String query = "INSERT INTO ta VALUES (?,?,?,?);";
+//    PreparedStatement ps = conn.prepareStatement(query);
+//    ps.setString(1, taLogin);
+//    ps.setString(2, taName);
+//    ps.setString(3, email);
+//    ps.setString(4, password);
+//    ps.executeUpdate();
+//    ps.close();
+//  }
   /**
    * This method updates the time spent at hours and number of questions asked
    * for any given student.
@@ -180,7 +179,7 @@ public class Database {
    *        student
    * @throws SQLException On SQL error
    */
-  public void updateStudent(String studentLogin, int timeAtHours,
+  public void updateAccount(String studentLogin, int timeAtHours,
       int timeOnProject, int questionsAsked) throws SQLException {
     String update =
         "UPDATE student SET time_spent_at_hours=?, time_spent_curr_project=?, questions_asked=? WHERE student_login=?;";
@@ -200,7 +199,7 @@ public class Database {
    * @return
    * @throws SQLException
    */
-  public Student getStudentByLogin(String studentId, String password)
+  public Account getAccountByLogin(String studentId, String password)
       throws SQLException {
     String query =
         "SELECT * FROM student WHERE student.student_login = ? AND student.student_password = ?;";
@@ -209,55 +208,54 @@ public class Database {
     ps.setString(2, password);
     ResultSet rs = ps.executeQuery();
     if (rs.next()) {
-      Student loggedInStudent =
-          new Student(rs.getString(1), rs.getString(2), rs.getString(3), rs
+      Account loggedInStudent =
+          new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs
               .getString(4), rs.getInt(5), rs.getInt(6), rs.getInt(7));
       return loggedInStudent;
     }
+    ps.close();
+    rs.close();
     return null;
   }
   
-  /**
-   * This method checks the input credentials and returns a student object if
-   * the credentials are approved.
-   * @param taId
-   * @param password
-   * @return
-   * @throws SQLException
-   */
-  public TA getTAByLogin(String taId, String password) throws SQLException {
-    String query =
-        "SELECT * FROM ta WHERE ta.ta_login = ? AND ta.ta_password = ?;";
-    PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, taId);
-    ps.setString(2, password);
-    ResultSet rs = ps.executeQuery();
-    if (rs.next()) {
-      TA loggedInTA =
-          new TA(rs.getString(1), rs.getString(2), rs.getString(3), rs
-              .getString(4));
-      return loggedInTA;
-    }
-    return null;
-  }
+//  /**
+//   * This method checks the input credentials and returns a student object if
+//   * the credentials are approved.
+//   * @param taId
+//   * @param password
+//   * @return
+//   * @throws SQLException
+//   */
+//  public TA getTAByLogin(String taId, String password) throws SQLException {
+//    String query =
+//        "SELECT * FROM ta WHERE ta.ta_login = ? AND ta.ta_password = ?;";
+//    PreparedStatement ps = conn.prepareStatement(query);
+//    ps.setString(1, taId);
+//    ps.setString(2, password);
+//    ResultSet rs = ps.executeQuery();
+//    if (rs.next()) {
+//      TA loggedInTA =
+//          new TA(rs.getString(1), rs.getString(2), rs.getString(3), rs
+//              .getString(4));
+//      return loggedInTA;
+//    }
+//    return null;
+//  }
   
-  
+
   //SCHEMAS
 //String schema =
 //    "CREATE TABLE course(course_id TEXT PRIMARY KEY, course_title TEXT);";
+  
 //schema =
 //    "CREATE TABLE assignment(id INT AUTO_INCREMENT, assignment_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
 //schema =
 //    "CREATE TABLE exam(id INT AUTO_INCREMENT, exam_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
-//
 //schema =
 //    "CREATE TABLE lab(id INT AUTO_INCREMENT, lab_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
 //
 //schema =
-//    "CREATE TABLE ta(ta_login TEXT, ta_name TEXT, ta_email TEXT, ta_password TEXT);";
-//
-//schema =
-//    "CREATE TABLE student(student_login TEXT, student_name TEXT, student_email TEXT, student_password TEXT, time_spent_at_hours INT, time_spent_curr_project INT, questions_asked INT, contact_method TEXT);";
+//    "CREATE TABLE account(login TEXT, name TEXT, email TEXT, password TEXT, time_spent_at_hours INT, time_spent_curr_project INT, questions_asked INT, contact_method TEXT);";
 //
   //ATTENDANCE TABLE NOT CREATED
 //schema = "CREATE TABLE attendance(student_id TEXT, time TEXT);";
@@ -267,6 +265,6 @@ public class Database {
 //
 //schema = "CREATE TABLE student_course(student_id TEXT, course_id TEXT);";
   
-  //schema = "CREATE TABLE ta_course(ta_id TEXT, course_id TEXT);";
+//schema = "CREATE TABLE ta_course(ta_id TEXT, course_id TEXT);";
   
 }

@@ -1,29 +1,33 @@
 package edu.brown.cs.signMeUpBeta.student;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.brown.cs.signMeUpBeta.project.Question;
 
-public class Student {
+public class Account {
 
   private String login;
   private String password;
   private String name;
   private String email;
-  private int phone;
-  private List<String> courses;
+  //private int phone;
+  private List<String> enrolledCourses;
+  private List<String> TACourses;
   private int numQuestions;
   private int timeOnHours;
   private int timeCurrProject;
   
   
-  public Student(String login, String name, String email, String password, int timeOnHours, int timeCurrProject, int numQuestions) {
+  public Account(String login, String name, String email, String password, int timeOnHours, int timeCurrProject, int numQuestions) {
     this.login = login;
     this.name = name;
     this.password = password;
     this.timeOnHours = timeOnHours;
     this.timeCurrProject = timeCurrProject;
     this.numQuestions = numQuestions;
+    enrolledCourses = new ArrayList<String>();
+    TACourses = new ArrayList<String>();
   }
 
   public String login() {
@@ -58,24 +62,36 @@ public class Student {
     email = newEmail;
   }
   
-  public int phone() {
-    return phone;
+//  public int phone() {
+//    return phone;
+//  }
+//  
+//  public void setPhone(int newPhone) {
+//    phone = newPhone;
+//  }
+  
+  public List<String> enrolledCourses() {
+    return enrolledCourses;
   }
   
-  public void setPhone(int newPhone) {
-    phone = newPhone;
+  public void addEnrolledCourse(String courseID) {
+    enrolledCourses.add(courseID);
   }
   
-  public List<String> courses() {
-    return courses;
+  public void setEnrolledCourses(List<String> newCourseList) {
+    enrolledCourses = newCourseList;
   }
   
-  public void addCourse(String courseID) {
-    courses.add(courseID);
+  public List<String> TACourses() {
+    return TACourses;
   }
   
-  public void setCourses(List<String> newCourseList) {
-    courses = newCourseList;
+  public void addTACourse(String courseID) {
+    TACourses.add(courseID);
+  }
+  
+  public void setTACourses(List<String> newCourseList) {
+    TACourses = newCourseList;
   }
   
   public int questionsAsked() {
