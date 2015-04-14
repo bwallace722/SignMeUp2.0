@@ -60,29 +60,68 @@ public class AllHandlers {
     Spark.exception(Exception.class, new ExceptionPrinter());
     FreeMarkerEngine freeMarker = createEngine();
     
-    Spark.get("/login", new LoginHandler(), freeMarker);
-    Spark.get("/addAssignment", new AssessmentHandler("assignment"));
-    Spark.get("/addLab", new AssessmentHandler("exam"));
-    Spark.get("/addExam", new AssessmentHandler("lab"));
-    Spark.get("/addNewCourse", new CourseSetupHandler());
-    Spark.get("/addNewStudent", new StudentSetupHandler());
-    Spark.get("/addNewTA", new TASetupHandler());
-    Spark.get("/studentLogin", new StudentLoginHandler());
+    Spark.get("/signmeup", new FrontHandler(), freeMarker);
+    Spark.post("/classes", new SignUpHandler(), freeMarker);
+//    Spark.get("/addAssignment", new AssessmentHandler("assignment"));
+//    Spark.get("/addLab", new AssessmentHandler("exam"));
+//    Spark.get("/addExam", new AssessmentHandler("lab"));
+//    Spark.get("/addNewCourse", new CourseSetupHandler());
+//    Spark.get("/addNewStudent", new StudentSetupHandler());
+//    Spark.get("/addNewTA", new TASetupHandler());
+//    Spark.get("/studentLogin", new StudentLoginHandler());
   }
   
   /**
    * This is the front handler, which initially builds the site.
    * @author kj13
    */
-  private class LoginHandler implements TemplateViewRoute {
+  private class FrontHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "Map").build();
+          .put("title", "SignMeUp 2.0").build();
 
-      return new ModelAndView(variables, "login.html");
+      return new ModelAndView(variables, "landingPage.html");
     }
   }
+  
+  /**
+   * This is the front handler, which initially builds the site.
+   * @author kj13
+   */
+  private class SignUpHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String name = qm.value("name");
+      String login = qm.value("login");
+      String email = qm.value("email");
+      String password = qm.value("password");
+      
+      //TODO - create account object
+      
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("title", "SignMeUp 2.0").put("user", login).build();
+
+      return new ModelAndView(variables, "myClasses.html");
+    }
+  }
+  
+  
+  /**
+   * This is the front handler, which initially builds the site.
+   * @author kj13
+   */
+  private class ClassHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("title", "SignMeUp 2.0").build();
+
+      return new ModelAndView(variables, "myClasses.html");
+    }
+  }
+  
   
   
   /**
