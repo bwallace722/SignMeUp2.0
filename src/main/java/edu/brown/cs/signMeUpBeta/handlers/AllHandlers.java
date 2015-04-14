@@ -102,12 +102,23 @@ public class AllHandlers {
       String student = qm.value("new_student");
       JSONParser parser = new JSONParser();
       try {
+        /*
+         * Creating a student object.
+         */
         JSONObject toInsert = (JSONObject) parser.parse(student);
         String studentLogin = (String) toInsert.get("student_login");
         String studentName = (String) toInsert.get("student_name");
         String studentEmail = (String) toInsert.get("student_email");
         String studentPassword = (String) toInsert.get("student_password");
         db.addStudent(studentLogin, studentName, studentEmail, studentPassword);
+        /*
+         * Adding the courses taken by a student to the database.
+         */
+        JSONArray jsonCourses = (JSONArray) toInsert.get("all_courses");
+        for (int i = 0; i < jsonCourses.size(); i++) {
+          String courseId = (String) jsonCourses.get(i);
+          db.addStudentCoursePair(studentLogin, courseId);
+        }
       } catch (SQLException | ParseException e) {
         System.out.println("ERROR: "
             + e.getMessage());
@@ -127,6 +138,9 @@ public class AllHandlers {
       String login = qm.value("student_credentials");
       JSONParser parser = new JSONParser();
       try {
+        /*
+         * Retrieving a ta object.
+         */
         JSONObject credentials = (JSONObject) parser.parse(login);
         String inputLogin = (String) credentials.get("student_login");
         String inputPassword = (String) credentials.get("student_password");
