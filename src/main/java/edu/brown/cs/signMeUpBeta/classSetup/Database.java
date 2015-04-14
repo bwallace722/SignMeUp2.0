@@ -139,9 +139,8 @@ public class Database {
    * @throws SQLException - when there is an SQL error
    */
   public void addStudent(String studentLogin, String studentName,
-      String studentEmail, String studentPassword)
-      throws SQLException {
-    String query = "INSERT INTO student VALUES (?,?,?,?,?,?,?,?)";
+      String studentEmail, String studentPassword) throws SQLException {
+    String query = "INSERT INTO student VALUES (?,?,?,?,?,?,?)";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, studentLogin);
     ps.setString(2, studentName);
