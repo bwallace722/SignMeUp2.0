@@ -34,7 +34,6 @@ public class AllHandlers {
     AllHandlers.db = db;
     runSparkServer();
   }
-  
   /**
    * Creates a free marker engine.
    * @return The created free marker engine.
@@ -51,20 +50,17 @@ public class AllHandlers {
     }
     return new FreeMarkerEngine(config);
   }
-
-  
   private void runSparkServer() {
     Spark.setPort(4567);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
-
     FreeMarkerEngine freeMarker = createEngine();
-
     Spark.get("/addAssignment", new AssessmentHandler("assignment"));
     Spark.get("/addLab", new AssessmentHandler("exam"));
     Spark.get("/addExam", new AssessmentHandler("lab"));
     Spark.get("/addNewCourse", new CourseSetupHandler());
     Spark.get("/addNewStudent", new StudentSetupHandler());
+    Spark.get("/addNewTA", new TASetupHandler());
     Spark.get("/studentLogin", new StudentLoginHandler());
   }
   /**
@@ -158,6 +154,41 @@ public class AllHandlers {
     }
   }
   /**
+   * This class handles the inserting of new TA fields into the database.
+   * @author omadarik
+   */
+  private static class TASetupHandler implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String ta = qm.value("new_ta");
+      JSONParser parser = new JSONParser();
+      try {
+        /*
+         * Creating a ta object.
+         */
+        JSONObject toInsert = (JSONObject) parser.parse(ta);
+        String taLogin = (String) toInsert.get("ta_login");
+        String taName = (String) toInsert.get("ta_name");
+        String taEmail = (String) toInsert.get("ta_email");
+        String taPassword = (String) toInsert.get("ta_password");
+        db.addTA(taLogin, taName, taEmail, taPassword);
+        /*
+         * Adding the courses taken by a student to the database.
+         */
+        JSONArray jsonCourses = (JSONArray) toInsert.get("all_courses");
+        for (int i = 0; i < jsonCourses.size(); i++) {
+          String courseId = (String) jsonCourses.get(i);
+          db.addTACoursePair(taLogin, courseId);
+        }
+      } catch (SQLException | ParseException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
+      return null;
+    }
+  }
+  /**
    * This method handles the logging in of a student checking the input login
    * and password.
    * @author omadarik
@@ -206,11 +237,9 @@ public class AllHandlers {
       return null;
     }
   }
-  
   /**
    * This class prints out errors if the spark server fails.
    * @author kb25
-   *
    */
   private static class ExceptionPrinter implements ExceptionHandler {
     @Override
