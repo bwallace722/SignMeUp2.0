@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
+import edu.brown.cs.signMeUpBeta.onhours.TA;
 import edu.brown.cs.signMeUpBeta.student.Student;
 
 import org.json.simple.JSONArray;
@@ -130,6 +131,29 @@ public class AllHandlers {
         String inputLogin = (String) credentials.get("student_login");
         String inputPassword = (String) credentials.get("student_password");
         Student loggedIn = db.getStudentByLogin(inputLogin, inputPassword);
+      } catch (SQLException | ParseException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
+      return null;
+    }
+  }
+  /**
+   * This method handles the logging in of a ta checking the input login and
+   * password.
+   * @author omadarik
+   */
+  private static class TALoginHandler implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String login = qm.value("ta_credentials");
+      JSONParser parser = new JSONParser();
+      try {
+        JSONObject credentials = (JSONObject) parser.parse(login);
+        String inputLogin = (String) credentials.get("ta_login");
+        String inputPassword = (String) credentials.get("ta_password");
+        TA loggedIn = db.getTAByLogin(inputLogin, inputPassword);
       } catch (SQLException | ParseException e) {
         System.out.println("ERROR: "
             + e.getMessage());
