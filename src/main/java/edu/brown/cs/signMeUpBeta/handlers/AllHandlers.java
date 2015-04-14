@@ -1,5 +1,9 @@
 package edu.brown.cs.signMeUpBeta.handlers;
 
+import java.io.File;
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.io.StringWriter;
 import java.sql.Date;
 import java.sql.SQLException;
 
@@ -8,17 +12,20 @@ import com.google.gson.Gson;
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.onhours.TA;
 import edu.brown.cs.signMeUpBeta.student.Student;
+import freemarker.template.Configuration;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
+import spark.ExceptionHandler;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
+import spark.template.freemarker.FreeMarkerEngine;
 
 public class AllHandlers {
   private static final Gson GSON = new Gson();
@@ -27,8 +34,32 @@ public class AllHandlers {
     AllHandlers.db = db;
     runSparkServer();
   }
+  
+  /**
+   * Creates a free marker engine.
+   * @return The created free marker engine.
+   */
+  private static FreeMarkerEngine createEngine() {
+    Configuration config = new Configuration();
+    File templates = new File("src/main/resources/spark/template/freemarker");
+    try {
+      config.setDirectoryForTemplateLoading(templates);
+    } catch (IOException ioe) {
+      System.out.printf("ERROR: Unable use %s for template loading.%n",
+          templates);
+      System.exit(1);
+    }
+    return new FreeMarkerEngine(config);
+  }
+
+  
   private void runSparkServer() {
+    Spark.setPort(4567);
     Spark.externalStaticFileLocation("src/main/resources/static");
+    Spark.exception(Exception.class, new ExceptionPrinter());
+
+    FreeMarkerEngine freeMarker = createEngine();
+
     Spark.get("/addAssignment", new AssessmentHandler("assignment"));
     Spark.get("/addLab", new AssessmentHandler("exam"));
     Spark.get("/addExam", new AssessmentHandler("lab"));
@@ -173,6 +204,28 @@ public class AllHandlers {
             + e.getMessage());
       }
       return null;
+    }
+  }
+  
+  /**
+   * This class prints out errors if the spark server fails.
+   * @author kb25
+   *
+   */
+  private static class ExceptionPrinter implements ExceptionHandler {
+    @Override
+    /**
+     * This method prints the proper errors upon failure.
+     */
+    public void handle(Exception e, Request req, Response res) {
+      res.status(500);
+      StringWriter stacktrace = new StringWriter();
+      try (PrintWriter pw = new PrintWriter(stacktrace)) {
+        pw.println("<pre>");
+        e.printStackTrace(pw);
+        pw.println("</pre>");
+      }
+      res.body(stacktrace.toString());
     }
   }
 }
