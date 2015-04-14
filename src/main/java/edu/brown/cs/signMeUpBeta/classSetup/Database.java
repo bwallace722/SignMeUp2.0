@@ -237,15 +237,4 @@ public class Database {
     }
     return null;
   }
-  /**
-   * Creates a new table according to the schema.
-   * @param schema - used in processing SQL commands
-   * @throws SQLException - when there is an SQL error
-   */
-  private void buildTable(String schema) throws SQLException {
-    PreparedStatement prep;
-    prep = conn.prepareStatement(schema);
-    prep.executeUpdate();
-    prep.close();
-  }
 }
