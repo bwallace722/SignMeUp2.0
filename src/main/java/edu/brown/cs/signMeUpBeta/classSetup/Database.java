@@ -36,13 +36,13 @@ public class Database {
         "CREATE TABLE course(course_id TEXT PRIMARY KEY, course_title TEXT);";
     buildTable(schema);
     schema =
-        "CREATE TABLE assignment(id INT NOT NULL AUTO_INCREMENT, assignment_name TEXT, start_date DATE, end_date DATE, course_id TEXT FOREIGN KEY REFERENCES course(course_id);";
+        "CREATE TABLE assignment(id INT AUTO_INCREMENT, assignment_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id);";
     buildTable(schema);
     schema =
-        "CREATE TABLE exam(id INT NOT NULL AUTO_INCREMENT, exam_name TEXT, start_date DATE, end_date DATE, course_id TEXT FOREIGN KEY REFERENCES course(course_id));";
+        "CREATE TABLE exam(id INT AUTO_INCREMENT, exam_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
     buildTable(schema);
     schema =
-        "CREATE TABLE lab(id INT NOT NULL AUTO_INCREMENT, lab_name TEXT, start_date DATE, end_date DATE, course_id TEXT FOREIGN KEY REFERENCES course(course_id));";
+        "CREATE TABLE lab(id INT AUTO_INCREMENT, lab_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
     buildTable(schema);
     schema =
         "CREATE TABLE ta(ta_login TEXT, ta_name TEXT, ta_email TEXT, ta_password TEXT);";
@@ -53,7 +53,7 @@ public class Database {
     schema = "CREATE TABLE attendance(ta_on_block TEXT);";
     buildTable(schema);
     schema =
-        "CREATE TABLE questions(assessment_item_name TEXT, question_section TEXT, question TEXT, course_id TEXT FOREIGN KEY REFERENCES course(course_id));";
+        "CREATE TABLE questions(assessment_item_name TEXT, question_section TEXT, question TEXT, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
     buildTable(schema);
     schema = "CREATE TABLE student_course(student_id TEXT, course_id TEXT);";
     buildTable(schema);
