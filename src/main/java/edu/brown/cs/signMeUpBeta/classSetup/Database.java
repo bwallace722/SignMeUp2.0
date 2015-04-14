@@ -41,7 +41,7 @@ public class Database {
    */
   public void addCourse(String courseNumber, String courseTitle)
       throws SQLException {
-    String query = "INSERT INTO course VALUES (?, ?)";
+    String query = "INSERT INTO course VALUES (?, ?);";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, courseNumber);
     ps.setString(2, courseTitle);
@@ -60,7 +60,7 @@ public class Database {
    */
   public void addQuestion(String assessmentName, String questionSection,
       String question, String course) throws SQLException {
-    String query = "INSERT INTO questions VALUES (?,?,?,?)";
+    String query = "INSERT INTO questions VALUES (?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, assessmentName);
     ps.setString(2, questionSection);
@@ -77,9 +77,23 @@ public class Database {
    */
   public void addStudentCoursePair(String studentId, String courseId)
       throws SQLException {
-    String query = "INSERT INTO student_course VALUES (?, ?)";
-    PreparedStatement ps = conn.prepareStatement(query);
+    String update = "INSERT INTO student_course VALUES (?, ?);";
+    PreparedStatement ps = conn.prepareStatement(update);
     ps.setString(1, studentId);
+    ps.setString(2, courseId);
+    ps.executeUpdate();
+    ps.close();
+  }
+  /**
+   * This method inserts a ta-course pair entry into the database.
+   * @param taId
+   * @param courseId
+   * @throws SQLException
+   */
+  public void addTACoursePair(String taId, String courseId) throws SQLException {
+    String update = "INSERT INTO ta_course VALUES (?, ?);";
+    PreparedStatement ps = conn.prepareStatement(update);
+    ps.setString(1, taId);
     ps.setString(2, courseId);
     ps.executeUpdate();
     ps.close();
@@ -97,7 +111,7 @@ public class Database {
    */
   public void addAssessmentItem(String table, String name, Date startDate,
       Date endDate, String courseId) throws SQLException {
-    String query = "INSERT INTO ? VALUES (?,?,?,?)";
+    String query = "INSERT INTO ? VALUES (?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, table);
     ps.setString(2, name);
@@ -119,7 +133,7 @@ public class Database {
    */
   public void addStudent(String studentLogin, String studentName,
       String studentEmail, String studentPassword) throws SQLException {
-    String query = "INSERT INTO student VALUES (?,?,?,?,?,?,?)";
+    String query = "INSERT INTO student VALUES (?,?,?,?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, studentLogin);
     ps.setString(2, studentName);
@@ -144,7 +158,7 @@ public class Database {
       void
       addTA(String taLogin, String taName, String email, String password)
           throws SQLException {
-    String query = "INSERT INTO ta VALUES (?,?,?,?)";
+    String query = "INSERT INTO ta VALUES (?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, taLogin);
     ps.setString(2, taName);
@@ -167,7 +181,7 @@ public class Database {
   public void updateStudent(String studentLogin, int timeAtHours,
       int timeOnProject, int questionsAsked) throws SQLException {
     String update =
-        "UPDATE student SET time_spent_at_hours=?, time_spent_curr_project=?, questions_asked=? WHERE student_login=?";
+        "UPDATE student SET time_spent_at_hours=?, time_spent_curr_project=?, questions_asked=? WHERE student_login=?;";
     PreparedStatement ps = conn.prepareStatement(update);
     ps.setInt(1, timeAtHours);
     ps.setInt(2, timeOnProject);
