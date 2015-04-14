@@ -152,6 +152,7 @@ public class Database {
     ps.setInt(5, 0);
     ps.setInt(6, 0);
     ps.setInt(7, 0);
+    // ps.setString(8, contactMethod);
     ps.executeUpdate();
     ps.close();
   }
