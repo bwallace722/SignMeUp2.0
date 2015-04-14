@@ -6,7 +6,9 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.util.Map;
 
+import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
@@ -19,11 +21,13 @@ import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import spark.ExceptionHandler;
+import spark.ModelAndView;
 import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
 import spark.Spark;
+import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
 
 public class AllHandlers {
@@ -54,6 +58,8 @@ public class AllHandlers {
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
     FreeMarkerEngine freeMarker = createEngine();
+
+    Spark.get("/login", new LoginHandler(), freeMarker);
     Spark.get("/addAssignment", new AssessmentHandler("assignment"));
     Spark.get("/addLab", new AssessmentHandler("exam"));
     Spark.get("/addExam", new AssessmentHandler("lab"));
@@ -61,6 +67,22 @@ public class AllHandlers {
     Spark.get("/addNewStudent", new AccountSetupHandler());
     Spark.get("/studentLogin", new AccountLoginHandler());
   }
+  
+  /**
+   * This is the front handler, which initially builds the site.
+   * @author kj13
+   */
+  private class LoginHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("title", "Map").build();
+
+      return new ModelAndView(variables, "login.html");
+    }
+  }
+  
+  
   /**
    * This class handles the insertion of assessment items into the database
    * during class setup.
