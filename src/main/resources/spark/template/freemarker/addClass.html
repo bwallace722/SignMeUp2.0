@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+  <head>
+    <meta charset="utf-8">
+    <title>${title}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- In real-world webapps, css is usually minified and
+         concatenated. Here, separate normalize from our code, and
+         avoid minification for clarity. -->
+    <link rel="stylesheet" href="css/normalize.css">
+    <link rel="stylesheet" href="css/html5bp.css">
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    
+  </head>
+  <body>
+    <nav class="navbar navbar-default">
+      <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="welcomeStudent.html">Home</a>
+        </div>
+
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
+          <ul class="nav navbar-nav">
+            <li class="dropdown">
+              <a href="myClasses.html" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-expanded="false">My Classes <span class="caret"></span></a>
+              <ul class="dropdown-menu" role="menu">
+                <li><a href="welcomeStudent.html">Class1</a></li>
+                <li><a href="welcomeStudent.html">Class2</a></li>
+                <li><a href="welcomeStudent.html">Class3</a></li>
+                <li class="divider"></li>
+                <li><a href="myClasses.html">See all classes</a></li>
+              </ul>
+            </li>
+          </ul>
+          <ul class="nav navbar-nav navbar-right">
+            <li><a href="landingPage.html">Sign Out</a></li>
+          </ul>
+        </div><!-- /.navbar-collapse -->
+      </div><!-- /.container-fluid -->
+    </nav>
+  <div class="container">
+     <h1> Add a Course </h1>
+     <h3>Let's Get Started</h3>
+     <div class="panel panel-default">
+  <div class="panel-body">
+            <form>
+            <h4>Choose your course</h4>
+            <select name="classDropdown">
+              <option value="cs015">CS015</option>
+              <option value="cs016">CS016</option>
+              <option value="cs017">CS017</option>
+              <option value="cs018">CS018</option>
+              <option value="cs019">CS019</option>
+              <option value="cs022">CS022</option>
+              <option value="cs032">CS032</option>
+            <!--to be filled by get request (all classes registerd) -->
+            </select>
+            <h4>Are you signing up for this class as a TA or a student</h4>
+            <input type="radio" name="student" value="Student">Student<br>
+            <input type="radio" name="ta" value="TA">TA
+            <br>
+            <button class="btn btn-primary" href="myClasses.html">Sign Up!</button>
+        </form>
+  </div>
+</div>
+  </div>
+
+     <!-- Again, we are serving up the unminified source for clarity. -->
+     <script src="js/jquery-2.1.1.js"></script>
+     <script src="js/main.js"></script>
+     <script src="js/bootstrap.min.js"></script>
+
+  </body>
+  <!-- See http://html5boilerplate.com/ for a good place to start
+       dealing with real world issues like old browsers.  -->
+</html>
