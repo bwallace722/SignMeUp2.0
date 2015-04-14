@@ -6,65 +6,102 @@ import edu.brown.cs.signMeUpBeta.project.Question;
 
 public class Student {
 
-  public Student () {
-    
+  private String login;
+  private String password;
+  private String name;
+  private String email;
+  private int phone;
+  private List<String> courses;
+  private int numQuestions;
+  private int timeOnHours;
+  private int timeCurrProject;
+  
+  
+  public Student(String login, String name, String email, String password, int timeOnHours, int timeCurrProject, int numQuestions) {
+    this.login = login;
+    this.name = name;
+    this.password = password;
+    this.timeOnHours = timeOnHours;
+    this.timeCurrProject = timeCurrProject;
+    this.numQuestions = numQuestions;
   }
 
   public String login() {
-    return null;
+    return login;
   }
   
-  public void setLogin(String newLogin) {}
+  public void setID(String newLogin) {
+    login = newLogin;
+  }
   
   public String password() {
-    return null;
+    return password;
   }
   
-  public void setPassword(String newPassword) {}
+  public void setPassword(String newPassword) {
+    password = newPassword;
+  }
   
   public String name() {
-    return null;
+    return name;
   }
   
-  public void setName(String newName) {}
+  public void setName(String newName) {
+    name = newName;
+  }
   
   public String email() {
-    return null;
+    return email;
   }
   
-  public void setEmail(String newEmail) {}
-  
-  public String phone() {
-    return null;
+  public void setEmail(String newEmail) {
+    email = newEmail;
   }
   
-  public void setPhone(String newPhone) {}
+  public int phone() {
+    return phone;
+  }
+  
+  public void setPhone(int newPhone) {
+    phone = newPhone;
+  }
   
   public List<String> courses() {
-    return null;
+    return courses;
   }
   
-  public void addCourse(String newCourse) {}
-  
-  public void setCourses(List<String> newCourses) {}
-  
-  public List<Question> previousQuestions() {
-    return null;
+  public void addCourse(String courseID) {
+    courses.add(courseID);
   }
   
-  public void addQuestion(Question newQuestion) {}
+  public void setCourses(List<String> newCourseList) {
+    courses = newCourseList;
+  }
   
-  public void setQuestions(List<Question> newQuestions) {}
+  public int questionsAsked() {
+    return numQuestions;
+  }
+  
+  public void incrementQuestions() {
+    numQuestions++;
+  }
   
   public double timeOnHours() {
-    return 0;
+    return timeOnHours;
   }
   
-  public void addTime(double timeToAdd) {}
-  
-  public String contactMethod() {
-    return null;
+  public void addTime(double timeToAdd) {
+    timeOnHours += timeToAdd;
+    timeCurrProject += timeToAdd;
   }
   
-  public void setContactMethod() {}
+  public double timeOnCurrentProject() {
+    return timeCurrProject;
+  }
+  
+//  public String contactMethod() {
+//    return null;
+//  }
+//  
+//  public void setContactMethod() {}
 }

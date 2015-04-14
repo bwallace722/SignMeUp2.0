@@ -4,43 +4,55 @@ import java.util.List;
 
 public class TA {
 
-  public TA() {}
+  private String login;
+  private String name;
+  private String email;
+  private String password;
+  
+  public TA(String login, String name, String email, String password) {
+    this.login = login;
+    this.name = name;
+    this.email = email;
+    this.password = password;
+  }
   
   public String login() {
-    return null;
+    return login;
   }
   
-  public void setLogin(String newLogin) {}
+  public void setLogin(String newLogin) {
+    login = newLogin;
+  }
   
   public String password() {
-    return null;
+    return password;
   }
   
-  public void setPassword(String newPassword) {}
+  public void setPassword(String newPassword) {
+    password = newPassword;
+  }
   
   public String name() {
-    return null;
+    return name;
   }
   
-  public void setName(String newName) {}
+  public void setName(String newName) {
+    name = newName;
+  }
   
   public String email() {
-    return null;
+    return email;
   }
   
-  public void setEmail(String newEmail) {}
-  
-  public String phone() {
-    return null;
+  public void setEmail(String newEmail) {
+    email = newEmail;
   }
   
-  public void setPhone(String newPhone) {}
-  
-  public List<String> courses() {
-    return null;
-  }
-  
-  public void addCourse(String newCourse) {}
-  
-  public void setCourses(List<String> newCourses) {}
+//  public List<String> courses() {
+//    return null;
+//  }
+//  
+//  public void addCourse(String newCourse) {}
+//  
+//  public void setCourses(List<String> newCourses) {}
 }
