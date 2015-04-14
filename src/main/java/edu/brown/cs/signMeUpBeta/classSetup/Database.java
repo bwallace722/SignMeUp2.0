@@ -8,6 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import edu.brown.cs.signMeUpBeta.onhours.TA;
 import edu.brown.cs.signMeUpBeta.student.Student;
 
 /**
@@ -196,6 +197,29 @@ public class Database {
           new Student(rs.getString(1), rs.getString(2), rs.getString(3), rs
               .getString(4), rs.getInt(5), rs.getInt(6), rs.getInt(7));
       return loggedInStudent;
+    }
+    return null;
+  }
+  /**
+   * This method checks the input credentials and returns a student object if
+   * the credentials are approved.
+   * @param taId
+   * @param password
+   * @return
+   * @throws SQLException
+   */
+  public TA getTAByLogin(String taId, String password) throws SQLException {
+    String query =
+        "SELECT * FROM ta WHERE ta.ta_login = ? AND ta.ta_password = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, taId);
+    ps.setString(2, password);
+    ResultSet rs = ps.executeQuery();
+    if (rs.next()) {
+      TA loggedInTA =
+          new TA(rs.getString(1), rs.getString(2), rs.getString(3), rs
+              .getString(4));
+      return loggedInTA;
     }
     return null;
   }
