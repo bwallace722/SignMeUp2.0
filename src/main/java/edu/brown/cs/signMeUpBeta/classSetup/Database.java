@@ -4,8 +4,11 @@ import java.sql.Connection;
 import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+
+import edu.brown.cs.signMeUpBeta.student.Student;
 
 /**
  * This class handles the setup of the databases and tables used in the project.
@@ -139,9 +142,8 @@ public class Database {
    * @throws SQLException - when there is an SQL error
    */
   public void addStudent(String studentLogin, String studentName,
-      String studentEmail, String studentPassword)
-      throws SQLException {
-    String query = "INSERT INTO student VALUES (?,?,?,?,?,?,?,?)";
+      String studentEmail, String studentPassword) throws SQLException {
+    String query = "INSERT INTO student VALUES (?,?,?,?,?,?,?)";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, studentLogin);
     ps.setString(2, studentName);
@@ -150,7 +152,7 @@ public class Database {
     ps.setInt(5, 0);
     ps.setInt(6, 0);
     ps.setInt(7, 0);
-//    ps.setString(8, contactMethod);
+    // ps.setString(8, contactMethod);
     ps.executeUpdate();
     ps.close();
   }
@@ -197,6 +199,30 @@ public class Database {
     ps.setString(4, studentLogin);
     ps.executeUpdate();
     ps.close();
+  }
+  /**
+   * This method checks the input credentials and returns a student object if
+   * the credentials are approved.
+   * @param studentId
+   * @param password
+   * @return
+   * @throws SQLException
+   */
+  public Student getStudentByLogin(String studentId, String password)
+      throws SQLException {
+    String query =
+        "SELECT * FROM student WHERE student.student_login = ? AND student.student_password = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, studentId);
+    ps.setString(2, password);
+    ResultSet rs = ps.executeQuery();
+    if (rs.next()) {
+      Student loggedInStudent =
+          new Student(rs.getString(1), rs.getString(2), rs.getString(3), rs
+              .getString(4), rs.getInt(5), rs.getInt(6), rs.getInt(7));
+      return loggedInStudent;
+    }
+    return null;
   }
   /**
    * Creates a new table according to the schema.
