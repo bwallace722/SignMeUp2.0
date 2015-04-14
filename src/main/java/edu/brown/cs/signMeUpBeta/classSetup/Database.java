@@ -32,6 +32,8 @@ public class Database {
     Statement stat = conn.createStatement();
     stat.executeUpdate("PRAGMA foreign_keys = ON;");
     stat.close();
+
+
   }
   /**
    * This methods inserts a class into the course table.
@@ -200,6 +202,7 @@ public class Database {
     }
     return null;
   }
+  
   /**
    * This method checks the input credentials and returns a student object if
    * the credentials are approved.
@@ -223,15 +226,30 @@ public class Database {
     }
     return null;
   }
-  /**
-   * Creates a new table according to the schema.
-   * @param schema - used in processing SQL commands
-   * @throws SQLException - when there is an SQL error
-   */
-  private void buildTable(String schema) throws SQLException {
-    PreparedStatement prep;
-    prep = conn.prepareStatement(schema);
-    prep.executeUpdate();
-    prep.close();
-  }
+  
+  
+  //SCHEMAS
+//String schema =
+//    "CREATE TABLE course(course_id TEXT PRIMARY KEY, course_title TEXT);";
+//schema =
+//    "CREATE TABLE assignment(id INT AUTO_INCREMENT, assignment_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id);";
+//schema =
+//    "CREATE TABLE exam(id INT AUTO_INCREMENT, exam_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
+//
+//schema =
+//    "CREATE TABLE lab(id INT AUTO_INCREMENT, lab_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
+//
+//schema =
+//    "CREATE TABLE ta(ta_login TEXT, ta_name TEXT, ta_email TEXT, ta_password TEXT);";
+//
+//schema =
+//    "CREATE TABLE student(student_login TEXT, student_name TEXT, student_email TEXT, student_password TEXT, time_spent_at_hours INT, time_spent_curr_project INT, questions_asked INT, contact_method TEXT);";
+//
+//schema = "CREATE TABLE attendance(ta_on_block TEXT);";
+//
+//schema =
+//    "CREATE TABLE questions(assessment_item_name TEXT, question_section TEXT, question TEXT, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
+//
+//schema = "CREATE TABLE student_course(student_id TEXT, course_id TEXT);";
+  
 }
