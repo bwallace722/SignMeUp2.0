@@ -139,7 +139,7 @@ public class Database {
    * @throws SQLException - when there is an SQL error
    */
   public void addStudent(String studentLogin, String studentName,
-      String studentEmail, String studentPassword, String contactMethod)
+      String studentEmail, String studentPassword)
       throws SQLException {
     String query = "INSERT INTO student VALUES (?,?,?,?,?,?,?,?)";
     PreparedStatement ps = conn.prepareStatement(query);
@@ -150,7 +150,7 @@ public class Database {
     ps.setInt(5, 0);
     ps.setInt(6, 0);
     ps.setInt(7, 0);
-    ps.setString(8, contactMethod);
+    //ps.setString(8, contactMethod);
     ps.executeUpdate();
     ps.close();
   }

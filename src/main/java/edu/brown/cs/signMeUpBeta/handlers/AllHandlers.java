@@ -100,8 +100,7 @@ public class AllHandlers {
         String studentEmail = (String) toInsert.get("student_email");
         String studentPassword = (String) toInsert.get("student_password");
         String studentContact = (String) toInsert.get("student_contact");
-        db.addStudent(studentLogin, studentName, studentEmail, studentPassword,
-            contactMethod);
+        db.addStudent(studentLogin, studentName, studentEmail, studentPassword);
       } catch (SQLException | ParseException e) {
         System.out.println("ERROR: "
             + e.getMessage());
