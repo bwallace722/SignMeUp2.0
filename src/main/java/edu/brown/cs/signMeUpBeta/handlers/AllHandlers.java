@@ -66,12 +66,12 @@ public class AllHandlers {
     Spark.get("/addCourses", new AddCourseHandler(), new FreeMarkerEngine());
 //    Spark.post("/signUp", new AccountSetupHandler());
     Spark.post("/signUp", new SignUpHandler());
-    Spark.get("/welcomeStudent/:courseId", new CoursePageHandler(), new FreeMarkerEngine());
-    
-    
+    Spark.get("/welcomeStudent/:courseId", new StudentCoursePageHandler(), new FreeMarkerEngine());
+    Spark.get("/taHoursSetUp/:courseId", new TACoursePageHandler(), new FreeMarkerEngine());
+    Spark.get("/confirmAppointment", new AppointmentHandler());
     
     // Spark.get("/addAssignment", new AssessmentHandler("assignment"));
-    Spark.get("/confirmAppointment", new AppointmentHandler());
+
     // Spark.get("/addLab", new AssessmentHandler("exam"));
     // Spark.get("/addExam", new AssessmentHandler("lab"));
     // Spark.get("/addNewCourse", new CourseSetupHandler());
@@ -113,7 +113,22 @@ public class AllHandlers {
     }
   }
   
-  private class CoursePageHandler implements TemplateViewRoute {
+  private class TACoursePageHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+
+      String courseId = req.params(":courseId");
+      System.out.println(courseId);
+      
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("title", "SignMeUp 2.0")
+          .put("course", courseId).build();
+
+      return new ModelAndView(variables, "taHoursSetUp.html");
+    }
+  }
+  
+  private class StudentCoursePageHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
 
