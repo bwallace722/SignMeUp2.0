@@ -1,4 +1,3 @@
-*.jar
 /target/
 .classpath
 .mvn-classpath
