@@ -142,6 +142,7 @@ public class AllHandlers {
           Map<String, Object> variables =
               new ImmutableMap.Builder<String, Object>()
                   .put("success", success).build();
+          // In the event of some error, null will be returned
           return GSON.toJson(variables);
         }
       } catch (SQLException | ParseException e) {
