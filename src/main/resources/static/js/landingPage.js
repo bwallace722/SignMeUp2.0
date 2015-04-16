@@ -38,14 +38,15 @@ function signUp() {
 		var postParameters = {"name": name, "login": login,
 				"email":email, "password": password, "confirm_password": confirm};
 		console.log(postParameters);
-		$.post("/signUp", postParameters, function(responseJSON) {
-			console.log(responseJSON);
-			
-				$.get("/classes", function(response) {
-					console.log(response);
-				});
-			
-		});
+		$.post("/signUp", postParameters);
+		var url = "/addCourses/" + login;
+		console.log(url);
+		window.location.href=url;
+//		$.get(url, function(response) {
+//			console.log(response);
+//			response.redirect(url);
+//		});
+		
 	} else {
 		alert("make sure your passwords match!");
 	}

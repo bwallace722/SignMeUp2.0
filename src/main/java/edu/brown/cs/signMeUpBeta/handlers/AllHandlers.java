@@ -61,15 +61,15 @@ public class AllHandlers {
 //    FreeMarkerEngine freeMarker = createEngine();
     Spark.get("/home", new FrontHandler(), new FreeMarkerEngine());
     Spark.get("/classes/:login", new CourseHandler(), new FreeMarkerEngine());
-    Spark.post("/classes/:login", new UpdateCourseHandler(), new FreeMarkerEngine());
-    Spark.get("/addCourses", new AddCourseHandler(), new FreeMarkerEngine());
-    Spark.post("/signUp", new AccountSetupHandler());
-//    Spark.post("/signUp", new SignUpHandler());
+    Spark.get("/addCourses/:login", new AddCourseHandler(), new FreeMarkerEngine());
+//    Spark.post("/signUp", new AccountSetupHandler());
+    Spark.post("/updateCourse/:login", new UpdateCourseHandler());
+    Spark.post("/signUp", new SignUpHandler());
     Spark.get("/welcomeStudent/:courseId", new StudentCoursePageHandler(), new FreeMarkerEngine());
     Spark.get("/taHoursSetUp/:courseId", new TAHoursSetUpHandler(), new FreeMarkerEngine());
     Spark.get("/confirmAppointment", new AppointmentHandler());
-    Spark.get("/taCourseSetUp/:courseId", new TACourseSetUpHandler(), new FreeMarkerEngine());
-    Spark.get("/taOnHours/:courseId", new TAOnHoursHandler(), new FreeMarkerEngine());
+    Spark.get("/signUpForHours", new StudentSignUpForHours(), new FreeMarkerEngine());
+    Spark.post("/labCheckOff/:login", new LabCheckOffHandler());
     // Spark.get("/addAssignment", new AssessmentHandler("assignment"));
 
     // Spark.get("/addLab", new AssessmentHandler("exam"));
@@ -96,7 +96,6 @@ public class AllHandlers {
   /**
    * This is the sign up handler that deals with creating a new user. From here,
    * the user will be directed to a list of their courses.
-
    * @author kj13
    */
   private class CourseHandler implements TemplateViewRoute {
@@ -104,19 +103,15 @@ public class AllHandlers {
     public ModelAndView handle(final Request req, final Response res) {
 
       String login = req.params(":login");
+      //GET USERS CLASSES
       
       Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0").build();
+          .put("title", "SignMeUp 2.0").put("user", login).build();
 
       return new ModelAndView(variables, "myClasses.html");
     }
   }
   
-  /**
-   * This is the Ta hours Set up handler.
-   * @author kj13
-   *
-   */
   private class TAHoursSetUpHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
@@ -131,46 +126,7 @@ public class AllHandlers {
       return new ModelAndView(variables, "taHoursSetUp.html");
     }
   }
-  /**
-   * This is the TA Course Set Up handler.
-   * @author kj13
-   *
-   */
-  private class TACourseSetUpHandler implements TemplateViewRoute {
-    @Override
-    public ModelAndView handle(final Request req, final Response res) {
-
-      String courseId = req.params(":courseId");
-      System.out.println(courseId);
-      
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0")
-          .put("course", courseId).build();
-
-      return new ModelAndView(variables, "taCourseSetUp.html");
-    }
-  }
   
-  
-  /**
-   * This is the TA On Hours handler.
-   * @author kj13
-   *
-   */
-  private class TAOnHoursHandler implements TemplateViewRoute {
-    @Override
-    public ModelAndView handle(final Request req, final Response res) {
-
-      String courseId = req.params(":courseId");
-      System.out.println(courseId);
-      
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0")
-          .put("course", courseId).build();
-
-      return new ModelAndView(variables, "taOnHours.html");
-    }
-  }
   
   
   private class StudentCoursePageHandler implements TemplateViewRoute {
@@ -185,6 +141,28 @@ public class AllHandlers {
           .put("course", courseId).build();
 
       return new ModelAndView(variables, "welcomeStudent.html");
+    }
+  }
+  
+  private class LabCheckOffHandler implements Route {
+    @Override
+    public Object handle(final Request req, final Response res) {
+      String login = req.params(":login");
+
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
+      return null;
+    }
+  }
+  
+  private class StudentSignUpForHours implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("title", "SignMeUp 2.0").build();
+
+      return new ModelAndView(variables, "signUpForHours.html");
     }
   }
   
@@ -206,7 +184,7 @@ public class AllHandlers {
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
               login).build();
-      return login;
+      return variables;
     }
   }
   
@@ -215,21 +193,20 @@ public class AllHandlers {
    * This is the front handler, which initially builds the site.
    * @author kj13
    */
-  private class UpdateCourseHandler implements TemplateViewRoute {
+  private class UpdateCourseHandler implements Route {
     @Override
-    public ModelAndView handle(final Request req, final Response res) {
+    public Object handle(final Request req, final Response res) {
 
       QueryParamsMap qm = req.queryMap();
-      String login = req.params(":login");
       String course = qm.value("course");
       String role = qm.value("role");
       
       System.out.println(course + " , " + role);
-      
+      int toReturn = 1;
       Map<String, Object> variables = new ImmutableMap.Builder()
           .put("title", "SignMeUp 2.0").build();
 
-      return new ModelAndView(variables, "myClasses.html");
+      return toReturn;
     }
   }
   
@@ -240,9 +217,10 @@ public class AllHandlers {
   private class AddCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-
+      String login = req.params(":login");
       Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0").build();
+          .put("title", "SignMeUp 2.0")
+          .put("user", login).build();
 
       return new ModelAndView(variables, "addCourse.html");
     }

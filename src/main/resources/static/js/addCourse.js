@@ -1,3 +1,10 @@
+var user = document.getElementById("user").innerHTML;
+
+var windowURL = window.location.href;
+var splitURL = windowURL.split("/");
+console.log(splitURL);
+
+console.log(user);
 function signUp() {
 	var courses = document.getElementById("classDropdown");
 	
@@ -8,9 +15,13 @@ function signUp() {
 	console.log(role);
 	
 	var postParameters = {"course": courseSelected, "role": role };
-	
-	$.post("/classes", postParameters, function(responseJSON) {
+	var url = "/updateCourse/" + user;
+	console.log(url);
+	$.post(url, postParameters, function(responseJSON) {
 		console.log(responseJSON);
+		if(responseJSON == 1) {
+			window.location.href="/courses/" + user;
+		}
 	});
 	
 	

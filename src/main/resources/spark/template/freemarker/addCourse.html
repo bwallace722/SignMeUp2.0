@@ -6,10 +6,10 @@
     <!-- In real-world webapps, css is usually minified and
          concatenated. Here, separate normalize from our code, and
          avoid minification for clarity. -->
-    <link rel="stylesheet" href="css/normalize.css">
-    <link rel="stylesheet" href="css/html5bp.css">
-    <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/html5bp.css">
+    <link rel="stylesheet" href="../css/main.css">
+    <link rel="stylesheet" href="../css/bootstrap.min.css">
     
   </head>
   <body>
@@ -47,7 +47,8 @@
       </div><!-- /.container-fluid -->
     </nav>
   <div class="container">
-     <h1> Add a Course </h1>
+  <div class="user">${user}</div>
+     <h1> ${user} Add a Course </h1>
      <h3>Let's Get Started</h3>
      <div class="panel panel-default">
   <div class="panel-body">
@@ -78,9 +79,9 @@
   </div>
 
      <!-- Again, we are serving up the unminified source for clarity. -->
-     <script src="js/jquery-2.1.1.js"></script>
-          <script src="js/addCourse.js"></script>
-     <script src="js/bootstrap.min.js"></script>
+     <script src="../js/jquery-2.1.1.js"></script>
+     <script src="../js/addCourse.js"></script>
+     <script src="../js/bootstrap.min.js"></script>
 
   </body>
   <!-- See http://html5boilerplate.com/ for a good place to start
