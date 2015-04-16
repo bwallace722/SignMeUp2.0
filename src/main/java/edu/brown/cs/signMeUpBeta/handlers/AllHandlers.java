@@ -67,15 +67,20 @@ public class AllHandlers {
     Spark.exception(Exception.class, new ExceptionPrinter());
     // FreeMarkerEngine freeMarker = createEngine();
     Spark.get("/home", new FrontHandler(), new FreeMarkerEngine());
-    Spark.get("/courses/:login", new CourseHandler(), new FreeMarkerEngine());
-    Spark.get("/addCourses/:login", new AddCourseHandler(), new FreeMarkerEngine());
-//    Spark.post("/signUp", new AccountSetupHandler());
+    Spark.get("/classes/:login", new CourseHandler(), new FreeMarkerEngine());
+    Spark.get("/addCourses/:login", new AddCourseHandler(),
+        new FreeMarkerEngine());
+    // Spark.post("/signUp", new AccountSetupHandler());
+
     Spark.post("/updateCourse/:login", new UpdateCourseHandler());
     Spark.post("/signUp", new SignUpHandler());
-    Spark.get("/welcomeStudent/:courseId", new StudentCoursePageHandler(), new FreeMarkerEngine());
-    Spark.get("/taHoursSetUp/:courseId", new TAHoursSetUpHandler(), new FreeMarkerEngine());
+    Spark.get("/welcomeStudent/:courseId", new StudentCoursePageHandler(),
+        new FreeMarkerEngine());
+    Spark.get("/taHoursSetUp/:courseId", new TAHoursSetUpHandler(),
+        new FreeMarkerEngine());
     Spark.get("/confirmAppointment", new AppointmentHandler());
-    Spark.get("/signUpForHours", new StudentSignUpForHours(), new FreeMarkerEngine());
+    Spark.get("/signUpForHours", new StudentSignUpForHours(),
+        new FreeMarkerEngine());
     Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
     // Spark.get("/addAssignment", new AssessmentHandler("assignment"));
     // Spark.get("/addLab", new AssessmentHandler("exam"));
@@ -107,15 +112,33 @@ public class AllHandlers {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String login = req.params(":login");
-      //GET USERS CLASSES
-      
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0").put("user", login).build();
-
-      return new ModelAndView(variables, "myClasses.html");
+      List<Object> classList = new ArrayList<Object>();
+      try {
+        List<String> studentClasses = db.getStudentClasses(login);
+        List<String> taClasses = db.getTAClasses(login);
+        for (String tClass : taClasses) {
+          JSONObject taIn = new JSONObject();
+          taIn.put("class", tClass);
+          taIn.put("role", "TA");
+          classList.add(taIn);
+        }
+        for (String sClass : studentClasses) {
+          JSONObject studentIn = new JSONObject();
+          studentIn.put("class", sClass);
+          studentIn.put("role", "Student");
+          classList.add(studentIn);
+        }
+        Map<String, Object> variables =
+            new ImmutableMap.Builder().put("user_class_list", classList).put(
+                "title", "SignMeUp 2.0").put("user", login).build();
+        return new ModelAndView(variables, "myClasses.html");
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
+      return null;
     }
   }
-  
   private class TAHoursSetUpHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
@@ -127,14 +150,11 @@ public class AllHandlers {
       return new ModelAndView(variables, "taHoursSetUp.html");
     }
   }
-
-  
   /**
    * This is the TA Course Set Up handler.
    * @author kj13
    */
   private class TACourseSetUpHandler implements TemplateViewRoute {
-
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
@@ -145,18 +165,15 @@ public class AllHandlers {
       return new ModelAndView(variables, "taCourseSetUp.html");
     }
   }
-      
-  
+
   private class StudentSignUpForHours implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-      Map<String, Object> variables = new ImmutableMap.Builder()
-      .put("title", "SignMeUp 2.0").build();
-
-  return new ModelAndView(variables, "welcomeStudent.html");
-}
-}
-
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
+      return new ModelAndView(variables, "welcomeStudent.html");
+    }
+  }
   /**
    * This is the TA On Hours handler.
    * @author kj13
@@ -203,7 +220,6 @@ public class AllHandlers {
       return variables;
     }
   }
-  
   /**
    * This is the front handler, which initially builds the site.
    * @author kj13
@@ -216,10 +232,10 @@ public class AllHandlers {
       String course = qm.value("course");
       String role = qm.value("role");
       System.out.println(login + ": " + course + " , " + role);
-      int toReturn = 1;
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0").build();
 
+      int toReturn = 1;
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
       return toReturn;
     }
   }
@@ -230,11 +246,10 @@ public class AllHandlers {
   private class AddCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-
       String login = req.params(":login");
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0")
-          .put("user", login).build();
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
+              login).build();
       return new ModelAndView(variables, "addCourse.html");
     }
   }
@@ -443,25 +458,6 @@ public class AllHandlers {
         String inputLogin = (String) credentials.get("student_login");
         String inputPassword = (String) credentials.get("student_password");
         Account loggedIn = db.getAccountByLogin(inputLogin, inputPassword);
-        List<Object> classList = new ArrayList<Object>();
-        List<String> studentClasses = db.getStudentClasses(login);
-        List<String> taClasses = db.getTAClasses(login);
-        for (String tClass : taClasses) {
-          JSONObject taIn = new JSONObject();
-          taIn.put("class", tClass);
-          taIn.put("role", "TA");
-          classList.add(taIn);
-        }
-        for (String sClass : studentClasses) {
-          JSONObject studentIn = new JSONObject();
-          studentIn.put("class", sClass);
-          studentIn.put("role", "Student");
-          classList.add(studentIn);
-        }
-        Map<String, Object> variables =
-            new ImmutableMap.Builder().put("user_class_list", classList).put(
-                "title", "SignMeUp 2.0").put("user", login).build();
-        return GSON.toJson(variables);
       } catch (SQLException | ParseException e) {
         System.out.println("ERROR: "
             + e.getMessage());
