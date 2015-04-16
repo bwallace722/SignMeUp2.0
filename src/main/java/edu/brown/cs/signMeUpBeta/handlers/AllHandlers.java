@@ -130,10 +130,10 @@ public class AllHandlers {
         JSONArray assArray = (JSONArray) parser.parse(req.body());
         for (int i = 0; i < assArray.size(); i++) {
           JSONObject toInsert = (JSONObject) assArray.get(i);
-          String assName = (String) toInsert.get("assessment_name");
-          Date start = (Date) toInsert.get("start_date");
-          Date end = (Date) toInsert.get("end_date");
-          String courseId = (String) toInsert.get("course_id");
+          String assName = (String) toInsert.get("name");
+          Date start = (Date) toInsert.get("start");
+          Date end = (Date) toInsert.get("end");
+          String courseId = (String) toInsert.get("course");
           db.addAssessmentItem(tableName, assName, start, end, courseId);
         }
       } catch (SQLException | ParseException e) {
