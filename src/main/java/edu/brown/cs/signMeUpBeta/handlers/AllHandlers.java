@@ -69,8 +69,8 @@ public class AllHandlers {
     // Spark.get("/studentLogin", new StudentLoginHandler());
   }
   /**
-   * This is the front handler, which sends the user to the landing page.
-   * From here they may either sign in or sign up.
+   * This is the front handler, which sends the user to the landing page. From
+   * here they may either sign in or sign up.
    * @author kj13
    */
   private class FrontHandler implements TemplateViewRoute {
@@ -82,9 +82,8 @@ public class AllHandlers {
     }
   }
   /**
-   * This is the sign up handler that deals with creating a new
-   * user. From here, the user will be directed to a list of their
-   * courses.
+   * This is the sign up handler that deals with creating a new user. From here,
+   * the user will be directed to a list of their courses.
    * @author kj13
    */
   private class SignUpHandler implements TemplateViewRoute {
@@ -95,12 +94,10 @@ public class AllHandlers {
       String login = qm.value("login");
       String email = qm.value("email");
       String password = qm.value("password");
-      
       Account user = new Account(login, name, email, password);
-      
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0").put("user", login).build();
-
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
+              login).build();
       return new ModelAndView(variables, "myClasses.html");
     }
   }
@@ -111,10 +108,8 @@ public class AllHandlers {
   private class UpdateCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0").build();
-
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
       return new ModelAndView(variables, "myClasses.html");
     }
   }
@@ -130,11 +125,9 @@ public class AllHandlers {
     }
     @Override
     public Object handle(Request req, Response res) {
-      QueryParamsMap qm = req.queryMap();
-      String assessmentItem = qm.value("assessmentItem");
       JSONParser parser = new JSONParser();
       try {
-        JSONArray assArray = (JSONArray) parser.parse(assessmentItem);
+        JSONArray assArray = (JSONArray) parser.parse(req.body());
         for (int i = 0; i < assArray.size(); i++) {
           JSONObject toInsert = (JSONObject) assArray.get(i);
           String assName = (String) toInsert.get("assessment_name");
