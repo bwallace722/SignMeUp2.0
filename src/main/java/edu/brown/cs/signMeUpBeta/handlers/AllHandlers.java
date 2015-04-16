@@ -1,20 +1,21 @@
 package edu.brown.cs.signMeUpBeta.handlers;
 
-import java.io.File;
-import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Date;
 import java.sql.SQLException;
 import java.sql.Time;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
+import edu.brown.cs.signMeUpBeta.onhours.Queue;
 import edu.brown.cs.signMeUpBeta.student.Account;
-import freemarker.template.Configuration;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -34,44 +35,54 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class AllHandlers {
   private static final Gson GSON = new Gson();
   private static Database db;
+  private Map<String, Queue> onHoursQueue;
+  /**
+   * This is te constructor for this class.
+   * @param db
+   */
   public AllHandlers(Database db) {
+    onHoursQueue = new HashMap<String, Queue>();
     AllHandlers.db = db;
     runSparkServer();
   }
-//  /**
-//   * Creates a free marker engine.
-//   * @return The created free marker engine.
-//   */
-//  private static FreeMarkerEngine createEngine() {
-//    Configuration config = new Configuration();
-//    File templates = new File("src/main/resources/spark/template/freemarker");
-//    try {
-//      config.setDirectoryForTemplateLoading(templates);
-//    } catch (IOException ioe) {
-//      System.out.printf("ERROR: Unable use %s for template loading.%n",
-//          templates);
-//      System.exit(1);
-//    }
-//    return new FreeMarkerEngine(config);
-//  }
+  // /**
+  // * Creates a free marker engine.
+  // * @return The created free marker engine.
+  // */
+  // private static FreeMarkerEngine createEngine() {
+  // Configuration config = new Configuration();
+  // File templates = new File("src/main/resources/spark/template/freemarker");
+  // try {
+  // config.setDirectoryForTemplateLoading(templates);
+  // } catch (IOException ioe) {
+  // System.out.printf("ERROR: Unable use %s for template loading.%n",
+  // templates);
+  // System.exit(1);
+  // }
+  // return new FreeMarkerEngine(config);
+  // }
   private void runSparkServer() {
     Spark.setPort(4567);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
-//    FreeMarkerEngine freeMarker = createEngine();
+    // FreeMarkerEngine freeMarker = createEngine();
     Spark.get("/home", new FrontHandler(), new FreeMarkerEngine());
     Spark.get("/classes/:login", new CourseHandler(), new FreeMarkerEngine());
-    Spark.post("/classes/:login", new UpdateCourseHandler(), new FreeMarkerEngine());
+    Spark.post("/classes/:login", new UpdateCourseHandler(),
+        new FreeMarkerEngine());
     Spark.get("/addCourses", new AddCourseHandler(), new FreeMarkerEngine());
     Spark.post("/signUp", new AccountSetupHandler());
-//    Spark.post("/signUp", new SignUpHandler());
-    Spark.get("/welcomeStudent/:courseId", new StudentCoursePageHandler(), new FreeMarkerEngine());
-    Spark.get("/taHoursSetUp/:courseId", new TAHoursSetUpHandler(), new FreeMarkerEngine());
+    // Spark.post("/signUp", new SignUpHandler());
+    Spark.get("/welcomeStudent/:courseId", new StudentCoursePageHandler(),
+        new FreeMarkerEngine());
+    Spark.get("/taHoursSetUp/:courseId", new TAHoursSetUpHandler(),
+        new FreeMarkerEngine());
     Spark.get("/confirmAppointment", new AppointmentHandler());
-    Spark.get("/taCourseSetUp/:courseId", new TACourseSetUpHandler(), new FreeMarkerEngine());
-    Spark.get("/taOnHours/:courseId", new TAOnHoursHandler(), new FreeMarkerEngine());
+    Spark.get("/taCourseSetUp/:courseId", new TACourseSetUpHandler(),
+        new FreeMarkerEngine());
+    Spark.get("/taOnHours/:courseId", new TAOnHoursHandler(),
+        new FreeMarkerEngine());
     // Spark.get("/addAssignment", new AssessmentHandler("assignment"));
-
     // Spark.get("/addLab", new AssessmentHandler("exam"));
     // Spark.get("/addExam", new AssessmentHandler("lab"));
     // Spark.get("/addNewCourse", new CourseSetupHandler());
@@ -92,103 +103,75 @@ public class AllHandlers {
       return new ModelAndView(variables, "landingPage.html");
     }
   }
-  
   /**
    * This is the sign up handler that deals with creating a new user. From here,
-   * the user will be directed to a list of their courses.
-
-   * @author kj13
+   * the user will be directed to a list of their courses. @author kj13
    */
   private class CourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-
       String login = req.params(":login");
-      
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0").build();
-
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
       return new ModelAndView(variables, "myClasses.html");
     }
   }
-  
   /**
    * This is the Ta hours Set up handler.
    * @author kj13
-   *
    */
   private class TAHoursSetUpHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-
       String courseId = req.params(":courseId");
       System.out.println(courseId);
-      
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0")
-          .put("course", courseId).build();
-
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+              courseId).build();
       return new ModelAndView(variables, "taHoursSetUp.html");
     }
   }
   /**
    * This is the TA Course Set Up handler.
    * @author kj13
-   *
    */
   private class TACourseSetUpHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-
       String courseId = req.params(":courseId");
       System.out.println(courseId);
-      
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0")
-          .put("course", courseId).build();
-
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+              courseId).build();
       return new ModelAndView(variables, "taCourseSetUp.html");
     }
   }
-  
-  
   /**
    * This is the TA On Hours handler.
    * @author kj13
-   *
    */
   private class TAOnHoursHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-
       String courseId = req.params(":courseId");
       System.out.println(courseId);
-      
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0")
-          .put("course", courseId).build();
-
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+              courseId).build();
       return new ModelAndView(variables, "taOnHours.html");
     }
   }
-  
-  
   private class StudentCoursePageHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-
       String courseId = req.params(":courseId");
       System.out.println(courseId);
-      
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0")
-          .put("course", courseId).build();
-
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+              courseId).build();
       return new ModelAndView(variables, "welcomeStudent.html");
     }
   }
-  
-  
   /**
    * This is the sign up handler that deals with creating a new user. From here,
    * the user will be directed to a list of their courses.
@@ -203,14 +186,33 @@ public class AllHandlers {
       String email = qm.value("email");
       String password = qm.value("password");
       Account user = new Account(login, name, email, password);
-      Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
-              login).build();
-      return login;
+      try {
+        List<Object> classList = new ArrayList<Object>();
+        List<String> studentClasses = db.getStudentClasses(login);
+        List<String> taClasses = db.getTAClasses(login);
+        for (String tClass : taClasses) {
+          JSONObject taIn = new JSONObject();
+          taIn.put("class", tClass);
+          taIn.put("role", "TA");
+          classList.add(taIn);
+        }
+        for (String sClass : studentClasses) {
+          JSONObject studentIn = new JSONObject();
+          studentIn.put("class", sClass);
+          studentIn.put("role", "Student");
+          classList.add(studentIn);
+        }
+        Map<String, Object> variables =
+            new ImmutableMap.Builder().put("user_class_list", classList).put(
+                "title", "SignMeUp 2.0").put("user", login).build();
+        return GSON.toJson(variables);
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
+      return null;
     }
   }
-  
-  
   /**
    * This is the front handler, which initially builds the site.
    * @author kj13
@@ -218,21 +220,18 @@ public class AllHandlers {
   private class UpdateCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-
       QueryParamsMap qm = req.queryMap();
       String login = req.params(":login");
       String course = qm.value("course");
       String role = qm.value("role");
-      
-      System.out.println(course + " , " + role);
-      
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0").build();
-
+      System.out.println(course
+          + " , "
+          + role);
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
       return new ModelAndView(variables, "myClasses.html");
     }
   }
-  
   /**
    * This is the front handler, which initially builds the site.
    * @author kj13
@@ -240,14 +239,44 @@ public class AllHandlers {
   private class AddCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0").build();
-
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
       return new ModelAndView(variables, "addCourse.html");
     }
   }
-  
+  /**
+   * This class handles the adding of lab check offs to the queue.
+   * @author omadarik
+   */
+  private class addLabCheckoffToQueue implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      JSONParser parser = new JSONParser();
+      try {
+        JSONObject queueEntry = (JSONObject) parser.parse(req.body());
+        String course = (String) queueEntry.get("course");
+        String student = (String) queueEntry.get("student");
+        Queue q;
+        if (onHoursQueue.containsKey(course)) {
+          q = onHoursQueue.get(course);
+        } else {
+          onHoursQueue.put(course, new Queue());
+          q = onHoursQueue.get(course);
+        }
+        // do we always need to get the password when getting an account from
+        // the database? Why are we doing this?
+        // Also doesn't it make more sense to include some sort of priority when
+        // adding things to the queue? That way, it will be easier to control
+        // the priority of things? This priority could be a flag, with
+        // appointments getting the 'best' flag.
+        q.add(db.getAccountByLogin(student, null));
+      } catch (ParseException | SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
+      return null;
+    }
+  }
   /**
    * This class handles the insertion of assessment items into the database
    * during class setup.
@@ -308,7 +337,6 @@ public class AllHandlers {
       return null;
     }
   }
-  
   /**
    * This class handles the inserting of new student fields into the database.
    * @author omadarik
@@ -347,12 +375,9 @@ public class AllHandlers {
         System.out.println("ERROR: "
             + e.getMessage());
       }
-
-      
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0").put("user", user.login())
-          .put("courses", null).build();
-
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
+              user.login()).put("courses", null).build();
       return user.login();
     }
   }
