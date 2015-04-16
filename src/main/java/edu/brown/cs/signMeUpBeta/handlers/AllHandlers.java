@@ -6,6 +6,7 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Date;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
@@ -61,6 +62,7 @@ public class AllHandlers {
     Spark.get("/signmeup", new FrontHandler(), freeMarker);
     Spark.post("/classes", new SignUpHandler(), freeMarker);
     // Spark.get("/addAssignment", new AssessmentHandler("assignment"));
+    Spark.get("/confirmAppointment", new AppointmentHandler());
     // Spark.get("/addLab", new AssessmentHandler("exam"));
     // Spark.get("/addExam", new AssessmentHandler("lab"));
     // Spark.get("/addNewCourse", new CourseSetupHandler());
@@ -150,11 +152,9 @@ public class AllHandlers {
   private static class CourseSetupHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
-      QueryParamsMap qm = req.queryMap();
-      String course = qm.value("courseItem");
       JSONParser parser = new JSONParser();
       try {
-        JSONArray courseArray = (JSONArray) parser.parse(course);
+        JSONArray courseArray = (JSONArray) parser.parse(req.body());
         for (int i = 0; i < courseArray.size(); i++) {
           JSONObject toInsert = (JSONObject) courseArray.get(i);
           String courseId = (String) toInsert.get("course_id");
@@ -175,14 +175,12 @@ public class AllHandlers {
   private static class AccountSetupHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
-      QueryParamsMap qm = req.queryMap();
-      String student = qm.value("new_student");
       JSONParser parser = new JSONParser();
       try {
         /*
          * Creating a student object.
          */
-        JSONObject toInsert = (JSONObject) parser.parse(student);
+        JSONObject toInsert = (JSONObject) parser.parse(req.body());
         String login = (String) toInsert.get("student_login");
         String name = (String) toInsert.get("student_name");
         String email = (String) toInsert.get("student_email");
@@ -244,6 +242,20 @@ public class AllHandlers {
   // return null;
   // }
   // }
+  private static class AppointmentHandler implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      JSONParser parser = new JSONParser();
+      try {
+        JSONObject apt = (JSONObject) parser.parse(req.body());
+        Time appointmentTime = (Time) apt.get("time");
+      } catch (ParseException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
+      return null;
+    }
+  }
   /**
    * This method handles the logging in of a student checking the input login
    * and password.
