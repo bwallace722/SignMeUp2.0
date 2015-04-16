@@ -130,6 +130,8 @@ public class AllHandlers {
       JSONParser parser = new JSONParser();
       try {
         JSONArray assArray = (JSONArray) parser.parse(req.body());
+        JSONObject success = new JSONObject();
+        success.put("success", 1);
         for (int i = 0; i < assArray.size(); i++) {
           JSONObject toInsert = (JSONObject) assArray.get(i);
           String assName = (String) toInsert.get("name");
@@ -137,6 +139,10 @@ public class AllHandlers {
           Date end = (Date) toInsert.get("end");
           String courseId = (String) toInsert.get("course");
           db.addAssessmentItem(tableName, assName, start, end, courseId);
+          Map<String, Object> variables =
+              new ImmutableMap.Builder<String, Object>()
+                  .put("success", success).build();
+          return GSON.toJson(variables);
         }
       } catch (SQLException | ParseException e) {
         System.out.println("ERROR: "
