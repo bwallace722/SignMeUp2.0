@@ -67,7 +67,7 @@ public class AllHandlers {
     Spark.exception(Exception.class, new ExceptionPrinter());
     // FreeMarkerEngine freeMarker = createEngine();
     Spark.get("/home", new FrontHandler(), new FreeMarkerEngine());
-    Spark.get("/classes/:login", new CourseHandler(), new FreeMarkerEngine());
+    Spark.get("/courses/:login", new CourseHandler(), new FreeMarkerEngine());
     Spark.get("/addCourses/:login", new AddCourseHandler(), new FreeMarkerEngine());
 //    Spark.post("/signUp", new AccountSetupHandler());
     Spark.post("/updateCourse/:login", new UpdateCourseHandler());
@@ -76,7 +76,7 @@ public class AllHandlers {
     Spark.get("/taHoursSetUp/:courseId", new TAHoursSetUpHandler(), new FreeMarkerEngine());
     Spark.get("/confirmAppointment", new AppointmentHandler());
     Spark.get("/signUpForHours", new StudentSignUpForHours(), new FreeMarkerEngine());
-    Spark.post("/labCheckOff/:login", new LabCheckOffHandler());
+    Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
     // Spark.get("/addAssignment", new AssessmentHandler("assignment"));
     // Spark.get("/addLab", new AssessmentHandler("exam"));
     // Spark.get("/addExam", new AssessmentHandler("lab"));
@@ -146,18 +146,6 @@ public class AllHandlers {
     }
   }
       
-
-  
-  private class LabCheckOffHandler implements Route {
-    @Override
-    public Object handle(final Request req, final Response res) {
-      String login = req.params(":login");
-
-      Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
-      return null;
-    }
-  }
   
   private class StudentSignUpForHours implements TemplateViewRoute {
     @Override
@@ -224,9 +212,10 @@ public class AllHandlers {
     @Override
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
+      String login = req.params(":login");
       String course = qm.value("course");
       String role = qm.value("role");
-      System.out.println(course + " , " + role);
+      System.out.println(login + ": " + course + " , " + role);
       int toReturn = 1;
       Map<String, Object> variables = new ImmutableMap.Builder()
           .put("title", "SignMeUp 2.0").build();
@@ -253,7 +242,7 @@ public class AllHandlers {
    * This class handles the adding of lab check offs to the queue.
    * @author omadarik
    */
-  private class addLabCheckoffToQueue implements Route {
+  private class AddLabCheckoffToQueue implements Route {
     @Override
     public Object handle(Request req, Response res) {
       JSONParser parser = new JSONParser();

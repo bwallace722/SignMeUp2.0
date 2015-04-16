@@ -1,10 +1,7 @@
-var user = document.getElementById("user").innerHTML;
-
 var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
-console.log(splitURL);
+var user = splitURL[splitURL.length -1];
 
-console.log(user);
 function signUp() {
 	var courses = document.getElementById("classDropdown");
 	
