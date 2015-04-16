@@ -1,17 +1,17 @@
 package edu.brown.cs.signMeUpBeta.onhours;
 
-import edu.brown.cs.signMeUpBeta.student.Student;
+import edu.brown.cs.signMeUpBeta.student.Account;
 
 public class Queue {
   public Queue() {}
   
-  public void add(Student s) {}
+  public void add(Account s) {}
   
-  public void remove(Student s) {}
+  public void remove(Account s) {}
   
-  public void switchOrder(Student s1, Student s2) {}
+  public void switchOrder(Account s1, Account s2) {}
   
-  public double getPriority(Student s1) {
+  public double getPriority(Account s1) {
     return 0;
   }
   

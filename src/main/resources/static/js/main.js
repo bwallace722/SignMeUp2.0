@@ -26,35 +26,6 @@ $(".hoursSignUp").bind('click', function(h) {
 
 });
 
-$("#signIn").hide(0);
-$("#signUp").hide(0);
-
-function showSignUp() {
-	$(".landingHeader").fadeOut(300);
-	$("#signInButton").fadeOut(300);
-	$("#signUpButton").fadeOut(300);
-	$("#signUp").fadeIn(1000);
-}
-
-function showSignIn() {
-	$(".landingHeader").fadeOut(300);
-	$("#signInButton").fadeOut(300);
-	$("#signUpButton").fadeOut(300);
-	$("#signIn").fadeIn(1000);
-}
-
-$("#switchToSignUp").bind('click', function(s) {
-	$("#signIn").fadeOut(300);
-	$("#signUp").fadeIn(1000);
-});
-
-
-
-$("#switchToSignIn").bind('click', function(s) {
-	$("#signUp").fadeOut(300);
-	$("#signIn").fadeIn(1000);
-});
-
 // $(".allCategories").hide(0);
 
 // $(".allCategoriesBtn").bind('click', function(a) {

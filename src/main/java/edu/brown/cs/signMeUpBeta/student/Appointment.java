@@ -2,12 +2,12 @@ package edu.brown.cs.signMeUpBeta.student;
 
 public class Appointment {
   
-  private Student student;
+  private Account student;
   private double start;
   private double duration;
   private double end;
 
-  public Appointment(Student student, double start, double duration) {
+  public Appointment(Account student, double start, double duration) {
     this.student = student;
     this.start = start;
     this.duration = duration;
@@ -30,11 +30,11 @@ public class Appointment {
     duration = newDuration;
   }
   
-  public Student student() {
+  public Account student() {
     return student;
   }
   
-  public void setStudent(Student newStudent) {
+  public void setStudent(Account newStudent) {
     student = newStudent;
   }
   
