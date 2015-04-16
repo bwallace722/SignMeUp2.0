@@ -186,30 +186,6 @@ public class AllHandlers {
       String email = qm.value("email");
       String password = qm.value("password");
       Account user = new Account(login, name, email, password);
-      try {
-        List<Object> classList = new ArrayList<Object>();
-        List<String> studentClasses = db.getStudentClasses(login);
-        List<String> taClasses = db.getTAClasses(login);
-        for (String tClass : taClasses) {
-          JSONObject taIn = new JSONObject();
-          taIn.put("class", tClass);
-          taIn.put("role", "TA");
-          classList.add(taIn);
-        }
-        for (String sClass : studentClasses) {
-          JSONObject studentIn = new JSONObject();
-          studentIn.put("class", sClass);
-          studentIn.put("role", "Student");
-          classList.add(studentIn);
-        }
-        Map<String, Object> variables =
-            new ImmutableMap.Builder().put("user_class_list", classList).put(
-                "title", "SignMeUp 2.0").put("user", login).build();
-        return GSON.toJson(variables);
-      } catch (SQLException e) {
-        System.out.println("ERROR: "
-            + e.getMessage());
-      }
       return null;
     }
   }
@@ -449,6 +425,25 @@ public class AllHandlers {
         String inputLogin = (String) credentials.get("student_login");
         String inputPassword = (String) credentials.get("student_password");
         Account loggedIn = db.getAccountByLogin(inputLogin, inputPassword);
+        List<Object> classList = new ArrayList<Object>();
+        List<String> studentClasses = db.getStudentClasses(login);
+        List<String> taClasses = db.getTAClasses(login);
+        for (String tClass : taClasses) {
+          JSONObject taIn = new JSONObject();
+          taIn.put("class", tClass);
+          taIn.put("role", "TA");
+          classList.add(taIn);
+        }
+        for (String sClass : studentClasses) {
+          JSONObject studentIn = new JSONObject();
+          studentIn.put("class", sClass);
+          studentIn.put("role", "Student");
+          classList.add(studentIn);
+        }
+        Map<String, Object> variables =
+            new ImmutableMap.Builder().put("user_class_list", classList).put(
+                "title", "SignMeUp 2.0").put("user", login).build();
+        return GSON.toJson(variables);
       } catch (SQLException | ParseException e) {
         System.out.println("ERROR: "
             + e.getMessage());
