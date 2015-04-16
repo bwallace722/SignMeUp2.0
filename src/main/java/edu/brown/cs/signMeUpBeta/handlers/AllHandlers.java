@@ -57,9 +57,18 @@ public class AllHandlers {
     Spark.setPort(4567);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
-    FreeMarkerEngine freeMarker = createEngine();
-    Spark.get("/signmeup", new FrontHandler(), freeMarker);
-    Spark.post("/classes", new SignUpHandler(), freeMarker);
+//    FreeMarkerEngine freeMarker = createEngine();
+    Spark.get("/home", new FrontHandler(), new FreeMarkerEngine());
+    Spark.get("/classes", new CourseHandler(), new FreeMarkerEngine());
+    Spark.post("/classes", new UpdateCourseHandler(), new FreeMarkerEngine());
+//    TODO: Spark.get("/classes/:login", new CourseHandler(), new FreeMarkerEngine());
+    Spark.get("/addCourses", new AddCourseHandler(), new FreeMarkerEngine());
+//    Spark.post("/signUp", new AccountSetupHandler());
+    Spark.post("/signUp", new SignUpHandler());
+    Spark.get("/welcomeStudent/:courseId", new CoursePageHandler(), new FreeMarkerEngine());
+    
+    
+    
     // Spark.get("/addAssignment", new AssessmentHandler("assignment"));
     // Spark.get("/addLab", new AssessmentHandler("exam"));
     // Spark.get("/addExam", new AssessmentHandler("lab"));
@@ -81,29 +90,63 @@ public class AllHandlers {
       return new ModelAndView(variables, "landingPage.html");
     }
   }
+  
   /**
-   * This is the sign up handler that deals with creating a new
-   * user. From here, the user will be directed to a list of their
-   * courses.
+   * This is the front handler, which initially builds the site.
    * @author kj13
    */
-  private class SignUpHandler implements TemplateViewRoute {
+  private class CourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
+
+//      String login = req.params(":login");
+      //GET USERS CLASSES
+      
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("title", "SignMeUp 2.0").build();
+
+      return new ModelAndView(variables, "myClasses.html");
+    }
+  }
+  
+  private class CoursePageHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+
+      String courseId = req.params(":courseId");
+      System.out.println(courseId);
+      
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("title", "SignMeUp 2.0")
+          .put("course", courseId).build();
+
+      return new ModelAndView(variables, "welcomeStudent.html");
+    }
+  }
+  
+  
+  /**
+   * This is the sign up handler that deals with creating a new user. From here,
+   * the user will be directed to a list of their courses.
+   * @author kj13
+   */
+  private class SignUpHandler implements Route {
+    @Override
+    public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
       String name = qm.value("name");
       String login = qm.value("login");
       String email = qm.value("email");
       String password = qm.value("password");
-      
       Account user = new Account(login, name, email, password);
-      
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0").put("user", login).build();
-
-      return new ModelAndView(variables, "myClasses.html");
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
+              login).build();
+      return login;
     }
   }
+  
+  
   /**
    * This is the front handler, which initially builds the site.
    * @author kj13
@@ -112,12 +155,34 @@ public class AllHandlers {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
 
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("course");
+      String role = qm.value("role");
+      
+      System.out.println(course + " , " + role);
+      
       Map<String, Object> variables = new ImmutableMap.Builder()
           .put("title", "SignMeUp 2.0").build();
 
       return new ModelAndView(variables, "myClasses.html");
     }
   }
+  
+  /**
+   * This is the front handler, which initially builds the site.
+   * @author kj13
+   */
+  private class AddCourseHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("title", "SignMeUp 2.0").build();
+
+      return new ModelAndView(variables, "addCourse.html");
+    }
+  }
+  
   /**
    * This class handles the insertion of assessment items into the database
    * during class setup.
@@ -175,6 +240,7 @@ public class AllHandlers {
       return null;
     }
   }
+  
   /**
    * This class handles the inserting of new student fields into the database.
    * @author omadarik
@@ -185,6 +251,7 @@ public class AllHandlers {
       QueryParamsMap qm = req.queryMap();
       String student = qm.value("new_student");
       JSONParser parser = new JSONParser();
+      Account user = null;
       try {
         /*
          * Creating a student object.
@@ -195,6 +262,7 @@ public class AllHandlers {
         String email = (String) toInsert.get("student_email");
         String password = (String) toInsert.get("student_password");
         db.addAccount(login, name, email, password);
+        user = new Account(login, name, email, password);
         /*
          * Adding the courses taken by a student to the database.
          */
@@ -213,7 +281,13 @@ public class AllHandlers {
         System.out.println("ERROR: "
             + e.getMessage());
       }
-      return null;
+
+      
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("title", "SignMeUp 2.0").put("user", user.login())
+          .put("courses", null).build();
+
+      return user.login();
     }
   }
   // /**

@@ -53,7 +53,7 @@
   <div class="panel-body">
             <form>
             <h4>Choose your course</h4>
-            <select name="classDropdown">
+            <select id="classDropdown">
               <option value="cs015">CS015</option>
               <option value="cs016">CS016</option>
               <option value="cs017">CS017</option>
@@ -64,10 +64,14 @@
             <!--to be filled by get request (all classes registerd) -->
             </select>
             <h4>Are you signing up for this class as a TA or a student</h4>
-            <input type="radio" name="student" value="Student">Student<br>
-            <input type="radio" name="ta" value="TA">TA
+            <label class="radio-inline">
+            <input type="radio" name="inLineRadioOptions" value="Student" id="student">Student<br>
+            </label>
+            <label class="radio-inline">
+            <input type="radio" name="inLineRadioOptions" value="TA" id="ta">TA
+            </label>
             <br>
-            <button class="btn btn-primary" href="myClasses.html">Sign Up!</button>
+            <a class="btn btn-primary" onclick="signUp()">Sign Up!</a>
         </form>
   </div>
 </div>
@@ -75,7 +79,7 @@
 
      <!-- Again, we are serving up the unminified source for clarity. -->
      <script src="js/jquery-2.1.1.js"></script>
-     <script src="js/main.js"></script>
+          <script src="js/addCourse.js"></script>
      <script src="js/bootstrap.min.js"></script>
 
   </body>

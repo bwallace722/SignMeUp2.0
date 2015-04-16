@@ -29,18 +29,23 @@ $("#switchToSignIn").bind('click', function(s) {
 function signUp() {
 	
 	var name = document.getElementById("name").value;
-	var login = document.getElementById("login").value;
+	var login = document.getElementById("loginSignUp").value;
 	var email = document.getElementById("email").value;
 	var password = document.getElementById("pass").value;
 	var confirm = document.getElementById("confirmPassword").value;
-	console.log(password.valueOf() === confirm.valueOf());
 	
 	if(password == confirm) {
 		var postParameters = {"name": name, "login": login,
 				"email":email, "password": password, "confirm_password": confirm};
-			$.post("/classes", postParameters, function(responseJSON) {
-				console.log(responseJSON);
-			});
+		console.log(postParameters);
+		$.post("/signUp", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+			
+				$.get("/classes", function(response) {
+					console.log(response);
+				});
+			
+		});
 	} else {
 		alert("make sure your passwords match!");
 	}

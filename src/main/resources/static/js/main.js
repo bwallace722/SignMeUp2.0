@@ -1,30 +1,12 @@
-$(".container .labConfirm").hide(0);
+
 
 //taQueueOnHours
 //post or get requests needed: $("#studentsOnQueue"), $("#currQs"), $("#clinicSuggs"), $("#popularQs")
 //click on each student --> open modal
 
-//myclasses
-//requests needed: $("#class_list")
-
 //taOffHours landing
 //timelimit --> $(".timeLimit")
 //current subs --> populate
-
-
-$(".labCheckOff").bind('click', function(l){
-	$(".labHeader").hide(0);
-	$(".labConfirm").show();
-});
-
-$(".hoursSignUp").bind('click', function(h) {
-	//get questions from server
-	$.post("/hoursSignUp", function(responseJSON) {
-		responseObject = JSON.parse(responseJSON);
-		$(".questionContainer").innerHTML = responseObject;
-	});
-
-});
 
 // $(".allCategories").hide(0);
 
@@ -78,7 +60,9 @@ function makeAsgnArray() {
 		var assignment = {name:n, start:s, end:e};
 		asgns[i-1] = assignment;
 	}
-	$.post("/addAssignment", asgns)
+	$.post("/addAssignment", asgns);
+		//if response object is null
+        //COURSE ID TO BE PASSED IN AS PART OF ASSIGNMENT OBJECT.
 }
 
 function removeAsgn() {

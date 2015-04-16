@@ -48,7 +48,7 @@
       </div><!-- /.container-fluid -->
     </nav>
   <div class="container">
-     <h1> ${user} Classes</h1>
+     <h1> Classes</h1>
 
     <!--div for classes-->
      <div class="user_classes panel">
@@ -65,19 +65,19 @@
         </tr>
         </thead>
             <tbody>
-              <tr>
-              <td>CS032</td>
+              <tr class="clickable-row">
+              <td class="courseId">CS032</td>
               <td>Student</td>
               <td>No</td>
               </tr>
-              <tr>
-              <td>CS022</td>
+              <tr class="clickable-row">
+              <td class="courseId">CS022</td>
               <td>TA</td>
               <td>Yes</td>
               </tr>
             </tbody>
         </table>
-             <a class="btn btn-primary btn-sm addClassButton" href="addClass.html">Add a class</a>
+             <a class="btn btn-primary btn-sm addClassButton" href="addCourses">Add a class</a>
      <!--loop through classes to display, add a button to drop class for each-->
       <div class="class_list">
 
@@ -91,7 +91,8 @@
 
      <!-- Again, we're serving up the unminified source for clarity. -->
      <script src="js/jquery-2.1.1.js"></script>
-     <script src="js/main.js"></script>
+     <!-- <script src="js/main.js"></script>-->
+     <script src="js/myCourses.js"></script>
   </body>
   <!-- See http://html5boilerplate.com/ for a good place to start
        dealing with real world issues like old browsers.  -->
