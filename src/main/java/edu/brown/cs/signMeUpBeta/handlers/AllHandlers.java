@@ -72,7 +72,8 @@ public class AllHandlers {
   }
   
   /**
-   * This is the front handler, which initially builds the site.
+   * This is the front handler, which sends the user to the landing page.
+   * From here they may either sign in or sign up.
    * @author kj13
    */
   private class FrontHandler implements TemplateViewRoute {
@@ -86,7 +87,9 @@ public class AllHandlers {
   }
   
   /**
-   * This is the front handler, which initially builds the site.
+   * This is the sign up handler that deals with creating a new
+   * user. From here, the user will be directed to a list of their
+   * courses.
    * @author kj13
    */
   private class SignUpHandler implements TemplateViewRoute {
@@ -98,7 +101,7 @@ public class AllHandlers {
       String email = qm.value("email");
       String password = qm.value("password");
       
-      //TODO - create account object
+      Account user = new Account(login, name, email, password);
       
       Map<String, Object> variables = new ImmutableMap.Builder()
           .put("title", "SignMeUp 2.0").put("user", login).build();
@@ -112,11 +115,12 @@ public class AllHandlers {
    * This is the front handler, which initially builds the site.
    * @author kj13
    */
-  private class ClassHandler implements TemplateViewRoute {
+  private class UpdateCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       Map<String, Object> variables = new ImmutableMap.Builder()
           .put("title", "SignMeUp 2.0").build();
+      //
 
       return new ModelAndView(variables, "myClasses.html");
     }
