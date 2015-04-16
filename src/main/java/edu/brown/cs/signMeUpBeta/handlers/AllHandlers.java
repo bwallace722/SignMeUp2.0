@@ -103,7 +103,7 @@ public class AllHandlers {
    * This is the front handler, which initially builds the site.
    * @author kj13
    */
-  private class ClassHandler implements TemplateViewRoute {
+  private class UpdateCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       Map<String, Object> variables =
