@@ -55,7 +55,6 @@ public class AllHandlers {
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
     FreeMarkerEngine freeMarker = createEngine();
-    
     Spark.get("/addAssignment", new AssessmentHandler("assignment"));
     Spark.get("/addLab", new AssessmentHandler("exam"));
     Spark.get("/addExam", new AssessmentHandler("lab"));
