@@ -58,19 +58,16 @@ public class AllHandlers {
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
     FreeMarkerEngine freeMarker = createEngine();
-
     Spark.get("/signmeup", new FrontHandler(), freeMarker);
     Spark.post("/classes", new SignUpHandler(), freeMarker);
-//    Spark.get("/addAssignment", new AssessmentHandler("assignment"));
-//    Spark.get("/addLab", new AssessmentHandler("exam"));
-//    Spark.get("/addExam", new AssessmentHandler("lab"));
-//    Spark.get("/addNewCourse", new CourseSetupHandler());
-//    Spark.get("/addNewStudent", new StudentSetupHandler());
-//    Spark.get("/addNewTA", new TASetupHandler());
-//    Spark.get("/studentLogin", new StudentLoginHandler());
-
+    // Spark.get("/addAssignment", new AssessmentHandler("assignment"));
+    // Spark.get("/addLab", new AssessmentHandler("exam"));
+    // Spark.get("/addExam", new AssessmentHandler("lab"));
+    // Spark.get("/addNewCourse", new CourseSetupHandler());
+    // Spark.get("/addNewStudent", new StudentSetupHandler());
+    // Spark.get("/addNewTA", new TASetupHandler());
+    // Spark.get("/studentLogin", new StudentLoginHandler());
   }
-  
   /**
    * This is the front handler, which sends the user to the landing page.
    * From here they may either sign in or sign up.
@@ -79,13 +76,11 @@ public class AllHandlers {
   private class FrontHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-      Map<String, Object> variables = new ImmutableMap.Builder()
-          .put("title", "SignMeUp 2.0").build();
-
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
       return new ModelAndView(variables, "landingPage.html");
     }
   }
-  
   /**
    * This is the sign up handler that deals with creating a new
    * user. From here, the user will be directed to a list of their
@@ -109,8 +104,6 @@ public class AllHandlers {
       return new ModelAndView(variables, "myClasses.html");
     }
   }
-  
-  
   /**
    * This is the front handler, which initially builds the site.
    * @author kj13
@@ -118,16 +111,13 @@ public class AllHandlers {
   private class UpdateCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
+
       Map<String, Object> variables = new ImmutableMap.Builder()
           .put("title", "SignMeUp 2.0").build();
-      //
 
       return new ModelAndView(variables, "myClasses.html");
     }
   }
-  
-  
-  
   /**
    * This class handles the insertion of assessment items into the database
    * during class setup.
@@ -208,12 +198,12 @@ public class AllHandlers {
         /*
          * Adding the courses taken by a student to the database.
          */
-        JSONArray jsonEnrolledCourses = (JSONArray) toInsert.get("student_courses");
+        JSONArray jsonEnrolledCourses =
+            (JSONArray) toInsert.get("student_courses");
         for (int i = 0; i < jsonEnrolledCourses.size(); i++) {
           String courseId = (String) jsonEnrolledCourses.get(i);
           db.addStudentCoursePair(login, courseId);
         }
-        
         JSONArray jsonTACourses = (JSONArray) toInsert.get("ta_courses");
         for (int i = 0; i < jsonTACourses.size(); i++) {
           String courseId = (String) jsonTACourses.get(i);
@@ -226,41 +216,41 @@ public class AllHandlers {
       return null;
     }
   }
-//  /**
-//   * This class handles the inserting of new TA fields into the database.
-//   * @author omadarik
-//   */
-//  private static class TASetupHandler implements Route {
-//    @Override
-//    public Object handle(Request req, Response res) {
-//      QueryParamsMap qm = req.queryMap();
-//      String ta = qm.value("new_ta");
-//      JSONParser parser = new JSONParser();
-//      try {
-//        /*
-//         * Creating a ta object.
-//         */
-//        JSONObject toInsert = (JSONObject) parser.parse(ta);
-//        String taLogin = (String) toInsert.get("ta_login");
-//        String taName = (String) toInsert.get("ta_name");
-//        String taEmail = (String) toInsert.get("ta_email");
-//        String taPassword = (String) toInsert.get("ta_password");
-//        db.addTA(taLogin, taName, taEmail, taPassword);
-//        /*
-//         * Adding the courses taken by a student to the database.
-//         */
-//        JSONArray jsonCourses = (JSONArray) toInsert.get("all_courses");
-//        for (int i = 0; i < jsonCourses.size(); i++) {
-//          String courseId = (String) jsonCourses.get(i);
-//          db.addTACoursePair(taLogin, courseId);
-//        }
-//      } catch (SQLException | ParseException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//      }
-//      return null;
-//    }
-//  }
+  // /**
+  // * This class handles the inserting of new TA fields into the database.
+  // * @author omadarik
+  // */
+  // private static class TASetupHandler implements Route {
+  // @Override
+  // public Object handle(Request req, Response res) {
+  // QueryParamsMap qm = req.queryMap();
+  // String ta = qm.value("new_ta");
+  // JSONParser parser = new JSONParser();
+  // try {
+  // /*
+  // * Creating a ta object.
+  // */
+  // JSONObject toInsert = (JSONObject) parser.parse(ta);
+  // String taLogin = (String) toInsert.get("ta_login");
+  // String taName = (String) toInsert.get("ta_name");
+  // String taEmail = (String) toInsert.get("ta_email");
+  // String taPassword = (String) toInsert.get("ta_password");
+  // db.addTA(taLogin, taName, taEmail, taPassword);
+  // /*
+  // * Adding the courses taken by a student to the database.
+  // */
+  // JSONArray jsonCourses = (JSONArray) toInsert.get("all_courses");
+  // for (int i = 0; i < jsonCourses.size(); i++) {
+  // String courseId = (String) jsonCourses.get(i);
+  // db.addTACoursePair(taLogin, courseId);
+  // }
+  // } catch (SQLException | ParseException e) {
+  // System.out.println("ERROR: "
+  // + e.getMessage());
+  // }
+  // return null;
+  // }
+  // }
   /**
    * This method handles the logging in of a student checking the input login
    * and password.
@@ -287,29 +277,29 @@ public class AllHandlers {
       return null;
     }
   }
-//  /**
-//   * This method handles the logging in of a ta checking the input login and
-//   * password.
-//   * @author omadarik
-//   */
-//  private static class TALoginHandler implements Route {
-//    @Override
-//    public Object handle(Request req, Response res) {
-//      QueryParamsMap qm = req.queryMap();
-//      String login = qm.value("ta_credentials");
-//      JSONParser parser = new JSONParser();
-//      try {
-//        JSONObject credentials = (JSONObject) parser.parse(login);
-//        String inputLogin = (String) credentials.get("ta_login");
-//        String inputPassword = (String) credentials.get("ta_password");
-//        TA loggedIn = db.getTAByLogin(inputLogin, inputPassword);
-//      } catch (SQLException | ParseException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//      }
-//      return null;
-//    }
-//  }
+  // /**
+  // * This method handles the logging in of a ta checking the input login and
+  // * password.
+  // * @author omadarik
+  // */
+  // private static class TALoginHandler implements Route {
+  // @Override
+  // public Object handle(Request req, Response res) {
+  // QueryParamsMap qm = req.queryMap();
+  // String login = qm.value("ta_credentials");
+  // JSONParser parser = new JSONParser();
+  // try {
+  // JSONObject credentials = (JSONObject) parser.parse(login);
+  // String inputLogin = (String) credentials.get("ta_login");
+  // String inputPassword = (String) credentials.get("ta_password");
+  // TA loggedIn = db.getTAByLogin(inputLogin, inputPassword);
+  // } catch (SQLException | ParseException e) {
+  // System.out.println("ERROR: "
+  // + e.getMessage());
+  // }
+  // return null;
+  // }
+  // }
   /**
    * This class prints out errors if the spark server fails.
    * @author kb25
