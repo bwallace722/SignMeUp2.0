@@ -38,38 +38,38 @@ public class AllHandlers {
     AllHandlers.db = db;
     runSparkServer();
   }
-  /**
-   * Creates a free marker engine.
-   * @return The created free marker engine.
-   */
-  private static FreeMarkerEngine createEngine() {
-    Configuration config = new Configuration();
-    File templates = new File("src/main/resources/spark/template/freemarker");
-    try {
-      config.setDirectoryForTemplateLoading(templates);
-    } catch (IOException ioe) {
-      System.out.printf("ERROR: Unable use %s for template loading.%n",
-          templates);
-      System.exit(1);
-    }
-    return new FreeMarkerEngine(config);
-  }
+//  /**
+//   * Creates a free marker engine.
+//   * @return The created free marker engine.
+//   */
+//  private static FreeMarkerEngine createEngine() {
+//    Configuration config = new Configuration();
+//    File templates = new File("src/main/resources/spark/template/freemarker");
+//    try {
+//      config.setDirectoryForTemplateLoading(templates);
+//    } catch (IOException ioe) {
+//      System.out.printf("ERROR: Unable use %s for template loading.%n",
+//          templates);
+//      System.exit(1);
+//    }
+//    return new FreeMarkerEngine(config);
+//  }
   private void runSparkServer() {
     Spark.setPort(4567);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
 //    FreeMarkerEngine freeMarker = createEngine();
     Spark.get("/home", new FrontHandler(), new FreeMarkerEngine());
-    Spark.get("/classes", new CourseHandler(), new FreeMarkerEngine());
-    Spark.post("/classes", new UpdateCourseHandler(), new FreeMarkerEngine());
-//    TODO: Spark.get("/classes/:login", new CourseHandler(), new FreeMarkerEngine());
+    Spark.get("/classes/:login", new CourseHandler(), new FreeMarkerEngine());
+    Spark.post("/classes/:login", new UpdateCourseHandler(), new FreeMarkerEngine());
     Spark.get("/addCourses", new AddCourseHandler(), new FreeMarkerEngine());
-//    Spark.post("/signUp", new AccountSetupHandler());
-    Spark.post("/signUp", new SignUpHandler());
+    Spark.post("/signUp", new AccountSetupHandler());
+//    Spark.post("/signUp", new SignUpHandler());
     Spark.get("/welcomeStudent/:courseId", new StudentCoursePageHandler(), new FreeMarkerEngine());
-    Spark.get("/taHoursSetUp/:courseId", new TACoursePageHandler(), new FreeMarkerEngine());
+    Spark.get("/taHoursSetUp/:courseId", new TAHoursSetUpHandler(), new FreeMarkerEngine());
     Spark.get("/confirmAppointment", new AppointmentHandler());
-    
+    Spark.get("/taCourseSetUp/:courseId", new TACourseSetUpHandler(), new FreeMarkerEngine());
+    Spark.get("/taOnHours/:courseId", new TAOnHoursHandler(), new FreeMarkerEngine());
     // Spark.get("/addAssignment", new AssessmentHandler("assignment"));
 
     // Spark.get("/addLab", new AssessmentHandler("exam"));
@@ -103,8 +103,7 @@ public class AllHandlers {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
 
-//      String login = req.params(":login");
-      //GET USERS CLASSES
+      String login = req.params(":login");
       
       Map<String, Object> variables = new ImmutableMap.Builder()
           .put("title", "SignMeUp 2.0").build();
@@ -113,7 +112,12 @@ public class AllHandlers {
     }
   }
   
-  private class TACoursePageHandler implements TemplateViewRoute {
+  /**
+   * This is the Ta hours Set up handler.
+   * @author kj13
+   *
+   */
+  private class TAHoursSetUpHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
 
@@ -127,6 +131,47 @@ public class AllHandlers {
       return new ModelAndView(variables, "taHoursSetUp.html");
     }
   }
+  /**
+   * This is the TA Course Set Up handler.
+   * @author kj13
+   *
+   */
+  private class TACourseSetUpHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+
+      String courseId = req.params(":courseId");
+      System.out.println(courseId);
+      
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("title", "SignMeUp 2.0")
+          .put("course", courseId).build();
+
+      return new ModelAndView(variables, "taCourseSetUp.html");
+    }
+  }
+  
+  
+  /**
+   * This is the TA On Hours handler.
+   * @author kj13
+   *
+   */
+  private class TAOnHoursHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+
+      String courseId = req.params(":courseId");
+      System.out.println(courseId);
+      
+      Map<String, Object> variables = new ImmutableMap.Builder()
+          .put("title", "SignMeUp 2.0")
+          .put("course", courseId).build();
+
+      return new ModelAndView(variables, "taOnHours.html");
+    }
+  }
+  
   
   private class StudentCoursePageHandler implements TemplateViewRoute {
     @Override
@@ -175,6 +220,7 @@ public class AllHandlers {
     public ModelAndView handle(final Request req, final Response res) {
 
       QueryParamsMap qm = req.queryMap();
+      String login = req.params(":login");
       String course = qm.value("course");
       String role = qm.value("role");
       
@@ -277,10 +323,10 @@ public class AllHandlers {
          * Creating a student object.
          */
         JSONObject toInsert = (JSONObject) parser.parse(req.body());
-        String login = (String) toInsert.get("student_login");
-        String name = (String) toInsert.get("student_name");
-        String email = (String) toInsert.get("student_email");
-        String password = (String) toInsert.get("student_password");
+        String login = (String) toInsert.get("login");
+        String name = (String) toInsert.get("name");
+        String email = (String) toInsert.get("email");
+        String password = (String) toInsert.get("password");
         db.addAccount(login, name, email, password);
         user = new Account(login, name, email, password);
         /*
