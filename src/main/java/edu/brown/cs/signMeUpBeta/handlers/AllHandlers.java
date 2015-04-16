@@ -264,7 +264,8 @@ public class AllHandlers {
       try {
         JSONObject queueEntry = (JSONObject) parser.parse(req.body());
         String course = (String) queueEntry.get("course");
-        String student = (String) queueEntry.get("student");
+
+        String login = (String) queueEntry.get("login");
         Queue q;
         if (onHoursQueue.containsKey(course)) {
           q = onHoursQueue.get(course);
@@ -272,13 +273,14 @@ public class AllHandlers {
           onHoursQueue.put(course, new Queue());
           q = onHoursQueue.get(course);
         }
+        //TODO: KIERAN, THINK...
         // do we always need to get the password when getting an account from
         // the database? Why are we doing this?
         // Also doesn't it make more sense to include some sort of priority when
         // adding things to the queue? That way, it will be easier to control
         // the priority of things? This priority could be a flag, with
         // appointments getting the 'best' flag.
-        q.add(db.getAccountByLogin(student, null));
+        q.add(db.getAccountByLogin(login, null));
       } catch (ParseException | SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
