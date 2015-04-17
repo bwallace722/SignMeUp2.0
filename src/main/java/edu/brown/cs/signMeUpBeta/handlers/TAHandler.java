@@ -61,7 +61,14 @@ public class TAHandler {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
-      System.out.println(courseId);
+      QueryParamsMap qm = req.queryMap();
+      String courseName = qm.value("name");
+      try {
+        db.addCourse(courseId, courseName);
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).build();
