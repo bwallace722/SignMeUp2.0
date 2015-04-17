@@ -465,6 +465,7 @@ public class AllHandlers {
       return null;
     }
   }
+
 //  /**
 //   * This class is where I add courses to the database.
 //   * @author omadarik
@@ -540,6 +541,7 @@ public class AllHandlers {
 //      return user.login();
 //    }
 //  }
+
   // /**
   // * This class handles the inserting of new TA fields into the database.
   // * @author omadarik
