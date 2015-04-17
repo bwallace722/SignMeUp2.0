@@ -3,12 +3,15 @@ package edu.brown.cs.signMeUpBeta.handlers;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.SQLException;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
+import edu.brown.cs.signMeUpBeta.main.RunningHours;
+import edu.brown.cs.signMeUpBeta.onhours.Queue;
 import edu.brown.cs.signMeUpBeta.project.Question;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
@@ -23,8 +26,10 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class TAHandler {
   private static final Gson GSON = new Gson();
   private static Database db;
-  public TAHandler(Database db) {
+  private static RunningHours hours;
+  public TAHandler(Database db, RunningHours hours) {
     TAHandler.db = db;
+    TAHandler.hours = hours;
     runSpark();
   }
   public void runSpark() {
@@ -84,9 +89,13 @@ public class TAHandler {
       String courseId = req.params(":courseId");
       System.out.println(courseId);
       // initially sends the queue.
+      Queue courseQueue = hours.getQueueForCourse(courseId);
+      List<Question> questions =
+          hours.getHoursForCourse(courseId).getQuestions();
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).build();
+              courseId).put("queue", courseQueue).put("questions", questions)
+              .build();
       return new ModelAndView(variables, "taOnHours.html");
     }
   }

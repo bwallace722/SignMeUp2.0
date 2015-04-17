@@ -4,10 +4,6 @@ import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Time;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
@@ -15,8 +11,6 @@ import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.main.RunningHours;
-import edu.brown.cs.signMeUpBeta.onhours.Queue;
-import edu.brown.cs.signMeUpBeta.student.Account;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -25,7 +19,6 @@ import org.json.simple.parser.ParseException;
 
 import spark.ExceptionHandler;
 import spark.ModelAndView;
-import spark.QueryParamsMap;
 import spark.Request;
 import spark.Response;
 import spark.Route;
@@ -37,13 +30,13 @@ public class AllHandlers {
   private static final Gson GSON = new Gson();
   private static Database db;
   private RunningHours hours;
-//  private Map<String, Queue> onHoursQueue;
+  // private Map<String, Queue> onHoursQueue;
   /**
    * This is te constructor for this class.
    * @param db
    */
   public AllHandlers(Database db, RunningHours hours) {
-//    onHoursQueue = new HashMap<String, Queue>();
+    // onHoursQueue = new HashMap<String, Queue>();
     AllHandlers.db = db;
     this.hours = hours;
     runSparkServer();
@@ -71,29 +64,30 @@ public class AllHandlers {
     // FreeMarkerEngine freeMarker = createEngine();
     AccountHandler accountHandler = new AccountHandler(db);
     StudentHandler studentHandler = new StudentHandler(db);
-    TAHandler taHandler = new TAHandler(db);
-    QueueHandler queueHandler = new QueueHandler(db, hours); 
+    TAHandler taHandler = new TAHandler(db, hours);
+    QueueHandler queueHandler = new QueueHandler(db, hours);
     Spark.get("/home", new FrontHandler(), new FreeMarkerEngine());
-//    Spark.get("/classes/:login", new CourseHandler(), new FreeMarkerEngine());
-//    Spark.get("/addCourses/:login", new AddCourseHandler(),
-//        new FreeMarkerEngine());
-//    Spark.post("/signUp", new AccountSetupHandler());
-//    Spark.post("/login", new AccountLoginHandler());
-//    Spark.post("/updateCourse/:login", new UpdateCourseHandler());
-//    Spark.get("/studentLanding/:courseId", new StudentCoursePageHandler(),
-//        new FreeMarkerEngine());
-//    Spark.get("/taHoursSetUp/:courseId", new TAHoursSetUpHandler(),
-//        new FreeMarkerEngine());
-//    Spark.get("/confirmAppointment", new AppointmentHandler());
-//    Spark.get("/signUpForHours", new StudentSignUpForHours(),
-//        new FreeMarkerEngine());
-//    Spark.post("/addStudentToQueue", new AddStudentToQueue());
-//    Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
-//    Spark.post("/callStudent/:login", new CallStudentToHours());
-//    Spark.post("/updateQueue", new TAUpdateQueueHandler());
-//    Spark.post("/checkcallStatus", new StudentCheckCallStatus());
-//    Spark.get("/onHours/:courseId", new TAOnHoursHandler(),
-//        new FreeMarkerEngine());
+    // Spark.get("/classes/:login", new CourseHandler(), new
+    // FreeMarkerEngine());
+    // Spark.get("/addCourses/:login", new AddCourseHandler(),
+    // new FreeMarkerEngine());
+    // Spark.post("/signUp", new AccountSetupHandler());
+    // Spark.post("/login", new AccountLoginHandler());
+    // Spark.post("/updateCourse/:login", new UpdateCourseHandler());
+    // Spark.get("/studentLanding/:courseId", new StudentCoursePageHandler(),
+    // new FreeMarkerEngine());
+    // Spark.get("/taHoursSetUp/:courseId", new TAHoursSetUpHandler(),
+    // new FreeMarkerEngine());
+    // Spark.get("/confirmAppointment", new AppointmentHandler());
+    // Spark.get("/signUpForHours", new StudentSignUpForHours(),
+    // new FreeMarkerEngine());
+    // Spark.post("/addStudentToQueue", new AddStudentToQueue());
+    // Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
+    // Spark.post("/callStudent/:login", new CallStudentToHours());
+    // Spark.post("/updateQueue", new TAUpdateQueueHandler());
+    // Spark.post("/checkcallStatus", new StudentCheckCallStatus());
+    // Spark.get("/onHours/:courseId", new TAOnHoursHandler(),
+    // new FreeMarkerEngine());
     // Spark.get("/addAssignment", new AssessmentHandler("assignment"));
     // Spark.get("/addLab", new AssessmentHandler("exam"));
     // Spark.get("/addExam", new AssessmentHandler("lab"));
@@ -115,8 +109,6 @@ public class AllHandlers {
       return new ModelAndView(variables, "landingPage.html");
     }
   }
-  
-  
   /**
    * This class handles the insertion of assessment items into the database
    * during class setup.
@@ -154,7 +146,6 @@ public class AllHandlers {
       return null;
     }
   }
-  
   /**
    * This class prints out errors if the spark server fails.
    * @author kb25
@@ -175,401 +166,386 @@ public class AllHandlers {
       res.body(stacktrace.toString());
     }
   }
-  
-  
-  
-//  /**
-//   * This is the sign up handler that deals with creating a new user. From here,
-//   * the user will be directed to a list of their courses.
-//   * @author kj13
-//   */
-//  private class CourseHandler implements TemplateViewRoute {
-//    @Override
-//    public ModelAndView handle(final Request req, final Response res) {
-//      String login = req.params(":login");
-//      List<Object> classList = new ArrayList<Object>();
-//      try {
-//        List<String> studentClasses = db.getStudentClasses(login);
-//        List<String> taClasses = db.getTAClasses(login);
-//        for (String tClass : taClasses) {
-//          JSONObject taIn = new JSONObject();
-//          taIn.put("class", tClass);
-//          taIn.put("role", "TA");
-//          classList.add(taIn);
-//        }
-//        for (String sClass : studentClasses) {
-//          JSONObject studentIn = new JSONObject();
-//          studentIn.put("class", sClass);
-//          studentIn.put("role", "Student");
-//          classList.add(studentIn);
-//        }
-//        Map<String, Object> variables =
-//            new ImmutableMap.Builder().put("user_class_list", classList).put(
-//                "title", "SignMeUp 2.0").put("user", login).build();
-//        return new ModelAndView(variables, "myClasses.html");
-//      } catch (SQLException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//      }
-//      return null;
-//    }
-//  }
-//  private class TAHoursSetUpHandler implements TemplateViewRoute {
-//    @Override
-//    public ModelAndView handle(final Request req, final Response res) {
-//      String courseId = req.params(":courseId");
-//      System.out.println(courseId);
-//      Map<String, Object> variables =
-//          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-//              courseId).build();
-//      return new ModelAndView(variables, "taHoursSetUp.html");
-//    }
-//  }
-//  /**
-//   * This is the TA Course Set Up handler.
-//   * @author kj13
-//   */
-//  private class TACourseSetUpHandler implements TemplateViewRoute {
-//    @Override
-//    public ModelAndView handle(final Request req, final Response res) {
-//      String courseId = req.params(":courseId");
-//      System.out.println(courseId);
-//      //TODO: KIERAN
-//      Map<String, Object> variables =
-//          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-//              courseId).build();
-//      return new ModelAndView(variables, "taCourseSetUp.html");
-//    }
-//  }
-
-//  /**
-//   * This handler initially displays the signupforhours page.
-//   * It will display the assignment, questions, and subquestions
-//   * relevant to that student's course.
-//   * @author kj13
-//   *
-//   */
-//  private class StudentSignUpForHours implements TemplateViewRoute {
-//    @Override
-//    public ModelAndView handle(final Request req, final Response res) {
-//      String courseAndUserId = req.params(":courseAndUserId");
-//      String[] reqParams = courseAndUserId.split("?");
-//      System.out.println(courseAndUserId);
-//      String courseId = reqParams[0];
-//      String login = reqParams[1];
-//      
-//      //TODO send over all of the assignments, questions and subquestions
-//      String questions = ""; // to be sent as JSON array?
-//      //is it possible to send this with html tags?
-//      String assignment = ""; // string, or JSON object?
-//      String subQuestions = ""; //JSON array?
-//      Map<String, Object> variables =
-//          new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
-//          .put("courseId", courseId).put("login", login)
-//          .put("assignment", assignment).put("questions", questions)
-//          .put("subQuestions", subQuestions).build();
-//      return new ModelAndView(variables, "signUpForHours.html");
-//    }
-//  }
-  
-
-  
-//  /**
-//   * This is the TA On Hours handler.
-//   * From this page, the ta may call a student to hours.
-//   * @author kj13
-//   */
-//  private class TAOnHoursHandler implements TemplateViewRoute {
-//    @Override
-//    public ModelAndView handle(final Request req, final Response res) {
-//      String courseId = req.params(":courseId");
-//      System.out.println(courseId);
-//      //initially sends the queue.
-//      Map<String, Object> variables =
-//          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-//              courseId).build();
-//      return new ModelAndView(variables, "taOnHours.html");
-//    }
-//  }
-//  private class TAUpdateQueueHandler implements Route {
-//    @Override
-//    public Object handle(final Request req, final Response res) {
-//      String courseId = req.params(":courseId");
-//      System.out.println(courseId);
-//      //send list of students on queue
-//      //send list of added students on queue? whichever is faster/better
-//      Map<String, Object> variables =
-//          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-//              courseId).build();
-//      return null;
-//    }
-//  }
-
-  
-//  /*
-//  * This handler will be used to call the student to hours.
-//  * Here, the student's call status will be updated.
-//  * @author kj13
-//  */
-// private class CallStudentToHours implements Route {
-//   @Override
-//   public Object handle(final Request req, final Response res) {
-//     String courseId = req.params(":courseId");
-//     System.out.println(courseId);
-//     //CALL STUDENT TO HOURS
-//     //NEED WAY TO ALERT STUDENT
-//     Map<String, Object> variables =
-//         new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-//             courseId).build();
-//     return null;
-//   }
-// }
-//  /**
-//   * This is the handler that takes the 
-//   * student to a course's hours page.
-//   * @author kj13
-//   *
-//   */
-//  private class StudentCoursePageHandler implements TemplateViewRoute {
-//    @Override
-//    public ModelAndView handle(final Request req, final Response res) {
-//      String courseAndUserId = req.params(":courseAndUserId");
-//      String[] reqParams = courseAndUserId.split("?");
-//      System.out.println(courseAndUserId);
-//      String courseId = reqParams[0];
-//      String login = reqParams[1];
-//      
-//      Map<String, Object> variables =
-//          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-//              courseId).put("login", login).build();
-//      return new ModelAndView(variables, "studentLanding.html");
-//    }
-//  }
-//  /**
-//   * This is the handler that updates
-//   * a user's course list.
-//   * @author kj13
-//   */
-//  private class UpdateCourseHandler implements Route {
-//    @Override
-//    public Object handle(final Request req, final Response res) {
-//      QueryParamsMap qm = req.queryMap();
-//      String course = qm.value("course");
-//      String role = qm.value("role");
-//      String login = req.params(":login");
-////      JSONParser parser = new JSONParser();
-////      try {
-////        JSONObject queueEntry = (JSONObject) parser.parse(req.body());
-////        String course = (String) queueEntry.get("course");
-////        String role = (String) queueEntry.get("role");
-//        System.out.println(login + ": " + course + " , " + role);
-//        
-////     } catch (ParseException e) {
-////        System.out.println("ERROR: "
-////            + e.getMessage());
-////      }
-//      int toReturn = 1;
-//      return toReturn;
-//    }
-//  }
-
-  
-//  /**
-//   * This handler that takes the student to the page to add classes.
-//   * @author kj13
-//   */
-//  private class AddCourseHandler implements TemplateViewRoute {
-//    @Override
-//    public ModelAndView handle(final Request req, final Response res) {
-//      String login = req.params(":login");
-//      Map<String, Object> variables =
-//          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
-//              login).build();
-//      return new ModelAndView(variables, "addCourse.html");
-//    }
-//  }
-//  /**
-//   * This class handles the adding of lab check offs to the queue.
-//   * @author omadarik
-//   */
-//  private class AddLabCheckoffToQueue implements Route {
-//    @Override
-//    public Object handle(Request req, Response res) {
-//      
-//      QueryParamsMap qm = req.queryMap();
-//      String course = qm.value("course");
-//      String login = qm.value("login");
-//      int toReturn = 0;
-////      JSONParser parser = new JSONParser();
-//      try {
-////        JSONObject queueEntry = (JSONObject) parser.parse(req.body());
-////        String course = (String) queueEntry.get("course");
-////
-////        String login = (String) queueEntry.get("login");
-//        Queue q;
-//        if (onHoursQueue.containsKey(course)) {
-//          q = onHoursQueue.get(course);
-//        } else {
-//          onHoursQueue.put(course, new Queue());
-//          q = onHoursQueue.get(course);
-//        }
-//        //TODO: KIERAN, THINK...
-//        // Also doesn't it make more sense to include some sort of priority when
-//        // adding things to the queue? That way, it will be easier to control
-//        // the priority of things? This priority could be a flag, with
-//        // appointments getting the 'best' flag.
-//        q.add(db.getAccountByLogin(login, null));
-//        toReturn = 1;
-//      } catch ( SQLException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//      }
-//      return toReturn;
-//    }
-//  }
-  
-//  /**
-//   * This class handles the adding of lab check offs to the queue.
-//   * @author omadarik
-//   */
-//  private class AddStudentToQueue implements Route {
-//    @Override
-//    public Object handle(Request req, Response res) {
-//      QueryParamsMap qm = req.queryMap();
-//      String course = qm.value("course");
-//      String login = qm.value("login");
-//      int toReturn = 0;
-////      JSONParser parser = new JSONParser();
-//      try {
-////        JSONObject queueEntry = (JSONObject) parser.parse(req.body());
-////        String course = (String) queueEntry.get("course");
-////
-////        String login = (String) queueEntry.get("login");
-//        Queue q;
-//        if (onHoursQueue.containsKey(course)) {
-//          q = onHoursQueue.get(course);
-//        } else {
-//          onHoursQueue.put(course, new Queue());
-//          q = onHoursQueue.get(course);
-//        }
-//        q.add(db.getAccountByLogin(login, null));
-//        toReturn = 1;
-//      } catch (SQLException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//      }
-//      //TODO what is the success and fail markers?
-//      return toReturn;
-//    }
-//  }
-//  /**
-//   * This class checks the student's call status
-//   * on the queue. If their call status has been change,
-//   * they will be alerted.
-//   * @author kj13
-//   */
-//  private class StudentCheckCallStatus implements Route {
-//    @Override
-//    public Object handle(Request req, Response res) {
-//      QueryParamsMap qm = req.queryMap();
-//      String course = qm.value("course");
-//      String loginToCall = qm.value("login");
-////      JSONParser parser = new JSONParser();
-////      try {
-////        JSONObject queueEntry = (JSONObject) parser.parse(req.body());
-////        String course = (String) queueEntry.get("course");
-////
-////        String login = (String) queueEntry.get("login");
-//  
-////      } catch (ParseException e) {
-////        System.out.println("ERROR: "
-////            + e.getMessage());
-////      }
-//      //TODO: look at queue
-//      //if the student's login has a new flag on it's object in the queue
-//      //send the message.
-//      return null;
-//    }
-//  }
-  
-
-
-//  /**
-//   * This class is where I add courses to the database.
-//   * @author omadarik
-//   */
-//  private static class CourseSetupHandler implements Route {
-//    @Override
-//    public Object handle(Request req, Response res) {
-//      JSONParser parser = new JSONParser();
-//      try {
-//        JSONArray courseArray = (JSONArray) parser.parse(req.body());
-//        for (int i = 0; i < courseArray.size(); i++) {
-//          JSONObject toInsert = (JSONObject) courseArray.get(i);
-//          String courseId = (String) toInsert.get("course_id");
-//          String courseName = (String) toInsert.get("course_name");
-//          db.addCourse(courseId, courseName);
-//        }
-//      } catch (SQLException | ParseException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//      }
-//      return null;
-//    }
-//  }
-//  /**
-//   * This class handles the inserting of new student fields into the database.
-//   * @author omadarik
-//   */
-//  private static class AccountSetupHandler implements Route {
-//    @Override
-//    public Object handle(Request req, Response res) {
-////      JSONParser parser = new JSONParser();
-//      QueryParamsMap qm = req.queryMap();
-//      String name = qm.value("name");
-//      String login = qm.value("login");
-//      String email = qm.value("email");
-//      String password = qm.value("password");
-//      Account user = null;
-//      try {
-//        /*
-//         * Creating a student object.
-//         */
-////        JSONObject toInsert = (JSONObject) parser.parse(req.body());
-////        String login = (String) toInsert.get("login");
-////        String name = (String) toInsert.get("name");
-////        String email = (String) toInsert.get("email");
-////        String password = (String) toInsert.get("password");
-//        db.addAccount(login, name, email, password);
-//        System.out.println(login + " - was added");
-////        user = db.;
-//        /*
-//         * Adding the courses taken by a student to the database.
-//         */
-////        JSONArray jsonEnrolledCourses =
-////            (JSONArray) toInsert.get("student_courses");
-////        for (int i = 0; i < jsonEnrolledCourses.size(); i++) {
-////          String courseId = (String) jsonEnrolledCourses.get(i);
-////          db.addStudentCoursePair(login, courseId);
-////        }
-////        JSONArray jsonTACourses = (JSONArray) toInsert.get("ta_courses");
-////        for (int i = 0; i < jsonTACourses.size(); i++) {
-////          String courseId = (String) jsonTACourses.get(i);
-////          db.addTACoursePair(login, courseId);
-////        }
-//      } catch (SQLException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//        e.printStackTrace();
-//      }
-//      Map<String, Object> variables =
-//          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
-//              user.login()).put("courses", null).build();
-//      System.out.println(user.login() + " - is being returned");
-//      return user.login();
-//    }
-//  }
-
+  // /**
+  // * This is the sign up handler that deals with creating a new user. From
+  // here,
+  // * the user will be directed to a list of their courses.
+  // * @author kj13
+  // */
+  // private class CourseHandler implements TemplateViewRoute {
+  // @Override
+  // public ModelAndView handle(final Request req, final Response res) {
+  // String login = req.params(":login");
+  // List<Object> classList = new ArrayList<Object>();
+  // try {
+  // List<String> studentClasses = db.getStudentClasses(login);
+  // List<String> taClasses = db.getTAClasses(login);
+  // for (String tClass : taClasses) {
+  // JSONObject taIn = new JSONObject();
+  // taIn.put("class", tClass);
+  // taIn.put("role", "TA");
+  // classList.add(taIn);
+  // }
+  // for (String sClass : studentClasses) {
+  // JSONObject studentIn = new JSONObject();
+  // studentIn.put("class", sClass);
+  // studentIn.put("role", "Student");
+  // classList.add(studentIn);
+  // }
+  // Map<String, Object> variables =
+  // new ImmutableMap.Builder().put("user_class_list", classList).put(
+  // "title", "SignMeUp 2.0").put("user", login).build();
+  // return new ModelAndView(variables, "myClasses.html");
+  // } catch (SQLException e) {
+  // System.out.println("ERROR: "
+  // + e.getMessage());
+  // }
+  // return null;
+  // }
+  // }
+  // private class TAHoursSetUpHandler implements TemplateViewRoute {
+  // @Override
+  // public ModelAndView handle(final Request req, final Response res) {
+  // String courseId = req.params(":courseId");
+  // System.out.println(courseId);
+  // Map<String, Object> variables =
+  // new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+  // courseId).build();
+  // return new ModelAndView(variables, "taHoursSetUp.html");
+  // }
+  // }
+  // /**
+  // * This is the TA Course Set Up handler.
+  // * @author kj13
+  // */
+  // private class TACourseSetUpHandler implements TemplateViewRoute {
+  // @Override
+  // public ModelAndView handle(final Request req, final Response res) {
+  // String courseId = req.params(":courseId");
+  // System.out.println(courseId);
+  // //TODO: KIERAN
+  // Map<String, Object> variables =
+  // new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+  // courseId).build();
+  // return new ModelAndView(variables, "taCourseSetUp.html");
+  // }
+  // }
+  // /**
+  // * This handler initially displays the signupforhours page.
+  // * It will display the assignment, questions, and subquestions
+  // * relevant to that student's course.
+  // * @author kj13
+  // *
+  // */
+  // private class StudentSignUpForHours implements TemplateViewRoute {
+  // @Override
+  // public ModelAndView handle(final Request req, final Response res) {
+  // String courseAndUserId = req.params(":courseAndUserId");
+  // String[] reqParams = courseAndUserId.split("?");
+  // System.out.println(courseAndUserId);
+  // String courseId = reqParams[0];
+  // String login = reqParams[1];
+  //
+  // //TODO send over all of the assignments, questions and subquestions
+  // String questions = ""; // to be sent as JSON array?
+  // //is it possible to send this with html tags?
+  // String assignment = ""; // string, or JSON object?
+  // String subQuestions = ""; //JSON array?
+  // Map<String, Object> variables =
+  // new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
+  // .put("courseId", courseId).put("login", login)
+  // .put("assignment", assignment).put("questions", questions)
+  // .put("subQuestions", subQuestions).build();
+  // return new ModelAndView(variables, "signUpForHours.html");
+  // }
+  // }
+  // /**
+  // * This is the TA On Hours handler.
+  // * From this page, the ta may call a student to hours.
+  // * @author kj13
+  // */
+  // private class TAOnHoursHandler implements TemplateViewRoute {
+  // @Override
+  // public ModelAndView handle(final Request req, final Response res) {
+  // String courseId = req.params(":courseId");
+  // System.out.println(courseId);
+  // //initially sends the queue.
+  // Map<String, Object> variables =
+  // new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+  // courseId).build();
+  // return new ModelAndView(variables, "taOnHours.html");
+  // }
+  // }
+  // private class TAUpdateQueueHandler implements Route {
+  // @Override
+  // public Object handle(final Request req, final Response res) {
+  // String courseId = req.params(":courseId");
+  // System.out.println(courseId);
+  // //send list of students on queue
+  // //send list of added students on queue? whichever is faster/better
+  // Map<String, Object> variables =
+  // new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+  // courseId).build();
+  // return null;
+  // }
+  // }
+  // /*
+  // * This handler will be used to call the student to hours.
+  // * Here, the student's call status will be updated.
+  // * @author kj13
+  // */
+  // private class CallStudentToHours implements Route {
+  // @Override
+  // public Object handle(final Request req, final Response res) {
+  // String courseId = req.params(":courseId");
+  // System.out.println(courseId);
+  // //CALL STUDENT TO HOURS
+  // //NEED WAY TO ALERT STUDENT
+  // Map<String, Object> variables =
+  // new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+  // courseId).build();
+  // return null;
+  // }
+  // }
+  // /**
+  // * This is the handler that takes the
+  // * student to a course's hours page.
+  // * @author kj13
+  // *
+  // */
+  // private class StudentCoursePageHandler implements TemplateViewRoute {
+  // @Override
+  // public ModelAndView handle(final Request req, final Response res) {
+  // String courseAndUserId = req.params(":courseAndUserId");
+  // String[] reqParams = courseAndUserId.split("?");
+  // System.out.println(courseAndUserId);
+  // String courseId = reqParams[0];
+  // String login = reqParams[1];
+  //
+  // Map<String, Object> variables =
+  // new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+  // courseId).put("login", login).build();
+  // return new ModelAndView(variables, "studentLanding.html");
+  // }
+  // }
+  // /**
+  // * This is the handler that updates
+  // * a user's course list.
+  // * @author kj13
+  // */
+  // private class UpdateCourseHandler implements Route {
+  // @Override
+  // public Object handle(final Request req, final Response res) {
+  // QueryParamsMap qm = req.queryMap();
+  // String course = qm.value("course");
+  // String role = qm.value("role");
+  // String login = req.params(":login");
+  // // JSONParser parser = new JSONParser();
+  // // try {
+  // // JSONObject queueEntry = (JSONObject) parser.parse(req.body());
+  // // String course = (String) queueEntry.get("course");
+  // // String role = (String) queueEntry.get("role");
+  // System.out.println(login + ": " + course + " , " + role);
+  //
+  // // } catch (ParseException e) {
+  // // System.out.println("ERROR: "
+  // // + e.getMessage());
+  // // }
+  // int toReturn = 1;
+  // return toReturn;
+  // }
+  // }
+  // /**
+  // * This handler that takes the student to the page to add classes.
+  // * @author kj13
+  // */
+  // private class AddCourseHandler implements TemplateViewRoute {
+  // @Override
+  // public ModelAndView handle(final Request req, final Response res) {
+  // String login = req.params(":login");
+  // Map<String, Object> variables =
+  // new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
+  // login).build();
+  // return new ModelAndView(variables, "addCourse.html");
+  // }
+  // }
+  // /**
+  // * This class handles the adding of lab check offs to the queue.
+  // * @author omadarik
+  // */
+  // private class AddLabCheckoffToQueue implements Route {
+  // @Override
+  // public Object handle(Request req, Response res) {
+  //
+  // QueryParamsMap qm = req.queryMap();
+  // String course = qm.value("course");
+  // String login = qm.value("login");
+  // int toReturn = 0;
+  // // JSONParser parser = new JSONParser();
+  // try {
+  // // JSONObject queueEntry = (JSONObject) parser.parse(req.body());
+  // // String course = (String) queueEntry.get("course");
+  // //
+  // // String login = (String) queueEntry.get("login");
+  // Queue q;
+  // if (onHoursQueue.containsKey(course)) {
+  // q = onHoursQueue.get(course);
+  // } else {
+  // onHoursQueue.put(course, new Queue());
+  // q = onHoursQueue.get(course);
+  // }
+  // //TODO: KIERAN, THINK...
+  // // Also doesn't it make more sense to include some sort of priority when
+  // // adding things to the queue? That way, it will be easier to control
+  // // the priority of things? This priority could be a flag, with
+  // // appointments getting the 'best' flag.
+  // q.add(db.getAccountByLogin(login, null));
+  // toReturn = 1;
+  // } catch ( SQLException e) {
+  // System.out.println("ERROR: "
+  // + e.getMessage());
+  // }
+  // return toReturn;
+  // }
+  // }
+  // /**
+  // * This class handles the adding of lab check offs to the queue.
+  // * @author omadarik
+  // */
+  // private class AddStudentToQueue implements Route {
+  // @Override
+  // public Object handle(Request req, Response res) {
+  // QueryParamsMap qm = req.queryMap();
+  // String course = qm.value("course");
+  // String login = qm.value("login");
+  // int toReturn = 0;
+  // // JSONParser parser = new JSONParser();
+  // try {
+  // // JSONObject queueEntry = (JSONObject) parser.parse(req.body());
+  // // String course = (String) queueEntry.get("course");
+  // //
+  // // String login = (String) queueEntry.get("login");
+  // Queue q;
+  // if (onHoursQueue.containsKey(course)) {
+  // q = onHoursQueue.get(course);
+  // } else {
+  // onHoursQueue.put(course, new Queue());
+  // q = onHoursQueue.get(course);
+  // }
+  // q.add(db.getAccountByLogin(login, null));
+  // toReturn = 1;
+  // } catch (SQLException e) {
+  // System.out.println("ERROR: "
+  // + e.getMessage());
+  // }
+  // //TODO what is the success and fail markers?
+  // return toReturn;
+  // }
+  // }
+  // /**
+  // * This class checks the student's call status
+  // * on the queue. If their call status has been change,
+  // * they will be alerted.
+  // * @author kj13
+  // */
+  // private class StudentCheckCallStatus implements Route {
+  // @Override
+  // public Object handle(Request req, Response res) {
+  // QueryParamsMap qm = req.queryMap();
+  // String course = qm.value("course");
+  // String loginToCall = qm.value("login");
+  // // JSONParser parser = new JSONParser();
+  // // try {
+  // // JSONObject queueEntry = (JSONObject) parser.parse(req.body());
+  // // String course = (String) queueEntry.get("course");
+  // //
+  // // String login = (String) queueEntry.get("login");
+  //
+  // // } catch (ParseException e) {
+  // // System.out.println("ERROR: "
+  // // + e.getMessage());
+  // // }
+  // //TODO: look at queue
+  // //if the student's login has a new flag on it's object in the queue
+  // //send the message.
+  // return null;
+  // }
+  // }
+  // /**
+  // * This class is where I add courses to the database.
+  // * @author omadarik
+  // */
+  // private static class CourseSetupHandler implements Route {
+  // @Override
+  // public Object handle(Request req, Response res) {
+  // JSONParser parser = new JSONParser();
+  // try {
+  // JSONArray courseArray = (JSONArray) parser.parse(req.body());
+  // for (int i = 0; i < courseArray.size(); i++) {
+  // JSONObject toInsert = (JSONObject) courseArray.get(i);
+  // String courseId = (String) toInsert.get("course_id");
+  // String courseName = (String) toInsert.get("course_name");
+  // db.addCourse(courseId, courseName);
+  // }
+  // } catch (SQLException | ParseException e) {
+  // System.out.println("ERROR: "
+  // + e.getMessage());
+  // }
+  // return null;
+  // }
+  // }
+  // /**
+  // * This class handles the inserting of new student fields into the database.
+  // * @author omadarik
+  // */
+  // private static class AccountSetupHandler implements Route {
+  // @Override
+  // public Object handle(Request req, Response res) {
+  // // JSONParser parser = new JSONParser();
+  // QueryParamsMap qm = req.queryMap();
+  // String name = qm.value("name");
+  // String login = qm.value("login");
+  // String email = qm.value("email");
+  // String password = qm.value("password");
+  // Account user = null;
+  // try {
+  // /*
+  // * Creating a student object.
+  // */
+  // // JSONObject toInsert = (JSONObject) parser.parse(req.body());
+  // // String login = (String) toInsert.get("login");
+  // // String name = (String) toInsert.get("name");
+  // // String email = (String) toInsert.get("email");
+  // // String password = (String) toInsert.get("password");
+  // db.addAccount(login, name, email, password);
+  // System.out.println(login + " - was added");
+  // // user = db.;
+  // /*
+  // * Adding the courses taken by a student to the database.
+  // */
+  // // JSONArray jsonEnrolledCourses =
+  // // (JSONArray) toInsert.get("student_courses");
+  // // for (int i = 0; i < jsonEnrolledCourses.size(); i++) {
+  // // String courseId = (String) jsonEnrolledCourses.get(i);
+  // // db.addStudentCoursePair(login, courseId);
+  // // }
+  // // JSONArray jsonTACourses = (JSONArray) toInsert.get("ta_courses");
+  // // for (int i = 0; i < jsonTACourses.size(); i++) {
+  // // String courseId = (String) jsonTACourses.get(i);
+  // // db.addTACoursePair(login, courseId);
+  // // }
+  // } catch (SQLException e) {
+  // System.out.println("ERROR: "
+  // + e.getMessage());
+  // e.printStackTrace();
+  // }
+  // Map<String, Object> variables =
+  // new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
+  // user.login()).put("courses", null).build();
+  // System.out.println(user.login() + " - is being returned");
+  // return user.login();
+  // }
+  // }
   // /**
   // * This class handles the inserting of new TA fields into the database.
   // * @author omadarik
@@ -605,50 +581,50 @@ public class AllHandlers {
   // return null;
   // }
   // }
-//  private static class AppointmentHandler implements Route {
-//    @Override
-//    public Object handle(Request req, Response res) {
-////      JSONParser parser = new JSONParser();
-////      try {
-////        JSONObject apt = (JSONObject) parser.parse(req.body());
-////        Time appointmentTime = (Time) apt.get("time");
-////      } catch (ParseException e) {
-////        System.out.println("ERROR: "
-////            + e.getMessage());
-////      }
-//      return null;
-//    }
-//  }
-//  /**
-//   * This method handles the logging in of a student checking the input login
-//   * and password.
-//   * @author omadarik
-//   */
-//  private static class AccountLoginHandler implements Route {
-//    @Override
-//    public Object handle(Request req, Response res) {
-//      QueryParamsMap qm = req.queryMap();
-//      String login = qm.value("login");
-//      String password = qm.value("password");
-//      System.out.println(login + " , " + password);
-////      JSONParser parser = new JSONParser();
-//      Account loggedIn = null;
-//      try {
-//        /*
-//         * Retrieving a ta object.
-//         */
-////        JSONObject credentials = (JSONObject) parser.parse(login);
-////        String inputLogin = (String) credentials.get("student_login");
-////        String inputPassword = (String) credentials.get("student_password");
-//        loggedIn = db.getAccountByLogin(login, password);
-//      } catch (SQLException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//      }
-//
-//      return loggedIn;
-//    }
-//  }
+  // private static class AppointmentHandler implements Route {
+  // @Override
+  // public Object handle(Request req, Response res) {
+  // // JSONParser parser = new JSONParser();
+  // // try {
+  // // JSONObject apt = (JSONObject) parser.parse(req.body());
+  // // Time appointmentTime = (Time) apt.get("time");
+  // // } catch (ParseException e) {
+  // // System.out.println("ERROR: "
+  // // + e.getMessage());
+  // // }
+  // return null;
+  // }
+  // }
+  // /**
+  // * This method handles the logging in of a student checking the input login
+  // * and password.
+  // * @author omadarik
+  // */
+  // private static class AccountLoginHandler implements Route {
+  // @Override
+  // public Object handle(Request req, Response res) {
+  // QueryParamsMap qm = req.queryMap();
+  // String login = qm.value("login");
+  // String password = qm.value("password");
+  // System.out.println(login + " , " + password);
+  // // JSONParser parser = new JSONParser();
+  // Account loggedIn = null;
+  // try {
+  // /*
+  // * Retrieving a ta object.
+  // */
+  // // JSONObject credentials = (JSONObject) parser.parse(login);
+  // // String inputLogin = (String) credentials.get("student_login");
+  // // String inputPassword = (String) credentials.get("student_password");
+  // loggedIn = db.getAccountByLogin(login, password);
+  // } catch (SQLException e) {
+  // System.out.println("ERROR: "
+  // + e.getMessage());
+  // }
+  //
+  // return loggedIn;
+  // }
+  // }
   // /**
   // * This method handles the logging in of a ta checking the input login and
   // * password.
