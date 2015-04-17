@@ -67,7 +67,7 @@ public class QueueHandler {
         return 0;
       }
       // TODO: Calculate and set student priority field;
-      account.setPriority(1);
+      account.setPriority(0);
       if (queue == null) {
         // FUCK
       }
@@ -117,7 +117,7 @@ public class QueueHandler {
         return 0;
       }
       // TODO: Calculate and set student priority field;
-      account.setPriority(1);
+      account.setPriority(Math.random());
       if (queue == null) {
         // FUCK
       }
@@ -148,8 +148,7 @@ public class QueueHandler {
           + " starting hrs");
       // TODO return 1 if queue object was created
       // return 0 if there was a problem.
-      runningHours.startHours(courseId);
-      return 1;
+      return runningHours.startHours(courseId);
     }
   }
   private static class AppointmentHandler implements Route {
