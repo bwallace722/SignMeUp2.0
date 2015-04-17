@@ -26,10 +26,10 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class TAHandler {
   private static final Gson GSON = new Gson();
   private static Database db;
-  private static RunningHours hours;
+  private static RunningHours runningHours;
   public TAHandler(Database db, RunningHours hours) {
-    TAHandler.db = db;
-    TAHandler.hours = hours;
+    this.db = db;
+    this.runningHours = hours;
     runSpark();
   }
   public void runSpark() {
@@ -89,9 +89,9 @@ public class TAHandler {
       String courseId = req.params(":courseId");
       System.out.println(courseId);
       // initially sends the queue.
-      Queue courseQueue = hours.getQueueForCourse(courseId);
+      Queue courseQueue = runningHours.getQueueForCourse(courseId);
       List<Question> questions =
-          hours.getHoursForCourse(courseId).getQuestions();
+          runningHours.getHoursForCourse(courseId).getQuestions();
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("queue", courseQueue).put("questions", questions)
@@ -124,6 +124,8 @@ public class TAHandler {
       Question questionObject;
       try {
         questionObject = db.addQuestion(assessmentName, question, courseId);
+        //TODO KIERAN 
+        
         
       } catch (SQLException e) {
         System.out.println("ERROR: sql exception in adding question");

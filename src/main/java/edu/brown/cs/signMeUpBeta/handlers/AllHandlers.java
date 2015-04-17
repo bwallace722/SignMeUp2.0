@@ -29,7 +29,7 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class AllHandlers {
   private static final Gson GSON = new Gson();
   private static Database db;
-  private RunningHours hours;
+  private RunningHours runningHours;
   // private Map<String, Queue> onHoursQueue;
   /**
    * This is te constructor for this class.
@@ -38,7 +38,7 @@ public class AllHandlers {
   public AllHandlers(Database db, RunningHours hours) {
     // onHoursQueue = new HashMap<String, Queue>();
     AllHandlers.db = db;
-    this.hours = hours;
+    this.runningHours = hours;
     runSparkServer();
   }
   // /**
@@ -64,8 +64,8 @@ public class AllHandlers {
     // FreeMarkerEngine freeMarker = createEngine();
     AccountHandler accountHandler = new AccountHandler(db);
     StudentHandler studentHandler = new StudentHandler(db);
-    TAHandler taHandler = new TAHandler(db, hours);
-    QueueHandler queueHandler = new QueueHandler(db, hours);
+    TAHandler taHandler = new TAHandler(db, runningHours);
+    QueueHandler queueHandler = new QueueHandler(db, runningHours);
     Spark.get("/home", new FrontHandler(), new FreeMarkerEngine());
     // Spark.get("/classes/:login", new CourseHandler(), new
     // FreeMarkerEngine());

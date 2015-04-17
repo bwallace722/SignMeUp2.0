@@ -26,10 +26,10 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class QueueHandler {
   private static final Gson GSON = new Gson();
   private static Database db;
-  private RunningHours hours;
+  private RunningHours runningHours;
   public QueueHandler(Database db, RunningHours hours) {
     QueueHandler.db = db;
-    this.hours = hours;
+    this.runningHours = hours;
     runSpark();
   }
   public void runSpark() {
@@ -58,7 +58,7 @@ public class QueueHandler {
       // their account
       int toReturn = 0;
       
-      Queue queue = hours.getQueueForCourse(course);
+      Queue queue = runningHours.getQueueForCourse(course);
       Account account;
       try {
         account = db.getAccount(login);
@@ -89,7 +89,7 @@ public class QueueHandler {
       String course = qm.value("course");
       String login = qm.value("login");
       int toReturn = 0;
-      Queue queue = hours.getQueueForCourse(course);
+      Queue queue = runningHours.getQueueForCourse(course);
       Account account;
       try {
         account = db.getAccount(login);
