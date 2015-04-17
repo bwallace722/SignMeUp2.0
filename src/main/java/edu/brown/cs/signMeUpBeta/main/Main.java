@@ -46,7 +46,7 @@ public class Main {
       String dbPath = params.get(0);
       
       Database db = new Database(dbPath);
-      RunningHours hours = new RunningHours();
+      RunningHours hours = new RunningHours(db);
       AllHandlers gui = new AllHandlers(db, hours);
       
     } else {

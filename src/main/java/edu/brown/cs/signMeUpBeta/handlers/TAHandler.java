@@ -99,6 +99,7 @@ public class TAHandler {
       return new ModelAndView(variables, "taOnHours.html");
     }
   }
+  
   private class SetHoursTimeLimit implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
@@ -124,7 +125,7 @@ public class TAHandler {
       Question questionObject;
       try {
         questionObject = db.addQuestion(assessmentName, question, courseId);
-        //TODO KIERAN 
+//        runningHours.getHoursForCourse(courseId);
         
         
       } catch (SQLException e) {

@@ -11,9 +11,15 @@ import edu.brown.cs.signMeUpBeta.student.Appointment;
 public class Hours {
   private ConcurrentHashMap<Question, Integer> questions;
   
-  public Hours() {}
+  public Hours(List<Question> questionList) {
+    questions = new ConcurrentHashMap<Question, Integer>();
+    for (Question q: questionList) {
+      questions.put(q, 0);
+    }
+    
+  }
   
-  public void run() {}
+  //public void run() {}
   
   public List<Question> getQuestions() {
     ArrayList<Question> questionList = new ArrayList<Question>();

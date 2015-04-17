@@ -339,6 +339,22 @@ public class Database {
             numQuestions, enrolledCourses, TACourses);
     return account;
   }
+  
+  public List<Question> getCourseQuestions(String courseID) throws SQLException{
+    String query = "SELECT * FROM questions WHERE course_id;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, courseID);
+    ResultSet rs = ps.executeQuery();
+    String name, email;
+    List<Question> questionList = new ArrayList<Question>();
+    while (rs.next()) {
+      Question q = new Question(courseID, rs.getString(3), rs.getString(1));
+      questionList.add(q);
+    }
+    ps.close();
+    rs.close();
+    return questionList;
+  }
   // /**
   // * This method checks the input credentials and returns a student object if
   // * the credentials are approved.

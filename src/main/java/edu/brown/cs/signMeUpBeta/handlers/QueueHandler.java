@@ -126,7 +126,7 @@ public class QueueHandler {
       return 1;
     }
   }
-  private static class StartCourseHours implements Route {
+  private class StartCourseHours implements Route {
     @Override
     public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
@@ -134,6 +134,7 @@ public class QueueHandler {
           + " starting hrs");
       // TODO return 1 if queue object was created
       // return 0 if there was a problem.
+      runningHours.startHours(courseId);
       return 1;
     }
   }
