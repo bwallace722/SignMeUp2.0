@@ -4,7 +4,7 @@ var courseId = splitURL[splitURL.length -1];
 
 function startHours() {
 	var postUrl = "/startHours/" + courseId;
-	
+	console.log(postUrl);
 	$.post(postUrl, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {
@@ -21,7 +21,7 @@ function setTimeLimit() {
 	var newTimeLim = document.getElementById("newTimeLim").value;
 	
 	var postUrl = "/setHoursTimeLimit/" + courseId;
-	var postParameters = {"newTimeLimit", newTimeLim}
+	var postParameters = {"newTimeLimit": newTimeLim};
 	$.post(postUrl, postParameters, function(responseJSON) {
 		if(responseJSON == 1) {
 			alert("The time limit has been changed for " + courseId + " hours");
