@@ -55,7 +55,7 @@
         <form>
           <div class="form-group">
             <label for="login">Login</label>
-            <input type="text" class="form-control" id="login" placeholder="kj13">
+            <input type="text" class="form-control" id="loginLogIn" placeholder="kj13">
           </div>
           <div class="form-group">
             <label for="password">Password</label>
@@ -66,7 +66,7 @@
               <input type="checkbox"> Remember me
             </label>
           </div>
-          <button type="submit" class="btn btn-primary">Sign In</button>
+          <a onclick="signUp()" class="btn btn-primary">Log In</a>
         </form>
         <div>
         	<h6>Don't have an account? <a id="switchToSignUp">Sign Up</a></h6>
@@ -107,7 +107,7 @@
               <input type="checkbox"> Remember me
             </label>
           </div>
-          <a onclick="signUp()" class="btn btn-primary">Sign In</a>
+          <a onclick="signUp()" class="btn btn-primary">Create Account</a>
         </form>
         <div>
         	<h6>Already have an account? <a id="switchToSignIn">Sign In</a></h6>
