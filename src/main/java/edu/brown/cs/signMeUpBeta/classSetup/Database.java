@@ -174,7 +174,6 @@ public class Database {
    */
   public Account addAccount(String login, String name, String email,
       String password) throws SQLException {
-    // Write into
     String query = "INSERT INTO account VALUES (?,?,?,?,?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
@@ -245,12 +244,64 @@ public class Database {
    * Returns an account by the login of a student.
    * @param login
    * @return
+   * @throws SQLException
    */
-  public Account getAccount(String login) {
+  public Account getAccount(String login) throws SQLException {
     if (allAccounts.containsKey(login)) {
       return allAccounts.get(login);
+    } else {
+      String query = "SELECT * FROM account WHERE login = ?;";
+      PreparedStatement ps = conn.prepareStatement(query);
+      ps.setString(1, login);
+      ResultSet rs = ps.executeQuery();
+      String name, email, password;
+      int timeOnHours, timeCurrProject, numQuestions;
+      if (rs.next()) {
+        name = rs.getString(2);
+        email = rs.getString(3);
+        password = rs.getString(4);
+        timeOnHours = rs.getInt(5);
+        timeCurrProject = rs.getInt(6);
+        numQuestions = rs.getInt(7);
+      } else {
+        /*
+         * The student with the login could not be found in the database.
+         */
+        return null;
+      }
+      ps.close();
+      rs.close();
+      /*
+       * Getting the courses the student is enrolled in.
+       */
+      query = "SELECT course_id FROM student_course WHERE student_id = ?";
+      ps = conn.prepareStatement(query);
+      ps.setString(1, login);
+      rs = ps.executeQuery();
+      List<String> enrolledCourses = new ArrayList<String>();
+      if (rs.next()) {
+        enrolledCourses.add(rs.getString(1));
+      }
+      ps.close();
+      rs.close();
+      /*
+       * Getting the courses the student is a TA in.
+       */
+      query = "SELECT course_id FROM ta_course WHERE ta_id = ?";
+      ps = conn.prepareStatement(query);
+      ps.setString(1, login);
+      rs = ps.executeQuery();
+      List<String> TACourses = new ArrayList<String>();
+      if (rs.next()) {
+        TACourses.add(rs.getString(1));
+      }
+      ps.close();
+      rs.close();
+      Account account =
+          new Account(login, name, email, password, timeOnHours,
+              timeCurrProject, numQuestions, enrolledCourses, TACourses);
+      return account;
     }
-    return null;
   }
   /**
    * This method checks the input credentials and returns a student object if
