@@ -36,6 +36,7 @@ public class QueueHandler {
     Spark.get("/confirmAppointment", new AppointmentHandler());
     Spark.get("/signUpForHours/:courseAndUserId", new StudentSignUpForHours(),
         new FreeMarkerEngine());
+    Spark.post("/startHours/:courseId", new StartCourseHours());
     Spark.post("/addStudentToQueue", new AddStudentToQueue());
     Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
   }
@@ -90,6 +91,19 @@ public class QueueHandler {
       return toReturn;
     }
   }
+  
+  private static class StartCourseHours implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      String courseId = req.params(":courseId");
+      //TODO return 1 if queue object was created
+      //return 0 if there was a problem.
+      return null;
+    }
+  }
+  
+  
+
   private static class AppointmentHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
