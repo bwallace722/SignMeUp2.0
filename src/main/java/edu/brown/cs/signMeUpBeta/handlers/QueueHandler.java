@@ -41,6 +41,7 @@ public class QueueHandler {
     Spark.post("/startHours/:courseId", new StartCourseHours());
     Spark.post("/addStudentToQueue", new AddStudentToQueue());
     Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
+    Spark.post("/updateQueue/:courseId", new UpdateQueueHandler());
   }
   /**
    * This class handles the adding of lab check offs to the queue.
@@ -91,14 +92,28 @@ public class QueueHandler {
     }
   }
   
+  private class UpdateQueueHandler implements Route {
+    @Override
+    public Object handle(final Request req, final Response res) {
+      String courseId = req.params(":courseId");
+      System.out.println(courseId + " updating queue");
+      //send list of students on queue
+      //send list of added students on queue? whichever is faster/better
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+              courseId).build();
+      return 1;
+    }
+  }
+  
   private static class StartCourseHours implements Route {
     @Override
     public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
+      System.out.println(courseId + " starting hrs");
       //TODO return 1 if queue object was created
       //return 0 if there was a problem.
-      
-      return null;
+      return 1;
     }
   }
   
