@@ -99,12 +99,14 @@ public class Database {
    *        is being asked
    * @throws SQLException on SQL error
    */
-  public void addQuestion(String assessmentName, String questionSection,
-      String question, String course) throws SQLException {
+  public
+      void
+      addQuestion(String assessmentName, String question, String course)
+          throws SQLException {
     String query = "INSERT INTO questions VALUES (?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, assessmentName);
-    ps.setString(2, questionSection);
+    ps.setString(2, "");
     ps.setString(3, question);
     ps.setString(4, course);
     ps.executeUpdate();
@@ -192,27 +194,6 @@ public class Database {
     allAccounts.put(login, account);
     return account;
   }
-  // /**
-  // * This method adds a ta into the ta table.
-  // * @param taLogin - the login of the teaching assistant
-  // * @param taName - the name of the teaching assistant
-  // * @param email - the email of the teaching assistant
-  // * @param password - the password to the teaching assistant's account
-  // * @throws SQLException on SQL error
-  // */
-  // public
-  // void
-  // addTA(String taLogin, String taName, String email, String password)
-  // throws SQLException {
-  // String query = "INSERT INTO ta VALUES (?,?,?,?);";
-  // PreparedStatement ps = conn.prepareStatement(query);
-  // ps.setString(1, taLogin);
-  // ps.setString(2, taName);
-  // ps.setString(3, email);
-  // ps.setString(4, password);
-  // ps.executeUpdate();
-  // ps.close();
-  // }
   /**
    * This method updates the time spent at hours and number of questions asked
    * for any given student.
@@ -402,4 +383,25 @@ public class Database {
   // "CREATE TABLE student_course(student_id TEXT, course_id TEXT, FOREIGN KEY(student_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));";
   // schema =
   // "CREATE TABLE ta_course(ta_id TEXT, course_id TEXT, FOREIGN KEY(ta_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));";
+  // /**
+  // * This method adds a ta into the ta table.
+  // * @param taLogin - the login of the teaching assistant
+  // * @param taName - the name of the teaching assistant
+  // * @param email - the email of the teaching assistant
+  // * @param password - the password to the teaching assistant's account
+  // * @throws SQLException on SQL error
+  // */
+  // public
+  // void
+  // addTA(String taLogin, String taName, String email, String password)
+  // throws SQLException {
+  // String query = "INSERT INTO ta VALUES (?,?,?,?);";
+  // PreparedStatement ps = conn.prepareStatement(query);
+  // ps.setString(1, taLogin);
+  // ps.setString(2, taName);
+  // ps.setString(3, email);
+  // ps.setString(4, password);
+  // ps.executeUpdate();
+  // ps.close();
+  // }
 }

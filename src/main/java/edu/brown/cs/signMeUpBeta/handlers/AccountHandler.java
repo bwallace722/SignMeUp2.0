@@ -190,7 +190,6 @@ public class AccountHandler {
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
-        e.printStackTrace();
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",

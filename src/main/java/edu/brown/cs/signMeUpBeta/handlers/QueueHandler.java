@@ -2,6 +2,7 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -62,7 +63,12 @@ public class QueueHandler {
       // adding things to the queue? That way, it will be easier to control
       // the priority of things? This priority could be a flag, with
       // appointments getting the 'best' flag.
-      q.add(db.getAccount(login));
+      try {
+        q.add(db.getAccount(login));
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
       toReturn = 1;
       return toReturn;
     }
@@ -85,25 +91,26 @@ public class QueueHandler {
         onHoursQueue.put(course, new Queue());
         q = onHoursQueue.get(course);
       }
-      q.add(db.getAccount(login));
+      try {
+        q.add(db.getAccount(login));
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
       toReturn = 1;
       // TODO what is the success and fail markers?
       return toReturn;
     }
   }
-  
   private static class StartCourseHours implements Route {
     @Override
     public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
-      //TODO return 1 if queue object was created
-      //return 0 if there was a problem.
+      // TODO return 1 if queue object was created
+      // return 0 if there was a problem.
       return null;
     }
   }
-  
-  
-
   private static class AppointmentHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
