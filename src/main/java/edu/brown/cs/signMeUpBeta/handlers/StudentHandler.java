@@ -109,8 +109,8 @@ public class StudentHandler {
    @Override
    public ModelAndView handle(final Request req, final Response res) {
      String courseAndUserId = req.params(":courseAndUserId");
-     System.out.println(courseAndUserId);
      String[] reqParams = courseAndUserId.split("~");
+
 //     System.out.println(courseAndUserId);
      String courseId = reqParams[0];
      String login = reqParams[1];

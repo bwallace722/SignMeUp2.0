@@ -150,6 +150,7 @@ public class AccountHandler {
   //     String inputLogin = (String) credentials.get("student_login");
   //     String inputPassword = (String) credentials.get("student_password");
        loggedIn = db.getAccountByLogin(login, password);
+       System.out.println(loggedIn.login() + "loged in");
      } catch (SQLException e) {
        System.out.println("ERROR: "
            + e.getMessage());
