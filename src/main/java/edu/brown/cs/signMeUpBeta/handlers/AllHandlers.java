@@ -338,8 +338,6 @@ public class AllHandlers {
           q = onHoursQueue.get(course);
         }
         //TODO: KIERAN, THINK...
-        // do we always need to get the password when getting an account from
-        // the database? Why are we doing this?
         // Also doesn't it make more sense to include some sort of priority when
         // adding things to the queue? That way, it will be easier to control
         // the priority of things? This priority could be a flag, with
@@ -495,7 +493,7 @@ public class AllHandlers {
         String email = (String) toInsert.get("email");
         String password = (String) toInsert.get("password");
         db.addAccount(login, name, email, password);
-        user = new Account(login, name, email, password);
+//        user = db.;
         /*
          * Adding the courses taken by a student to the database.
          */

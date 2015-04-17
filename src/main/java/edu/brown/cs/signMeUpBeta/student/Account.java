@@ -18,14 +18,14 @@ public class Account {
   private int timeOnHours;
   private int timeCurrProject;
   
-//public Account(String login, String name, String email, String password, int timeOnHours, int timeCurrProject, int numQuestions) {
-  public Account(String login, String name, String email, String password) {
+  public Account(String login, String name, String email, String password, int timeOnHours, int timeCurrProject, int numQuestions) {
+//public Account(String login, String name, String email, String password) {
     this.login = login;
     this.name = name;
     this.password = password;
-//    this.timeOnHours = timeOnHours;
-//    this.timeCurrProject = timeCurrProject;
-//    this.numQuestions = numQuestions;
+    this.timeOnHours = timeOnHours;
+    this.timeCurrProject = timeCurrProject;
+    this.numQuestions = numQuestions;
     enrolledCourses = new ArrayList<String>();
     TACourses = new ArrayList<String>();
   }

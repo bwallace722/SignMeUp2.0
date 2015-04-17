@@ -33,6 +33,7 @@ $(".checkOffButton").bind('click', function(c) {
 	$.post(url, postParameters, function(responseJSON) {
 		//TODO : based on response, give message and put into modal.
 		
+		
 		alert("You're signed up for lab!");
 	});
 	
