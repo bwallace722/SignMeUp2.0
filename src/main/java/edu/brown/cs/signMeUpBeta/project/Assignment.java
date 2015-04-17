@@ -3,11 +3,9 @@ package edu.brown.cs.signMeUpBeta.project;
 import java.util.List;
 
 public interface Assignment {
-  List<SubCategory> subCategories();
-  void addSubCategory(SubCategory newSubCategory);
-  void setSubCategories(List<SubCategory> newSubCategories);
+  List<String> questions();
+  void setQuestions();
   String name();
+  void getName();
   void setName(String newProject);
-  String type();
-  void setType();
 }

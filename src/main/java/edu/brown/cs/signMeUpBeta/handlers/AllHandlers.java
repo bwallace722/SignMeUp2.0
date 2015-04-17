@@ -14,6 +14,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
+import edu.brown.cs.signMeUpBeta.main.RunningHours;
 import edu.brown.cs.signMeUpBeta.onhours.Queue;
 import edu.brown.cs.signMeUpBeta.student.Account;
 
@@ -35,14 +36,16 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class AllHandlers {
   private static final Gson GSON = new Gson();
   private static Database db;
+  private RunningHours hours;
 //  private Map<String, Queue> onHoursQueue;
   /**
    * This is te constructor for this class.
    * @param db
    */
-  public AllHandlers(Database db) {
+  public AllHandlers(Database db, RunningHours hours) {
 //    onHoursQueue = new HashMap<String, Queue>();
     AllHandlers.db = db;
+    this.hours = hours;
     runSparkServer();
   }
   // /**
@@ -69,7 +72,7 @@ public class AllHandlers {
     AccountHandler accountHandler = new AccountHandler(db);
     StudentHandler studentHandler = new StudentHandler(db);
     TAHandler taHandler = new TAHandler(db);
-    QueueHandler queueHandler = new QueueHandler(db); 
+    QueueHandler queueHandler = new QueueHandler(db, hours); 
     Spark.get("/home", new FrontHandler(), new FreeMarkerEngine());
 //    Spark.get("/classes/:login", new CourseHandler(), new FreeMarkerEngine());
 //    Spark.get("/addCourses/:login", new AddCourseHandler(),
@@ -112,6 +115,69 @@ public class AllHandlers {
       return new ModelAndView(variables, "landingPage.html");
     }
   }
+  
+  
+  /**
+   * This class handles the insertion of assessment items into the database
+   * during class setup.
+   * @author omadarik
+   */
+  private static class AssessmentHandler implements Route {
+    private String tableName;
+    private AssessmentHandler(String tableName) {
+      this.tableName = tableName;
+    }
+    @Override
+    public Object handle(Request req, Response res) {
+      JSONParser parser = new JSONParser();
+      try {
+        JSONArray assArray = (JSONArray) parser.parse(req.body());
+        JSONObject success = new JSONObject();
+        success.put("success", 1);
+        for (int i = 0; i < assArray.size(); i++) {
+          JSONObject toInsert = (JSONObject) assArray.get(i);
+          String assName = (String) toInsert.get("name");
+          Date start = (Date) toInsert.get("start");
+          Date end = (Date) toInsert.get("end");
+          String courseId = (String) toInsert.get("course");
+          db.addAssessmentItem(tableName, assName, start, end, courseId);
+          Map<String, Object> variables =
+              new ImmutableMap.Builder<String, Object>()
+                  .put("success", success).build();
+          // In the event of some error, null will be returned
+          return GSON.toJson(variables);
+        }
+      } catch (SQLException | ParseException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
+      return null;
+    }
+  }
+  
+  /**
+   * This class prints out errors if the spark server fails.
+   * @author kb25
+   */
+  private static class ExceptionPrinter implements ExceptionHandler {
+    @Override
+    /**
+     * This method prints the proper errors upon failure.
+     */
+    public void handle(Exception e, Request req, Response res) {
+      res.status(500);
+      StringWriter stacktrace = new StringWriter();
+      try (PrintWriter pw = new PrintWriter(stacktrace)) {
+        pw.println("<pre>");
+        e.printStackTrace(pw);
+        pw.println("</pre>");
+      }
+      res.body(stacktrace.toString());
+    }
+  }
+  
+  
+  
 //  /**
 //   * This is the sign up handler that deals with creating a new user. From here,
 //   * the user will be directed to a list of their courses.
@@ -426,45 +492,7 @@ public class AllHandlers {
 //    }
 //  }
   
-  
-  
-  /**
-   * This class handles the insertion of assessment items into the database
-   * during class setup.
-   * @author omadarik
-   */
-  private static class AssessmentHandler implements Route {
-    private String tableName;
-    private AssessmentHandler(String tableName) {
-      this.tableName = tableName;
-    }
-    @Override
-    public Object handle(Request req, Response res) {
-      JSONParser parser = new JSONParser();
-      try {
-        JSONArray assArray = (JSONArray) parser.parse(req.body());
-        JSONObject success = new JSONObject();
-        success.put("success", 1);
-        for (int i = 0; i < assArray.size(); i++) {
-          JSONObject toInsert = (JSONObject) assArray.get(i);
-          String assName = (String) toInsert.get("name");
-          Date start = (Date) toInsert.get("start");
-          Date end = (Date) toInsert.get("end");
-          String courseId = (String) toInsert.get("course");
-          db.addAssessmentItem(tableName, assName, start, end, courseId);
-          Map<String, Object> variables =
-              new ImmutableMap.Builder<String, Object>()
-                  .put("success", success).build();
-          // In the event of some error, null will be returned
-          return GSON.toJson(variables);
-        }
-      } catch (SQLException | ParseException e) {
-        System.out.println("ERROR: "
-            + e.getMessage());
-      }
-      return null;
-    }
-  }
+
 
 //  /**
 //   * This class is where I add courses to the database.
@@ -644,24 +672,4 @@ public class AllHandlers {
   // return null;
   // }
   // }
-  /**
-   * This class prints out errors if the spark server fails.
-   * @author kb25
-   */
-  private static class ExceptionPrinter implements ExceptionHandler {
-    @Override
-    /**
-     * This method prints the proper errors upon failure.
-     */
-    public void handle(Exception e, Request req, Response res) {
-      res.status(500);
-      StringWriter stacktrace = new StringWriter();
-      try (PrintWriter pw = new PrintWriter(stacktrace)) {
-        pw.println("<pre>");
-        e.printStackTrace(pw);
-        pw.println("</pre>");
-      }
-      res.body(stacktrace.toString());
-    }
-  }
 }

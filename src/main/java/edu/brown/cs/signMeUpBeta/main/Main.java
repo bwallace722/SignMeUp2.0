@@ -46,8 +46,8 @@ public class Main {
       String dbPath = params.get(0);
       
       Database db = new Database(dbPath);
-      
-      AllHandlers gui = new AllHandlers(db);
+      RunningHours hours = new RunningHours();
+      AllHandlers gui = new AllHandlers(db, hours);
       
     } else {
       System.out.println("ERROR: database path not found.");

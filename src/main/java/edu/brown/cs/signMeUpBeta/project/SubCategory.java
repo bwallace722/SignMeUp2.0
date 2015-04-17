@@ -3,8 +3,8 @@ package edu.brown.cs.signMeUpBeta.project;
 import java.util.List;
 
 public interface SubCategory {
-  List<String> questions();
-  void setQuestions();
+  String question();
+  void setQuestion();
   String name();
   void getName();
 }

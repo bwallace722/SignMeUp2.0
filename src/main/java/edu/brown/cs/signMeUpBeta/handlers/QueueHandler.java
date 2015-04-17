@@ -10,7 +10,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
+import edu.brown.cs.signMeUpBeta.main.RunningHours;
 import edu.brown.cs.signMeUpBeta.onhours.Queue;
+import edu.brown.cs.signMeUpBeta.student.Account;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
@@ -24,10 +26,10 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class QueueHandler {
   private static final Gson GSON = new Gson();
   private static Database db;
-  private Map<String, Queue> onHoursQueue;
-  public QueueHandler(Database db) {
+  private RunningHours hours;
+  public QueueHandler(Database db, RunningHours hours) {
     QueueHandler.db = db;
-    onHoursQueue = new HashMap<String, Queue>();
+    this.hours = hours;
     runSpark();
   }
   public void runSpark() {
@@ -55,9 +57,16 @@ public class QueueHandler {
       // are we being passed the student's password too? I'll need it to get
       // their account
       int toReturn = 0;
-      if (!onHoursQueue.containsKey(course)) {
-        onHoursQueue.put(course, new Queue());
+      
+      Queue queue = hours.getQueueForCourse(course);
+
+      Account account = db.getAccount(login);
+      // TODO: Calculate and set student priority field;
+      account.setPriority(1);
+      if (queue == null) {
+        //FUCK
       }
+<<<<<<< HEAD
       Queue q = onHoursQueue.get(course);
       // TODO: KIERAN, THINK...
       // Also doesn't it make more sense to include some sort of priority when
@@ -70,6 +79,9 @@ public class QueueHandler {
         System.out.println("ERROR: "
             + e.getMessage());
       }
+=======
+      queue.add(db.getAccount(login));
+>>>>>>> 19f51f4057bcd0a9c604dbea5cebb001a0cab029
       toReturn = 1;
       return toReturn;
     }
@@ -85,19 +97,20 @@ public class QueueHandler {
       String course = qm.value("course");
       String login = qm.value("login");
       int toReturn = 0;
-      Queue q;
-      if (onHoursQueue.containsKey(course)) {
-        q = onHoursQueue.get(course);
-      } else {
-        onHoursQueue.put(course, new Queue());
-        q = onHoursQueue.get(course);
+      Queue queue = hours.getQueueForCourse(course);
+      if (queue == null) {
+        
       }
+<<<<<<< HEAD
       try {
         q.add(db.getAccount(login));
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
       }
+=======
+      queue.add(db.getAccount(login));
+>>>>>>> 19f51f4057bcd0a9c604dbea5cebb001a0cab029
       toReturn = 1;
       // TODO what is the success and fail markers?
       return toReturn;
