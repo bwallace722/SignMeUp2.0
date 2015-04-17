@@ -46,7 +46,7 @@ public class AccountHandler {
     Spark.post("/signUp", new AccountSetupHandler());
     Spark.post("/login", new AccountLoginHandler());
     Spark.post("/updateCourse/:login", new UpdateCourseHandler());
-    Spark.get("/classes/:login", new CourseHandler(), new FreeMarkerEngine());
+    Spark.get("/courses/:login", new CourseHandler(), new FreeMarkerEngine());
     Spark.get("/addCourses/:login", new AddCourseHandler(),
         new FreeMarkerEngine());
   }
@@ -155,7 +155,7 @@ public class AccountHandler {
            + e.getMessage());
      }
   
-     return loggedIn;
+     return loggedIn.login();
    }
   }
   

@@ -61,13 +61,20 @@ function signUp() {
 }
 
 function logIn() {
-	//TODO
-	
-
 	var login = document.getElementById("loginLogIn").value;
-	var password = document.getElementById("name").value;
+	var password = document.getElementById("passwordLogIn").value;
 	console.log(login + " , " + password);
-	var postParameters = {}
+	var postParameters = {"login": login, "password": password,};
+	$.post("/login", postParameters, function(responseJSON) {
+		console.log(responseJSON);
+		if(responseJSON == login) {
+			console.log(url);
+			var url = "/courses/" + login;
+			window.location.href=url;
+		} else {
+			console.log("problems");
+		}
+	});
 }
 
 
