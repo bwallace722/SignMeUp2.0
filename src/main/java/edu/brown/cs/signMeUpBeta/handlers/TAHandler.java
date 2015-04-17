@@ -122,6 +122,7 @@ public class TAHandler {
       Hours hours =
           runningHours.getHoursForCourse(courseId);
       List<Question> questions = null;
+      System.out.println(courseId + " - now");
       if(hours != null) {
         questions = hours.getQuestions();
       }
