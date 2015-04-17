@@ -2,6 +2,7 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
@@ -10,6 +11,7 @@ import com.google.gson.Gson;
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.main.RunningHours;
 import edu.brown.cs.signMeUpBeta.onhours.Queue;
+import edu.brown.cs.signMeUpBeta.project.Question;
 import edu.brown.cs.signMeUpBeta.student.Account;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
@@ -155,15 +157,11 @@ public class QueueHandler {
       System.out.println(courseAndUserId);
       String courseId = reqParams[0];
       String login = reqParams[1];
-      // TODO send over all of the assignments, questions and subquestions
-      String questions = ""; // to be sent as JSON array?
-      // is it possible to send this with html tags?
-      String assignment = ""; // string, or JSON object?
-      String subQuestions = ""; // JSON array?
+      List<Question> questions =
+          runningHours.getHoursForCourse(courseId).getQuestions();
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("login", login).put("assignment", assignment).put(
-              "questions", questions).put("subQuestions", subQuestions).build();
+              courseId).put("login", login).put("questions", questions).build();
       return new ModelAndView(variables, "signUpForHours.html");
     }
   }
