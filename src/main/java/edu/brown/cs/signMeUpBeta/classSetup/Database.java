@@ -8,7 +8,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import edu.brown.cs.signMeUpBeta.student.Account;
 
@@ -18,6 +20,7 @@ import edu.brown.cs.signMeUpBeta.student.Account;
  */
 public class Database {
   private Connection conn;
+  private Map<String, Account> allAccounts;
   /**
    * This is the constructor for this class.
    * @param db - the path to the database file used in this project.
@@ -33,6 +36,7 @@ public class Database {
     Statement stat = conn.createStatement();
     stat.executeUpdate("PRAGMA foreign_keys = ON;");
     stat.close();
+    allAccounts = new HashMap<String, Account>();
   }
   /**
    * This method returns all the classes taken by a student in the learner role.
@@ -168,10 +172,9 @@ public class Database {
    * @param endDate - the date this project is due
    * @throws SQLException - when there is an SQL error
    */
-  public Account addAccount(String login, String name,
-      String email, String password) throws SQLException {
-    
-    // Write into  
+  public Account addAccount(String login, String name, String email,
+      String password) throws SQLException {
+    // Write into
     String query = "INSERT INTO account VALUES (?,?,?,?,?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
@@ -184,8 +187,10 @@ public class Database {
     ps.setString(8, "");
     ps.executeUpdate();
     ps.close();
-    
-    Account account = new Account(login, name, email, password, 0, 0, 0, new ArrayList<String>(), new ArrayList<String>());
+    Account account =
+        new Account(login, name, email, password, 0, 0, 0,
+            new ArrayList<String>(), new ArrayList<String>());
+    allAccounts.put(login, account);
     return account;
   }
   // /**
@@ -223,7 +228,7 @@ public class Database {
   public void updateAccount(String studentLogin, int timeAtHours,
       int timeOnProject, int questionsAsked) throws SQLException {
     String update =
-        "UPDATE acount SET time_spent_at_hours=?, time_spent_curr_project=?, questions_asked=? WHERE login=?;";
+        "UPDATE account SET time_spent_at_hours=?, time_spent_curr_project=?, questions_asked=? WHERE login=?;";
     PreparedStatement ps = conn.prepareStatement(update);
     ps.setInt(1, timeAtHours);
     ps.setInt(2, timeOnProject);
@@ -231,6 +236,51 @@ public class Database {
     ps.setString(4, studentLogin);
     ps.executeUpdate();
     ps.close();
+    Account student = allAccounts.get(studentLogin);
+    // student.s
+  }
+  public Account getAccount(String login) {
+    String query = "SELECT * FROM account WHERE login = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, login);
+    ResultSet rs = ps.executeQuery();
+    String name, email;
+    int timeOnHours, timeCurrProject, numQuestions;
+    if (rs.next()) {
+      name = rs.getString(2);
+      email = rs.getString(3);
+      timeOnHours = rs.getInt(5);
+      timeCurrProject = rs.getInt(6);
+      numQuestions = rs.getInt(7);
+    } else {
+      return null;
+    }
+    ps.close();
+    rs.close();
+    query = "SELECT course_id FROM student_course WHERE student_id = ?";
+    ps = conn.prepareStatement(query);
+    ps.setString(1, login);
+    rs = ps.executeQuery();
+    List<String> enrolledCourses = new ArrayList<String>();
+    if (rs.next()) {
+      enrolledCourses.add(rs.getString(1));
+    }
+    ps.close();
+    rs.close();
+    query = "SELECT course_id FROM ta_course WHERE ta_id = ?";
+    ps = conn.prepareStatement(query);
+    ps.setString(1, login);
+    rs = ps.executeQuery();
+    List<String> TACourses = new ArrayList<String>();
+    if (rs.next()) {
+      TACourses.add(rs.getString(1));
+    }
+    ps.close();
+    rs.close();
+    Account account =
+        new Account(login, name, email, password, timeOnHours, timeCurrProject,
+            numQuestions, enrolledCourses, TACourses);
+    return account;
   }
   /**
    * This method checks the input credentials and returns a student object if
@@ -240,10 +290,9 @@ public class Database {
    * @return
    * @throws SQLException
    */
-  public Account getAccountByLogin(String login, String password)
+  public Account approveCredentials(String login, String password)
       throws SQLException {
-    String query =
-        "SELECT * FROM account WHERE login = ? AND password = ?;";
+    String query = "SELECT * FROM account WHERE login = ? AND password = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
     ps.setString(2, password);
@@ -261,7 +310,6 @@ public class Database {
     }
     ps.close();
     rs.close();
-    
     query = "SELECT course_id FROM student_course WHERE student_id = ?";
     ps = conn.prepareStatement(query);
     ps.setString(1, login);
@@ -272,7 +320,6 @@ public class Database {
     }
     ps.close();
     rs.close();
-    
     query = "SELECT course_id FROM ta_course WHERE ta_id = ?";
     ps = conn.prepareStatement(query);
     ps.setString(1, login);
@@ -283,12 +330,11 @@ public class Database {
     }
     ps.close();
     rs.close();
-    
-    Account account = new Account(login, name, email, password, timeOnHours,
-        timeCurrProject, numQuestions, enrolledCourses, TACourses);
+    Account account =
+        new Account(login, name, email, password, timeOnHours, timeCurrProject,
+            numQuestions, enrolledCourses, TACourses);
     return account;
   }
-  
   // /**
   // * This method checks the input credentials and returns a student object if
   // * the credentials are approved.
@@ -331,6 +377,8 @@ public class Database {
   // schema =
   // "CREATE TABLE questions(assessment_item_name TEXT, question_section TEXT, question TEXT, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
   //
-  // schema = "CREATE TABLE student_course(student_id TEXT, course_id TEXT, FOREIGN KEY(student_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));";
-  // schema = "CREATE TABLE ta_course(ta_id TEXT, course_id TEXT, FOREIGN KEY(ta_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));";
+  // schema =
+  // "CREATE TABLE student_course(student_id TEXT, course_id TEXT, FOREIGN KEY(student_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));";
+  // schema =
+  // "CREATE TABLE ta_course(ta_id TEXT, course_id TEXT, FOREIGN KEY(ta_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));";
 }

@@ -1,26 +1,27 @@
 package edu.brown.cs.signMeUpBeta.student;
 
-import java.util.ArrayList;
 import java.util.List;
 
-import edu.brown.cs.signMeUpBeta.project.Question;
-
 public class Account {
-
   private String login;
   private String password;
   private String name;
   private String email;
-  //private int phone;
   private List<String> enrolledCourses;
   private List<String> TACourses;
   private int numQuestions;
   private int timeOnHours;
   private int timeCurrProject;
-  
-  public Account(String login, String name, String email, String password,
-      int timeOnHours, int timeCurrProject, int numQuestions, List<String> enrolledCourses, List<String> TACourses) {
-//public Account(String login, String name, String email, String password) {
+  public Account(
+      String login,
+      String name,
+      String email,
+      String password,
+      int timeOnHours,
+      int timeCurrProject,
+      int numQuestions,
+      List<String> enrolledCourses,
+      List<String> TACourses) {
     this.login = login;
     this.name = name;
     this.password = password;
@@ -30,95 +31,62 @@ public class Account {
     this.enrolledCourses = enrolledCourses;
     this.TACourses = TACourses;
   }
-
-  public String login() {
+  public String getLogin() {
     return login;
   }
-  
-  public void setID(String newLogin) {
+  public void setLogin(String newLogin) {
     login = newLogin;
   }
-  
-  public String password() {
+  public String getPassword() {
     return password;
   }
-  
   public void setPassword(String newPassword) {
     password = newPassword;
   }
-  
-  public String name() {
+  public String getName() {
     return name;
   }
-  
   public void setName(String newName) {
     name = newName;
   }
-  
-  public String email() {
+  public String getEmail() {
     return email;
   }
-  
   public void setEmail(String newEmail) {
     email = newEmail;
   }
-  
-//  public int phone() {
-//    return phone;
-//  }
-//  
-//  public void setPhone(int newPhone) {
-//    phone = newPhone;
-//  }
-  
-  public List<String> enrolledCourses() {
+  public List<String> getEnrolledCourses() {
     return enrolledCourses;
   }
-  
   public void addEnrolledCourse(String courseID) {
     enrolledCourses.add(courseID);
   }
-  
   public void setEnrolledCourses(List<String> newCourseList) {
     enrolledCourses = newCourseList;
   }
-  
-  public List<String> TACourses() {
+  public List<String> getTACourses() {
     return TACourses;
   }
-  
   public void addTACourse(String courseID) {
     TACourses.add(courseID);
   }
-  
   public void setTACourses(List<String> newCourseList) {
     TACourses = newCourseList;
   }
-  
-  public int questionsAsked() {
+  public int getQuestionsAsked() {
     return numQuestions;
   }
-  
-  public void incrementQuestions() {
+  public void incrementQuestionsAsked() {
     numQuestions++;
   }
-  
-  public double timeOnHours() {
+  public double getTimeOnHours() {
     return timeOnHours;
   }
-  
   public void addTime(double timeToAdd) {
     timeOnHours += timeToAdd;
     timeCurrProject += timeToAdd;
   }
-  
-  public double timeOnCurrentProject() {
+  public double getTimeOnCurrentProject() {
     return timeCurrProject;
   }
-  
-//  public String contactMethod() {
-//    return null;
-//  }
-//  
-//  public void setContactMethod() {}
 }
