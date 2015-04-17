@@ -47,3 +47,7 @@ $(".hoursSignUp").bind('click', function(h) {
 	window.location.href= url;
 });
 
+
+function makeAppointment() {
+	
+}
