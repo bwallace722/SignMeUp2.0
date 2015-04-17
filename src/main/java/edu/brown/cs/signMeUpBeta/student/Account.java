@@ -12,6 +12,7 @@ public class Account {
   private int numQuestions;
   private int timeAtHours;
   private int timeCurrProject;
+  private double priority;
   public Account(
       String login,
       String name,
@@ -30,6 +31,7 @@ public class Account {
     this.numQuestions = numQuestions;
     this.enrolledCourses = enrolledCourses;
     this.TACourses = TACourses;
+    priority = 0; //FIXXXXX
   }
   public String getLogin() {
     return login;
@@ -97,5 +99,11 @@ public class Account {
   }
   public void setTimeOnCurrentProject(int timeCurrProject) {
     this.timeCurrProject = timeCurrProject;
+  }
+  public void setPriority(double priority) {
+    this.priority = priority;
+  }
+  public double priority() {
+    return priority;
   }
 }
