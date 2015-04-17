@@ -47,6 +47,9 @@ public class RunningHours {
   }
   
   public Hours getHoursForCourse(String courseID) {
+    if(hours.get(courseID) == null) {
+      return null;
+    }
     return hours.get(courseID);
   }
 

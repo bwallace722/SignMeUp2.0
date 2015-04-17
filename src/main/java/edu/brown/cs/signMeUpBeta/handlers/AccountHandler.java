@@ -49,24 +49,28 @@ public class AccountHandler {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String login = req.params(":login");
-      List<Object> classList = new ArrayList<Object>();
+      List<List<String>> classList = new ArrayList<List<String>>();
       try {
+
         List<String> studentClasses = db.getStudentClasses(login);
         List<String> taClasses = db.getTAClasses(login);
-        for (String tClass : taClasses) {
-          JSONObject taIn = new JSONObject();
-          taIn.put("class", tClass);
-          taIn.put("role", "TA");
-          classList.add(taIn);
-        }
-        for (String sClass : studentClasses) {
-          JSONObject studentIn = new JSONObject();
-          studentIn.put("class", sClass);
-          studentIn.put("role", "Student");
-          classList.add(studentIn);
-        }
+        classList.add(taClasses);
+        classList.add(studentClasses);
+//        for (String tClass : taClasses) {
+//          JSONObject taIn = new JSONObject();
+//          taIn.put("class", tClass);
+//          taIn.put("role", "TA");
+//          classList.add(taIn);
+//        }
+
+//        for (String sClass : studentClasses) {
+//          JSONObject studentIn = new JSONObject();
+//          studentIn.put("class", sClass);
+//          studentIn.put("role", "Student");
+//          classList.add(studentIn);
+//        }
         Map<String, Object> variables =
-            new ImmutableMap.Builder().put("user_class_list", classList).put(
+            new ImmutableMap.Builder().put("userclasslist", classList).put(
                 "title", "SignMeUp 2.0").put("user", login).build();
         return new ModelAndView(variables, "myClasses.html");
       } catch (SQLException e) {
@@ -173,6 +177,8 @@ public class AccountHandler {
         System.out.println(login
             + " - was added");
         user = db.getAccount(login);
+        System.out.println(login
+            + " - was found in db");
         /*
          * Adding the courses taken by a student to the database.
          */

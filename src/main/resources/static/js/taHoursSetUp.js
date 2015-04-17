@@ -21,7 +21,7 @@ function addQuestion() {
 	var newQuestion = document.getElementById("newQuestion").value;
 
 	var postUrl = "/addQuestionForHours/" + courseId;
-	var postParameters {"newQuestion", newQuestion};
+	var postParameters = {"newQuestion": newQuestion};
 	$.post(postUrl, postParameters, function(responseJSON) {
 		if(responseJSON == 1) {
 			alert("we've added your question");

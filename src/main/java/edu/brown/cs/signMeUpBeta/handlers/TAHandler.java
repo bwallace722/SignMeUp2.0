@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.main.RunningHours;
+import edu.brown.cs.signMeUpBeta.onhours.Hours;
 import edu.brown.cs.signMeUpBeta.onhours.Queue;
 import edu.brown.cs.signMeUpBeta.project.Question;
 import spark.ExceptionHandler;
@@ -117,8 +118,14 @@ public class TAHandler {
       //list of popular questions, list of clinic suggestions.
 
       Queue courseQueue = runningHours.getQueueForCourse(courseId);
-      List<Question> questions =
-          runningHours.getHoursForCourse(courseId).getQuestions();
+      System.out.println(courseId + " - id");
+      Hours hours =
+          runningHours.getHoursForCourse(courseId);
+      List<Question> questions = null;
+      if(hours != null) {
+        questions = hours.getQuestions();
+      }
+      System.out.println(courseId + " here");
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("queue", courseQueue).put("questions", questions)
