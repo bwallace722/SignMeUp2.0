@@ -38,10 +38,17 @@ function signUp() {
 		var postParameters = {"name": name, "login": login,
 				"email":email, "password": password, "confirm_password": confirm};
 		console.log(postParameters);
-		$.post("/signUp", postParameters);
-		var url = "/addCourses/" + login;
-		console.log(url);
-		window.location.href=url;
+		$.post("/signUp", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+			if(responseJSON == login) {
+				var url = "/addCourses/" + login;
+				console.log(url);
+				window.location.href=url;
+			} else {
+				console.log("problems");
+			}
+		});
+
 //		$.get(url, function(response) {
 //			console.log(response);
 //			response.redirect(url);
@@ -51,6 +58,16 @@ function signUp() {
 		alert("make sure your passwords match!");
 	}
 
+}
+
+function logIn() {
+	//TODO
+	
+
+	var login = document.getElementById("loginLogIn").value;
+	var password = document.getElementById("name").value;
+	console.log(login + " , " + password);
+	var postParameters = {}
 }
 
 
