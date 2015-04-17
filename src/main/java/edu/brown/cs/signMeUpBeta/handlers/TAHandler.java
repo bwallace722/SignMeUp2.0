@@ -81,8 +81,9 @@ public class TAHandler {
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
+        return 0;
       }
-      return null;
+      return 1;
     }
   }
   /**
@@ -150,9 +151,9 @@ public class TAHandler {
       Question questionObject;
       try {
         questionObject = db.addQuestion(assessmentName, question, courseId);
-        // TODO KIERAN
       } catch (SQLException e) {
         System.out.println("ERROR: sql exception in adding question");
+        return 0;
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",

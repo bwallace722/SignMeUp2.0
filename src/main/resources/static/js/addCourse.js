@@ -20,7 +20,8 @@ function signUp() {
 			window.location.href="/courses/" + login;
 		}
 	});
-	
-	
-	
+}
+
+function createCourse() {
+	window.location.href="/createCourse";
 }
