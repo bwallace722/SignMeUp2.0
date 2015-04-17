@@ -130,8 +130,8 @@ public class TAHandler {
       QueryParamsMap qm = req.queryMap();
       String newQuestion = qm.value("newQuestion");
       System.out.println(courseId);
-      //send list of students on queue
-      //send list of added students on queue? whichever is faster/better
+      //TODO use new question and add to set of questions for the hours.
+      //TODO send confirmation marker.
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).build();
