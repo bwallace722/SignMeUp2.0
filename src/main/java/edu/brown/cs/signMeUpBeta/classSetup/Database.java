@@ -172,7 +172,7 @@ public class Database {
       String email, String password) throws SQLException {
     
     // Write into  
-    String query = "INSERT INTO account VALUES (?,?,?,?,?,?,?);";
+    String query = "INSERT INTO account VALUES (?,?,?,?,?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
     ps.setString(2, name);
