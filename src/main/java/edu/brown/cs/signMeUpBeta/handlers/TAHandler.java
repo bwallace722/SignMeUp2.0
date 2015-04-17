@@ -44,8 +44,20 @@ public class TAHandler {
         new FreeMarkerEngine());
     Spark.get("/courseSetUp/:courseId", new TACourseSetUpHandler(),
         new FreeMarkerEngine());
-    Spark.post("", new AddCourseToDatabase());
+    Spark.post("/addCourse/:courseId", new AddCourseToDatabase());
+    Spark.get("/createCourse", new CreateCourseHandler(), new FreeMarkerEngine());
   }
+  
+  private class CreateCourseHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
+      return new ModelAndView(variables, "taCreateClass.html");
+    }
+  }
+  
+  
   private class TAHoursSetUpHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
@@ -57,6 +69,7 @@ public class TAHandler {
       return new ModelAndView(variables, "taHoursSetUp.html");
     }
   }
+  
   private class AddCourseToDatabase implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -98,6 +111,10 @@ public class TAHandler {
       String courseId = req.params(":courseId");
       System.out.println(courseId);
       // initially sends the queue.
+
+      //to be sent: list of students in the queue, list of current questions,
+      //list of popular questions, list of clinic suggestions.
+
       Queue courseQueue = runningHours.getQueueForCourse(courseId);
       List<Question> questions =
           runningHours.getHoursForCourse(courseId).getQuestions();
