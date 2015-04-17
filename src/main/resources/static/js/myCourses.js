@@ -3,8 +3,7 @@
 var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 var user = splitURL[splitURL.length -1];
-//go through student's courses and display
-var user = document.getElementById("user").innerHTML;
+console.log(user);
 
 $(".clickable-row").bind('click', function(e) {
 	var cells = this.getElementsByTagName('td');
@@ -18,8 +17,7 @@ $(".clickable-row").bind('click', function(e) {
 	} else {
 		user = user.trim();
 		//add course id and user's login to url.
-		url = "/welcomeStudent/" + courseID + "?" + user;
-
+		url = "/studentLanding/" + courseID + "~" + user;
 		console.log(url);
 	}
 	window.location.href=url;

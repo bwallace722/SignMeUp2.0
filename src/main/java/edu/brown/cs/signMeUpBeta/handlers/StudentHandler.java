@@ -46,7 +46,7 @@ public class StudentHandler {
 //    Spark.externalStaticFileLocation("src/main/resources/static");
 //    Spark.exception(Exception.class, new ExceptionPrinter());
     Spark.post("/callStudent/:login", new CallStudentToHours());
-    Spark.get("/studentLanding/:courseId", new StudentCoursePageHandler(),
+    Spark.get("/studentLanding/:courseAndUserId", new StudentCoursePageHandler(),
         new FreeMarkerEngine());
     Spark.post("/checkcallStatus", new StudentCheckCallStatus());
   }
@@ -109,8 +109,9 @@ public class StudentHandler {
    @Override
    public ModelAndView handle(final Request req, final Response res) {
      String courseAndUserId = req.params(":courseAndUserId");
-     String[] reqParams = courseAndUserId.split("?");
      System.out.println(courseAndUserId);
+     String[] reqParams = courseAndUserId.split("~");
+//     System.out.println(courseAndUserId);
      String courseId = reqParams[0];
      String login = reqParams[1];
      
