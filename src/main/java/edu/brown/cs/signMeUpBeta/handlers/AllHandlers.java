@@ -62,7 +62,7 @@ public class AllHandlers {
   // return new FreeMarkerEngine(config);
   // }
   private void runSparkServer() {
-    Spark.setPort(4567);
+    Spark.setPort(4455);
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
     // FreeMarkerEngine freeMarker = createEngine();
