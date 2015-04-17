@@ -16,6 +16,7 @@ $(".clickable-row").bind('click', function(e) {
 		url = "/taHoursSetUp/" + courseID;
 		console.log(url);
 	} else {
+		user = user.trim();
 		//add course id and user's login to url.
 		url = "/welcomeStudent/" + courseID + "?" + user;
 

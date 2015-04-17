@@ -12,7 +12,7 @@ function signUp() {
 	console.log(role);
 	
 	var postParameters = {"course": courseSelected, "role": role };
-	var url = "/updateCourse/" + user;
+	var url = "/updateCourse/" + login;
 	console.log(url);
 	$.post(url, postParameters, function(responseJSON) {
 		console.log(responseJSON);
