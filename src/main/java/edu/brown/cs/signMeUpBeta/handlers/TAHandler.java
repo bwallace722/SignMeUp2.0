@@ -44,7 +44,20 @@ public class TAHandler {
         new FreeMarkerEngine());
     Spark.get("/courseSetUp/:courseId", new TACourseSetUpHandler(),
         new FreeMarkerEngine());
+    Spark.post("/addCourse/:courseId", new AddCourseToDatabase());
+    Spark.get("/createCourse", new CreateCourseHandler(), new FreeMarkerEngine());
   }
+  
+  private class CreateCourseHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
+      return new ModelAndView(variables, "taCreateClass.html");
+    }
+  }
+  
+  
   private class TAHoursSetUpHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
@@ -56,13 +69,10 @@ public class TAHandler {
       return new ModelAndView(variables, "taHoursSetUp.html");
     }
   }
-  /**
-   * This is the TA Course Set Up handler.
-   * @author kj13
-   */
-  private class TACourseSetUpHandler implements TemplateViewRoute {
+  
+  private class AddCourseToDatabase implements Route {
     @Override
-    public ModelAndView handle(final Request req, final Response res) {
+    public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
       QueryParamsMap qm = req.queryMap();
       String courseName = qm.value("name");
@@ -72,6 +82,18 @@ public class TAHandler {
         System.out.println("ERROR: "
             + e.getMessage());
       }
+      return null;
+    }
+  }
+  /**
+   * This is the TA Course Set Up handler.
+   * @author kj13
+   */
+  private class TACourseSetUpHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      String courseId = req.params(":courseId");
+      QueryParamsMap qm = req.queryMap();
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).build();
@@ -89,6 +111,10 @@ public class TAHandler {
       String courseId = req.params(":courseId");
       System.out.println(courseId);
       // initially sends the queue.
+
+      //to be sent: list of students in the queue, list of current questions,
+      //list of popular questions, list of clinic suggestions.
+
       Queue courseQueue = runningHours.getQueueForCourse(courseId);
       List<Question> questions =
           runningHours.getHoursForCourse(courseId).getQuestions();
@@ -126,7 +152,6 @@ public class TAHandler {
       try {
         questionObject = db.addQuestion(assessmentName, question, courseId);
 //        runningHours.getHoursForCourse(courseId);
-        
         
       } catch (SQLException e) {
         System.out.println("ERROR: sql exception in adding question");

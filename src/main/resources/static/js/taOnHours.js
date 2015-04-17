@@ -5,26 +5,29 @@ var courseId = splitURL[splitURL.length -1];
 console.log("here");
 
 $(".studentOnQueue").bind('click', function(s) {
-	console.log("hi");
+	console.log("hi");	
+	var text = $(this).text();
 
 prompt("Please enter a message to call the student to hours", "You're up for hours!");
 //when prompt is gone, save message
-	var text = $(this).text();
+
 	var message;
-	console.log(text);
+	var text = text.trim();
+	var textList = text.split(" ");
+	var login = text.split(" ")[textList.length - 1];
+	console.log(login);
 	
 	//TODO: find some way of parsing studentlogin from the div
 	//that was clicked.
-	var studentLogin = "";
-	var postParameters = {"course": courseId, 
-			"studentLogin": studentLogin, 
+	var url = "/callStudent/" + courseId;
+	var postParameters = {"studentLogin": login, 
 			"message": message};
-	$.post("/callStudent", postParameters, function(responseJSON) {
+	$.post(url, postParameters, function(responseJSON) {
 		//confirmation message
 		if(responseJSON) {
-			alert(studentLogin + " has been called to hours");
+			alert(login + " has been called to hours");
 		} else {
-			alert(studentLogin + " cannot be reached. Maybe they signed out");
+			alert(login + " cannot be reached. Maybe they signed out");
 		}
 	});
 	
@@ -32,14 +35,20 @@ prompt("Please enter a message to call the student to hours", "You're up for hou
 });
 
 //updates the queue every 10 seconds.
-setInterval(updateQueue(), 10000);
+//setInterval(updateQueue(), 1000);
 
-//once hours are on, update queue should run on an interval.
-function updateQueue() {
+setInterval(function(t) {
+	console.log("running");
  	var postUrl = "/updateQueue/" + courseId;
 	$.post(postUrl, function(responseJSON) {
 		console.log(responseJSON + " - updateQueue");
 		//redisplay queue
 		//div class="queue" should be updated.
 	});
-}
+
+}, 4000);
+
+////once hours are on, update queue should run on an interval.
+//function updateQueue() {
+//
+//}

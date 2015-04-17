@@ -2,8 +2,7 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.SQLException;
-import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
@@ -12,6 +11,7 @@ import com.google.gson.Gson;
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.main.RunningHours;
 import edu.brown.cs.signMeUpBeta.onhours.Queue;
+import edu.brown.cs.signMeUpBeta.project.Question;
 import edu.brown.cs.signMeUpBeta.student.Account;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
@@ -43,6 +43,7 @@ public class QueueHandler {
     Spark.post("/addStudentToQueue", new AddStudentToQueue());
     Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
     Spark.post("/updateQueue/:courseId", new UpdateQueueHandler());
+    Spark.post("/callStudent/:courseId", new CallStudentToHours());
   }
   /**
    * This class handles the adding of lab check offs to the queue.
@@ -57,7 +58,6 @@ public class QueueHandler {
       // are we being passed the student's password too? I'll need it to get
       // their account
       int toReturn = 0;
-      
       Queue queue = runningHours.getQueueForCourse(course);
       Account account;
       try {
@@ -69,13 +69,32 @@ public class QueueHandler {
       // TODO: Calculate and set student priority field;
       account.setPriority(1);
       if (queue == null) {
-        //FUCK
+        // FUCK
       }
-
       queue.add(account);
-
       toReturn = 1;
       return toReturn;
+    }
+  }
+  /*
+   * This handler will be used to call the student to hours. Here, the student's
+   * call status will be updated.
+   * @author kj13
+   */
+  private class CallStudentToHours implements Route {
+    @Override
+    public Object handle(final Request req, final Response res) {
+      String courseId = req.params(":courseId");
+      System.out.println(courseId);
+      QueryParamsMap qm = req.queryMap();
+      String studentLogin = qm.value("studentLogin");
+      String message = qm.value("message");
+      // CALL STUDENT TO HOURS
+      // NEED WAY TO ALERT STUDENT
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+              courseId).build();
+      return null;
     }
   }
   /**
@@ -99,14 +118,10 @@ public class QueueHandler {
       }
       // TODO: Calculate and set student priority field;
       account.setPriority(1);
-      
-      
       if (queue == null) {
-        //FUCK
+        // FUCK
       }
-
       queue.add(account);
-
       toReturn = 1;
       // TODO what is the success and fail markers?
       return toReturn;
@@ -118,11 +133,10 @@ public class QueueHandler {
       String courseId = req.params(":courseId");
       System.out.println(courseId
           + " updating queue");
-      // send list of students on queue
-      // send list of added students on queue? whichever is faster/better
+      Queue currentQueue = runningHours.getQueueForCourse(courseId);
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).build();
+              courseId).put("queue", currentQueue).build();
       return 1;
     }
   }
@@ -166,15 +180,11 @@ public class QueueHandler {
       System.out.println(courseAndUserId);
       String courseId = reqParams[0];
       String login = reqParams[1];
-      // TODO send over all of the assignments, questions and subquestions
-      String questions = ""; // to be sent as JSON array?
-      // is it possible to send this with html tags?
-      String assignment = ""; // string, or JSON object?
-      String subQuestions = ""; // JSON array?
+      List<Question> questions =
+          runningHours.getHoursForCourse(courseId).getQuestions();
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("login", login).put("assignment", assignment).put(
-              "questions", questions).put("subQuestions", subQuestions).build();
+              courseId).put("login", login).put("questions", questions).build();
       return new ModelAndView(variables, "signUpForHours.html");
     }
   }

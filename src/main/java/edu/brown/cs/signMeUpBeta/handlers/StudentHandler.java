@@ -45,30 +45,12 @@ public class StudentHandler {
 //    Spark.setPort(4567);
 //    Spark.externalStaticFileLocation("src/main/resources/static");
 //    Spark.exception(Exception.class, new ExceptionPrinter());
-    Spark.post("/callStudent/:login", new CallStudentToHours());
     Spark.get("/studentLanding/:courseAndUserId", new StudentCoursePageHandler(),
         new FreeMarkerEngine());
     Spark.post("/checkcallStatus", new StudentCheckCallStatus());
   }
   
-  /*
-  * This handler will be used to call the student to hours.
-  * Here, the student's call status will be updated.
-  * @author kj13
-  */
- private class CallStudentToHours implements Route {
-   @Override
-   public Object handle(final Request req, final Response res) {
-     String courseId = req.params(":courseId");
-     System.out.println(courseId);
-     //CALL STUDENT TO HOURS
-     //NEED WAY TO ALERT STUDENT
-     Map<String, Object> variables =
-         new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-             courseId).build();
-     return null;
-   }
- }
+
  /**
   * This class checks the student's call status
   * on the queue. If their call status has been change,
