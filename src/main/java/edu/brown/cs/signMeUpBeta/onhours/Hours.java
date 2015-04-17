@@ -1,5 +1,6 @@
 package edu.brown.cs.signMeUpBeta.onhours;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -14,15 +15,34 @@ public class Hours {
   
   public void run() {}
   
-  public List<QuestionInterface> mostPopularQuestions() {
-    return null;
+  public List<Question> getQuestions() {
+    ArrayList<Question> questionList = new ArrayList<Question>();
+    questionList.addAll(questions.keySet());
+    return questionList;
   }
   
-  public List<QuestionInterface> currentQuestions() {
-    return null;
+  public void incrementQuestion(Question qToIncrement) {
+    if (questions.containsKey(qToIncrement)) {
+      int newVal = questions.get(qToIncrement) + 1;
+      questions.put(qToIncrement, newVal);
+    }
   }
   
-  public List<Appointment> currentAppointments() {
-    return null;
+  public void addQuestion(Question newQuestion) {
+    if (!questions.containsKey(newQuestion)) {
+      questions.put(newQuestion, 0);
+    }
   }
+  
+//  public List<QuestionInterface> mostPopularQuestions() {
+//    return null;
+//  }
+//  
+//  public List<QuestionInterface> currentQuestions() {
+//    return null;
+//  }
+//  
+//  public List<Appointment> currentAppointments() {
+//    return null;
+//  }
 }

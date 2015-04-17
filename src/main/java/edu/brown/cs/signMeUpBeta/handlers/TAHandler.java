@@ -115,6 +115,7 @@ public class TAHandler {
       Question questionObject;
       try {
         questionObject = db.addQuestion(assessmentName, question, courseId);
+        
       } catch (SQLException e) {
         System.out.println("ERROR: sql exception in adding question");
       }
