@@ -13,8 +13,6 @@ import com.google.gson.Gson;
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.student.Account;
 
-import org.json.simple.JSONObject;
-
 import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
