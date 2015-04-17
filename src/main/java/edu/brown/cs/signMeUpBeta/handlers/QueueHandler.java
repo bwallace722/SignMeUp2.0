@@ -58,14 +58,19 @@ public class QueueHandler {
       int toReturn = 0;
       
       Queue queue = hours.getQueueForCourse(course);
-
-      Account account = db.getAccount(login);
+      Account account;
+      try {
+        account = db.getAccount(login);
+      } catch (Exception e) {
+        System.err.println("ERROR: sql error on add lab checkoff");
+        return 0;
+      }
       // TODO: Calculate and set student priority field;
       account.setPriority(1);
       if (queue == null) {
         //FUCK
       }
-      queue.add(db.getAccount(login));
+      queue.add(account);
       toReturn = 1;
       return toReturn;
     }
@@ -82,10 +87,21 @@ public class QueueHandler {
       String login = qm.value("login");
       int toReturn = 0;
       Queue queue = hours.getQueueForCourse(course);
-      if (queue == null) {
-        
+      Account account;
+      try {
+        account = db.getAccount(login);
+      } catch (Exception e) {
+        System.err.println("ERROR: sql error on add lab checkoff");
+        return 0;
       }
-      queue.add(db.getAccount(login));
+      // TODO: Calculate and set student priority field;
+      account.setPriority(1);
+      
+      
+      if (queue == null) {
+        //FUCK
+      }
+      queue.add(account);
       toReturn = 1;
       // TODO what is the success and fail markers?
       return toReturn;
