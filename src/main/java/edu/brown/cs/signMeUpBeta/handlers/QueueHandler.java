@@ -26,10 +26,10 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class QueueHandler {
   private static final Gson GSON = new Gson();
   private static Database db;
-  private RunningHours hours;
+  private RunningHours runningHours;
   public QueueHandler(Database db, RunningHours hours) {
     QueueHandler.db = db;
-    this.hours = hours;
+    this.runningHours = hours;
     runSpark();
   }
   public void runSpark() {
@@ -59,7 +59,7 @@ public class QueueHandler {
       // their account
       int toReturn = 0;
       
-      Queue queue = hours.getQueueForCourse(course);
+      Queue queue = runningHours.getQueueForCourse(course);
       Account account;
       try {
         account = db.getAccount(login);
@@ -112,7 +112,7 @@ public class QueueHandler {
       String course = qm.value("course");
       String login = qm.value("login");
       int toReturn = 0;
-      Queue queue = hours.getQueueForCourse(course);
+      Queue queue = runningHours.getQueueForCourse(course);
       Account account;
       try {
         account = db.getAccount(login);
@@ -192,11 +192,10 @@ public class QueueHandler {
       String questions = ""; // to be sent as JSON array?
       // is it possible to send this with html tags?
       String assignment = ""; // string, or JSON object?
-      String subQuestions = ""; // JSON array?
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("login", login).put("assignment", assignment).put(
-              "questions", questions).put("subQuestions", subQuestions).build();
+              "questions", questions).build();
       return new ModelAndView(variables, "signUpForHours.html");
     }
   }
