@@ -43,6 +43,7 @@ public class QueueHandler {
     Spark.post("/addStudentToQueue", new AddStudentToQueue());
     Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
     Spark.post("/updateQueue/:courseId", new UpdateQueueHandler());
+    Spark.post("/callStudent/:courseId", new CallStudentToHours());
   }
   /**
    * This class handles the adding of lab check offs to the queue.
@@ -78,6 +79,28 @@ public class QueueHandler {
       return toReturn;
     }
   }
+  /*
+  * This handler will be used to call the student to hours.
+  * Here, the student's call status will be updated.
+  * @author kj13
+  */
+ private class CallStudentToHours implements Route {
+   @Override
+   public Object handle(final Request req, final Response res) {
+     String courseId = req.params(":courseId");
+     System.out.println(courseId);
+     QueryParamsMap qm = req.queryMap();
+     String studentLogin = qm.value("studentLogin");
+     String message = qm.value("message");
+     //CALL STUDENT TO HOURS
+     //NEED WAY TO ALERT STUDENT
+     Map<String, Object> variables =
+         new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+             courseId).build();
+     return null;
+   }
+ }
+  
   /**
    * This class handles the adding of lab check offs to the queue.
    * @author omadarik

@@ -39,6 +39,7 @@ public class TAHandler {
         new FreeMarkerEngine());
     Spark.get("/courseSetUp/:courseId", new TACourseSetUpHandler(),
         new FreeMarkerEngine());
+//    Spark.post("/");
   }
   private class TAHoursSetUpHandler implements TemplateViewRoute {
     @Override
@@ -84,6 +85,8 @@ public class TAHandler {
       String courseId = req.params(":courseId");
       System.out.println(courseId);
       // initially sends the queue.
+      //to be sent: list of students in the queue, list of current questions,
+      //list of popular questions, list of clinic suggestions.
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).build();
