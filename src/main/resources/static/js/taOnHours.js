@@ -2,6 +2,7 @@ var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 var courseId = splitURL[splitURL.length -1];
 
+console.log("here");
 
 $(".studentOnQueue").bind('click', function(s) {
 	console.log("hi");
@@ -35,8 +36,9 @@ setInterval(updateQueue(), 10000);
 
 //once hours are on, update queue should run on an interval.
 function updateQueue() {
- 	var postParameters = {"course": courseId};
-	$.post("/updateQueue", postParameters, function(responseJSON) {
+ 	var postUrl = "/updateQueue/" + courseId;
+	$.post(postUrl, function(responseJSON) {
+		console.log(responseJSON + " - updateQueue");
 		//redisplay queue
 		//div class="queue" should be updated.
 	});

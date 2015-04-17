@@ -36,7 +36,6 @@ public class TAHandler {
     Spark.post("/setHoursTimeLimit/:courseId", new SetHoursTimeLimit());
     Spark.get("/onHours/:courseId", new TAOnHoursHandler(),
         new FreeMarkerEngine());
-    Spark.post("/updateQueue", new TAUpdateQueueHandler());
     Spark.get("/courseSetUp/:courseId", new TACourseSetUpHandler(),
         new FreeMarkerEngine());
   }
@@ -85,19 +84,6 @@ public class TAHandler {
       return new ModelAndView(variables, "taOnHours.html");
     }
   }
-  private class TAUpdateQueueHandler implements Route {
-    @Override
-    public Object handle(final Request req, final Response res) {
-      String courseId = req.params(":courseId");
-      System.out.println(courseId);
-      // send list of students on queue
-      // send list of added students on queue? whichever is faster/better
-      Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).build();
-      return null;
-    }
-  }
   private class SetHoursTimeLimit implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
@@ -118,7 +104,7 @@ public class TAHandler {
     public Object handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
       QueryParamsMap qm = req.queryMap();
-      String question = qm.value("question");
+      String question = qm.value("newQuestion");
       String assessmentName = qm.value("name");
       try {
         db.addQuestion(assessmentName, question, courseId);
@@ -126,12 +112,10 @@ public class TAHandler {
         System.out.println("ERROR: "
             + e.getMessage());
       }
-      // send list of students on queue
-      // send list of added students on queue? whichever is faster/better
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).build();
-      return null;
+      return 1;
     }
   }
   /**
