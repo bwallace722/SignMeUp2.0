@@ -2,8 +2,6 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.SQLException;
-import java.util.HashMap;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
@@ -57,7 +55,6 @@ public class QueueHandler {
       // are we being passed the student's password too? I'll need it to get
       // their account
       int toReturn = 0;
-      
       Queue queue = runningHours.getQueueForCourse(course);
       Account account;
       try {
@@ -69,11 +66,9 @@ public class QueueHandler {
       // TODO: Calculate and set student priority field;
       account.setPriority(1);
       if (queue == null) {
-        //FUCK
+        // FUCK
       }
-
       queue.add(account);
-
       toReturn = 1;
       return toReturn;
     }
@@ -99,14 +94,10 @@ public class QueueHandler {
       }
       // TODO: Calculate and set student priority field;
       account.setPriority(1);
-      
-      
       if (queue == null) {
-        //FUCK
+        // FUCK
       }
-
       queue.add(account);
-
       toReturn = 1;
       // TODO what is the success and fail markers?
       return toReturn;
@@ -118,11 +109,10 @@ public class QueueHandler {
       String courseId = req.params(":courseId");
       System.out.println(courseId
           + " updating queue");
-      // send list of students on queue
-      // send list of added students on queue? whichever is faster/better
+      Queue currentQueue = runningHours.getQueueForCourse(courseId);
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).build();
+              courseId).put("queue", currentQueue).build();
       return 1;
     }
   }
