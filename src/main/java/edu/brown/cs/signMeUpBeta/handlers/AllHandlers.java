@@ -492,7 +492,8 @@ public class AllHandlers {
         String name = (String) toInsert.get("name");
         String email = (String) toInsert.get("email");
         String password = (String) toInsert.get("password");
-        db.addAccount(login, name, email, password);
+        System.out.println("adding "+login+" to database");
+        Account account = db.addAccount(login, name, email, password);
 //        user = db.;
         /*
          * Adding the courses taken by a student to the database.

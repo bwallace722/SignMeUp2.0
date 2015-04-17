@@ -18,7 +18,8 @@ public class Account {
   private int timeOnHours;
   private int timeCurrProject;
   
-  public Account(String login, String name, String email, String password, int timeOnHours, int timeCurrProject, int numQuestions) {
+  public Account(String login, String name, String email, String password,
+      int timeOnHours, int timeCurrProject, int numQuestions, List<String> enrolledCourses, List<String> TACourses) {
 //public Account(String login, String name, String email, String password) {
     this.login = login;
     this.name = name;
@@ -26,8 +27,8 @@ public class Account {
     this.timeOnHours = timeOnHours;
     this.timeCurrProject = timeCurrProject;
     this.numQuestions = numQuestions;
-    enrolledCourses = new ArrayList<String>();
-    TACourses = new ArrayList<String>();
+    this.enrolledCourses = enrolledCourses;
+    this.TACourses = TACourses;
   }
 
   public String login() {

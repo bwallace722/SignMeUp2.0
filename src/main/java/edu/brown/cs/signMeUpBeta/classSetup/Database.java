@@ -168,20 +168,25 @@ public class Database {
    * @param endDate - the date this project is due
    * @throws SQLException - when there is an SQL error
    */
-  public void addAccount(String studentLogin, String studentName,
-      String studentEmail, String studentPassword) throws SQLException {
-    String query = "INSERT INTO student VALUES (?,?,?,?,?,?,?);";
+  public Account addAccount(String login, String name,
+      String email, String password) throws SQLException {
+    
+    // Write into  
+    String query = "INSERT INTO account VALUES (?,?,?,?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, studentLogin);
-    ps.setString(2, studentName);
-    ps.setString(3, studentEmail);
-    ps.setString(4, studentPassword);
+    ps.setString(1, login);
+    ps.setString(2, name);
+    ps.setString(3, email);
+    ps.setString(4, password);
     ps.setInt(5, 0);
     ps.setInt(6, 0);
     ps.setInt(7, 0);
     // ps.setString(8, contactMethod);
     ps.executeUpdate();
     ps.close();
+    
+    Account account = new Account(login, name, email, password, 0, 0, 0, new ArrayList<String>(), new ArrayList<String>());
+    return account;
   }
   // /**
   // * This method adds a ta into the ta table.
@@ -218,7 +223,7 @@ public class Database {
   public void updateAccount(String studentLogin, int timeAtHours,
       int timeOnProject, int questionsAsked) throws SQLException {
     String update =
-        "UPDATE student SET time_spent_at_hours=?, time_spent_curr_project=?, questions_asked=? WHERE student_login=?;";
+        "UPDATE acount SET time_spent_at_hours=?, time_spent_curr_project=?, questions_asked=? WHERE login=?;";
     PreparedStatement ps = conn.prepareStatement(update);
     ps.setInt(1, timeAtHours);
     ps.setInt(2, timeOnProject);
@@ -235,27 +240,55 @@ public class Database {
    * @return
    * @throws SQLException
    */
-  public Account getAccountByLogin(String studentId, String password)
+  public Account getAccountByLogin(String login, String password)
       throws SQLException {
     String query =
-        "SELECT * FROM student WHERE student.student_login = ? AND student.student_password = ?;";
+        "SELECT * FROM account WHERE login = ? AND password = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, studentId);
+    ps.setString(1, login);
     ps.setString(2, password);
     ResultSet rs = ps.executeQuery();
+    String name, email;
+    int timeOnHours, timeCurrProject, numQuestions;
     if (rs.next()) {
-       Account loggedInAccount =
-       new Account(rs.getString(1), rs.getString(2), rs.getString(3),
-           rs.getString(4), rs.getInt(5), rs.getInt(6), rs.getInt(7));
-//      Account loggedInStudent =
-//          new Account(rs.getString(1), rs.getString(2), rs.getString(3), rs
-//              .getString(4));
-      return loggedInAccount;
+      name = rs.getString(2);
+      email = rs.getString(3);
+      timeOnHours = rs.getInt(5);
+      timeCurrProject = rs.getInt(6);
+      numQuestions = rs.getInt(7);
+    } else {
+      return null;
     }
     ps.close();
     rs.close();
-    return null;
+    
+    query = "SELECT course_id FROM student_course WHERE student_id = ?";
+    ps = conn.prepareStatement(query);
+    ps.setString(1, login);
+    rs = ps.executeQuery();
+    List<String> enrolledCourses = new ArrayList<String>();
+    if (rs.next()) {
+      enrolledCourses.add(rs.getString(1));
+    }
+    ps.close();
+    rs.close();
+    
+    query = "SELECT course_id FROM ta_course WHERE ta_id = ?";
+    ps = conn.prepareStatement(query);
+    ps.setString(1, login);
+    rs = ps.executeQuery();
+    List<String> TACourses = new ArrayList<String>();
+    if (rs.next()) {
+      TACourses.add(rs.getString(1));
+    }
+    ps.close();
+    rs.close();
+    
+    Account account = new Account(login, name, email, password, timeOnHours,
+        timeCurrProject, numQuestions, enrolledCourses, TACourses);
+    return account;
   }
+  
   // /**
   // * This method checks the input credentials and returns a student object if
   // * the credentials are approved.
@@ -298,6 +331,6 @@ public class Database {
   // schema =
   // "CREATE TABLE questions(assessment_item_name TEXT, question_section TEXT, question TEXT, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
   //
-  // schema = "CREATE TABLE student_course(student_id TEXT, course_id TEXT);";
-  // schema = "CREATE TABLE ta_course(ta_id TEXT, course_id TEXT);";
+  // schema = "CREATE TABLE student_course(student_id TEXT, course_id TEXT, FOREIGN KEY(student_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));";
+  // schema = "CREATE TABLE ta_course(ta_id TEXT, course_id TEXT, FOREIGN KEY(ta_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));";
 }
