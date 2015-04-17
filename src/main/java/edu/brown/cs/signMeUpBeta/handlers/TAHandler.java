@@ -125,6 +125,8 @@ public class TAHandler {
     @Override
     public Object handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
+      QueryParamsMap qm = req.queryMap();
+      String newTimeLimit = qm.value("newTimeLimit");
       System.out.println(courseId);
       //send list of students on queue
       //send list of added students on queue? whichever is faster/better
@@ -140,7 +142,8 @@ public class TAHandler {
     @Override
     public Object handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
-      
+      QueryParamsMap qm = req.queryMap();
+      String question = qm.value("question");
       System.out.println(courseId);
       //send list of students on queue
       //send list of added students on queue? whichever is faster/better
