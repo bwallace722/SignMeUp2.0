@@ -59,29 +59,21 @@ public class QueueHandler {
       int toReturn = 0;
       
       Queue queue = hours.getQueueForCourse(course);
-
-      Account account = db.getAccount(login);
+      Account account;
+      try {
+        account = db.getAccount(login);
+      } catch (Exception e) {
+        System.err.println("ERROR: sql error on add lab checkoff");
+        return 0;
+      }
       // TODO: Calculate and set student priority field;
       account.setPriority(1);
       if (queue == null) {
         //FUCK
       }
-<<<<<<< HEAD
-      Queue q = onHoursQueue.get(course);
-      // TODO: KIERAN, THINK...
-      // Also doesn't it make more sense to include some sort of priority when
-      // adding things to the queue? That way, it will be easier to control
-      // the priority of things? This priority could be a flag, with
-      // appointments getting the 'best' flag.
-      try {
-        q.add(db.getAccount(login));
-      } catch (SQLException e) {
-        System.out.println("ERROR: "
-            + e.getMessage());
-      }
-=======
-      queue.add(db.getAccount(login));
->>>>>>> 19f51f4057bcd0a9c604dbea5cebb001a0cab029
+
+      queue.add(account);
+
       toReturn = 1;
       return toReturn;
     }
@@ -98,19 +90,23 @@ public class QueueHandler {
       String login = qm.value("login");
       int toReturn = 0;
       Queue queue = hours.getQueueForCourse(course);
-      if (queue == null) {
-        
-      }
-<<<<<<< HEAD
+      Account account;
       try {
-        q.add(db.getAccount(login));
-      } catch (SQLException e) {
-        System.out.println("ERROR: "
-            + e.getMessage());
+        account = db.getAccount(login);
+      } catch (Exception e) {
+        System.err.println("ERROR: sql error on add lab checkoff");
+        return 0;
       }
-=======
-      queue.add(db.getAccount(login));
->>>>>>> 19f51f4057bcd0a9c604dbea5cebb001a0cab029
+      // TODO: Calculate and set student priority field;
+      account.setPriority(1);
+      
+      
+      if (queue == null) {
+        //FUCK
+      }
+
+      queue.add(account);
+
       toReturn = 1;
       // TODO what is the success and fail markers?
       return toReturn;
