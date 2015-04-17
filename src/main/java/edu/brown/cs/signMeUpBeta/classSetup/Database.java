@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import edu.brown.cs.signMeUpBeta.project.Question;
 import edu.brown.cs.signMeUpBeta.student.Account;
 
 /**
@@ -99,9 +100,7 @@ public class Database {
    *        is being asked
    * @throws SQLException on SQL error
    */
-  public
-      void
-      addQuestion(String assessmentName, String question, String course)
+  public Question addQuestion(String assessmentName, String question, String course)
           throws SQLException {
     String query = "INSERT INTO questions VALUES (?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
@@ -111,6 +110,9 @@ public class Database {
     ps.setString(4, course);
     ps.executeUpdate();
     ps.close();
+    
+    Question q = new Question(course, question, assessmentName);
+    return q;
   }
   /**
    * This method adds a student-course entry to the student_course table.

@@ -6,6 +6,11 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
+	<classpathentry excluding="**" kind="src" output="target/classes" path="src/main/resources">
+		<attributes>
+			<attribute name="maven.pomderived" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="src" output="target/test-classes" path="src/test/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
@@ -22,10 +27,6 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-<<<<<<< HEAD
-	<classpathentry kind="lib" path="/gpfs/main/home/omadarik/course/cs032/json-simple-1.1.1.jar"/>
-=======
-	<classpathentry kind="lib" path="/home/kb25/course/cs032/json-simple-1.1.1.jar"/>
->>>>>>> 19f51f4057bcd0a9c604dbea5cebb001a0cab029
+	<classpathentry kind="lib" path="/gpfs/main/home/kb25/course/cs032/json-simple-1.1.1.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

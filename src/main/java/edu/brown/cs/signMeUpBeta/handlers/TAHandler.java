@@ -9,6 +9,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
+import edu.brown.cs.signMeUpBeta.project.Question;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
@@ -106,11 +107,11 @@ public class TAHandler {
       QueryParamsMap qm = req.queryMap();
       String question = qm.value("newQuestion");
       String assessmentName = qm.value("name");
+      Question questionObject;
       try {
-        db.addQuestion(assessmentName, question, courseId);
+        questionObject = db.addQuestion(assessmentName, question, courseId);
       } catch (SQLException e) {
-        System.out.println("ERROR: "
-            + e.getMessage());
+        System.out.println("ERROR: sql exception in adding question");
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
