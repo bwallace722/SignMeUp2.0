@@ -5,6 +5,7 @@ var courseId = splitURL[splitURL.length -1];
 function startHours() {
 	var postUrl = "/startHours/" + courseId;
 	var hoursUrl = "/onHours/" + courseId;
+
 	$.post(postUrl, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {
