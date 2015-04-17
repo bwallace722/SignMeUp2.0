@@ -1,6 +1,8 @@
 //myclasses
 //requests needed: $("#class_list")
-
+var windowURL = window.location.href;
+var splitURL = windowURL.split("/");
+var user = splitURL[splitURL.length -1];
 //go through student's courses and display
 var user = document.getElementById("user").innerHTML;
 
@@ -14,7 +16,9 @@ $(".clickable-row").bind('click', function(e) {
 		url = "/taHoursSetUp/" + courseID;
 		console.log(url);
 	} else {
-		url = "/welcomeStudent/" + courseID;
+		//add course id and user's login to url.
+		url = "/welcomeStudent/" + courseID + "?" + user;
+
 		console.log(url);
 	}
 	window.location.href=url;

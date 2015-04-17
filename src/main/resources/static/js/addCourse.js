@@ -1,6 +1,6 @@
 var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
-var user = splitURL[splitURL.length -1];
+var login = splitURL[splitURL.length -1];
 
 function signUp() {
 	var courses = document.getElementById("classDropdown");
@@ -17,7 +17,7 @@ function signUp() {
 	$.post(url, postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {
-			window.location.href="/courses/" + user;
+			window.location.href="/courses/" + login;
 		}
 	});
 	

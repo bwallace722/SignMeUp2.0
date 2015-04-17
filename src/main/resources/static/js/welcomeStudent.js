@@ -1,3 +1,21 @@
+var windowURL = window.location.href;
+var splitURL = windowURL.split("/");
+//url contains student
+var courseIdAndLogin = splitURL[splitURL.length -1];
+var splitCourseAndLogin = courseIdAndLogin.split("?");
+var courseId = splitCourseAndLogin[0];
+var login = splitCourseAndLogin[1];
+console.log("courseId: " + " , login: " + login);
+
+
+var SUCCESS MESSAGE = "You're signed up to get your lab checked off!";
+var LINE_CUTOFF_MESSAGE = "The line has been cut off, though you may still" +
+		"get called to hours. We'll let you know!";
+var OFF_HOURS_MESSAGE = "There are not hours right now. " +
+		"We couldn't sign you up.";
+
+
+
 $(".labConfirm").hide(0);
 
 $(".labCheckOff").bind('click', function(l){
@@ -8,26 +26,21 @@ $(".labCheckOff").bind('click', function(l){
 $(".checkOffButton").bind('click', function(c) {
 	//post to queue
 	//success: send alert via email too (?)
+	var url = "/labCheckOff/" + login;
+	var postParameters = {"course": course, "login": login };
+	$.post(url, postParameters, function(responseJSON) {
+		//TODO : based on response, give message and put into modal.
+		
+		alert("You're signed up for lab!");
+	});
 	
-	
-	
-	alert("You're signed up for lab!");
+
 });
 
 $(".hoursSignUp").bind('click', function(h) {
 	//get questions from server
-	$.get("/signUpForHours");
-	window.location.href="/signUpForHours";
-
+//	$.get("/signUpForHours");
+	var url = "/signUpForHours/" + courseIdAndLogin;
+	window.location.href= url;
 });
-
-//
-//$(".hoursSignUp").bind('click', function(h) {
-//	//get questions from server
-//	$.post("/signUpForHours", function(responseJSON) {
-//		responseObject = JSON.parse(responseJSON);
-//		$(".questionContainer").innerHTML = responseObject;
-//	});
-//
-//});
 
