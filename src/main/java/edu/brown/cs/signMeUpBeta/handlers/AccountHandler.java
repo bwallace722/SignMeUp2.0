@@ -2,11 +2,8 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.Date;
 import java.sql.SQLException;
-import java.sql.Time;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -14,13 +11,9 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
-import edu.brown.cs.signMeUpBeta.onhours.Queue;
 import edu.brown.cs.signMeUpBeta.student.Account;
 
-import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 
 import spark.ExceptionHandler;
 import spark.ModelAndView;
@@ -31,17 +24,14 @@ import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
-public class AccountHandler {
 
+public class AccountHandler {
   private static final Gson GSON = new Gson();
   private static Database db;
-  
   public AccountHandler(Database db) {
     AccountHandler.db = db;
     runSpark();
   }
-  
-  
   public void runSpark() {
     Spark.post("/signUp", new AccountSetupHandler());
     Spark.post("/login", new AccountLoginHandler());
@@ -100,10 +90,8 @@ public class AccountHandler {
       return new ModelAndView(variables, "addCourse.html");
     }
   }
-  
   /**
-   * This is the handler that updates
-   * a user's course list.
+   * This is the handler that updates a user's course list.
    * @author kj13
    */
   private class UpdateCourseHandler implements Route {
@@ -113,53 +101,57 @@ public class AccountHandler {
       String course = qm.value("course");
       String role = qm.value("role");
       String login = req.params(":login");
-//      JSONParser parser = new JSONParser();
-//      try {
-//        JSONObject queueEntry = (JSONObject) parser.parse(req.body());
-//        String course = (String) queueEntry.get("course");
-//        String role = (String) queueEntry.get("role");
-        System.out.println(login + ": " + course + " , " + role);
-        
-//     } catch (ParseException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//      }
+      // JSONParser parser = new JSONParser();
+      // try {
+      // JSONObject queueEntry = (JSONObject) parser.parse(req.body());
+      // String course = (String) queueEntry.get("course");
+      // String role = (String) queueEntry.get("role");
+      System.out.println(login
+          + ": "
+          + course
+          + " , "
+          + role);
+      // } catch (ParseException e) {
+      // System.out.println("ERROR: "
+      // + e.getMessage());
+      // }
       int toReturn = 1;
       return toReturn;
     }
   }
   /**
-  * This method handles the logging in of a student checking the input login
-  * and password.
-  * @author omadarik
-  */
+   * This method handles the logging in of a student checking the input login
+   * and password.
+   * @author omadarik
+   */
   private static class AccountLoginHandler implements Route {
-   @Override
-   public Object handle(Request req, Response res) {
-     QueryParamsMap qm = req.queryMap();
-     String login = qm.value("login");
-     String password = qm.value("password");
-     System.out.println(login + " , " + password);
-  //   JSONParser parser = new JSONParser();
-     Account loggedIn = null;
-     try {
-       /*
-        * Retrieving a ta object.
-        */
-  //     JSONObject credentials = (JSONObject) parser.parse(login);
-  //     String inputLogin = (String) credentials.get("student_login");
-  //     String inputPassword = (String) credentials.get("student_password");
-       loggedIn = db.getAccountByLogin(login, password);
-       System.out.println(loggedIn.login() + "loged in");
-     } catch (SQLException e) {
-       System.out.println("ERROR: "
-           + e.getMessage());
-     }
-  
-     return loggedIn.login();
-   }
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String login = qm.value("login");
+      String password = qm.value("password");
+      System.out.println(login
+          + " , "
+          + password);
+      // JSONParser parser = new JSONParser();
+      Account loggedIn = null;
+      try {
+        /*
+         * Retrieving a ta object.
+         */
+        // JSONObject credentials = (JSONObject) parser.parse(login);
+        // String inputLogin = (String) credentials.get("student_login");
+        // String inputPassword = (String) credentials.get("student_password");
+        loggedIn = db.approveCredentials(login, password);
+        System.out.println(loggedIn.getLogin()
+            + "loged in");
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+      }
+      return loggedIn.getLogin();
+    }
   }
-  
   /**
    * This class handles the inserting of new student fields into the database.
    * @author omadarik
@@ -167,7 +159,6 @@ public class AccountHandler {
   private static class AccountSetupHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
-//      JSONParser parser = new JSONParser();
       QueryParamsMap qm = req.queryMap();
       String name = qm.value("name");
       String login = qm.value("login");
@@ -178,28 +169,24 @@ public class AccountHandler {
         /*
          * Creating a student object.
          */
-//        JSONObject toInsert = (JSONObject) parser.parse(req.body());
-//        String login = (String) toInsert.get("login");
-//        String name = (String) toInsert.get("name");
-//        String email = (String) toInsert.get("email");
-//        String password = (String) toInsert.get("password");
         db.addAccount(login, name, email, password);
-        System.out.println(login + " - was added");
-//        user = db.;
+        System.out.println(login
+            + " - was added");
+        user = db.getAccount(login);
         /*
          * Adding the courses taken by a student to the database.
          */
-//        JSONArray jsonEnrolledCourses =
-//            (JSONArray) toInsert.get("student_courses");
-//        for (int i = 0; i < jsonEnrolledCourses.size(); i++) {
-//          String courseId = (String) jsonEnrolledCourses.get(i);
-//          db.addStudentCoursePair(login, courseId);
-//        }
-//        JSONArray jsonTACourses = (JSONArray) toInsert.get("ta_courses");
-//        for (int i = 0; i < jsonTACourses.size(); i++) {
-//          String courseId = (String) jsonTACourses.get(i);
-//          db.addTACoursePair(login, courseId);
-//        }
+        // JSONArray jsonEnrolledCourses =
+        // (JSONArray) toInsert.get("student_courses");
+        // for (int i = 0; i < jsonEnrolledCourses.size(); i++) {
+        // String courseId = (String) jsonEnrolledCourses.get(i);
+        // db.addStudentCoursePair(login, courseId);
+        // }
+        // JSONArray jsonTACourses = (JSONArray) toInsert.get("ta_courses");
+        // for (int i = 0; i < jsonTACourses.size(); i++) {
+        // String courseId = (String) jsonTACourses.get(i);
+        // db.addTACoursePair(login, courseId);
+        // }
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
@@ -207,12 +194,12 @@ public class AccountHandler {
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
-              user.login()).put("courses", null).build();
-      System.out.println(user.login() + " - is being returned");
-      return user.login();
+              user.getLogin()).put("courses", null).build();
+      System.out.println(user.getLogin()
+          + " - is being returned");
+      return user.getLogin();
     }
   }
-
   /**
    * This class prints out errors if the spark server fails.
    * @author kb25
@@ -233,5 +220,4 @@ public class AccountHandler {
       res.body(stacktrace.toString());
     }
   }
-  
 }
