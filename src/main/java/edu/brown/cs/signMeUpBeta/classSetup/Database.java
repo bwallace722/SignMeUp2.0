@@ -237,50 +237,20 @@ public class Database {
     ps.executeUpdate();
     ps.close();
     Account student = allAccounts.get(studentLogin);
-    // student.s
+    student.setQuestionsAsked(questionsAsked);
+    student.setTimeOnCurrentProject(timeOnProject);
+    student.setTimeAtHours(timeAtHours);
   }
+  /**
+   * Returns an account by the login of a student.
+   * @param login
+   * @return
+   */
   public Account getAccount(String login) {
-    String query = "SELECT * FROM account WHERE login = ?;";
-    PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, login);
-    ResultSet rs = ps.executeQuery();
-    String name, email;
-    int timeOnHours, timeCurrProject, numQuestions;
-    if (rs.next()) {
-      name = rs.getString(2);
-      email = rs.getString(3);
-      timeOnHours = rs.getInt(5);
-      timeCurrProject = rs.getInt(6);
-      numQuestions = rs.getInt(7);
-    } else {
-      return null;
+    if (allAccounts.containsKey(login)) {
+      return allAccounts.get(login);
     }
-    ps.close();
-    rs.close();
-    query = "SELECT course_id FROM student_course WHERE student_id = ?";
-    ps = conn.prepareStatement(query);
-    ps.setString(1, login);
-    rs = ps.executeQuery();
-    List<String> enrolledCourses = new ArrayList<String>();
-    if (rs.next()) {
-      enrolledCourses.add(rs.getString(1));
-    }
-    ps.close();
-    rs.close();
-    query = "SELECT course_id FROM ta_course WHERE ta_id = ?";
-    ps = conn.prepareStatement(query);
-    ps.setString(1, login);
-    rs = ps.executeQuery();
-    List<String> TACourses = new ArrayList<String>();
-    if (rs.next()) {
-      TACourses.add(rs.getString(1));
-    }
-    ps.close();
-    rs.close();
-    Account account =
-        new Account(login, name, email, password, timeOnHours, timeCurrProject,
-            numQuestions, enrolledCourses, TACourses);
-    return account;
+    return null;
   }
   /**
    * This method checks the input credentials and returns a student object if

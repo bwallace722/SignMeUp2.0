@@ -10,14 +10,14 @@ public class Account {
   private List<String> enrolledCourses;
   private List<String> TACourses;
   private int numQuestions;
-  private int timeOnHours;
+  private int timeAtHours;
   private int timeCurrProject;
   public Account(
       String login,
       String name,
       String email,
       String password,
-      int timeOnHours,
+      int timeAtHours,
       int timeCurrProject,
       int numQuestions,
       List<String> enrolledCourses,
@@ -25,7 +25,7 @@ public class Account {
     this.login = login;
     this.name = name;
     this.password = password;
-    this.timeOnHours = timeOnHours;
+    this.timeAtHours = timeAtHours;
     this.timeCurrProject = timeCurrProject;
     this.numQuestions = numQuestions;
     this.enrolledCourses = enrolledCourses;
@@ -76,17 +76,26 @@ public class Account {
   public int getQuestionsAsked() {
     return numQuestions;
   }
+  public void setQuestionsAsked(int numQuestions) {
+    this.numQuestions = numQuestions;
+  }
   public void incrementQuestionsAsked() {
     numQuestions++;
   }
   public double getTimeOnHours() {
-    return timeOnHours;
+    return timeAtHours;
+  }
+  public void setTimeAtHours(int timeAtHours) {
+    this.timeAtHours = timeAtHours;
   }
   public void addTime(double timeToAdd) {
-    timeOnHours += timeToAdd;
+    timeAtHours += timeToAdd;
     timeCurrProject += timeToAdd;
   }
   public double getTimeOnCurrentProject() {
     return timeCurrProject;
+  }
+  public void setTimeOnCurrentProject(int timeCurrProject) {
+    this.timeCurrProject = timeCurrProject;
   }
 }

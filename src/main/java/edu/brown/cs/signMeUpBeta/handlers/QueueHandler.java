@@ -2,7 +2,6 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.SQLException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,22 +52,17 @@ public class QueueHandler {
       // are we being passed the student's password too? I'll need it to get
       // their account
       int toReturn = 0;
-      try {
-        if (!onHoursQueue.containsKey(course)) {
-          onHoursQueue.put(course, new Queue());
-        }
-        Queue q = onHoursQueue.get(course);
-        // TODO: KIERAN, THINK...
-        // Also doesn't it make more sense to include some sort of priority when
-        // adding things to the queue? That way, it will be easier to control
-        // the priority of things? This priority could be a flag, with
-        // appointments getting the 'best' flag.
-        q.add(db.getAccountByLogin(login, null));
-        toReturn = 1;
-      } catch (SQLException e) {
-        System.out.println("ERROR: "
-            + e.getMessage());
+      if (!onHoursQueue.containsKey(course)) {
+        onHoursQueue.put(course, new Queue());
       }
+      Queue q = onHoursQueue.get(course);
+      // TODO: KIERAN, THINK...
+      // Also doesn't it make more sense to include some sort of priority when
+      // adding things to the queue? That way, it will be easier to control
+      // the priority of things? This priority could be a flag, with
+      // appointments getting the 'best' flag.
+      q.add(db.getAccount(login));
+      toReturn = 1;
       return toReturn;
     }
   }
@@ -83,25 +77,15 @@ public class QueueHandler {
       String course = qm.value("course");
       String login = qm.value("login");
       int toReturn = 0;
-      // JSONParser parser = new JSONParser();
-      try {
-        // JSONObject queueEntry = (JSONObject) parser.parse(req.body());
-        // String course = (String) queueEntry.get("course");
-        //
-        // String login = (String) queueEntry.get("login");
-        Queue q;
-        if (onHoursQueue.containsKey(course)) {
-          q = onHoursQueue.get(course);
-        } else {
-          onHoursQueue.put(course, new Queue());
-          q = onHoursQueue.get(course);
-        }
-        q.add(db.getAccountByLogin(login, null));
-        toReturn = 1;
-      } catch (SQLException e) {
-        System.out.println("ERROR: "
-            + e.getMessage());
+      Queue q;
+      if (onHoursQueue.containsKey(course)) {
+        q = onHoursQueue.get(course);
+      } else {
+        onHoursQueue.put(course, new Queue());
+        q = onHoursQueue.get(course);
       }
+      q.add(db.getAccount(login));
+      toReturn = 1;
       // TODO what is the success and fail markers?
       return toReturn;
     }

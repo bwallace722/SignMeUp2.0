@@ -143,13 +143,13 @@ public class AccountHandler {
         // String inputLogin = (String) credentials.get("student_login");
         // String inputPassword = (String) credentials.get("student_password");
         loggedIn = db.approveCredentials(login, password);
-        System.out.println(loggedIn.login()
+        System.out.println(loggedIn.getLogin()
             + "loged in");
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
       }
-      return loggedIn.login();
+      return loggedIn.getLogin();
     }
   }
   /**
@@ -159,7 +159,6 @@ public class AccountHandler {
   private static class AccountSetupHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
-      // JSONParser parser = new JSONParser();
       QueryParamsMap qm = req.queryMap();
       String name = qm.value("name");
       String login = qm.value("login");
@@ -170,15 +169,10 @@ public class AccountHandler {
         /*
          * Creating a student object.
          */
-        // JSONObject toInsert = (JSONObject) parser.parse(req.body());
-        // String login = (String) toInsert.get("login");
-        // String name = (String) toInsert.get("name");
-        // String email = (String) toInsert.get("email");
-        // String password = (String) toInsert.get("password");
         db.addAccount(login, name, email, password);
         System.out.println(login
             + " - was added");
-        // user = db.;
+        user = db.getAccount(login);
         /*
          * Adding the courses taken by a student to the database.
          */
@@ -200,10 +194,10 @@ public class AccountHandler {
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
-              user.login()).put("courses", null).build();
-      System.out.println(user.login()
+              user.getLogin()).put("courses", null).build();
+      System.out.println(user.getLogin()
           + " - is being returned");
-      return user.login();
+      return user.getLogin();
     }
   }
   /**
