@@ -152,7 +152,7 @@ public class QueueHandler {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String courseAndUserId = req.params(":courseAndUserId");
-      String[] reqParams = courseAndUserId.split("?");
+      String[] reqParams = courseAndUserId.split("~");
       System.out.println(courseAndUserId);
       String courseId = reqParams[0];
       String login = reqParams[1];
@@ -164,7 +164,7 @@ public class QueueHandler {
       String subQuestions = ""; //JSON array?
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
-          .put("courseId", courseId).put("login", login)
+          .put("course", courseId).put("login", login)
           .put("assignment", assignment).put("questions", questions)
           .put("subQuestions", subQuestions).build();
       return new ModelAndView(variables, "signUpForHours.html");
