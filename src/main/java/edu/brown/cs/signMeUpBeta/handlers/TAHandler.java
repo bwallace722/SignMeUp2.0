@@ -11,6 +11,7 @@ import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.main.RunningHours;
+import edu.brown.cs.signMeUpBeta.onhours.Hours;
 import edu.brown.cs.signMeUpBeta.onhours.Queue;
 import edu.brown.cs.signMeUpBeta.project.Question;
 import spark.ExceptionHandler;
@@ -81,8 +82,9 @@ public class TAHandler {
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
+        return 0;
       }
-      return null;
+      return 1;
     }
   }
   /**
@@ -116,8 +118,15 @@ public class TAHandler {
       //list of popular questions, list of clinic suggestions.
 
       Queue courseQueue = runningHours.getQueueForCourse(courseId);
-      List<Question> questions =
-          runningHours.getHoursForCourse(courseId).getQuestions();
+      System.out.println(courseId + " - id");
+      Hours hours =
+          runningHours.getHoursForCourse(courseId);
+      List<Question> questions = null;
+      System.out.println(courseId + " - now");
+      if(hours != null) {
+        questions = hours.getQuestions();
+      }
+      System.out.println(courseId + " here");
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("queue", courseQueue).put("questions", questions)
@@ -151,10 +160,9 @@ public class TAHandler {
       Question questionObject;
       try {
         questionObject = db.addQuestion(assessmentName, question, courseId);
-//        runningHours.getHoursForCourse(courseId);
-        
       } catch (SQLException e) {
         System.out.println("ERROR: sql exception in adding question");
+        return 0;
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",

@@ -1,9 +1,6 @@
 var assignments = [];
 var labs = [];
 var exams = [];
-
-
-
 var assignmentCount = 1;
 
 $("#removeAsgnBtn").hide();
@@ -29,6 +26,12 @@ function makeAsgnArray() {
 	$.post("/addAssignment", asgns);
 		//if response object is null
         //COURSE ID TO BE PASSED IN AS PART OF ASSIGNMENT OBJECT.
+}
+
+function saveAssignment() {
+	var assignmentFormGroups = document.getElementById("assignmentFormGroups").childNodes;
+	console.log(assignmentFormGroups.length);
+	
 }
 
 function removeAsgn() {

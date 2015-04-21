@@ -18,6 +18,7 @@ public class RunningHours {
   public RunningHours(Database db) {
     this.db = db;
     queues = new ConcurrentHashMap<String, Queue>();
+    hours = new ConcurrentHashMap<String, Hours>();
   }
   
   public int startHours(String courseID) {
@@ -47,6 +48,9 @@ public class RunningHours {
   }
   
   public Hours getHoursForCourse(String courseID) {
+    if(hours.get(courseID) == null) {
+      return null;
+    }
     return hours.get(courseID);
   }
 

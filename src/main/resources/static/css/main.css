@@ -35,11 +35,17 @@ h1 {
 .timeLimit .panel-body {
     padding-top: 0% !important;
 }
-
+#user_class_list{
+	display:none;
+}
 .assignments .panel a {
   float: right;
   margin-right: 5%;
   margin-top: 5%;
+}
+
+.userAddCourses{
+	display:none !important;
 }
 
 .timeLimit .panel a {

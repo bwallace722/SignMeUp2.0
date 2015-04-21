@@ -2,6 +2,7 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -10,6 +11,7 @@ import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.main.RunningHours;
+import edu.brown.cs.signMeUpBeta.onhours.Hours;
 import edu.brown.cs.signMeUpBeta.onhours.Queue;
 import edu.brown.cs.signMeUpBeta.project.Question;
 import edu.brown.cs.signMeUpBeta.student.Account;
@@ -67,7 +69,7 @@ public class QueueHandler {
         return 0;
       }
       // TODO: Calculate and set student priority field;
-      account.setPriority(1);
+      account.setPriority(0);
       if (queue == null) {
         // FUCK
       }
@@ -107,9 +109,11 @@ public class QueueHandler {
       QueryParamsMap qm = req.queryMap();
       String course = qm.value("course");
       String login = qm.value("login");
+      System.out.println(course + " , " + login);
       int toReturn = 0;
       Queue queue = runningHours.getQueueForCourse(course);
       Account account;
+      System.out.println(course + " ,2 " + login);
       try {
         account = db.getAccount(login);
       } catch (Exception e) {
@@ -117,9 +121,10 @@ public class QueueHandler {
         return 0;
       }
       // TODO: Calculate and set student priority field;
-      account.setPriority(1);
+      account.setPriority(Math.random());
+      System.out.println(course + " ,3 " + login);
       if (queue == null) {
-        // FUCK
+        // AHH
       }
       queue.add(account);
       toReturn = 1;
@@ -148,8 +153,7 @@ public class QueueHandler {
           + " starting hrs");
       // TODO return 1 if queue object was created
       // return 0 if there was a problem.
-      runningHours.startHours(courseId);
-      return 1;
+      return runningHours.startHours(courseId);
     }
   }
   private static class AppointmentHandler implements Route {
@@ -180,8 +184,13 @@ public class QueueHandler {
       System.out.println(courseAndUserId);
       String courseId = reqParams[0];
       String login = reqParams[1];
-      List<Question> questions =
-          runningHours.getHoursForCourse(courseId).getQuestions();
+      Hours hours =
+          runningHours.getHoursForCourse(courseId);
+      List<Question> questions = new ArrayList<Question>();
+      System.out.println(courseId + " - now");
+      if(hours != null) {
+        questions = hours.getQuestions();
+      }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("login", login).put("questions", questions).build();

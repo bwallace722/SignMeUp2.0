@@ -2,16 +2,16 @@ var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 //url contains student
 var courseIdAndLogin = splitURL[splitURL.length -1];
-var splitCourseAndLogin = courseIdAndLogin.split("?");
+var splitCourseAndLogin = courseIdAndLogin.split("~");
 var courseId = splitCourseAndLogin[0];
 var login = splitCourseAndLogin[1];
 console.log("course: " + courseId + " , login: " + login);
 
-var SUCCESS MESSAGE = "You're signed up for hours!";
-var LINE_CUTOFF_MESSAGE = "The line has been cut off, though you may still" +
-		"get called to hours. We'll let you know!";
-var OFF_HOURS_MESSAGE = "There are not hours right now. " +
-		"We couldn't sign you up.";
+//var SUCCESS MESSAGE = "You're signed up for hours!";
+//var LINE_CUTOFF_MESSAGE = "The line has been cut off, though you may still" +
+//		"get called to hours. We'll let you know!";
+//var OFF_HOURS_MESSAGE = "There are not hours right now. " +
+//		"We couldn't sign you up.";
 
 function getOnQueue() {
 	
