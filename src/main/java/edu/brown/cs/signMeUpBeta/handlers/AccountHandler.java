@@ -171,20 +171,6 @@ public class AccountHandler {
         user = db.getAccount(login);
         System.out.println(login
             + " - was found in db");
-        /*
-         * Adding the courses taken by a student to the database.
-         */
-        // JSONArray jsonEnrolledCourses =
-        // (JSONArray) toInsert.get("student_courses");
-        // for (int i = 0; i < jsonEnrolledCourses.size(); i++) {
-        // String courseId = (String) jsonEnrolledCourses.get(i);
-        // db.addStudentCoursePair(login, courseId);
-        // }
-        // JSONArray jsonTACourses = (JSONArray) toInsert.get("ta_courses");
-        // for (int i = 0; i < jsonTACourses.size(); i++) {
-        // String courseId = (String) jsonTACourses.get(i);
-        // db.addTACoursePair(login, courseId);
-        // }
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
