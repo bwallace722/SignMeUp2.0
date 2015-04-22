@@ -196,8 +196,8 @@ public class QueueHandler {
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("login", login).put("questions", questions).put("running", running)
-              .build();
+              courseId).put("login", login).put("questions", questions)
+              .put("running", running).build();
       return new ModelAndView(variables, "signUpForHours.html");
     }
   }
