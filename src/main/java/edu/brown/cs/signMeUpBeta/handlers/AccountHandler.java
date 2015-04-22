@@ -12,7 +12,6 @@ import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.student.Account;
-
 import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
@@ -34,39 +33,38 @@ public class AccountHandler {
     Spark.post("/signUp", new AccountSetupHandler());
     Spark.post("/login", new AccountLoginHandler());
     Spark.post("/updateCourse/:login", new UpdateCourseHandler());
-    Spark.get("/courses/:login", new CourseHandler(), new FreeMarkerEngine());
+    Spark.get("/courses/:login", new CourseListHandler(),
+        new FreeMarkerEngine());
     Spark.get("/addCourses/:login", new AddCourseHandler(),
         new FreeMarkerEngine());
   }
   /**
-   * This is the sign up handler that deals with creating a new user. From here,
-   * the user will be directed to a list of their courses.
+   * This renders a page where the user can see a list of their courses, and be
+   * bale to add new courses.
    * @author kj13
    */
-  private class CourseHandler implements TemplateViewRoute {
+  private class CourseListHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String login = req.params(":login");
       List<List<String>> classList = new ArrayList<List<String>>();
       try {
-
         List<String> studentClasses = db.getStudentClasses(login);
         List<String> taClasses = db.getTAClasses(login);
         classList.add(taClasses);
         classList.add(studentClasses);
-//        for (String tClass : taClasses) {
-//          JSONObject taIn = new JSONObject();
-//          taIn.put("class", tClass);
-//          taIn.put("role", "TA");
-//          classList.add(taIn);
-//        }
-
-//        for (String sClass : studentClasses) {
-//          JSONObject studentIn = new JSONObject();
-//          studentIn.put("class", sClass);
-//          studentIn.put("role", "Student");
-//          classList.add(studentIn);
-//        }
+        // for (String tClass : taClasses) {
+        // JSONObject taIn = new JSONObject();
+        // taIn.put("class", tClass);
+        // taIn.put("role", "TA");
+        // classList.add(taIn);
+        // }
+        // for (String sClass : studentClasses) {
+        // JSONObject studentIn = new JSONObject();
+        // studentIn.put("class", sClass);
+        // studentIn.put("role", "Student");
+        // classList.add(studentIn);
+        // }
         Map<String, Object> variables =
             new ImmutableMap.Builder().put("userclasslist", classList).put(
                 "title", "SignMeUp 2.0").put("user", login).build();
@@ -103,22 +101,18 @@ public class AccountHandler {
       String course = qm.value("course");
       String role = qm.value("role");
       String login = req.params(":login");
-      // JSONParser parser = new JSONParser();
-      // try {
-      // JSONObject queueEntry = (JSONObject) parser.parse(req.body());
-      // String course = (String) queueEntry.get("course");
-      // String role = (String) queueEntry.get("role");
-      System.out.println(login
-          + ": "
-          + course
-          + " , "
-          + role);
-      // } catch (ParseException e) {
-      // System.out.println("ERROR: "
-      // + e.getMessage());
-      // }
-      int toReturn = 1;
-      return toReturn;
+      try {
+        if (role.equals("TA")) {
+          db.addTACoursePair(login, course);
+        } else {
+          db.addStudentCoursePair(login, course);
+        }
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
+      return 1;
     }
   }
   /**
