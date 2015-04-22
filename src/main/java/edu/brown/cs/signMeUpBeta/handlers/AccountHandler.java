@@ -39,8 +39,8 @@ public class AccountHandler {
         new FreeMarkerEngine());
   }
   /**
-   * This is the sign up handler that deals with creating a new user. From here,
-   * the user will be directed to a list of their courses.
+   * This renders a page where the user can see a list of their courses, and be
+   * bale to add new courses.
    * @author kj13
    */
   private class CourseListHandler implements TemplateViewRoute {
