@@ -47,26 +47,25 @@ public class AccountHandler {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String login = req.params(":login");
-      List<List<String>> classList = new ArrayList<List<String>>();
+      List<String> classList = new ArrayList<>();
       try {
         List<String> studentClasses = db.getStudentClasses(login);
         List<String> taClasses = db.getTAClasses(login);
-        classList.add(taClasses);
-        classList.add(studentClasses);
-        // for (String tClass : taClasses) {
-        // JSONObject taIn = new JSONObject();
-        // taIn.put("class", tClass);
-        // taIn.put("role", "TA");
-        // classList.add(taIn);
-        // }
-        // for (String sClass : studentClasses) {
-        // JSONObject studentIn = new JSONObject();
-        // studentIn.put("class", sClass);
-        // studentIn.put("role", "Student");
-        // classList.add(studentIn);
-        // }
+
+        String startTags = "<tr class=\"clickable-row\">" +
+            "<td class=\"courseId\">";
+        String middleTags = "</td><td>";
+        String endTags = "</td></tr>";
+         for (String tClass : taClasses) {
+           String line = startTags + tClass + middleTags + "TA" + endTags;
+         classList.add(line);
+         }
+         for (String sClass : studentClasses) {
+           String line = startTags + sClass + middleTags + "Student" + endTags;
+         classList.add(line);
+         }
         Map<String, Object> variables =
-            new ImmutableMap.Builder().put("userclasslist", classList).put(
+            new ImmutableMap.Builder().put("userCourseList", classList.toString()).put(
                 "title", "SignMeUp 2.0").put("user", login).build();
         return new ModelAndView(variables, "myClasses.html");
       } catch (SQLException e) {
