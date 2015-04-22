@@ -23,10 +23,13 @@ function getOnQueue() {
 	//chosen questions into post parameters.
 	var postParameters = {"course": courseId, "login": login, 
 			"otherQ": otherQ};
+	console.log("before post");
 	$.post("/addStudentToQueue", postParameters, function(responseJSON) {
 		//TODO : based on response, give message and put into modal.
 		//when success received, begin function to check status on queue
-		if(responseJSON) {
+		console.log("here");
+		if(responseJSON.equals("1")) {
+			console.log("lbs");
 			updateStatus();
 		}
 	});

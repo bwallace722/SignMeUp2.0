@@ -124,11 +124,12 @@ public class QueueHandler {
       account.setPriority(Math.random());
       System.out.println(course + " ,3 " + login);
       if (queue == null) {
-        // AHH
+        // Alert student that hours are not running
       }
       queue.add(account);
       toReturn = 1;
       // TODO what is the success and fail markers?
+      System.out.println("here");
       return toReturn;
     }
   }
@@ -188,12 +189,15 @@ public class QueueHandler {
           runningHours.getHoursForCourse(courseId);
       List<Question> questions = new ArrayList<Question>();
       System.out.println(courseId + " - now");
+      boolean running = false;
       if(hours != null) {
+        running = true;
         questions = hours.getQuestions();
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("login", login).put("questions", questions).build();
+              courseId).put("login", login).put("questions", questions).put("running", running)
+              .build();
       return new ModelAndView(variables, "signUpForHours.html");
     }
   }
