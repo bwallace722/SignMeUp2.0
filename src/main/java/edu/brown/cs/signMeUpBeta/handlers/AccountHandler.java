@@ -47,7 +47,7 @@ public class AccountHandler {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String login = req.params(":login");
-      List<String> classList = new ArrayList<>();
+      StringBuilder classList = new StringBuilder();
       try {
         List<String> studentClasses = db.getStudentClasses(login);
         List<String> taClasses = db.getTAClasses(login);
@@ -58,12 +58,13 @@ public class AccountHandler {
         String endTags = "</td></tr>";
          for (String tClass : taClasses) {
            String line = startTags + tClass + middleTags + "TA" + endTags;
-         classList.add(line);
+         classList.append(line);
          }
          for (String sClass : studentClasses) {
            String line = startTags + sClass + middleTags + "Student" + endTags;
-         classList.add(line);
+         classList.append(line);
          }
+         System.out.println(classList.toString());
         Map<String, Object> variables =
             new ImmutableMap.Builder().put("userCourseList", classList.toString()).put(
                 "title", "SignMeUp 2.0").put("user", login).build();
@@ -165,6 +166,7 @@ public class AccountHandler {
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
+        return "account does not exist";
       }
       return loggedIn.getLogin();
     }
@@ -195,6 +197,7 @@ public class AccountHandler {
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
+        return "account exists";
       }
       System.out.println(user.getLogin() + " - is being returned");
       return user.getLogin();

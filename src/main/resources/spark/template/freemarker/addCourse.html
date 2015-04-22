@@ -48,13 +48,13 @@
     </nav>
   <div class="container">
   <div class="userAddCourses">${user}</div>
-     <h1> ${user} Add a Course </h1>
+     <h1>Add a Course</h1>
      <h3>Let's Get Started</h3>
      <div class="panel panel-default">
-  <div class="panel-body">
-            <form>
+  <div class="panel-body" >
+  <div id="coursePanel">
             <h4>Choose your course</h4>
-            <select id="classDropdown" class="dropdown">
+            <select id="classDropdown">
             	${allCoursesHTML}
             <!--to be filled by get request (all classes registerd) -->
             </select>
@@ -68,10 +68,10 @@
             <br>
             <a class="btn btn-primary" onclick="signUp()">Sign Up!</a>
             <hr>
-            <h4>or</h4>
+            <h4 style="margin-left:auto; margin-right:auto; width:10%;">or</h4>
             <hr>
             <a class="btn btn-primary" onclick="createCourse()">Create Course</a>
-        </form>
+  </div>
   </div>
 </div>
   </div>

@@ -4,6 +4,9 @@ $("#signUp").hide(0);
 var signUpForm = false;
 var logInForm = false;
 
+var account_exist = "account exists";
+var account_no_exist = "account does not exist";
+
 function showSignUp() {
 	logInForm = false;
 	signUpForm = true;
@@ -58,8 +61,9 @@ function signUp() {
 				var url = "/addCourses/" + login;
 				console.log(url);
 				window.location.href=url;
-			} else {
-				console.log("problems");
+			} else if (responseJSON == account_exist){
+				var problemsDiv = $("#signUpProblems");
+				problemsDiv.innerHTML = "<h4>There is already an account under this name and login.</h4>";
 			}
 		});
 	} else {
@@ -79,8 +83,9 @@ function logIn() {
 			console.log(url);
 			var url = "/courses/" + login;
 			window.location.href=url;
-		} else {
-			console.log("problems");
+		} else if(responseJSON == account_no_exist){
+			var problemsDiv = $("#logInProblems");
+			problemsDiv.innerHTML = "<h4>This account does not exist.</h4>";
 		}
 	});
 }

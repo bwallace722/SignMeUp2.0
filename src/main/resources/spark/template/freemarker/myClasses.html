@@ -55,7 +55,7 @@
 
      <!--on hours sign up button (take you to that class' sign up for hours pages)-->
 
-     <div class="panel-body">
+     <div class="panel-body" id="coursePanel">
      <table class="table table-hover" id="courseTable">
     <thead>
         <tr>
@@ -65,15 +65,11 @@
         </tr>
         </thead>
             <tbody id="courseTableBody">
-				${userCourseList}
+				<div id="userCourseList">${userCourseList}</div>
             </tbody>
         </table>
-             <a class="btn btn-primary btn-sm addClassButton" onclick="addCourses()">Add a class</a>
+      <a class="btn btn-primary btn-sm" onclick="addCourses()" id="addCourseBtn">Add a Course</a>
      <!--loop through classes to display, add a button to drop class for each-->
-      <div class="class_list">
-
-
-      </div>
       </div>
      </div>
 
