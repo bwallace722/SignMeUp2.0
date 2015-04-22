@@ -355,6 +355,20 @@ public class Database {
     rs.close();
     return questionList;
   }
+  
+  public List<String> getAllCourses() throws SQLException {
+    String query = "SELECT course_id FROM course ORDER BY course_id ASC;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ResultSet rs = ps.executeQuery();
+    String name, email;
+    List<String> courses = new ArrayList<String>();
+    while (rs.next()) {
+      courses.add(rs.getString(1));
+    }
+    ps.close();
+    rs.close();
+    return courses;
+  }
   // /**
   // * This method checks the input credentials and returns a student object if
   // * the credentials are approved.

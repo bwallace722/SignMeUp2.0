@@ -2,8 +2,6 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.sql.Date;
-import java.sql.SQLException;
 import java.util.Map;
 
 import com.google.common.collect.ImmutableMap;
@@ -11,20 +9,17 @@ import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.main.RunningHours;
-//
-//import org.json.simple.JSONArray;
-//import org.json.simple.JSONObject;
-//import org.json.simple.parser.JSONParser;
-//import org.json.simple.parser.ParseException;
-
-import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
-import spark.Route;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
+// import org.json.simple.JSONArray;
+// import org.json.simple.JSONObject;
+// import org.json.simple.parser.JSONParser;
+// import org.json.simple.parser.ParseException;
+import spark.ExceptionHandler;
 
 public class AllHandlers {
   private static final Gson GSON = new Gson();
@@ -109,43 +104,43 @@ public class AllHandlers {
       return new ModelAndView(variables, "landingPage.html");
     }
   }
-//  /**
-//   * This class handles the insertion of assessment items into the database
-//   * during class setup.
-//   * @author omadarik
-//   */
-//  private static class AssessmentHandler implements Route {
-//    private String tableName;
-//    private AssessmentHandler(String tableName) {
-//      this.tableName = tableName;
-//    }
-//    @Override
-//    public Object handle(Request req, Response res) {
-//      JSONParser parser = new JSONParser();
-//      try {
-//        JSONArray assArray = (JSONArray) parser.parse(req.body());
-//        JSONObject success = new JSONObject();
-//        success.put("success", 1);
-//        for (int i = 0; i < assArray.size(); i++) {
-//          JSONObject toInsert = (JSONObject) assArray.get(i);
-//          String assName = (String) toInsert.get("name");
-//          Date start = (Date) toInsert.get("start");
-//          Date end = (Date) toInsert.get("end");
-//          String courseId = (String) toInsert.get("course");
-//          db.addAssessmentItem(tableName, assName, start, end, courseId);
-//          Map<String, Object> variables =
-//              new ImmutableMap.Builder<String, Object>()
-//                  .put("success", success).build();
-//          // In the event of some error, null will be returned
-//          return GSON.toJson(variables);
-//        }
-//      } catch (SQLException | ParseException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//      }
-//      return null;
-//    }
-//  }
+  // /**
+  // * This class handles the insertion of assessment items into the database
+  // * during class setup.
+  // * @author omadarik
+  // */
+  // private static class AssessmentHandler implements Route {
+  // private String tableName;
+  // private AssessmentHandler(String tableName) {
+  // this.tableName = tableName;
+  // }
+  // @Override
+  // public Object handle(Request req, Response res) {
+  // JSONParser parser = new JSONParser();
+  // try {
+  // JSONArray assArray = (JSONArray) parser.parse(req.body());
+  // JSONObject success = new JSONObject();
+  // success.put("success", 1);
+  // for (int i = 0; i < assArray.size(); i++) {
+  // JSONObject toInsert = (JSONObject) assArray.get(i);
+  // String assName = (String) toInsert.get("name");
+  // Date start = (Date) toInsert.get("start");
+  // Date end = (Date) toInsert.get("end");
+  // String courseId = (String) toInsert.get("course");
+  // db.addAssessmentItem(tableName, assName, start, end, courseId);
+  // Map<String, Object> variables =
+  // new ImmutableMap.Builder<String, Object>()
+  // .put("success", success).build();
+  // // In the event of some error, null will be returned
+  // return GSON.toJson(variables);
+  // }
+  // } catch (SQLException | ParseException e) {
+  // System.out.println("ERROR: "
+  // + e.getMessage());
+  // }
+  // return null;
+  // }
+  // }
   /**
    * This class prints out errors if the spark server fails.
    * @author kb25

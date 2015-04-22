@@ -54,14 +54,8 @@
   <div class="panel-body">
             <form>
             <h4>Choose your course</h4>
-            <select id="classDropdown">
-              <option value="cs015">CS015</option>
-              <option value="cs016">CS016</option>
-              <option value="cs017">CS017</option>
-              <option value="cs018">CS018</option>
-              <option value="cs019">CS019</option>
-              <option value="cs022">CS022</option>
-              <option value="cs032">CS032</option>
+            <select id="classDropdown" class="dropdown">
+            	${allCoursesHTML}
             <!--to be filled by get request (all classes registerd) -->
             </select>
             <h4>Are you signing up for this class as a TA or a student</h4>
