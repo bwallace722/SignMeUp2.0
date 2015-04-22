@@ -33,7 +33,8 @@ public class AccountHandler {
     Spark.post("/signUp", new AccountSetupHandler());
     Spark.post("/login", new AccountLoginHandler());
     Spark.post("/updateCourse/:login", new UpdateCourseHandler());
-    Spark.get("/courses/:login", new CourseHandler(), new FreeMarkerEngine());
+    Spark.get("/courses/:login", new CourseListHandler(),
+        new FreeMarkerEngine());
     Spark.get("/addCourses/:login", new AddCourseHandler(),
         new FreeMarkerEngine());
   }
@@ -42,7 +43,7 @@ public class AccountHandler {
    * the user will be directed to a list of their courses.
    * @author kj13
    */
-  private class CourseHandler implements TemplateViewRoute {
+  private class CourseListHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String login = req.params(":login");
