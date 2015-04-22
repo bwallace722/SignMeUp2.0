@@ -1,7 +1,12 @@
 $("#signIn").hide(0);
 $("#signUp").hide(0);
 
+var signUpForm = false;
+var logInForm = false;
+
 function showSignUp() {
+	logInForm = false;
+	signUpForm = true;
 	$(".landingHeader").fadeOut(300);
 	$("#signInButton").fadeOut(300);
 	$("#signUpButton").fadeOut(300);
@@ -9,6 +14,8 @@ function showSignUp() {
 }
 
 function showSignIn() {
+	logInForm = true;
+	signUpForm = false;
 	$(".landingHeader").fadeOut(300);
 	$("#signInButton").fadeOut(300);
 	$("#signUpButton").fadeOut(300);
@@ -16,12 +23,16 @@ function showSignIn() {
 }
 
 $("#switchToSignUp").bind('click', function(s) {
+	logInForm = false;
+	signUpForm = true;
 	$("#signIn").fadeOut(300);
 	$("#signUp").fadeIn(1000);
 });
 
 
 $("#switchToSignIn").bind('click', function(s) {
+	logInForm = true;
+	signUpForm = false;
 	$("#signUp").fadeOut(300);
 	$("#signIn").fadeIn(1000);
 });
@@ -48,12 +59,6 @@ function signUp() {
 				console.log("problems");
 			}
 		});
-
-//		$.get(url, function(response) {
-//			console.log(response);
-//			response.redirect(url);
-//		});
-		
 	} else {
 		alert("make sure your passwords match!");
 	}
@@ -76,5 +81,20 @@ function logIn() {
 		}
 	});
 }
+
+document.addEventListener("keydown", keyDownPressed, false);
+
+function keyDownPressed(e) {
+    if (e.keyCode == '13') {
+		if(signUpForm) {
+			signUp();
+		} else if (logInForm) {
+			logIn();
+		} else {
+			alert("Please give your credentials for signing up or logging in.");
+		}
+    }
+}
+
 
 
