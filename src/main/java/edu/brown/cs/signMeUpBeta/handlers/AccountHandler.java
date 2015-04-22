@@ -61,13 +61,11 @@ public class AccountHandler {
          classList.add(line);
          }
          for (String sClass : studentClasses) {
-         JSONObject studentIn = new JSONObject();
-         studentIn.put("class", sClass);
-         studentIn.put("role", "Student");
-         classList.add(studentIn);
+           String line = startTags + sClass + middleTags + "Student" + endTags;
+         classList.add(line);
          }
         Map<String, Object> variables =
-            new ImmutableMap.Builder().put("userclasslist", classList).put(
+            new ImmutableMap.Builder().put("userCourseList", classList.toString()).put(
                 "title", "SignMeUp 2.0").put("user", login).build();
         return new ModelAndView(variables, "myClasses.html");
       } catch (SQLException e) {
