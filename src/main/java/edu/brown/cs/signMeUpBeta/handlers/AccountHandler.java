@@ -129,6 +129,7 @@ public class AccountHandler {
           db.addStudentCoursePair(login, course);
         }
       } catch (SQLException e) {
+        System.out.println(login);
         System.out.println("ERROR: "
             + e.getMessage());
         return 0;
@@ -186,10 +187,10 @@ public class AccountHandler {
         /*
          * Creating a student object.
          */
-        db.addAccount(login, name, email, password);
+        user = db.addAccount(login, name, email, password);
         System.out.println(login
             + " - was added");
-        user = db.getAccount(login);
+//        user = db.getAccount(login);
         System.out.println(login
             + " - was found in db");
         /*
@@ -210,11 +211,7 @@ public class AccountHandler {
         System.out.println("ERROR: "
             + e.getMessage());
       }
-      Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
-              user.getLogin()).put("courses", null).build();
-      System.out.println(user.getLogin()
-          + " - is being returned");
+      System.out.println(user.getLogin() + " - is being returned");
       return user.getLogin();
     }
   }

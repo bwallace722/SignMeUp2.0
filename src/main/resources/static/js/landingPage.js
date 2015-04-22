@@ -48,9 +48,12 @@ function signUp() {
 	if(password == confirm) {
 		var postParameters = {"name": name, "login": login,
 				"email":email, "password": password, "confirm_password": confirm};
-		console.log(postParameters);
+		//console.log(postParameters);
 		$.post("/signUp", postParameters, function(responseJSON) {
 			console.log(responseJSON);
+//			console.log(responseJSON.login);
+//			console.log(responseJSON.equals(login));
+			console.log(responseJSON == login);
 			if(responseJSON == login) {
 				var url = "/addCourses/" + login;
 				console.log(url);

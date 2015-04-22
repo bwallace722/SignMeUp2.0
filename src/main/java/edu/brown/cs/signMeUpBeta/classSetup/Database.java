@@ -403,7 +403,7 @@ public class Database {
   // "CREATE TABLE lab(id INT AUTO_INCREMENT, lab_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
   //
   // schema =
-  // "CREATE TABLE account(login TEXT, name TEXT, email TEXT, password TEXT, time_spent_at_hours INT, time_spent_curr_project INT, questions_asked INT, contact_method TEXT);";
+  // "CREATE TABLE account(login TEXT PRIMARY KEY, name TEXT, email TEXT, password TEXT, time_spent_at_hours INT, time_spent_curr_project INT, questions_asked INT, contact_method TEXT);";
   //
   // ATTENDANCE TABLE NOT CREATED
   // schema = "CREATE TABLE attendance(student_id TEXT, time TEXT);";
