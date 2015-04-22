@@ -98,7 +98,7 @@ public class AccountHandler {
     @Override
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
-      String course = qm.value("course");
+      String course = qm.value("courseSelected");
       String role = qm.value("role");
       String login = req.params(":login");
       try {
