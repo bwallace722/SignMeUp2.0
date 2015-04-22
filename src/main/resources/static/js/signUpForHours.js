@@ -35,9 +35,9 @@ function getOnQueue() {
 	});
 }
 
-//interval set to every 30 seconds.
+//interval set to every second.
 function updateStatus() {
-	setInterval(checkStatus, 30000);
+	setInterval(checkStatus, 1000);
 }
 
 //checks student's call status. If the ta has called them to hours,

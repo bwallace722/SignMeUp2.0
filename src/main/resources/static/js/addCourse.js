@@ -11,7 +11,7 @@ function signUp() {
 	var role = $('input[name="inLineRadioOptions"]:checked').val();
 	console.log(role);
 	
-	var postParameters = {"course": courseSelected, "role": role };
+	var postParameters = {"courseSelected": courseSelected, "role": role };
 	var url = "/updateCourse/" + login;
 	console.log(url);
 	$.post(url, postParameters, function(responseJSON) {

@@ -33,13 +33,8 @@ $(".clickable-row").bind('click', function(e) {
 	window.location.href=url;
 });
 
-<<<<<<< HEAD
-
 function addCourses() {
-	var url = "/addCourses/" + user;
-=======
-function addCourse() {
 	var url = "/addCourses/"+user;
->>>>>>> 9e22949bfa88cdea5a749236fb75ef1bb66bf6d1
+
 	window.location.href = url;
 }
