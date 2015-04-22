@@ -32,3 +32,9 @@ $(".clickable-row").bind('click', function(e) {
 	}
 	window.location.href=url;
 });
+
+
+function addCourses() {
+	var url = "/addCourses/" + user;
+	window.location.href = url;
+}
