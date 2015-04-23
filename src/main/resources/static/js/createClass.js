@@ -15,6 +15,4 @@ function createClass() {
 			alert("course could not be created. Try again");
 		}
 	});
-	
-	
 }
