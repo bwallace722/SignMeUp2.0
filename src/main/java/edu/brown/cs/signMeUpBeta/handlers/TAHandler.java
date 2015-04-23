@@ -55,8 +55,8 @@ public class TAHandler {
     public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
       QueryParamsMap qm = req.queryMap();
-      String assignments = qm.value("assignments");
-      System.out.println(assignments);
+      String assignment = qm.value("assignment");
+      System.out.println(assignment);
 //      try {
 //        
 //      } catch (SQLException e) {
@@ -127,7 +127,7 @@ public class TAHandler {
     public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
       QueryParamsMap qm = req.queryMap();
-      String courseName = qm.value("name");
+      String courseName = qm.value("courseName");
       try {
         db.addCourse(courseId, courseName);
       } catch (SQLException e) {

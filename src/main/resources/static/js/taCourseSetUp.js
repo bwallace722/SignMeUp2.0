@@ -15,11 +15,12 @@ function addAsgnHTML() {
 	var currAsgn = document.getElementById('assignmentFormGroups').innerHTML;
 	currAsgn = currAsgn + "<div id=\"assignment" + assignmentCount + "\"><hr> <label class=\"col-sm-4\" for=\"assignmentName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnName" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnStartDate" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnEndDate" + assignmentCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>";
 	
-	document.getElementById('assignmentFormGroups').innerHTML = currAsgn;
+	document.getElementById('assignmentFormGroups').innerHTML = document.getElementById('assignmentFormGroups').innerHTML + currAsgn;
 	$("#removeAsgnBtn").show();
+	console.log(asgnName1.value);
 	var n = document.getElementById("asgnName"+(assignmentCount-1)).value;
 	var s = document.getElementById("asgnStartDate"+(assignmentCount-1)).value;
-	var e = document.getElementById("asgnEndDate"+assignmentCount).value;
+	var e = document.getElementById("asgnEndDate"+(assignmentCount-1)).value;
 	//TODO check if values are empty
 	var newAsgn = {name:n, start:s, end:e};
 	assignments[assignments.length] = newAsgn;
