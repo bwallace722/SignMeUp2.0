@@ -53,7 +53,6 @@ public class TAHandler {
   private class SaveAssignments implements Route {
     @Override
     public Object handle(Request req, Response res) {
-      String courseId = req.params(":courseId");
       QueryParamsMap qm = req.queryMap();
       String assignments = qm.value("assignments");
       System.out.println(assignments);
@@ -73,7 +72,7 @@ public class TAHandler {
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
       String course = qm.value("course");
-      String labs = qm.value("labs");
+      String exam = qm.value("exam");
 //      try {
 //        db.addCourse(courseId, courseName);
 //      } catch (SQLException e) {
@@ -88,16 +87,16 @@ public class TAHandler {
   private class SaveLabs implements Route {
     @Override
     public Object handle(Request req, Response res) {
-      String courseId = req.params(":courseId");
       QueryParamsMap qm = req.queryMap();
-      String courseName = qm.value("name");
-      try {
-        db.addCourse(courseId, courseName);
-      } catch (SQLException e) {
-        System.out.println("ERROR: "
-            + e.getMessage());
-        return 0;
-      }
+      String course = qm.value("course");
+      String lab = qm.value("lab");
+//      try {
+//        db.addCourse(courseId, courseName);
+//      } catch (SQLException e) {
+//        System.out.println("ERROR: "
+//            + e.getMessage());
+//        return 0;
+//      }
       return 1;
     }
   }
