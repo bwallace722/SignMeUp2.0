@@ -17,8 +17,16 @@ function signUp() {
 	$.post(url, postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		console.log("fsfd");
-		if(responseJSON == 1) {
+		if(responseJSON == "Success.") {
 			window.location.href="/courses/" + login;
+		} else if(responseJSON == "Student is a TA.") {
+			alert("It appears you're a TA for this class. You can't be a student too!");
+		} else if(responseJSON == "Student already in table." || responseJSON == "TA already in table.") {
+			alert("You've already signed up for this class.");
+		} else if(responseJSON == "TA is a student.") {
+			alert("It appears you're a student in this class. You can't be a TA too!");
+		} else {
+			alert("Some error occured. Please try again.");
 		}
 	});
 }
