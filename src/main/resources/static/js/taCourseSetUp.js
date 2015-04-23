@@ -11,11 +11,18 @@ var assignmentCount = 1;
 $("#removeAsgnBtn").hide();
 
 function addAsgnHTML() {
+<<<<<<< HEAD
 	if(addAsgn()) {
 		assignmentCount++;
 		$("#assignmentFormGroups").append("<div id=\"assignment" + assignmentCount + "\"><hr> <label class=\"col-sm-4\" for=\"assignmentName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnName" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnStartDate" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnEndDate" + assignmentCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>");
 		$("#removeAsgnBtn").show();
 	}
+=======
+	addAsgn();
+	assignmentCount++;
+	$("#assignmentFormGroups").append("<div id=\"assignment" + assignmentCount + "\"><hr> <label class=\"col-sm-4\" for=\"assignmentName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnName" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnStartDate" + assignmentCount + "\" placeholder=\"MM/DD/YYYY\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnEndDate" + assignmentCount + "\" placeholder=\"MM/DD/YYYY\">\r\n\r\n<br></div>");
+	$("#removeAsgnBtn").show();
+>>>>>>> 4cf59d1e02095e0158df82ed77c768d861dc772e
 }
 
 function addAsgn() {
@@ -35,6 +42,7 @@ function addAsgn() {
 
 
 function saveAssignments() {
+<<<<<<< HEAD
 	if(examCounts > exams.length) {
 		if(addAsgn()) {
 			postAsngs();
@@ -47,6 +55,16 @@ function saveAssignments() {
 function postAsngs() {
 	for(i = 0; i < assignments.length; i++) {
 		var postParameters = {"course": course, "assignment": assignments[i]};
+=======
+	if (assignments.length < assignmentCount) {
+		addAsgn();
+	}
+	//TODO save last assignment
+	console.log(assignments.length);
+	for (i = 0; i < assignments.length; i++) {
+		//console.log("inside");
+		var postParameters = {"course": course, "name": assignments[i].name, "start":assignments[i].start, "end":assignments[i].end};
+>>>>>>> 4cf59d1e02095e0158df82ed77c768d861dc772e
 		console.log(postParameters);
 		$.post("/saveAssignment", postParameters, function(responseJSON) {
 			console.log(responseJSON);
@@ -97,6 +115,7 @@ function addExam() {
 		toReturn = false;
 	}
 	return toReturn;
+
 }
 
 
@@ -108,7 +127,6 @@ function saveExams() {
 	} else {
 		postExams();
 	}
-
 }
 
 function postExams() {

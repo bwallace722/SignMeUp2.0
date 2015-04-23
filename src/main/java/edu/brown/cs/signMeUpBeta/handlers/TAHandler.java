@@ -42,61 +42,80 @@ public class TAHandler {
         new FreeMarkerEngine());
     Spark.get("/courseSetUp/:courseId", new TACourseSetUpHandler(),
         new FreeMarkerEngine());
-    Spark.post("/saveAssignments", new SaveAssignments());
-    Spark.post("/saveExams", new SaveExams());
-    Spark.post("/saveLabs", new SaveLabs());
+    Spark.post("/saveAssignment", new SaveAssignment());
+    Spark.post("/saveExam", new SaveExam());
+    Spark.post("/saveLab", new SaveLab());
     Spark.post("/addCourse/:courseId", new AddCourseToDatabase());
     Spark.get("/createCourse", new CreateCourseHandler(),
         new FreeMarkerEngine());
   }
   
-  private class SaveAssignments implements Route {
-    @Override
-    public Object handle(Request req, Response res) {
-      QueryParamsMap qm = req.queryMap();
-      String assignments = qm.value("assignments");
-      System.out.println(assignments);
-//      try {
-//        
-//      } catch (SQLException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//        return 0;
-//      }
-      return 1;
-    }
-  }
-  
-  private class SaveExams implements Route {
+  private class SaveAssignment implements Route {
     @Override
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
       String course = qm.value("course");
-      String exam = qm.value("exam");
-//      try {
-//        db.addCourse(courseId, courseName);
-//      } catch (SQLException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//        return 0;
-//      }
+      String name = qm.value("name");
+      String start = qm.value("start");
+      String end = qm.value("end");
+      String[] splitStart = start.split("/");
+      String[] splitEnd = end.split("/");
+      String startDate = splitStart[2]+"-"+splitStart[0]+"-"+splitStart[1];
+      String endDate = splitEnd[2]+"-"+splitEnd[0]+"-"+splitEnd[1];      
+      try {
+        db.addAssessmentItem("assignment", name, startDate, endDate, course);
+      } catch (Exception e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
       return 1;
     }
   }
   
-  private class SaveLabs implements Route {
+  private class SaveExam implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      System.out.println("in exam");
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("course");
+      String name = qm.value("name");
+      String start = qm.value("start");
+      String end = qm.value("end");
+      String[] splitStart = start.split("/");
+      String[] splitEnd = end.split("/");
+      String startDate = splitStart[2]+"-"+splitStart[0]+"-"+splitStart[1];
+      String endDate = splitEnd[2]+"-"+splitEnd[0]+"-"+splitEnd[1];      
+      try {
+        db.addAssessmentItem("exam", name, startDate, endDate, course);
+      } catch (Exception e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
+      return 1;
+    }
+  }
+  
+  private class SaveLab implements Route {
     @Override
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
       String course = qm.value("course");
-      String lab = qm.value("lab");
-//      try {
-//        db.addCourse(courseId, courseName);
-//      } catch (SQLException e) {
-//        System.out.println("ERROR: "
-//            + e.getMessage());
-//        return 0;
-//      }
+      String name = qm.value("name");
+      String start = qm.value("start");
+      String end = qm.value("end");
+      String[] splitStart = start.split("/");
+      String[] splitEnd = end.split("/");
+      String startDate = splitStart[2]+"-"+splitStart[0]+"-"+splitStart[1];
+      String endDate = splitEnd[2]+"-"+splitEnd[0]+"-"+splitEnd[1];      
+      try {
+        db.addAssessmentItem("lab", name, startDate, endDate, course);
+      } catch (Exception e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
       return 1;
     }
   }
@@ -126,7 +145,7 @@ public class TAHandler {
     public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
       QueryParamsMap qm = req.queryMap();
-      String courseName = qm.value("name");
+      String courseName = qm.value("courseName");
       try {
         db.addCourse(courseId, courseName);
       } catch (SQLException e) {
