@@ -145,19 +145,18 @@ public class AccountHandler {
       String course = qm.value("courseSelected");
       String role = qm.value("role");
       String login = req.params(":login");
+      String response = null;
       try {
         if (role.equals("TA")) {
-          db.addTACoursePair(login, course);
+          response = db.addTACoursePair(login, course);
         } else {
-          db.addStudentCoursePair(login, course);
+          response = db.addStudentCoursePair(login, course);
         }
       } catch (SQLException e) {
-        System.out.println(login);
         System.out.println("ERROR: "
             + e.getMessage());
-        return 0;
       }
-      return 1;
+      return response;
     }
   }
   /**
