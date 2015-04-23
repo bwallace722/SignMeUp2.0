@@ -18,9 +18,9 @@ function addAsgnHTML() {
 }
 
 function addAsgn() {
-	var n = document.getElementById("asgnName"+(assignmentCount)).value;
-	var s = document.getElementById("asgnStartDate"+(assignmentCount)).value;
-	var e = document.getElementById("asgnEndDate"+(assignmentCount)).value;
+	var n = document.getElementById("asgnName"+assignmentCount).value;
+	var s = document.getElementById("asgnStartDate"+assignmentCount).value;
+	var e = document.getElementById("asgnEndDate"+assignmentCount).value;
 	//TODO check if values are empty
 	var newAsgn = {name:n, start:s, end:e};
 	assignments[assignments.length] = newAsgn;
@@ -66,20 +66,36 @@ $("#removeExamBtn").hide();
 var examCount = 1;
 
 function addExamHTML() {
+	addExam();
 	examCount++;
-	var currExam = document.getElementById('examFormGroups').innerHTML;
-	currExam = currExam + "<div id=\"exam" + examCount + "\"><hr> <label class=\"col-sm-4\" for=\"examName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examName" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examStartDate" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examEndDate" + examCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>";
-	document.getElementById('examFormGroups').innerHTML = currExam;
+	$("#examFormGroups").append("<div id=\"exam" + examCount + "\"><hr> <label class=\"col-sm-4\" for=\"examName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examName" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examStartDate" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examEndDate" + examCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>");
 	$("#removeExamBtn").show();
-	
-	var n = document.getElementById("examName"+(examCount-1)).value;
-	var s = document.getElementById("examStartDate"+(examCount-1)).value;
-	var e = document.getElementById("examEndDate"+(examCount -1)).value;
+}
+
+function addExam() {
+	var n = document.getElementById("examName"+examCount).value;
+	var s = document.getElementById("examStartDate"+examCount).value;
+	var e = document.getElementById("examEndDate"+examCount).value;
 	//TODO check if values are empty
 	var newExam = {name:n, start:s, end:e};
 	exams[exams.length] = newExam;
-
 }
+
+
+function saveExams() {
+	if(examCounts > exams.length) {
+		addExam();
+	}
+	//TODO save last assignment
+	for(i = 0; i < exams.length; i++) {
+		var postParameters = {"course": course, "name": exams[i].name, "start":exams[i].start, "end":exams[i].end};
+		console.log(postParameters);
+		$.post("/saveExam", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+		});
+	}
+}
+
 
 function removeExam() {
 	examCount--;
@@ -103,13 +119,35 @@ var labCount = 1;
 $("#removeLabBtn").hide();
 
 function addLabHTML() {
+	addLab();
 	labCount++;
-	var currLab = document.getElementById('labFormGroups').innerHTML;
-	currLab = currLab + "<div id=\"lab" + labCount + "\"><hr> <label class=\"col-sm-4\" for=\"labName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labName" + labCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labStartDate" + labCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labEndDate" + labCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>";
-	document.getElementById('labFormGroups').innerHTML = currLab;
-	console.log(labCount);
+	$("#examFormGroups").append("<div id=\"lab" + labCount + "\"><hr> <label class=\"col-sm-4\" for=\"labName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labName" + labCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labStartDate" + labCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labEndDate" + labCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>");
 	$("#removeLabBtn").show();
 }
+function addLab() {
+	var n = document.getElementById("labName"+labCount).value;
+	var s = document.getElementById("labStartDate"+labCount).value;
+	var e = document.getElementById("labEndDate"+labCount).value;
+	//TODO check if values are empty
+	var newLab = {name:n, start:s, end:e};
+	labs[lab.length] = newLab;
+}
+
+
+function saveLabs() {
+	if(labCounts > labs.length) {
+		addLab();
+	}
+	//TODO save last assignment
+	for(i = 0; i < lasb.length; i++) {
+		var postParameters = {"course": course, "name": labs[i].name, "start":labs[i].start, "end":labs[i].end};
+		console.log(postParameters);
+		$.post("/saveLab", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+		});
+	}
+}
+
 
 function removeLab() {
 	labCount--;
