@@ -29,7 +29,7 @@ $(".checkOffButton").bind('click', function(c) {
 	//post to queue
 	//success: send alert via email too (?)
 	var url = "/labCheckOff/" + login;
-	var postParameters = {"course": course, "login": login };
+	var postParameters = {"course": courseId, "login": login };
 	$.post(url, postParameters, function(responseJSON) {
 		//TODO : based on response, give message and put into modal.
 		
@@ -44,7 +44,15 @@ $(".hoursSignUp").bind('click', function(h) {
 	//get questions from server
 //	$.get("/signUpForHours");
 	var url = "/signUpForHours/" + courseIdAndLogin;
-	window.location.href= url;
+	var postParameters = {"course": courseId, "login": login };
+	$.post("/checkQueue", postParameters, function(responseJSON){
+		if(responseJSON == 1) {
+			window.location.href= url;
+		} else {
+			alert("The queue for this class isn't running yet! Sorry!");
+		}
+	});
+	
 });
 
 

@@ -35,9 +35,6 @@ public class QueueHandler {
     runSpark();
   }
   public void runSpark() {
-    // Spark.setPort(4567);
-    // Spark.externalStaticFileLocation("src/main/resources/static");
-    // Spark.exception(Exception.class, new ExceptionPrinter());
     Spark.get("/confirmAppointment", new AppointmentHandler());
     Spark.get("/signUpForHours/:courseAndUserId", new StudentSignUpForHours(),
         new FreeMarkerEngine());
@@ -46,6 +43,24 @@ public class QueueHandler {
     Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
     Spark.post("/updateQueue/:courseId", new UpdateQueueHandler());
     Spark.post("/callStudent/:courseId", new CallStudentToHours());
+    Spark.post("/checkQueue", new QueueChecker());
+  }
+  /**
+   * This handler checks to see if the hours for a particular class have started
+   * running yet.
+   * @author omadarik
+   */
+  private class QueueChecker implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("course");
+      Queue queue = runningHours.getQueueForCourse(course);
+      if (queue == null) {
+        return 0;
+      }
+      return 1;
+    }
   }
   /**
    * This class handles the adding of lab check offs to the queue.
@@ -109,11 +124,9 @@ public class QueueHandler {
       QueryParamsMap qm = req.queryMap();
       String course = qm.value("course");
       String login = qm.value("login");
-      System.out.println(course + " , " + login);
       int toReturn = 0;
       Queue queue = runningHours.getQueueForCourse(course);
       Account account;
-      System.out.println(course + " ,2 " + login);
       try {
         account = db.getAccount(login);
       } catch (Exception e) {
@@ -122,14 +135,8 @@ public class QueueHandler {
       }
       // TODO: Calculate and set student priority field;
       account.setPriority(Math.random());
-      System.out.println(course + " ,3 " + login);
-      if (queue == null) {
-        // Alert student that hours are not running
-      }
       queue.add(account);
       toReturn = 1;
-      // TODO what is the success and fail markers?
-      System.out.println("here");
       return toReturn;
     }
   }
@@ -185,19 +192,19 @@ public class QueueHandler {
       System.out.println(courseAndUserId);
       String courseId = reqParams[0];
       String login = reqParams[1];
-      Hours hours =
-          runningHours.getHoursForCourse(courseId);
+      Hours hours = runningHours.getHoursForCourse(courseId);
       List<Question> questions = new ArrayList<Question>();
-      System.out.println(courseId + " - now");
+      System.out.println(courseId
+          + " - now");
       boolean running = false;
-      if(hours != null) {
+      if (hours != null) {
         running = true;
         questions = hours.getQuestions();
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("login", login).put("questions", questions)
-              .put("running", running).build();
+              courseId).put("login", login).put("questions", questions).put(
+              "running", running).build();
       return new ModelAndView(variables, "signUpForHours.html");
     }
   }
