@@ -7,16 +7,6 @@ var user = splitURL[splitURL.length -1];
 
 var userCourseList = document.getElementById("userCourseList");
 console.log(userCourseList);
-//if(userCourseList.innerHTML == "") {
-//	$("#courseTable").hide(0);
-//	var coursePanel = document.getElementById("coursePanel");
-//	coursePanel.innerHTML = "<h3>You've got no courses! Try adding a course!</h3>" +
-//			"<a class=\"btn btn-primary btn-lg\" onclick=\"addCourses()\"" +
-//					"id=\"addCourseBtn\">Add a Course</a>";
-//	var addBtn = document.getElementById("addCourseBtn");
-//	addBtn.style.float = "left";
-//	addBtn.style.margin = "5% 0% 0% 38%";
-//}
 
 $(".clickable-row").bind('click', function(e) {
 	var cells = this.getElementsByTagName('td');
