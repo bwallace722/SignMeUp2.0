@@ -3,7 +3,6 @@ package edu.brown.cs.signMeUpBeta.handlers;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.SQLException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -51,23 +50,31 @@ public class AccountHandler {
       try {
         List<String> studentClasses = db.getStudentClasses(login);
         List<String> taClasses = db.getTAClasses(login);
-
-        String startTags = "<tr class=\"clickable-row\">" +
-            "<td class=\"courseId\">";
+        String startTags = "<tr class=\"clickable-row\">"
+            + "<td class=\"courseId\">";
         String middleTags = "</td><td>";
         String endTags = "</td></tr>";
-         for (String tClass : taClasses) {
-           String line = startTags + tClass + middleTags + "TA" + endTags;
-         classList.append(line);
-         }
-         for (String sClass : studentClasses) {
-           String line = startTags + sClass + middleTags + "Student" + endTags;
-         classList.append(line);
-         }
-         System.out.println(classList.toString());
+        for (String tClass : taClasses) {
+          String line = startTags
+              + tClass
+              + middleTags
+              + "TA"
+              + endTags;
+          classList.append(line);
+        }
+        for (String sClass : studentClasses) {
+          String line = startTags
+              + sClass
+              + middleTags
+              + "Student"
+              + endTags;
+          classList.append(line);
+        }
+        System.out.println(classList.toString());
         Map<String, Object> variables =
-            new ImmutableMap.Builder().put("userCourseList", classList.toString()).put(
-                "title", "SignMeUp 2.0").put("user", login).build();
+            new ImmutableMap.Builder().put("userCourseList",
+                classList.toString()).put("title", "SignMeUp 2.0").put("user",
+                login).build();
         return new ModelAndView(variables, "myClasses.html");
       } catch (SQLException e) {
         System.out.println("ERROR: "
@@ -84,27 +91,28 @@ public class AccountHandler {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String login = req.params(":login");
-//      <option value="cs015">CS015</option>
-//      <option value="cs016">CS016</option>
-//      <option value="cs017">CS017</option>
-//      <option value="cs018">CS018</option>
-//      <option value="cs019">CS019</option>
-//      <option value="cs022">CS022</option>
-//      <option value="cs032">CS032</option>
-      
+      // <option value="cs015">CS015</option>
+      // <option value="cs016">CS016</option>
+      // <option value="cs017">CS017</option>
+      // <option value="cs018">CS018</option>
+      // <option value="cs019">CS019</option>
+      // <option value="cs022">CS022</option>
+      // <option value="cs032">CS032</option>
       List<String> courses;
       try {
         courses = db.getAllCourses();
       } catch (Exception e) {
-        //GO TO SQLEXCEPTION PAGE
+        // GO TO SQLEXCEPTION PAGE
         return null;
       }
-      
       String html = "";
-      for (String c: courses) {
-        html = html.concat("<option value=\"" + c + "\">" + c.toUpperCase() + "</option>");
+      for (String c : courses) {
+        html = html.concat("<option value=\""
+            + c
+            + "\">"
+            + c.toUpperCase()
+            + "</option>");
       }
-      
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("user",
               login).put("allCoursesHTML", html).build();
@@ -151,18 +159,9 @@ public class AccountHandler {
       System.out.println(login
           + " , "
           + password);
-      // JSONParser parser = new JSONParser();
       Account loggedIn = null;
       try {
-        /*
-         * Retrieving a ta object.
-         */
-        // JSONObject credentials = (JSONObject) parser.parse(login);
-        // String inputLogin = (String) credentials.get("student_login");
-        // String inputPassword = (String) credentials.get("student_password");
         loggedIn = db.approveCredentials(login, password);
-        System.out.println(loggedIn.getLogin()
-            + "loged in");
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
@@ -191,7 +190,7 @@ public class AccountHandler {
         user = db.addAccount(login, name, email, password);
         System.out.println(login
             + " - was added");
-//        user = db.getAccount(login);
+        // user = db.getAccount(login);
         System.out.println(login
             + " - was found in db");
       } catch (SQLException e) {
@@ -199,7 +198,8 @@ public class AccountHandler {
             + e.getMessage());
         return "account exists";
       }
-      System.out.println(user.getLogin() + " - is being returned");
+      System.out.println(user.getLogin()
+          + " - is being returned");
       return user.getLogin();
     }
   }
