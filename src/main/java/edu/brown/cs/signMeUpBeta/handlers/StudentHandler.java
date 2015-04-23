@@ -8,6 +8,8 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
+import edu.brown.cs.signMeUpBeta.main.RunningHours;
+import edu.brown.cs.signMeUpBeta.onhours.Queue;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
@@ -21,14 +23,16 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class StudentHandler {
   private static final Gson GSON = new Gson();
   private static Database db;
-  public StudentHandler(Database db) {
+  private RunningHours runningHours;
+  public StudentHandler(Database db, RunningHours hours) {
     StudentHandler.db = db;
+    this.runningHours = hours;
     runSpark();
   }
   public void runSpark() {
     Spark.get("/studentLanding/:courseAndUserId",
         new StudentCoursePageHandler(), new FreeMarkerEngine());
-    Spark.post("/checkcallStatus", new StudentCheckCallStatus());
+    Spark.post("/checkCallStatus", new StudentCheckCallStatus());
   }
   /**
    * This class checks the student's call status on the queue. If their call
@@ -41,10 +45,9 @@ public class StudentHandler {
       QueryParamsMap qm = req.queryMap();
       String course = qm.value("course");
       String loginToCall = qm.value("login");
-      // TODO: look at queue
-      // if the student's login has a new flag on it's object in the queue
-      // send the message.
-      return null;
+      Queue queue = runningHours.getQueueForCourse(course);
+      int calledToHours = queue.calledToHours(loginToCall);
+      return calledToHours;
     }
   }
   /**

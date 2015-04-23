@@ -9,17 +9,17 @@ import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.main.RunningHours;
+// import org.json.simple.JSONArray;
+// import org.json.simple.JSONObject;
+// import org.json.simple.parser.JSONParser;
+// import org.json.simple.parser.ParseException;
+import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.Request;
 import spark.Response;
 import spark.Spark;
 import spark.TemplateViewRoute;
 import spark.template.freemarker.FreeMarkerEngine;
-// import org.json.simple.JSONArray;
-// import org.json.simple.JSONObject;
-// import org.json.simple.parser.JSONParser;
-// import org.json.simple.parser.ParseException;
-import spark.ExceptionHandler;
 
 public class AllHandlers {
   private static final Gson GSON = new Gson();
@@ -58,7 +58,7 @@ public class AllHandlers {
     Spark.exception(Exception.class, new ExceptionPrinter());
     // FreeMarkerEngine freeMarker = createEngine();
     AccountHandler accountHandler = new AccountHandler(db);
-    StudentHandler studentHandler = new StudentHandler(db);
+    StudentHandler studentHandler = new StudentHandler(db, runningHours);
     TAHandler taHandler = new TAHandler(db, runningHours);
     QueueHandler queueHandler = new QueueHandler(db, runningHours);
     Spark.get("/home", new FrontHandler(), new FreeMarkerEngine());

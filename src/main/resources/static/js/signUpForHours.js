@@ -15,25 +15,21 @@ console.log("course: " + courseId + " , login: " + login);
 
 function getOnQueue() {
 	
-//	var name = document.getElementById("name").value;
-//	var login = document.getElementById("loginSignUp").value;
 	var otherQ = document.getElementById("otherQuestion").value;
-	//after we decided how these will be displayed,
-	//can understand how to best access them and place
-	//chosen questions into post parameters.
 	var postParameters = {"course": courseId, "login": login, 
 			"otherQ": otherQ};
 	console.log(postParameters);
 	console.log("before post");
 	$.post("/addStudentToQueue", postParameters, function(responseJSON) {
-		//TODO : based on response, give message and put into modal.
-		//when success received, begin function to check status on queue
 		console.log(responseJSON);
+		/*
+		 * If responseJSON is 1, there was no error in adding the student to the queue.
+		 * Otherwise there was most likely a SQL error.
+		 */
 		if(responseJSON == 1) {
-			console.log("lbs");
 			updateStatus();
 		} else {
-			console.log("queue not running");
+			console.log("SQL Error.");
 		}
 	});
 }
@@ -47,15 +43,17 @@ function updateStatus() {
 //an alert will appear.
 var checkStatus = function() {
 	var postParameters = {"course": courseId, "login": login}; 
-	$.post(url, postParameters, function(responseJSON) {
+	$.post("/checkCallStatus", postParameters, function(responseJSON) {
 		/**
 		 * responseJSON is a boolean, returning true 
 		 * if the student has been called to hours
 		 * and false otherwise.
 		 */
-		if(responseJSON) {
+		if(responseJSON == 1) {
 			alert("You've been called up for hours!");
 			clearInterval(checkStatus);
+		} else {
+			console.log("You haven't been called to hours yet.");
 		}
 	});
 }
