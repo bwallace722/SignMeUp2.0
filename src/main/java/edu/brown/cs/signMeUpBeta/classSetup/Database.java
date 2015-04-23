@@ -220,15 +220,14 @@ public class Database {
    *        assessment item is assigned
    * @throws SQLException - when there is an SQL error
    */
-  public void addAssessmentItem(String table, String name, Date startDate,
-      Date endDate, String courseId) throws SQLException {
-    String query = "INSERT INTO ? VALUES (?,?,?,?);";
+  public void addAssessmentItem(String table, String name, String startDate,
+      String endDate, String courseId) throws SQLException {
+    String query = "INSERT " + table + " assignment VALUES (?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, table);
-    ps.setString(2, name);
-    ps.setDate(3, (java.sql.Date) startDate);
-    ps.setDate(4, (java.sql.Date) endDate);
-    ps.setString(5, courseId);
+    ps.setString(1, name);
+    ps.setString(2, startDate);
+    ps.setString(3, endDate);
+    ps.setString(4, courseId);
     ps.executeUpdate();
     ps.close();
   }
@@ -406,7 +405,7 @@ public class Database {
     return account;
   }
   public List<Question> getCourseQuestions(String courseID) throws SQLException {
-    String query = "SELECT * FROM questions WHERE course_id;";
+    String query = "SELECT * FROM questions WHERE course_id=?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, courseID);
     ResultSet rs = ps.executeQuery();
@@ -460,11 +459,11 @@ public class Database {
   // String schema =
   // "CREATE TABLE course(course_id TEXT PRIMARY KEY, course_title TEXT);";
   // schema =
-  // "CREATE TABLE assignment(id INT AUTO_INCREMENT, assignment_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
+  // "CREATE TABLE assignment(assignment_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
   // schema =
-  // "CREATE TABLE exam(id INT AUTO_INCREMENT, exam_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
+  // "CREATE TABLE exam(exam_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
   // schema =
-  // "CREATE TABLE lab(id INT AUTO_INCREMENT, lab_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
+  // "CREATE TABLE lab(lab_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
   //
   // schema =
   // "CREATE TABLE account(login TEXT PRIMARY KEY, name TEXT, email TEXT, password TEXT, time_spent_at_hours INT, time_spent_curr_project INT, questions_asked INT, contact_method TEXT);";
