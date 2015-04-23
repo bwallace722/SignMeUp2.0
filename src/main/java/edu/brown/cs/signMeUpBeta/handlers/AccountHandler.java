@@ -50,26 +50,41 @@ public class AccountHandler {
       try {
         List<String> studentClasses = db.getStudentClasses(login);
         List<String> taClasses = db.getTAClasses(login);
-        String startTags = "<tr class=\"clickable-row\">"
-            + "<td class=\"courseId\">";
-        String middleTags = "</td><td>";
-        String endTags = "</td></tr>";
-        for (String tClass : taClasses) {
-          String line = startTags
-              + tClass
-              + middleTags
-              + "TA"
-              + endTags;
-          classList.append(line);
+        if(studentClasses.size() == 0 && taClasses.size() == 0) {
+          String noClasses = "<h3>You've got no courses! Try adding a course!</h3>" +
+      "<a class=\"btn btn-primary btn-lg\" onclick=\"addCourses()\"" +
+          "id=\"addCourseBtn\">Add a Course</a>";
+          classList.append(noClasses);
+        } else {
+          String tableTags = "<table class=\"table table-hover\" id=\"courseTable\">"+
+    "<thead><tr><th>Course</th><th>Position</th></tr></thead><tbody id=\"courseTableBody\">";
+          String closeTableTags = "</tbody></table>"
+              + "<a class=\"btn btn-primary btn-sm\""
+              + "onclick=\"addCourses()\" id=\"addCourseBtn\">Add a Course</a>";
+          classList.append(tableTags);
+          String startTags = "<tr class=\"clickable-row\">"
+              + "<td class=\"courseId\">";
+          String middleTags = "</td><td>";
+          String endTags = "</td></tr>";
+          for (String tClass : taClasses) {
+            String line = startTags
+                + tClass
+                + middleTags
+                + "TA"
+                + endTags;
+            classList.append(line);
+          }
+          for (String sClass : studentClasses) {
+            String line = startTags
+                + sClass
+                + middleTags
+                + "Student"
+                + endTags;
+            classList.append(line);
+          }
+          classList.append(closeTableTags);
         }
-        for (String sClass : studentClasses) {
-          String line = startTags
-              + sClass
-              + middleTags
-              + "Student"
-              + endTags;
-          classList.append(line);
-        }
+
         System.out.println(classList.toString());
         Map<String, Object> variables =
             new ImmutableMap.Builder().put("userCourseList",
