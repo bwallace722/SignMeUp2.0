@@ -96,16 +96,39 @@ h3 {
 
 .dropdown:hover .dropdown-menu {
     display: block;
+    
 }
 #classDropdown {
 	border-radius: 5px;
-	width: 50%;
+	width: 30%;
 	height: 50%;
-	background-color: #fff;
-	color: #000;
+	margin-left: 35%;
+	background-color: rgba(127,127,127, 0.5);
+	color: #fff;
 	border: none;
 }
 
+#classDropdown option {
+	background-color: rgba(127,127,127, 0.5);
+	color: #fff;
+}
+
+.radioSelections{
+	width: 40%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#coursePanel h4{
+	text-align: center;
+	font-weight: bold;
+	color: #fff;
+}
+
+
+.radioSelections label {
+	margin-left: 20%;
+}
 input[type="text"]{
   font-size: 14px;
   border-radius: 3px;
@@ -199,7 +222,7 @@ hr {
   width: 50%;
     margin-left: auto;
   margin-right: auto;
-  background-color: rgba(0,0,0, 0.5) !important;
+  background-color: rgba(0,0,0, 0.7) !important;
   border-color: transparent !important;
 }
 

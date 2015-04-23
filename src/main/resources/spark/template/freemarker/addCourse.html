@@ -59,18 +59,24 @@
             <!--to be filled by get request (all classes registerd) -->
             </select>
             <h4>Are you signing up for this class as a TA or a student</h4>
-            <label class="radio-inline">
-            <input type="radio" name="inLineRadioOptions" value="Student" id="student">Student<br>
-            </label>
-            <label class="radio-inline">
-            <input type="radio" name="inLineRadioOptions" value="TA" id="ta">TA
-            </label>
+            <div class="radioSelections">
+	            <label class="radio-inline">
+	            <input type="radio" name="inLineRadioOptions" value="Student" id="student">Student<br>
+	            </label>
+	            <label class="radio-inline">
+	            <input type="radio" name="inLineRadioOptions" value="TA" id="ta">TA
+	            </label>
+            </div>
             <br>
-            <a class="btn btn-primary" onclick="signUp()">Sign Up!</a>
+            <div class="row">
+            <a class="btn btn-primary col-sm-2 col-sm-push-5" onclick="signUp()">Sign Up!</a>
+            <br>
             <hr>
             <h4 style="margin-left:auto; margin-right:auto; width:10%;">or</h4>
+            <br>
             <hr>
-            <a class="btn btn-primary" onclick="createCourse()">Create Course</a>
+            <a class="btn btn-primary col-sm-2 col-sm-push-5" onclick="createCourse()">Create Course</a>
+            </div>
   </div>
   </div>
 </div>

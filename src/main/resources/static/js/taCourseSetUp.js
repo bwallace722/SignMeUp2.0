@@ -1,37 +1,38 @@
+var windowURL = window.location.href;
+var splitURL = windowURL.split("/");
+var course = splitURL[splitURL.length -1];
+
 var assignments = [];
 var labs = [];
 var exams = [];
 var assignmentCount = 1;
+
 
 $("#removeAsgnBtn").hide();
 
 function addAsgnHTML() {
 	assignmentCount++;
 	var currAsgn = document.getElementById('assignmentFormGroups').innerHTML;
-	currAsgn = currAsgn + "<div id=\"assignment" + assignmentCount + "\"><hr> <label class=\"col-sm-4\" for=\"assignmentName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"name" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"startDate" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"endDate" + assignmentCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>";
+	currAsgn = currAsgn + "<div id=\"assignment" + assignmentCount + "\"><hr> <label class=\"col-sm-4\" for=\"assignmentName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnName" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnStartDate" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnEndDate" + assignmentCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>";
+	
 	document.getElementById('assignmentFormGroups').innerHTML = currAsgn;
 	$("#removeAsgnBtn").show();
+	var n = document.getElementById("asgnName"+(assignmentCount-1)).value;
+	var s = document.getElementById("asgnStartDate"+(assignmentCount-1)).value;
+	var e = document.getElementById("asgnEndDate"+assignmentCount).value;
+	//TODO check if values are empty
+	var newAsgn = {name:n, start:s, end:e};
+	assignments[assignments.length] = newAsgn;
 }
 
-function makeAsgnArray() {
-	var asgns = [];
-	var i;
-	for (i=1; i<=assignmentCount; i++) {
-		var n = document.getElementById("name"+i).value;
-		var s = document.getElementById("startDate"+i).value;
-		var e = document.getElementById("endDate"+i).value;
-		var assignment = {name:n, start:s, end:e};
-		asgns[i-1] = assignment;
-	}
-	$.post("/addAssignment", asgns);
-		//if response object is null
-        //COURSE ID TO BE PASSED IN AS PART OF ASSIGNMENT OBJECT.
-}
-
-function saveAssignment() {
-	var assignmentFormGroups = document.getElementById("assignmentFormGroups").childNodes;
-	console.log(assignmentFormGroups.length);
-	
+function saveAssignments() {
+	addAsgnHTML();
+	//TODO save last assignment
+	var postParameters = {"course": course, "assignments": assignments};
+	console.log(postParameters);
+	$.post("/saveAssignments", postParameters, function(responseJSON) {
+		console.log(responseJSON);
+	});
 }
 
 function removeAsgn() {
@@ -58,7 +59,7 @@ var examCount = 1;
 function addExamHTML() {
 	examCount++;
 	var currExam = document.getElementById('examFormGroups').innerHTML;
-	currExam = currExam + "<div id=\"exam" + examCount + "\"><hr> <label class=\"col-sm-4\" for=\"examName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"name" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"startDate" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"endDate" + examCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>";
+	currExam = currExam + "<div id=\"exam" + examCount + "\"><hr> <label class=\"col-sm-4\" for=\"examName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examName" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examStartDate" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examEndDate" + examCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>";
 	document.getElementById('examFormGroups').innerHTML = currExam;
 	$("#removeExamBtn").show();
 }
@@ -87,7 +88,7 @@ $("#removeLabBtn").hide();
 function addLabHTML() {
 	labCount++;
 	var currLab = document.getElementById('labFormGroups').innerHTML;
-	currLab = currLab + "<div id=\"lab" + labCount + "\"><hr> <label class=\"col-sm-4\" for=\"labName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"name" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"startDate" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"endDate" + examCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>";
+	currLab = currLab + "<div id=\"lab" + labCount + "\"><hr> <label class=\"col-sm-4\" for=\"labName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labName" + labCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labStartDate" + labCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labEndDate" + labCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>";
 	document.getElementById('labFormGroups').innerHTML = currLab;
 	console.log(labCount);
 	$("#removeLabBtn").show();

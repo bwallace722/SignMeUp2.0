@@ -42,10 +42,67 @@ public class TAHandler {
         new FreeMarkerEngine());
     Spark.get("/courseSetUp/:courseId", new TACourseSetUpHandler(),
         new FreeMarkerEngine());
+    Spark.post("/saveAssignments", new SaveAssignments());
+    Spark.post("/saveExams", new SaveExams());
+    Spark.post("/saveLabs", new SaveLabs());
     Spark.post("/addCourse/:courseId", new AddCourseToDatabase());
     Spark.get("/createCourse", new CreateCourseHandler(),
         new FreeMarkerEngine());
   }
+  
+  private class SaveAssignments implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      String courseId = req.params(":courseId");
+      QueryParamsMap qm = req.queryMap();
+      String assignments = qm.value("assignments");
+      System.out.println(assignments);
+//      try {
+//        
+//      } catch (SQLException e) {
+//        System.out.println("ERROR: "
+//            + e.getMessage());
+//        return 0;
+//      }
+      return 1;
+    }
+  }
+  
+  private class SaveExams implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("course");
+      String labs = qm.value("labs");
+//      try {
+//        db.addCourse(courseId, courseName);
+//      } catch (SQLException e) {
+//        System.out.println("ERROR: "
+//            + e.getMessage());
+//        return 0;
+//      }
+      return 1;
+    }
+  }
+  
+  private class SaveLabs implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      String courseId = req.params(":courseId");
+      QueryParamsMap qm = req.queryMap();
+      String courseName = qm.value("name");
+      try {
+        db.addCourse(courseId, courseName);
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
+      return 1;
+    }
+  }
+  
+  
   private class CreateCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
