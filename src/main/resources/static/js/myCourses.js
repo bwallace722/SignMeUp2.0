@@ -3,14 +3,10 @@
 var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 var user = splitURL[splitURL.length -1];
-console.log(user);
-
-var user_class_list = document.getElementById("user_class_list");
-var courseTable = document.getElementById("courseTableBody");
-
-console.log(user_class_list);
 
 
+var userCourseList = document.getElementById("userCourseList");
+console.log(userCourseList);
 
 $(".clickable-row").bind('click', function(e) {
 	var cells = this.getElementsByTagName('td');

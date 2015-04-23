@@ -100,8 +100,8 @@ public class Database {
    *        is being asked
    * @throws SQLException on SQL error
    */
-  public Question addQuestion(String assessmentName, String question, String course)
-          throws SQLException {
+  public Question addQuestion(String assessmentName, String question,
+      String course) throws SQLException {
     String query = "INSERT INTO questions VALUES (?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, assessmentName);
@@ -110,7 +110,6 @@ public class Database {
     ps.setString(4, course);
     ps.executeUpdate();
     ps.close();
-    
     Question q = new Question(course, question, assessmentName);
     return q;
   }
@@ -120,14 +119,47 @@ public class Database {
    * @param courseId - the course number
    * @throws SQLException on SQL error
    */
-  public void addStudentCoursePair(String studentId, String courseId)
+  public String addStudentCoursePair(String studentId, String courseId)
       throws SQLException {
+    String response;
+    /*
+     * Checking to see if the entry already exists in the student table.
+     */
+    String query =
+        "SELECT * FROM student_course WHERE student_course.student_id = ? AND student_course.course_id = ?";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, studentId);
+    ps.setString(2, courseId);
+    ResultSet rs = ps.executeQuery();
+    if (rs.next()) {
+      response = "Student already in table.";
+      return response;
+    }
+    /*
+     * Checking to see if the entry already exists in the ta table.
+     */
+    query =
+        "SELECT * FROM ta_course WHERE ta_course.ta_id = ? AND ta_course.course_id = ?";
+    ps = conn.prepareStatement(query);
+    ps.setString(1, studentId);
+    ps.setString(2, courseId);
+    rs = ps.executeQuery();
+    if (rs.next()) {
+      response = "Student is a TA.";
+      return response;
+    }
+    /*
+     * The student isn't a TA for this class and isn't already in the table.
+     * Thus they are eligible to be enrolled.
+     */
     String update = "INSERT INTO student_course VALUES (?, ?);";
-    PreparedStatement ps = conn.prepareStatement(update);
+    ps = conn.prepareStatement(update);
     ps.setString(1, studentId);
     ps.setString(2, courseId);
     ps.executeUpdate();
     ps.close();
+    response = "Success.";
+    return response;
   }
   /**
    * This method inserts a ta-course pair entry into the database.
@@ -135,13 +167,47 @@ public class Database {
    * @param courseId
    * @throws SQLException
    */
-  public void addTACoursePair(String taId, String courseId) throws SQLException {
+  public String addTACoursePair(String taId, String courseId)
+      throws SQLException {
+    String response;
+    /*
+     * Checking to see if the entry already exists in the TA table.
+     */
+    String query =
+        "SELECT * FROM ta_course WHERE ta_course.ta_id = ? AND ta_course.course_id = ?";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, taId);
+    ps.setString(2, courseId);
+    ResultSet rs = ps.executeQuery();
+    if (rs.next()) {
+      response = "TA already in table.";
+      return response;
+    }
+    /*
+     * Checking to see if the entry already exists in the student table.
+     */
+    query =
+        "SELECT * FROM student_course WHERE student_course.student_id = ? AND student_course.course_id = ?";
+    ps = conn.prepareStatement(query);
+    ps.setString(1, taId);
+    ps.setString(2, courseId);
+    rs = ps.executeQuery();
+    if (rs.next()) {
+      response = "TA is a student.";
+      return response;
+    }
+    /*
+     * The TA isn't a student for this class and isn't already in the table.
+     * Thus they are eligible to be enrolled.
+     */
     String update = "INSERT INTO ta_course VALUES (?, ?);";
-    PreparedStatement ps = conn.prepareStatement(update);
+    ps = conn.prepareStatement(update);
     ps.setString(1, taId);
     ps.setString(2, courseId);
     ps.executeUpdate();
     ps.close();
+    response = "Success.";
+    return response;
   }
   /**
    * This method inserts an entry into the lab table. This assessment item can
@@ -339,8 +405,7 @@ public class Database {
             numQuestions, enrolledCourses, TACourses);
     return account;
   }
-  
-  public List<Question> getCourseQuestions(String courseID) throws SQLException{
+  public List<Question> getCourseQuestions(String courseID) throws SQLException {
     String query = "SELECT * FROM questions WHERE course_id;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, courseID);
@@ -355,7 +420,6 @@ public class Database {
     rs.close();
     return questionList;
   }
-  
   public List<String> getAllCourses() throws SQLException {
     String query = "SELECT course_id FROM course ORDER BY course_id ASC;";
     PreparedStatement ps = conn.prepareStatement(query);

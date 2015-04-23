@@ -97,6 +97,14 @@ h3 {
 .dropdown:hover .dropdown-menu {
     display: block;
 }
+#classDropdown {
+	border-radius: 5px;
+	width: 50%;
+	height: 50%;
+	background-color: #fff;
+	color: #000;
+	border: none;
+}
 
 input[type="text"]{
   font-size: 14px;
@@ -346,9 +354,4 @@ button .time {
 .otherQuestion button {
   
 }
-
-#classDropdown {
-	background-color: #000;
-}
-
 

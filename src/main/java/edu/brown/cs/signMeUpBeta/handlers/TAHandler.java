@@ -34,9 +34,6 @@ public class TAHandler {
     runSpark();
   }
   public void runSpark() {
-    // Spark.setPort(4567);
-    // Spark.externalStaticFileLocation("src/main/resources/static");
-    // Spark.exception(Exception.class, new ExceptionPrinter());
     Spark.get("/taHoursSetUp/:courseId", new TAHoursSetUpHandler(),
         new FreeMarkerEngine());
     Spark.post("/addQuestionForHours/:courseId", new AddQuestionForHours());
@@ -46,9 +43,9 @@ public class TAHandler {
     Spark.get("/courseSetUp/:courseId", new TACourseSetUpHandler(),
         new FreeMarkerEngine());
     Spark.post("/addCourse/:courseId", new AddCourseToDatabase());
-    Spark.get("/createCourse", new CreateCourseHandler(), new FreeMarkerEngine());
+    Spark.get("/createCourse", new CreateCourseHandler(),
+        new FreeMarkerEngine());
   }
-  
   private class CreateCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
@@ -57,8 +54,6 @@ public class TAHandler {
       return new ModelAndView(variables, "taCreateClass.html");
     }
   }
-  
-  
   private class TAHoursSetUpHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
@@ -70,7 +65,6 @@ public class TAHandler {
       return new ModelAndView(variables, "taHoursSetUp.html");
     }
   }
-  
   private class AddCourseToDatabase implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -113,20 +107,20 @@ public class TAHandler {
       String courseId = req.params(":courseId");
       System.out.println(courseId);
       // initially sends the queue.
-
-      //to be sent: list of students in the queue, list of current questions,
-      //list of popular questions, list of clinic suggestions.
-
+      // to be sent: list of students in the queue, list of current questions,
+      // list of popular questions, list of clinic suggestions.
       Queue courseQueue = runningHours.getQueueForCourse(courseId);
-      System.out.println(courseId + " - id");
-      Hours hours =
-          runningHours.getHoursForCourse(courseId);
+      System.out.println(courseId
+          + " - id");
+      Hours hours = runningHours.getHoursForCourse(courseId);
       List<Question> questions = null;
-      System.out.println(courseId + " - now");
-      if(hours != null) {
+      System.out.println(courseId
+          + " - now");
+      if (hours != null) {
         questions = hours.getQuestions();
       }
-      System.out.println(courseId + " here");
+      System.out.println(courseId
+          + " here");
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("queue", courseQueue).put("questions", questions)
@@ -134,7 +128,6 @@ public class TAHandler {
       return new ModelAndView(variables, "taOnHours.html");
     }
   }
-  
   private class SetHoursTimeLimit implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
