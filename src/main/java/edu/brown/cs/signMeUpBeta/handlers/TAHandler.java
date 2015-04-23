@@ -76,6 +76,7 @@ public class TAHandler {
   private class SaveExam implements Route {
     @Override
     public Object handle(Request req, Response res) {
+      System.out.println("in exam");
       QueryParamsMap qm = req.queryMap();
       String course = qm.value("course");
       String name = qm.value("name");

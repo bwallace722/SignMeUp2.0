@@ -73,19 +73,25 @@ function addExamHTML() {
 }
 
 function addExam() {
+	if(examCount > exams.length) {
 	var n = document.getElementById("examName"+examCount).value;
 	var s = document.getElementById("examStartDate"+examCount).value;
 	var e = document.getElementById("examEndDate"+examCount).value;
+//	console.log(n);
 	//TODO check if values are empty
 	var newExam = {name:n, start:s, end:e};
 	exams[exams.length] = newExam;
+	}
 }
 
 
 function saveExams() {
-	if(examCounts > exams.length) {
+//	console.log("here");
+//	console.log(exams.length + " " + examCount);
+	if(examCount > exams.length) {
 		addExam();
 	}
+//	console.log(exams);
 	//TODO save last assignment
 	for(i = 0; i < exams.length; i++) {
 		var postParameters = {"course": course, "name": exams[i].name, "start":exams[i].start, "end":exams[i].end};

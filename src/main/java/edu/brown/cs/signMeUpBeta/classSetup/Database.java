@@ -222,7 +222,8 @@ public class Database {
    */
   public void addAssessmentItem(String table, String name, String startDate,
       String endDate, String courseId) throws SQLException {
-    String query = "INSERT " + table + " assignment VALUES (?,?,?,?);";
+    String query = "INSERT INTO " + table + " VALUES (?,?,?,?);";
+    System.out.println(query);
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, name);
     ps.setString(2, startDate);
