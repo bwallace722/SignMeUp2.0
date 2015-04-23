@@ -41,54 +41,125 @@ $("#switchToSignIn").bind('click', function(s) {
 });
 
 function signUp() {
-	
+	if(validateSignUp()) {
+		var name = document.getElementById("name").value;
+		var login = document.getElementById("loginSignUp").value;
+		var email = document.getElementById("email").value;
+		var password = document.getElementById("pass").value;
+		var confirm = document.getElementById("confirmPassword").value;
+		
+		if(password == confirm) {
+			var postParameters = {"name": name, "login": login,
+					"email":email, "password": password, "confirm_password": confirm};
+			//console.log(postParameters);
+			$.post("/signUp", postParameters, function(responseJSON) {
+				console.log(responseJSON);
+	//			console.log(responseJSON.login);
+	//			console.log(responseJSON.equals(login));
+				console.log(responseJSON == login);
+				if(responseJSON == login) {
+					var url = "/addCourses/" + login;
+					console.log(url);
+					window.location.href=url;
+				} else if (responseJSON == account_exist){
+					var problemsDiv = $("#signUpProblems");
+					problemsDiv.innerHTML = "<h4>There is already an account under this name and login.</h4>";
+				}
+			});
+		} else {
+			alert("make sure your passwords match!");
+		}
+	} else {
+		alert("Please properly fill in the marked fields");
+	}
+
+}
+
+function validateSignUp() {
+	var toReturn = true;
 	var name = document.getElementById("name").value;
 	var login = document.getElementById("loginSignUp").value;
 	var email = document.getElementById("email").value;
 	var password = document.getElementById("pass").value;
 	var confirm = document.getElementById("confirmPassword").value;
 	
-	if(password == confirm) {
-		var postParameters = {"name": name, "login": login,
-				"email":email, "password": password, "confirm_password": confirm};
-		//console.log(postParameters);
-		$.post("/signUp", postParameters, function(responseJSON) {
-			console.log(responseJSON);
-//			console.log(responseJSON.login);
-//			console.log(responseJSON.equals(login));
-			console.log(responseJSON == login);
-			if(responseJSON == login) {
-				var url = "/addCourses/" + login;
-				console.log(url);
-				window.location.href=url;
-			} else if (responseJSON == account_exist){
-				var problemsDiv = $("#signUpProblems");
-				problemsDiv.innerHTML = "<h4>There is already an account under this name and login.</h4>";
-			}
-		});
-	} else {
-		alert("make sure your passwords match!");
+	console.log(name + "- name");
+	console.log(login + "- login");
+	console.log(email + "- email");
+	console.log(password + "- password");
+	console.log(confirm + "- confirm");
+	
+	if(name.length == 0) {
+		toReturn = false;
+		name.style.borderColor = "red";
+		name.style.borderWidth = "2px";
 	}
-
+	if(login.length == 0) {
+		toReturn = false;
+		login.style.borderColor = "red";
+		login.style.borderWidth = "2px";
+	}
+	console.log(email.indexOf("@"));
+	if(email.length == 0 || email.indexOf("@") == -1) {
+		toReturn = false;
+		email.style.borderColor = "red";
+		email.style.borderWidth = "2px";
+	}
+	if(password.length == 0) {
+		toReturn = false;
+		password.style.borderColor = "red";
+		password.style.borderWidth = "2px";
+	}
+	if(confirm.length == 0) {
+		toReturn = false;
+		confirm.style.borderColor = "red";
+		confirm.style.borderWidth = "2px";
+	}
+	
+	return toReturn;
+	
 }
 
 function logIn() {
+	if(validateLogin()) {
+		var login = document.getElementById("loginLogIn").value;
+		var password = document.getElementById("passwordLogIn").value;
+		console.log(login + " , " + password);
+		var postParameters = {"login": login, "password": password,};
+		$.post("/login", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+			if(responseJSON == login) {
+				console.log(url);
+				var url = "/courses/" + login;
+				window.location.href=url;
+			} else if(responseJSON == account_no_exist){
+				var problemsDiv = $("#logInProblems");
+				problemsDiv.innerHTML = "<h4>This account does not exist.</h4>";
+			}
+		});
+	} else {
+		alert("Please properly fill in the marked fields");
+	}
+}
+
+function validateLogin {
+	var toReturn = true;
 	var login = document.getElementById("loginLogIn").value;
 	var password = document.getElementById("passwordLogIn").value;
-	console.log(login + " , " + password);
-	var postParameters = {"login": login, "password": password,};
-	$.post("/login", postParameters, function(responseJSON) {
-		console.log(responseJSON);
-		if(responseJSON == login) {
-			console.log(url);
-			var url = "/courses/" + login;
-			window.location.href=url;
-		} else if(responseJSON == account_no_exist){
-			var problemsDiv = $("#logInProblems");
-			problemsDiv.innerHTML = "<h4>This account does not exist.</h4>";
-		}
-	});
+	if(login.length == 0) {
+		toReturn = false;
+		login.style.borderColor = "red";
+		login.style.borderWidth = "2px";
+	}
+	if(password.length == 0) {
+		toReturn = false;
+		password.style.borderColor = "red";
+		password.style.borderWidth = "2px";
+	}
+	return toReturn;
 }
+
+
 
 document.addEventListener("keydown", keyDownPressed, false);
 
