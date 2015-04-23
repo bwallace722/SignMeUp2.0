@@ -28,11 +28,14 @@ function addAsgnHTML() {
 function saveAssignments() {
 	addAsgnHTML();
 	//TODO save last assignment
-	var postParameters = {"course": course, "assignments": assignments};
-	console.log(postParameters);
-	$.post("/saveAssignments", postParameters, function(responseJSON) {
-		console.log(responseJSON);
-	});
+	for(i = 0; i < assignments.lenth; i++) {
+		var postParameters = {"course": course, "assignment": assignments[i]};
+		console.log(postParameters);
+		$.post("/saveAssignment", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+		});
+	}
+
 }
 
 function removeAsgn() {
