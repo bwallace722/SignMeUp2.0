@@ -77,11 +77,17 @@ function signUp() {
 
 function validateSignUp() {
 	var toReturn = true;
-	var name = document.getElementById("name").value;
-	var login = document.getElementById("loginSignUp").value;
-	var email = document.getElementById("email").value;
-	var password = document.getElementById("pass").value;
-	var confirm = document.getElementById("confirmPassword").value;
+	var name = document.getElementById("name");
+	var inputName = name.value;
+	var login = document.getElementById("loginSignUp");
+	var inputLogin = login.value;
+	var email = document.getElementById("email");
+	var inputEmail = email.value;
+	var password = document.getElementById("pass");
+	var inputPassword = password.value;
+	var confirm = document.getElementById("confirmPassword");
+	var inputConfirm = confirm.value;
+
 	
 	console.log(name + "- name");
 	console.log(login + "- login");
@@ -89,28 +95,28 @@ function validateSignUp() {
 	console.log(password + "- password");
 	console.log(confirm + "- confirm");
 	
-	if(name.length == 0) {
+	if(inputName.length == 0) {
 		toReturn = false;
 		name.style.borderColor = "red";
 		name.style.borderWidth = "2px";
 	}
-	if(login.length == 0) {
+	if(inputLogin.length == 0) {
 		toReturn = false;
 		login.style.borderColor = "red";
 		login.style.borderWidth = "2px";
 	}
 	console.log(email.indexOf("@"));
-	if(email.length == 0 || email.indexOf("@") == -1) {
+	if(inputEmail.length == 0 || email.indexOf("@") == -1) {
 		toReturn = false;
 		email.style.borderColor = "red";
 		email.style.borderWidth = "2px";
 	}
-	if(password.length == 0) {
+	if(inputEmail.length == 0) {
 		toReturn = false;
 		password.style.borderColor = "red";
 		password.style.borderWidth = "2px";
 	}
-	if(confirm.length == 0) {
+	if(inputEmail.length == 0) {
 		toReturn = false;
 		confirm.style.borderColor = "red";
 		confirm.style.borderWidth = "2px";

@@ -100,7 +100,6 @@ function addExam() {
 		toReturn = false;
 	}
 	return toReturn;
-
 }
 
 
@@ -201,35 +200,45 @@ function removeLab() {
 	}
 }
 
+function highlightField(field) {
+	field.style.borderColor = "red";
+	field.style.borderWidth = "2px";
+}
+
 function validateFormGroup(n,s,e) {
 	var toReturn = true;
 	
 	if(n.length == 0) {
 		toReturn = false;
-		n.style.borderColor = "red";
-		n.style.borderWidth = "2px";
+		highlightField(n);
 	}
 	
 	if(s.length == 0) {
 		toReturn = false;
-		s.style.borderColor = "red";
-		s.style.borderWidth = "2px";
+		highlightField(s);
 	} else {
 		var startInput = s.split("/");
-		var sMonth = startInput[0];
-		var sDay = startInput[1];
-		var sYear = startInput[2];
+		var sMonth = parseInt(startInput[0]);
+		var sDay = parseInt(startInput[1]);
+		var sYear = parseInt(startInput[2]);
+		if(sMonth > 12 || sMonth < 1 || sDay > 31 || sDay < 1 || sYear < 2014 || sYear > 2016) {
+			toReturn = false;
+			highlightField(s);
+		}
 	}
 	
 	if(e.length == 0) {
 		toReturn = false;
-		e.style.borderColor = "red";
-		e.style.borderWidth = "2px";
+		highlightField(e);
 	} else {
 		var endInput = e.split("/");
-		var eMonth = endInput[0];
-		var eDay = endInput[1];
-		var eYear = endInput[2];
+		var eMonth = parseInt(endInput[0]);
+		var eDay = parseInt(endInput[1]);
+		var eYear = parseInt(endInput[2]);
+		if(eMonth > 12 || eMonth < 1 || eDay > 31 || eDay < 1 || eYear < 2014 || eYear > 2016) {
+			toReturn = false;
+			highlightField(e);
+		}
 	}
 
 	return toReturn;
