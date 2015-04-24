@@ -8,7 +8,7 @@ $(".studentOnQueue").bind('click', function(s) {
 	console.log("hi");	
 	var text = $(this).text();
 
-prompt("Please enter a message to call the student to hours", "You're up for hours!");
+	prompt("Please enter a message to call the student to hours", "You're up for hours!");
 //when prompt is gone, save message
 
 	var message;
@@ -24,7 +24,7 @@ prompt("Please enter a message to call the student to hours", "You're up for hou
 			"message": message};
 	$.post(url, postParameters, function(responseJSON) {
 		//confirmation message
-		if(responseJSON) {
+		if(responseJSON == 1) {
 			alert(login + " has been called to hours");
 		} else {
 			alert(login + " cannot be reached. Maybe they signed out");

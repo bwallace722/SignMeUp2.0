@@ -142,7 +142,7 @@ function logIn() {
 	}
 }
 
-function validateLogin {
+function validateLogin() {
 	var toReturn = true;
 	var login = document.getElementById("loginLogIn").value;
 	var password = document.getElementById("passwordLogIn").value;

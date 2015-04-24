@@ -50,14 +50,17 @@ public class AccountHandler {
       try {
         List<String> studentClasses = db.getStudentClasses(login);
         List<String> taClasses = db.getTAClasses(login);
-        if(studentClasses.size() == 0 && taClasses.size() == 0) {
-          String noClasses = "<h3>You've got no courses! Try adding a course!</h3>" +
-      "<a class=\"btn btn-primary btn-lg\" onclick=\"addCourses()\"" +
-          "id=\"addCourseBtn\">Add a Course</a>";
+        if (studentClasses.size() == 0
+            && taClasses.size() == 0) {
+          String noClasses =
+              "<h3>You've got no courses! Try adding a course!</h3>"
+                  + "<a class=\"btn btn-primary btn-lg\" onclick=\"addCourses()\""
+                  + "id=\"addCourseBtn\">Add a Course</a>";
           classList.append(noClasses);
         } else {
-          String tableTags = "<table class=\"table table-hover\" id=\"courseTable\">"+
-    "<thead><tr><th>Course</th><th>Position</th></tr></thead><tbody id=\"courseTableBody\">";
+          String tableTags =
+              "<table class=\"table table-hover\" id=\"courseTable\">"
+                  + "<thead><tr><th>Course</th><th>Position</th></tr></thead><tbody id=\"courseTableBody\">";
           String closeTableTags = "</tbody></table>"
               + "<a class=\"btn btn-primary btn-sm\""
               + "onclick=\"addCourses()\" id=\"addCourseBtn\">Add a Course</a>";
@@ -84,8 +87,6 @@ public class AccountHandler {
           }
           classList.append(closeTableTags);
         }
-
-        System.out.println(classList.toString());
         Map<String, Object> variables =
             new ImmutableMap.Builder().put("userCourseList",
                 classList.toString()).put("title", "SignMeUp 2.0").put("user",
@@ -136,7 +137,7 @@ public class AccountHandler {
   }
   /**
    * This is the handler that updates a user's course list.
-   * @author kj13
+   * @author omadarik
    */
   private class UpdateCourseHandler implements Route {
     @Override
@@ -170,9 +171,6 @@ public class AccountHandler {
       QueryParamsMap qm = req.queryMap();
       String login = qm.value("login");
       String password = qm.value("password");
-      System.out.println(login
-          + " , "
-          + password);
       Account loggedIn = null;
       try {
         loggedIn = db.approveCredentials(login, password);
@@ -202,18 +200,11 @@ public class AccountHandler {
          * Creating a student object.
          */
         user = db.addAccount(login, name, email, password);
-        System.out.println(login
-            + " - was added");
-        // user = db.getAccount(login);
-        System.out.println(login
-            + " - was found in db");
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
         return "account exists";
       }
-      System.out.println(user.getLogin()
-          + " - is being returned");
       return user.getLogin();
     }
   }

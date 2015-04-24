@@ -49,7 +49,6 @@ public class TAHandler {
     Spark.get("/createCourse", new CreateCourseHandler(),
         new FreeMarkerEngine());
   }
-  
   private class SaveAssignment implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -60,8 +59,16 @@ public class TAHandler {
       String end = qm.value("end");
       String[] splitStart = start.split("/");
       String[] splitEnd = end.split("/");
-      String startDate = splitStart[2]+"-"+splitStart[0]+"-"+splitStart[1];
-      String endDate = splitEnd[2]+"-"+splitEnd[0]+"-"+splitEnd[1];      
+      String startDate = splitStart[2]
+          + "-"
+          + splitStart[0]
+          + "-"
+          + splitStart[1];
+      String endDate = splitEnd[2]
+          + "-"
+          + splitEnd[0]
+          + "-"
+          + splitEnd[1];
       try {
         db.addAssessmentItem("assignment", name, startDate, endDate, course);
       } catch (Exception e) {
@@ -72,7 +79,6 @@ public class TAHandler {
       return 1;
     }
   }
-  
   private class SaveExam implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -84,8 +90,16 @@ public class TAHandler {
       String end = qm.value("end");
       String[] splitStart = start.split("/");
       String[] splitEnd = end.split("/");
-      String startDate = splitStart[2]+"-"+splitStart[0]+"-"+splitStart[1];
-      String endDate = splitEnd[2]+"-"+splitEnd[0]+"-"+splitEnd[1];      
+      String startDate = splitStart[2]
+          + "-"
+          + splitStart[0]
+          + "-"
+          + splitStart[1];
+      String endDate = splitEnd[2]
+          + "-"
+          + splitEnd[0]
+          + "-"
+          + splitEnd[1];
       try {
         db.addAssessmentItem("exam", name, startDate, endDate, course);
       } catch (Exception e) {
@@ -96,7 +110,6 @@ public class TAHandler {
       return 1;
     }
   }
-  
   private class SaveLab implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -107,8 +120,16 @@ public class TAHandler {
       String end = qm.value("end");
       String[] splitStart = start.split("/");
       String[] splitEnd = end.split("/");
-      String startDate = splitStart[2]+"-"+splitStart[0]+"-"+splitStart[1];
-      String endDate = splitEnd[2]+"-"+splitEnd[0]+"-"+splitEnd[1];      
+      String startDate = splitStart[2]
+          + "-"
+          + splitStart[0]
+          + "-"
+          + splitStart[1];
+      String endDate = splitEnd[2]
+          + "-"
+          + splitEnd[0]
+          + "-"
+          + splitEnd[1];
       try {
         db.addAssessmentItem("lab", name, startDate, endDate, course);
       } catch (Exception e) {
@@ -119,8 +140,6 @@ public class TAHandler {
       return 1;
     }
   }
-  
-  
   private class CreateCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
@@ -180,22 +199,15 @@ public class TAHandler {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
-      System.out.println(courseId);
       // initially sends the queue.
       // to be sent: list of students in the queue, list of current questions,
       // list of popular questions, list of clinic suggestions.
       Queue courseQueue = runningHours.getQueueForCourse(courseId);
-      System.out.println(courseId
-          + " - id");
       Hours hours = runningHours.getHoursForCourse(courseId);
       List<Question> questions = null;
-      System.out.println(courseId
-          + " - now");
       if (hours != null) {
         questions = hours.getQuestions();
       }
-      System.out.println(courseId
-          + " here");
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("queue", courseQueue).put("questions", questions)

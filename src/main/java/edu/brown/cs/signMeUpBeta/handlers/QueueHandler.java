@@ -101,17 +101,15 @@ public class QueueHandler {
   private class CallStudentToHours implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
+      int toReturn = 0;
       String courseId = req.params(":courseId");
-      System.out.println(courseId);
       QueryParamsMap qm = req.queryMap();
       String studentLogin = qm.value("studentLogin");
       String message = qm.value("message");
-      // CALL STUDENT TO HOURS
-      // NEED WAY TO ALERT STUDENT
-      Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).build();
-      return null;
+      Queue queue = runningHours.getQueueForCourse(courseId);
+      queue.callOffQueue(studentLogin);
+      toReturn = 1;
+      return toReturn;
     }
   }
   /**
@@ -144,8 +142,6 @@ public class QueueHandler {
     @Override
     public Object handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
-      System.out.println(courseId
-          + " updating queue");
       Queue currentQueue = runningHours.getQueueForCourse(courseId);
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
@@ -157,10 +153,6 @@ public class QueueHandler {
     @Override
     public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
-      System.out.println(courseId
-          + " starting hrs");
-      // TODO return 1 if queue object was created
-      // return 0 if there was a problem.
       return runningHours.startHours(courseId);
     }
   }
@@ -189,13 +181,10 @@ public class QueueHandler {
     public ModelAndView handle(final Request req, final Response res) {
       String courseAndUserId = req.params(":courseAndUserId");
       String[] reqParams = courseAndUserId.split("~");
-      System.out.println(courseAndUserId);
       String courseId = reqParams[0];
       String login = reqParams[1];
       Hours hours = runningHours.getHoursForCourse(courseId);
       List<Question> questions = new ArrayList<Question>();
-      System.out.println(courseId
-          + " - now");
       boolean running = false;
       if (hours != null) {
         running = true;

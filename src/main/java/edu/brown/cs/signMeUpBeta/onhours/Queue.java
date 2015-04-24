@@ -1,9 +1,9 @@
 package edu.brown.cs.signMeUpBeta.onhours;
 
 import java.util.Comparator;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.PriorityQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 import edu.brown.cs.signMeUpBeta.student.Account;
 
@@ -13,7 +13,7 @@ public class Queue {
   private Map<String, Integer> studentCheckMap;
   public Queue() {
     pq = new PriorityQueue(new PriorityComp());
-    studentCheckMap = new HashMap<String, Integer>();
+    studentCheckMap = new ConcurrentHashMap<String, Integer>();
     cutOff = Double.POSITIVE_INFINITY;
   }
   private class PriorityComp implements Comparator<Account> {
@@ -41,6 +41,13 @@ public class Queue {
   }
   public int calledToHours(String login) {
     return studentCheckMap.get(login);
+  }
+  public int callOffQueue(String login) {
+    if (studentCheckMap.containsKey(login)) {
+      studentCheckMap.put(login, 1);
+      return 1;
+    }
+    return 0;
   }
   // public void switchOrder(Account s1, Account s2) {}
   public double getPriority(Account s1) {
