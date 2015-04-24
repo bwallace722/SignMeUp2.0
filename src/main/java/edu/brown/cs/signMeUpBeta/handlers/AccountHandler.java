@@ -172,14 +172,22 @@ public class AccountHandler {
       String login = qm.value("login");
       String password = qm.value("password");
       Account loggedIn = null;
+      String toReturn = "account does not exist";
+      System.out.println(login + " - " + password);
       try {
         loggedIn = db.approveCredentials(login, password);
+        if(loggedIn == null) {
+          return toReturn;
+        }
+        System.out.println(loggedIn.getLogin());
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
-        return "account does not exist";
+        System.out.println("not exist");
+        return toReturn;
       }
-      return loggedIn.getLogin();
+      toReturn = loggedIn.getLogin();
+      return toReturn;
     }
   }
   /**

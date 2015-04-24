@@ -133,8 +133,7 @@ function logIn() {
 				var url = "/courses/" + login;
 				window.location.href=url;
 			} else if(responseJSON == account_no_exist){
-				var problemsDiv = $("#logInProblems");
-				problemsDiv.innerHTML = "<h4>This account does not exist.</h4>";
+				alert("This account does not exist");
 			}
 		});
 	} else {
@@ -144,14 +143,17 @@ function logIn() {
 
 function validateLogin() {
 	var toReturn = true;
-	var login = document.getElementById("loginLogIn").value;
-	var password = document.getElementById("passwordLogIn").value;
+	var login = document.getElementById("loginLogIn");
+	var password = document.getElementById("passwordLogIn");
+	var inputPassword = password.value;
+	var inputLogin = login.value;
 	if(login.length == 0) {
 		toReturn = false;
 		login.style.borderColor = "red";
 		login.style.borderWidth = "2px";
 	}
-	if(password.length == 0) {
+
+	if(inputPassword.length == 0) {
 		toReturn = false;
 		password.style.borderColor = "red";
 		password.style.borderWidth = "2px";
