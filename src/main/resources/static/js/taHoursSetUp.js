@@ -19,10 +19,9 @@ function startHours() {
 
 function addQuestion() {
 	var newQuestion = document.getElementById("newQuestion").value;
-
 	var postUrl = "/addQuestionForHours/" + courseId;
-	//TODO: add the name of the current assessment item to the parameters
-	var postParameters = {"newQuestion": newQuestion, "name": ...};
+	var assignmentName = document.getElementById("currAsign").innerHTML;
+	var postParameters = {"newQuestion": newQuestion, "name": assignmentName};
 	$.post(postUrl, postParameters, function(responseJSON) {
 		if(responseJSON == 1) {
 			alert("we've added your question");

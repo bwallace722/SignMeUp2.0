@@ -58,13 +58,13 @@
     <div class="panel-body">
      <div class="hoursSetUpCategories">
 
-     <div class="currAsign"><h4>Maps</h4></div>
+<h4 id="currAsign">Maps</h4>
          <div class="onHoursBlock">
       <!--populate with request-->
       <div class="currSubs" id="currSubs">
           <h5 style="text-decoration: underline;">Questions</h5>
       </div>
-            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#qModal">
+            <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#subQModal">
               <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add question
             </button>
             <div class="modal fade" id="subQModal" tabindex="-1" role="dialog" aria-labelledby="qModalLabel" aria-hidden="true">
@@ -79,8 +79,8 @@
                                         <!-- <form class="timeLimit_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
                                         <form class="q_form" id="q_form">
                                               <h4 style="color: #000; text-align: center;">Please enter the name of the question</h4>
-<input type="text" class="form-control" id="newQuestion" placeholder="Dijkstras">
-<br>
+												<input type="text" class="form-control" id="newQuestion" placeholder="Dijkstras">
+												<br>
                                             <div class="form-actions">
                                                 <button class="btn btn-primary" data-dismiss="modal" onclick="addQuestion()">Save question</button>
                                                 <br>

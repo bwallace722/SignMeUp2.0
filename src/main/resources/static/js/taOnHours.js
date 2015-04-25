@@ -2,6 +2,11 @@ var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 var courseId = splitURL[splitURL.length -1];
 
+
+function returnToSetup() {
+	window.location.href = "/taHoursSetUp/" + courseId;
+}
+
 console.log("here");
 
 $(".studentOnQueue").bind('click', function(s) {
@@ -19,7 +24,6 @@ $(".studentOnQueue").bind('click', function(s) {
 	//TODO: find some way of parsing studentlogin from the div
 	//that was clicked.
 	var url = "/callStudent/" + courseId;
-	console.log(message);
 	if(message) {
 		var postParameters = {"studentLogin": login, 
 				"message": message};
