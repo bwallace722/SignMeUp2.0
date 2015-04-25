@@ -1,7 +1,6 @@
 package edu.brown.cs.signMeUpBeta.classSetup;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -230,7 +229,9 @@ public class Database {
    */
   public void addAssessmentItem(String table, String name, String startDate,
       String endDate, String courseId) throws SQLException {
-    String query = "INSERT INTO " + table + " VALUES (?,?,?,?);";
+    String query = "INSERT INTO "
+        + table
+        + " VALUES (?,?,?,?);";
     System.out.println(query);
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, name);
