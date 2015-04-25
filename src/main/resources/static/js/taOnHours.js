@@ -3,6 +3,10 @@ var splitURL = windowURL.split("/");
 var courseId = splitURL[splitURL.length -1];
 
 
+	var queueHTMLStart = "<div class=\"row studentOnQueue\">" +
+    "<div class=\"col-sm-8 col-sm-push-1\"><h5>";
+	var queueHTMLEnd = "</h5></div><br><hr>";
+
 function returnToSetup() {
 	window.location.href = "/taHoursSetUp/" + courseId;
 }
@@ -43,13 +47,22 @@ $(".studentOnQueue").bind('click', function(s) {
 //setInterval(updateQueue(), 1000);
 
 setInterval(function(t) {
-	console.log("running");
  	var postUrl = "/updateQueue/" + courseId;
 	$.post(postUrl, function(responseJSON) {
 		console.log(responseJSON);
-//		console.log(responseJSON[0]);
-		//redisplay queue
-		//div class="queue" should be updated.
+		var queueString = responseJSON.substring(1,responseJSON.length-1);
+		console.log(queueString);
+		if(queueString) {
+			var queueList = queueString.split(",");
+			var queue = document.getElementByClass("queue");
+			var studentList = "";
+			for(int i=0; i < queueList.length; i++) {
+				var student = queueList[i];
+				console.log(student);
+				studentList.append(queueHTMLStart + student + queueHTMLEnd);
+			}
+			queue.innerHTML = studentList;
+		}
 		
 	});
 
