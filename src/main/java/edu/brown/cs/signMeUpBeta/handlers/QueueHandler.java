@@ -142,11 +142,14 @@ public class QueueHandler {
     @Override
     public Object handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
+      System.out.println(courseId);
       Queue currentQueue = runningHours.getQueueForCourse(courseId);
-      Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("queue", currentQueue).build();
-      return 1;
+      System.out.println("here");
+      List<String> toReturn = currentQueue.getStudentsInOrder();
+      for (String s : toReturn) {
+        System.out.println(s);
+      }
+      return toReturn;
     }
   }
   private class StartCourseHours implements Route {

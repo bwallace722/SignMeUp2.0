@@ -1,6 +1,9 @@
 package edu.brown.cs.signMeUpBeta.onhours;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
@@ -30,6 +33,17 @@ public class Queue {
         return 0;
       }
     }
+  }
+  public List<String> getStudentsInOrder() {
+    List<String> toReturn = new ArrayList<String>();
+    Object[] toSort = pq.toArray();
+    Arrays.sort(toSort);
+    for (Object a : toSort) {
+      Account acc = (Account) a;
+      System.out.println(acc.getLogin());
+      toReturn.add(acc.getLogin());
+    }
+    return toReturn;
   }
   public void add(Account s) {
     pq.add(s);

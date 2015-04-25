@@ -41,7 +41,8 @@ setInterval(function(t) {
 	console.log("running");
  	var postUrl = "/updateQueue/" + courseId;
 	$.post(postUrl, function(responseJSON) {
-		console.log(responseJSON + " - updateQueue");
+		console.log(responseJSON);
+//		console.log(responseJSON[0]);
 		//redisplay queue
 		//div class="queue" should be updated.
 	});
