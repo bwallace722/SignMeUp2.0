@@ -14,19 +14,19 @@ function addAsgnHTML() {
 
 	if(addAsgn()) {
 		assignmentCount++;
-		$("#assignmentFormGroups").append("<div id=\"assignment" + assignmentCount + "\"><hr> <label class=\"col-sm-4\" for=\"assignmentName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnName" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnStartDate" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnEndDate" + assignmentCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>");
+		$("#assignmentFormGroups").append("<div id=\"assignment" + assignmentCount + "\"><hr> <label class=\"col-sm-4\" for=\"assignmentName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnName" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnStartDate" + assignmentCount + "\" placeholder=\"MM/DD/YYYY\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnEndDate" + assignmentCount + "\" placeholder=\"MM/DD/YYYY\">\r\n\r\n<br></div>");
 		$("#removeAsgnBtn").show();
 	}
 }
 
 function addAsgn() {
 	var toReturn = true;
-	var n = document.getElementById("asgnName"+assignmentCount).value;
-	var s = document.getElementById("asgnStartDate"+assignmentCount).value;
-	var e = document.getElementById("asgnEndDate"+assignmentCount).value;
+	var n = document.getElementById("asgnName"+assignmentCount);
+	var s = document.getElementById("asgnStartDate"+assignmentCount);
+	var e = document.getElementById("asgnEndDate"+assignmentCount);
 
 	if(validateFormGroup(n,s,e)) {
-		var newAsgn = {name:n, start:s, end:e};
+		var newAsgn = {name:n.value, start:s.value, end:e.value};
 		assignments[assignments.length] = newAsgn;
 	} else {
 		toReturn = false;
@@ -81,7 +81,7 @@ var examCount = 1;
 function addExamHTML() {
 	if(addExam()) {
 		examCount++;
-		$("#examFormGroups").append("<div id=\"exam" + examCount + "\"><hr> <label class=\"col-sm-4\" for=\"examName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examName" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examStartDate" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examEndDate" + examCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>");
+		$("#examFormGroups").append("<div id=\"exam" + examCount + "\"><hr> <label class=\"col-sm-4\" for=\"examName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examName" + examCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examStartDate" + examCount + "\" placeholder=\"MM/DD/YYYY\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"examEndDate" + examCount + "\" placeholder=\"MM/DD/YYYY\">\r\n\r\n<br></div>");
 		$("#removeExamBtn").show();
 	}
 
@@ -89,12 +89,12 @@ function addExamHTML() {
 
 function addExam() {
 	var toReturn = true;
-	var n = document.getElementById("examName"+examCount).value;
-	var s = document.getElementById("examStartDate"+examCount).value;
-	var e = document.getElementById("examEndDate"+examCount).value;
+	var n = document.getElementById("examName"+examCount);
+	var s = document.getElementById("examStartDate"+examCount);
+	var e = document.getElementById("examEndDate"+examCount);
 	
 	if(validateFormGroup(n,s,e)) {
-		var newExam = {name:n, start:s, end:e};
+		var newExam = {name:n.value, start:s.value, end:e.value};
 		exams[exams.length] = newExam;
 	} else {
 		toReturn = false;
@@ -148,17 +148,17 @@ $("#removeLabBtn").hide();
 function addLabHTML() {
 	if(addLab()){
 		labCount++;
-		$("#examFormGroups").append("<div id=\"lab" + labCount + "\"><hr> <label class=\"col-sm-4\" for=\"labName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labName" + labCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labStartDate" + labCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labEndDate" + labCount + "\" placeholder=\"Bacon\">\r\n\r\n<br></div>");
+		$("#examFormGroups").append("<div id=\"lab" + labCount + "\"><hr> <label class=\"col-sm-4\" for=\"labName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labName" + labCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labStartDate" + labCount + "\" placeholder=\"MM/DD/YYYY\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labEndDate" + labCount + "\" placeholder=\"MM/DD/YYYY\">\r\n\r\n<br></div>");
 		$("#removeLabBtn").show();
 	}
 }
 function addLab() {
 	var toReturn = true;
-	var n = document.getElementById("labName"+labCount).value;
-	var s = document.getElementById("labStartDate"+labCount).value;
-	var e = document.getElementById("labEndDate"+labCount).value;
+	var n = document.getElementById("labName"+labCount);
+	var s = document.getElementById("labStartDate"+labCount);
+	var e = document.getElementById("labEndDate"+labCount);
 	if(validateFormGroup(n,s,e)) {
-		var newLab = {name:n, start:s, end:e};
+		var newLab = {name:n.value, start:s.value, end:e.value};
 		labs[lab.length] = newLab;
 	} else {
 		toReturn = false;
@@ -208,16 +208,16 @@ function highlightField(field) {
 function validateFormGroup(n,s,e) {
 	var toReturn = true;
 	
-	if(n.length == 0) {
+	if(n.value.length == 0) {
 		toReturn = false;
 		highlightField(n);
 	}
 	
-	if(s.length == 0) {
+	if(s.value.length == 0) {
 		toReturn = false;
 		highlightField(s);
 	} else {
-		var startInput = s.split("/");
+		var startInput = s.value.split("/");
 		var sMonth = parseInt(startInput[0]);
 		var sDay = parseInt(startInput[1]);
 		var sYear = parseInt(startInput[2]);
@@ -227,11 +227,11 @@ function validateFormGroup(n,s,e) {
 		}
 	}
 	
-	if(e.length == 0) {
+	if(e.value.length == 0) {
 		toReturn = false;
 		highlightField(e);
 	} else {
-		var endInput = e.split("/");
+		var endInput = e.value.split("/");
 		var eMonth = parseInt(endInput[0]);
 		var eDay = parseInt(endInput[1]);
 		var eYear = parseInt(endInput[2]);

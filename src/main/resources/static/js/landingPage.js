@@ -105,8 +105,8 @@ function validateSignUp() {
 		login.style.borderColor = "red";
 		login.style.borderWidth = "2px";
 	}
-	console.log(email.indexOf("@"));
-	if(inputEmail.length == 0 || email.indexOf("@") == -1) {
+//	console.log(email.indexOf("@"));
+	if(inputEmail.length == 0 || inputEmail.indexOf("@") == -1) {
 		toReturn = false;
 		email.style.borderColor = "red";
 		email.style.borderWidth = "2px";
