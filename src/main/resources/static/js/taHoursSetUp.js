@@ -18,6 +18,7 @@ function startHours() {
 }
 
 function addQuestion() {
+	var currSubs = $("#currSubs");
 	var newQuestion = document.getElementById("newQuestion").value;
 	var postUrl = "/addQuestionForHours/" + courseId;
 	var assignmentName = document.getElementById("currAsign").innerHTML;
@@ -25,7 +26,7 @@ function addQuestion() {
 	$.post(postUrl, postParameters, function(responseJSON) {
 		if(responseJSON == 1) {
 			alert("we've added your question");
-			//TODO: update questions list
+			currSubs.append("<h6>" + newQuestion + "</h6>");
 		} else {
 			alert("We couldn't add your question. Try again.");
 		}
