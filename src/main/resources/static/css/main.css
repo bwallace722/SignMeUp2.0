@@ -26,6 +26,16 @@ h1 {
   width: 20%;
 }
 
+.startHours {
+	width: 25%;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#startHoursBtn {
+	margin-left:30%;
+}
+
 #seeAssignments {
   float: left;
   margin-top: 5%;
