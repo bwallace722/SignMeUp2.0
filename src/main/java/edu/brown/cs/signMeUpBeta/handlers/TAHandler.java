@@ -70,6 +70,7 @@ public class TAHandler {
           + "-"
           + splitEnd[1];
       try {
+        db.removeAssessmentsByCourse("assignment", course);
         db.addAssessmentItem("assignment", name, startDate, endDate, course);
       } catch (Exception e) {
         System.out.println("ERROR: "
@@ -101,6 +102,7 @@ public class TAHandler {
           + "-"
           + splitEnd[1];
       try {
+        db.removeAssessmentsByCourse("assignment", course);
         db.addAssessmentItem("exam", name, startDate, endDate, course);
       } catch (Exception e) {
         System.out.println("ERROR: "
@@ -131,6 +133,7 @@ public class TAHandler {
           + "-"
           + splitEnd[1];
       try {
+        db.removeAssessmentsByCourse("assignment", course);
         db.addAssessmentItem("lab", name, startDate, endDate, course);
       } catch (Exception e) {
         System.out.println("ERROR: "

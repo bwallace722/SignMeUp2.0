@@ -6,12 +6,13 @@ var assignments = [];
 var labs = [];
 var exams = [];
 var assignmentCount = 1;
+var examCount = 1;
+var labCount = 1;
 
 
 $("#removeAsgnBtn").hide();
 
 function addAsgnHTML() {
-
 	if(addAsgn()) {
 		assignmentCount++;
 		$("#assignmentFormGroups").append("<div id=\"assignment" + assignmentCount + "\"><hr> <label class=\"col-sm-4\" for=\"assignmentName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnName" + assignmentCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnStartDate" + assignmentCount + "\" placeholder=\"MM/DD/YYYY\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"asgnEndDate" + assignmentCount + "\" placeholder=\"MM/DD/YYYY\">\r\n\r\n<br></div>");
@@ -76,7 +77,6 @@ $("#examForm").fadeOut(200);
 });
 
 $("#removeExamBtn").hide();
-var examCount = 1;
 
 function addExamHTML() {
 	if(addExam()) {
@@ -142,13 +142,13 @@ $("#noLabRadio").bind('click', function(y) {
 $("#labForm").fadeOut(200);
 });
 
-var labCount = 1;
-$("#removeLabBtn").hide();
+$("#removeLabBtn").hide();		console.log("attempting to add html");
+
 
 function addLabHTML() {
 	if(addLab()){
 		labCount++;
-		$("#examFormGroups").append("<div id=\"lab" + labCount + "\"><hr> <label class=\"col-sm-4\" for=\"labName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labName" + labCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labStartDate" + labCount + "\" placeholder=\"MM/DD/YYYY\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labEndDate" + labCount + "\" placeholder=\"MM/DD/YYYY\">\r\n\r\n<br></div>");
+		$("#labFormGroups").append("<div id=\"lab" + labCount + "\"><hr> <label class=\"col-sm-4\" for=\"labName\">Name<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labName" + labCount + "\" placeholder=\"Bacon\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4\" for=\"start\">Start Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labStartDate" + labCount + "\" placeholder=\"MM/DD/YYYY\">\r\n<br>\r\n<br>\r\n<label class=\"col-sm-4 col-push-1\" for=\"end\">End Date<\/label>\r\n<input class=\"col-sm-6\" type=\"text\" class=\"form-control\" id=\"labEndDate" + labCount + "\" placeholder=\"MM/DD/YYYY\">\r\n\r\n<br></div>");
 		$("#removeLabBtn").show();
 	}
 }
@@ -159,7 +159,7 @@ function addLab() {
 	var e = document.getElementById("labEndDate"+labCount);
 	if(validateFormGroup(n,s,e)) {
 		var newLab = {name:n.value, start:s.value, end:e.value};
-		labs[lab.length] = newLab;
+		labs[labs.length] = newLab;
 	} else {
 		toReturn = false;
 	}
@@ -167,6 +167,7 @@ function addLab() {
 }
 
 function saveLabs() {
+	console.log("saving labs");
 	if(labCounts > labs.length) {
 		if(addLab()) {
 			postLabs();
@@ -194,7 +195,6 @@ function removeLab() {
 	}
 	var newLabDiv = "#lab" + labCount;
 	$(newLabDiv).hide();
-	console.log(labCount);
 	if(labCount <= 1) {
 		$("#removeLabBtn").hide();
 	}

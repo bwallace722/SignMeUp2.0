@@ -209,6 +209,14 @@ public class Database {
     response = "Success.";
     return response;
   }
+  public void removeAssessmentsByCourse(String table, String course) throws SQLException {
+    String query = "DELETE FROM " + table + " WHERE course_id = ?;";
+    System.out.println(query);
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, course);
+    ps.executeUpdate();
+    ps.close();
+  }
   /**
    * This method inserts an entry into the lab table. This assessment item can
    * be either an assignment, an exam, or a lab.
