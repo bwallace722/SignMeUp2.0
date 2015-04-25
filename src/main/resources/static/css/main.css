@@ -129,12 +129,17 @@ h3 {
 	margin-right: auto;
 }
 
-#coursePanel h4{
+#userCoursePanel h4{
 	text-align: center;
 	font-weight: bold;
 	color: #000;
 }
 
+#addCoursePanel h4 {
+	text-align: center;
+	font-weight: bold;
+	color: #fff;
+}
 
 .radioSelections label {
 	margin-left: 20%;
