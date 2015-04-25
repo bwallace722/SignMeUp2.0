@@ -21,7 +21,8 @@ function addQuestion() {
 	var newQuestion = document.getElementById("newQuestion").value;
 
 	var postUrl = "/addQuestionForHours/" + courseId;
-	var postParameters = {"newQuestion": newQuestion};
+	//TODO: add the name of the current assessment item to the parameters
+	var postParameters = {"newQuestion": newQuestion, "name": ...};
 	$.post(postUrl, postParameters, function(responseJSON) {
 		if(responseJSON == 1) {
 			alert("we've added your question");
