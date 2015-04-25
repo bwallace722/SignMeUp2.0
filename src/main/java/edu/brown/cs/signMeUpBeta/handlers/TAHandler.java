@@ -244,9 +244,6 @@ public class TAHandler {
         System.out.println("ERROR: sql exception in adding question");
         return 0;
       }
-      Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).build();
       return 1;
     }
   }

@@ -46,6 +46,7 @@ setInterval(function(t) {
 //		console.log(responseJSON[0]);
 		//redisplay queue
 		//div class="queue" should be updated.
+		
 	});
 
 }, 4000);
