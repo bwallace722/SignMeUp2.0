@@ -59,6 +59,7 @@ public class Queue {
   public int callOffQueue(String login) {
     if (studentCheckMap.containsKey(login)) {
       studentCheckMap.put(login, 1);
+      pq.remove(login);
       return 1;
     }
     return 0;

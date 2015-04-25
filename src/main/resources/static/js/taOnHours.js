@@ -8,10 +8,9 @@ $(".studentOnQueue").bind('click', function(s) {
 	console.log("hi");	
 	var text = $(this).text();
 
-	prompt("Please enter a message to call the student to hours", "You're up for hours!");
+	var message = prompt("Please enter a message to call the student to hours", "You're up for hours!");
 //when prompt is gone, save message
 
-	var message;
 	var text = text.trim();
 	var textList = text.split(" ");
 	var login = text.split(" ")[textList.length - 1];
@@ -20,17 +19,19 @@ $(".studentOnQueue").bind('click', function(s) {
 	//TODO: find some way of parsing studentlogin from the div
 	//that was clicked.
 	var url = "/callStudent/" + courseId;
-	var postParameters = {"studentLogin": login, 
-			"message": message};
-	$.post(url, postParameters, function(responseJSON) {
-		//confirmation message
-		if(responseJSON == 1) {
-			alert(login + " has been called to hours");
-		} else {
-			alert(login + " cannot be reached. Maybe they signed out");
-		}
-	});
-	
+	console.log(message);
+	if(message) {
+		var postParameters = {"studentLogin": login, 
+				"message": message};
+		$.post(url, postParameters, function(responseJSON) {
+			//confirmation message
+			if(responseJSON == 1) {
+				alert(login + " has been called to hours");
+			} else {
+				alert(login + " cannot be reached. Maybe they signed out");
+			}
+		});
+	}
 	
 });
 
@@ -45,6 +46,7 @@ setInterval(function(t) {
 //		console.log(responseJSON[0]);
 		//redisplay queue
 		//div class="queue" should be updated.
+		
 	});
 
 }, 4000);

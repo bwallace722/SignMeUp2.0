@@ -5,6 +5,7 @@ var courseIdAndLogin = splitURL[splitURL.length -1];
 var splitCourseAndLogin = courseIdAndLogin.split("~");
 var courseId = splitCourseAndLogin[0];
 var login = splitCourseAndLogin[1];
+var calledToHours = false;
 console.log("course: " + courseId + " , login: " + login);
 
 function getOnQueue() {
@@ -29,6 +30,7 @@ function getOnQueue() {
 
 //interval set to every second.
 function updateStatus() {
+
 	setInterval(checkStatus, 1000);
 }
 
@@ -37,6 +39,7 @@ function updateStatus() {
  * an alert will appear.
  */
 var checkStatus = function() {
+	if(!calledToHours) {
 	var postParameters = {"course": courseId, "login": login}; 
 	$.post("/checkCallStatus", postParameters, function(responseJSON) {
 		/*
@@ -45,8 +48,10 @@ var checkStatus = function() {
 		 * and false otherwise.
 		 */
 		if(responseJSON == 1) {
+			calledToHours = true;
 			alert("You've been called up for hours!");
 			clearInterval(checkStatus);
 		}
 	});
+	}
 }
