@@ -57,5 +57,13 @@ $(".hoursSignUp").bind('click', function(h) {
 
 
 function makeAppointment() {
-	
+	var url = "/makeAppointment/" + courseIdAndLogin;
+	var postParameters = {"course": courseId, "login": login };
+	$.post("/checkQueue", postParameters, function(responseJSON){
+		if(responseJSON == 1) {
+			window.location.href= url;
+		} else {
+			alert("The queue for this class isn't running yet! Sorry!");
+		}
+	});
 }

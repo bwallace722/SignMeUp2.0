@@ -58,14 +58,7 @@
     <!--ex:<button class="time" href="confirmAppointment.html">
     <h4>"time"</h4></button>-->
     <!--If there are no available times, leave a message and make button to go back-->
-    <div class="col-sm-6 col-sm-offset-3">
-    <button class="aptTime btn btn-success btn-lg">6:45</button>
-    <button class="aptTime btn btn-success btn-lg">7:45</button>
-    </div>
-    <div class="col-sm-6 col-sm-offset-3">
-    <button class="aptTime btn btn-success btn-lg">7:15</button>
-    <button class="aptTime btn btn-success btn-lg">8:30</button>
-    </div>
+    <div class="col-sm-6 col-sm-offset-3">${aptTimes}</div>
     </div>
     </div>
     <div class="row">
@@ -76,6 +69,7 @@
             <div class="categories">
                 <h4>Bacon</h4>
                 <div class="questions">
+                ${questions}
                         <label>
                           <input type="checkbox"> Dijkstras
                         </label>

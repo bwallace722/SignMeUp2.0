@@ -1,3 +1,11 @@
+var windowURL = window.location.href;
+var splitURL = windowURL.split("/");
+//url contains student
+var courseIdAndLogin = splitURL[splitURL.length -1];
+var splitCourseAndLogin = courseIdAndLogin.split("~");
+var courseId = splitCourseAndLogin[0];
+var login = splitCourseAndLogin[1];
+
 $(".confirmApt").bind('click', function(c) {
 	//post to queue
 	//success: send alert via email too (?)
@@ -12,14 +20,13 @@ $(".aptTime").bind('click', function(a) {
 $(".time").bind('click', function(e) {
 
 
- 	var postParameters = {"time": $(this).text()};
- 	//to confirm appointment: send time and receive true from server
+ 	var postParameters = {"time": $(this).text(), "login": login, "courseId": courseId};
  	$.post("/confirmAppointment", postParameters, function(responseJSON){
 		responseObject = JSON.parse(responseJSON);
 		resultWords = responseObject.results;
 		questionsList = resultWords.split("!");
 		var success = questionsList[0];
-		if(resultWords.equals("true")) {
+		if(resultWords == 1) {
 			//figure out some animation for showing time
 			//show time and reveal questions container
 

@@ -59,10 +59,10 @@ function postAsngs() {
 }
 
 function removeAsgn() {
-	assignmentCount--;
 	var newAssignmentDiv = "#assignment" + assignmentCount;
 	$(newAssignmentDiv).hide();
-	if(assignmentCount <= 1) {
+	assignmentCount--;
+	if(assignmentCount == 1) {
 		$("#removeAsgnBtn").hide();
 	}
 }
@@ -125,10 +125,10 @@ function postExams() {
 
 
 function removeExam() {
-	examCount--;
 	var newExamDiv = "#exam" + examCount;
 	$(newExamDiv).hide();
-	if(examCount <= 1) {
+	examCount--;
+	if(examCount == 1) {
 		$("#removeExamBtn").hide();
 	}
 }
@@ -188,14 +188,13 @@ function postLabs() {
 }
 
 function removeLab() {
-	labCount--;
-	if(labCount < labs.length) {
-		labs[labs.length - 1] = null;
-		
-	}
 	var newLabDiv = "#lab" + labCount;
 	$(newLabDiv).hide();
-	if(labCount <= 1) {
+	labCount--;
+//	if(labCount < labs.length) {
+//		labs[labs.length - 1] = null;
+//	}
+	if(labCount == 1) {
 		$("#removeLabBtn").hide();
 	}
 }

@@ -207,6 +207,7 @@ public class TAHandler {
       // list of popular questions, list of clinic suggestions.
       Queue courseQueue = runningHours.getQueueForCourse(courseId);
       Hours hours = runningHours.getHoursForCourse(courseId);
+      //TODO GET TIME LIMIT for this course
       List<Question> questions = null;
       if (hours != null) {
         questions = hours.getQuestions();
@@ -214,7 +215,7 @@ public class TAHandler {
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("queue", courseQueue).put("questions", questions)
-              .build();
+              .put("time", null).build();
       return new ModelAndView(variables, "taOnHours.html");
     }
   }

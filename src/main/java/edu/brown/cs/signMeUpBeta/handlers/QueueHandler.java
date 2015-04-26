@@ -35,7 +35,8 @@ public class QueueHandler {
     runSpark();
   }
   public void runSpark() {
-    Spark.get("/confirmAppointment", new AppointmentHandler());
+    Spark.post("/confirmAppointment", new ConfirmAppointmentHandler());
+    Spark.get("/makeAppointment/:courseIdAndUserId", new MakeAppointmentHandler(), new FreeMarkerEngine());
     Spark.get("/signUpForHours/:courseAndUserId", new StudentSignUpForHours(),
         new FreeMarkerEngine());
     Spark.post("/startHours/:courseId", new StartCourseHours());
@@ -159,7 +160,7 @@ public class QueueHandler {
       return runningHours.startHours(courseId);
     }
   }
-  private static class AppointmentHandler implements Route {
+  private static class ConfirmAppointmentHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
       // JSONParser parser = new JSONParser();
@@ -173,6 +174,38 @@ public class QueueHandler {
       return null;
     }
   }
+  private class MakeAppointmentHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      String courseAndUserId = req.params(":courseAndUserId");
+      String[] reqParams = courseAndUserId.split("~");
+      String courseId = reqParams[0];
+      String login = reqParams[1];
+      String timesHTMLTags = "<button class=\"aptTime btn btn-success btn-lg\">";
+      String closeTag = "</button>";
+      //NEEDED: AVAILABLE APPOINTMENT TIMES 
+      List<String> availTimes = new ArrayList<String>();
+      StringBuilder timesHTML = new StringBuilder();
+      for(String a : availTimes) {
+        String t = timesHTMLTags + a + closeTag;
+        timesHTML.append(t);
+      }
+      //NEEDED: SUBQUESTIONS PER QUESTION
+      Hours hours = runningHours.getHoursForCourse(courseId);
+      List<Question> questions = new ArrayList<Question>();
+      boolean running = false;
+      if (hours != null) {
+        running = true;
+        questions = hours.getQuestions();
+      }
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+              courseId).put("login", login).put("aptTimes", timesHTML)
+              .put("questions", questions).put("running", running).build();
+      return new ModelAndView(variables, "signUpForHours.html");
+    }
+  }
+  
   /**
    * This handler initially displays the signupforhours page. It will display
    * the assignment, questions, and subquestions relevant to that student's
