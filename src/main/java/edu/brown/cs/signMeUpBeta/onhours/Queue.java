@@ -3,6 +3,7 @@ package edu.brown.cs.signMeUpBeta.onhours;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -12,19 +13,21 @@ import edu.brown.cs.signMeUpBeta.student.Account;
 
 public class Queue {
   private PriorityQueue<Account> pq;
-  private double cutOff;
+  //private double cutOff;
   private Map<String, Integer> studentCheckMap;
+  private Map<String, Long> signUpTime;
+  
   public Queue() {
     pq = new PriorityQueue(new PriorityComp());
     studentCheckMap = new ConcurrentHashMap<String, Integer>();
-    cutOff = Double.POSITIVE_INFINITY;
+    //cutOff = Double.POSITIVE_INFINITY;
   }
   private class PriorityComp implements Comparator<Account> {
-    public PriorityComp() {}
     @Override
     public int compare(Account a, Account b) {
-      double aPrior = a.priorityMultiplier();
-      double bPrior = b.priorityMultiplier();
+      long currTime = new Date().getTime();
+      double aPrior = a.priorityMultiplier()*(currTime - signUpTime.get(a.getLogin()));
+      double bPrior = b.priorityMultiplier()*(currTime - signUpTime.get(b.getLogin()));
       if (aPrior > bPrior) {
         return 1;
       } else if (aPrior < bPrior) {
@@ -36,21 +39,24 @@ public class Queue {
   }
   public List<String> getStudentsInOrder() {
     List<String> toReturn = new ArrayList<String>();
-    Object[] toSort = pq.toArray();
-    Arrays.sort(toSort);
-    for (Object a : toSort) {
-      Account acc = (Account) a;
-      System.out.println(acc.getLogin());
-      toReturn.add(acc.getLogin());
+    Account[] toSort = (Account[]) pq.toArray();
+    Arrays.sort(toSort, new PriorityComp());
+    for (Account a : toSort) {
+      System.out.println(a.getLogin());
+      toReturn.add(a.getLogin());
     }
     return toReturn;
   }
+  
   public void add(Account s) {
     pq.add(s);
+    signUpTime.put(s.getLogin(), new Date().getTime());
     studentCheckMap.put(s.getLogin(), 0);
   }
+  
   public void remove(Account s) {
     pq.remove(s);
+    signUpTime.remove(s.getLogin());
     studentCheckMap.remove(s.getLogin());
   }
   public int calledToHours(String login) {
@@ -68,7 +74,7 @@ public class Queue {
 //  public double getPriority(Account s1) {
 //    return s1.priority();
 //  }
-  public void setCutOff(double time) {
-    cutOff = time;
-  }
+//  public void setCutOff(double time) {
+//    cutOff = time;
+//  }
 }
