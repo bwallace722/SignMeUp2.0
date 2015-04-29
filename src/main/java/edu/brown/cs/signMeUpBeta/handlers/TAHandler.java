@@ -246,8 +246,9 @@ public class TAHandler {
       String question = qm.value("newQuestion");
       String assessmentName = qm.value("name");
       Question questionObject;
+      String currProject = "fix"; //TODO: KAMILLE: make the front end store the curr project at some point
       try {
-        questionObject = db.addQuestion(assessmentName, question, courseId);
+        questionObject = db.addQuestion(assessmentName, question, courseId, currProject);
       } catch (SQLException e) {
         System.out.println("ERROR: sql exception in adding question");
         return 0;

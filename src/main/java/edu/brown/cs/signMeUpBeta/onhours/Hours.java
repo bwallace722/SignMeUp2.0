@@ -11,13 +11,15 @@ import edu.brown.cs.signMeUpBeta.student.Appointment;
 public class Hours {
   private ConcurrentHashMap<Question, Integer> questions;
   private int timeLim;
+  private String currProject; //The project that spans the current date
   
-  public Hours(List<Question> questionList) {
+  public Hours(String currProject, List<Question> questionList) {
     questions = new ConcurrentHashMap<Question, Integer>();
     for (Question q: questionList) {
       questions.put(q, 0);
     }
     timeLim = 10;
+    this.currProject = currProject;
   }
 
   public List<Question> getQuestions() {

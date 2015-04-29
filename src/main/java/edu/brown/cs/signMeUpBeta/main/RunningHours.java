@@ -25,13 +25,15 @@ public class RunningHours {
   public int startHours(String courseID) {
     if (!queues.containsKey(courseID)) {
       queues.put(courseID, new Queue());
+      String currProject = "";
       List<Question> questions;
       try {
-        questions = db.getCourseQuestions(courseID);
+        currProject = db.getCurrProject(courseID);
+        questions = db.getQuestions(courseID, currProject);
       } catch (SQLException e) {
         questions = new ArrayList<Question>();
       }
-      hours.put(courseID, new Hours(questions));
+      hours.put(courseID, new Hours(currProject, questions));
     }
     return 1;
   }

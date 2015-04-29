@@ -32,13 +32,8 @@ public class Queue {
       long currTime = (new Date()).getTime();
       double aPrior = priorityMult.get(a.getLogin())*(currTime - signUpTime.get(a.getLogin()));
       double bPrior = priorityMult.get(b.getLogin())*(currTime - signUpTime.get(b.getLogin()));
-      if (aPrior > bPrior) {
-        return 1;
-      } else if (aPrior < bPrior) {
-        return -1;
-      } else {
-        return 0;
-      }
+      
+      return (int)(bPrior - aPrior);
     }
   }
   public List<String> getStudentsInOrder() {
@@ -57,7 +52,6 @@ public class Queue {
     
     List<String> toReturn = new ArrayList<String>();
     PriorityBlockingQueue<Account> copy = new PriorityBlockingQueue<Account>(pq);
-    System.out.println("bout2loop");
     while (!copy.isEmpty()) {
       Account curr = copy.poll();
       System.out.println(curr.getLogin());

@@ -9,18 +9,11 @@ public class Account {
   private String email;
   private List<String> enrolledCourses;
   private List<String> TACourses;
-  private int numQuestions;
-  private int timeAtHours;
-  private int timeCurrProject;
   public Account(String login, String name, String email, String password,
-      int timeAtHours, int timeCurrProject, int numQuestions,
       List<String> enrolledCourses, List<String> TACourses) {
     this.login = login;
     this.name = name;
     this.password = password;
-    this.timeAtHours = timeAtHours;
-    this.timeCurrProject = timeCurrProject;
-    this.numQuestions = numQuestions;
     this.enrolledCourses = enrolledCourses;
     this.TACourses = TACourses;
   }
@@ -66,29 +59,29 @@ public class Account {
   public void setTACourses(List<String> newCourseList) {
     TACourses = newCourseList;
   }
-  public int getQuestionsAsked() {
-    return numQuestions;
-  }
-  public void setQuestionsAsked(int numQuestions) {
-    this.numQuestions = numQuestions;
-  }
-  public void incrementQuestionsAsked() {
-    numQuestions++;
-  }
-  public double getTimeOnHours() {
-    return timeAtHours;
-  }
-  public void setTimeAtHours(int timeAtHours) {
-    this.timeAtHours = timeAtHours;
-  }
-  public void addTime(double timeToAdd) {
-    timeAtHours += timeToAdd;
-    timeCurrProject += timeToAdd;
-  }
-  public double getTimeOnCurrentProject() {
-    return timeCurrProject;
-  }
-  public void setTimeOnCurrentProject(int timeCurrProject) {
-    this.timeCurrProject = timeCurrProject;
-  }
+//  public int getQuestionsAsked() {
+//    return numQuestions;
+//  }
+//  public void setQuestionsAsked(int numQuestions) {
+//    this.numQuestions = numQuestions;
+//  }
+//  public void incrementQuestionsAsked() {
+//    numQuestions++;
+//  }
+//  public double getTimeOnHours() {
+//    return timeAtHours;
+//  }
+//  public void setTimeAtHours(int timeAtHours) {
+//    this.timeAtHours = timeAtHours;
+//  }
+//  public void addTime(double timeToAdd) {
+//    timeAtHours += timeToAdd;
+//    timeCurrProject += timeToAdd;
+//  }
+//  public double getTimeOnCurrentProject() {
+//    return timeCurrProject;
+//  }
+//  public void setTimeOnCurrentProject(int timeCurrProject) {
+//    this.timeCurrProject = timeCurrProject;
+//  }
 }

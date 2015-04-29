@@ -17,7 +17,7 @@ function getOnQueue() {
 		checkedQ = checkedQ.concat($(this).val() + "/");
     });
 	console.log(qs.length);
-	console.log(qs[0].innerText);
+//	console.log(qs[0].innerText);
 	var otherQ = document.getElementById("otherQuestion").value;
 //	for(var i = 0; i < qs.length; i++) {
 //		console.log(i);

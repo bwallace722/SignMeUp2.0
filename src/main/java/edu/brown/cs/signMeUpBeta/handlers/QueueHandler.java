@@ -132,27 +132,42 @@ public class QueueHandler {
     }
   }
   /**
-   * This class handles the adding of lab check offs to the queue.
+   * This class handles
    * @author omadarik
    */
   private class AddStudentToQueue implements Route {
     @Override
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
-      String course = qm.value("course");
+      String courseId = qm.value("course");
       String login = qm.value("login");
+      
+      
+      //TODO: CHECK IF CURRENT PROJ = LAST PROJ ->> reset values;
+      
+      
+      try {
+        db.incrementNumberQuestions(login, courseId);
+      } catch (Exception e) {
+        System.err.println("ERROR: " + e);
+      }
+      
       String qList = qm.value("questions");
       String[] questions = qList.split("/");
+      
+      
       int toReturn = 0;
-      Queue queue = runningHours.getQueueForCourse(course);
+      Queue queue = runningHours.getQueueForCourse(courseId);
       Account account;
+      int numQuestions = 0;
       try {
         account = db.getAccount(login);
+        numQuestions = db.getNumberQuestionsAsked(login, courseId);
       } catch (Exception e) {
-        System.err.println("ERROR: sql error on add lab checkoff");
+        System.err.println("ERROR: sql error on add student to queue");
         return 0;
       }
-      queue.add(account, 1/account.getQuestionsAsked());
+      queue.add(account, (1/(numQuestions+1)));
       toReturn = 1;
       return toReturn;
     }
@@ -164,7 +179,6 @@ public class QueueHandler {
 //      System.out.println(courseId);
       Queue currentQueue = runningHours.getQueueForCourse(courseId);
       List<String> toReturn = currentQueue.getStudentsInOrder();
-      System.out.println("past the list");
 //      for (String s : toReturn) {
 //        System.out.println(s);
 //      }
