@@ -87,7 +87,7 @@ public class QueueHandler {
       if (queue == null) {
         // FUCK
       }
-      queue.add(account, .5);
+      queue.add(account, 2);
       toReturn = 1;
       return toReturn;
     }
@@ -130,7 +130,7 @@ public class QueueHandler {
         System.err.println("ERROR: sql error on add lab checkoff");
         return 0;
       }
-      queue.add(account, account.getQuestionsAsked());
+      queue.add(account, 1/account.getQuestionsAsked());
       toReturn = 1;
       return toReturn;
     }
