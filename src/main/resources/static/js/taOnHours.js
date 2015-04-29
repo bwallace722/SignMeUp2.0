@@ -1,7 +1,7 @@
 var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 var courseId = splitURL[splitURL.length -1];
-
+updateQueue();
 //var queueHTMLStart = "<div class=\"row studentOnQueue\">" +
 //    "<div class=\"col-sm-8 col-sm-push-1\" data-toggle=\"modal\" data-target=\"#queueModal\"><h5>";
 var queueHTMLStart = "<div class=\"row studentOnQueue\">" +
@@ -97,25 +97,49 @@ $(".studentOnQueue").bind('click', function(s) {
 //updates the queue every 10 seconds.
 //setInterval(updateQueue(), 1000);
 
-setInterval(function(t) {
+function updateQueue() {
  	var postUrl = "/updateQueue/" + courseId;
+ 	console.log("hi");
 	$.post(postUrl, function(responseJSON) {
-		console.log(responseJSON);
 		var queueString = responseJSON.substring(1,responseJSON.length-1);
 		console.log(queueString);
 		if(queueString) {
 			var queueList = queueString.split(",");
-			var queue = document.getElementByClass("queue");
+			console.log(queueList);
+			var queue = document.getElementById("queue");
 			var studentList = "";
 			for(var i=0; i < queueList.length; i++) {
-				var student = queueList[i];
-				studentList.append(queueHTMLStart + student + queueHTMLEnd);
+				var student = queueList[i];				
+				var studentTags = queueHTMLStart + student + queueHTMLEnd;
+				studentList = studentList.concat(studentTags);
 			}
 			queue.innerHTML = studentList;
 		}
 		
 	});
+}
 
+setInterval(function(t) {
+ 	var postUrl = "/updateQueue/" + courseId;
+ 	console.log("hi");
+	$.post(postUrl, function(responseJSON) {
+		var queueString = responseJSON.substring(1,responseJSON.length-1);
+		console.log(queueString);
+		if(queueString) {
+			var queueList = queueString.split(",");
+			console.log(queueList);
+			var queue = document.getElementById("queue");
+			var studentList = "";
+			for(var i=0; i < queueList.length; i++) {
+				var student = queueList[i];
+				var studentTags = queueHTMLStart + student + queueHTMLEnd;
+
+				studentList = studentList.concat(studentTags);
+			}
+			queue.innerHTML = studentList;
+		}
+		
+	});
 }, 4000);
 
 var timer;

@@ -23,8 +23,8 @@ public class Queue {
     public PriorityComp() {}
     @Override
     public int compare(Account a, Account b) {
-      double aPrior = a.priority();
-      double bPrior = b.priority();
+      double aPrior = a.priorityMultiplier();
+      double bPrior = b.priorityMultiplier();
       if (aPrior > bPrior) {
         return 1;
       } else if (aPrior < bPrior) {
@@ -65,9 +65,9 @@ public class Queue {
     return 0;
   }
   // public void switchOrder(Account s1, Account s2) {}
-  public double getPriority(Account s1) {
-    return s1.priority();
-  }
+//  public double getPriority(Account s1) {
+//    return s1.priority();
+//  }
   public void setCutOff(double time) {
     cutOff = time;
   }

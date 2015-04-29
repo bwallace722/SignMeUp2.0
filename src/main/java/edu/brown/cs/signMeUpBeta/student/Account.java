@@ -12,17 +12,10 @@ public class Account {
   private int numQuestions;
   private int timeAtHours;
   private int timeCurrProject;
-  private double priority;
-  public Account(
-      String login,
-      String name,
-      String email,
-      String password,
-      int timeAtHours,
-      int timeCurrProject,
-      int numQuestions,
-      List<String> enrolledCourses,
-      List<String> TACourses) {
+  private double priorityMultiplier;
+  public Account(String login, String name, String email, String password,
+      int timeAtHours, int timeCurrProject, int numQuestions,
+      List<String> enrolledCourses, List<String> TACourses) {
     this.login = login;
     this.name = name;
     this.password = password;
@@ -31,7 +24,7 @@ public class Account {
     this.numQuestions = numQuestions;
     this.enrolledCourses = enrolledCourses;
     this.TACourses = TACourses;
-    priority = 0; //FIXXXXX
+    priorityMultiplier = 0; //FIXXXXX
   }
   public String getLogin() {
     return login;
@@ -100,10 +93,14 @@ public class Account {
   public void setTimeOnCurrentProject(int timeCurrProject) {
     this.timeCurrProject = timeCurrProject;
   }
-  public void setPriority(double priority) {
-    this.priority = priority;
+  public void setPriorityMultiplier(boolean lab) {
+    if (lab) {
+      priorityMultiplier = .5;
+    } else {
+      this.priorityMultiplier = timeCurrProject;
+    }
   }
-  public double priority() {
-    return priority;
+  public double priorityMultiplier() {
+    return priorityMultiplier;
   }
 }
