@@ -62,8 +62,7 @@ function signUp() {
 					console.log(url);
 					window.location.href=url;
 				} else if (responseJSON == account_exist){
-					var problemsDiv = $("#signUpProblems");
-					problemsDiv.innerHTML = "<h4>There is already an account under this name and login.</h4>";
+					alert("This account already exist");
 				}
 			});
 		} else {
