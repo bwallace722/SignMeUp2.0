@@ -1,6 +1,7 @@
 package edu.brown.cs.signMeUpBeta.main;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -28,8 +29,7 @@ public class RunningHours {
       try {
         questions = db.getCourseQuestions(courseID);
       } catch (SQLException e) {
-        System.err.println("FUCK");
-        return 0;
+        questions = new ArrayList<Question>();
       }
       hours.put(courseID, new Hours(questions));
     }

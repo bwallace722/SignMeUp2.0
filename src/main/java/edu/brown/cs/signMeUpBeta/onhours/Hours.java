@@ -10,17 +10,16 @@ import edu.brown.cs.signMeUpBeta.student.Appointment;
 
 public class Hours {
   private ConcurrentHashMap<Question, Integer> questions;
+  private int timeLim;
   
   public Hours(List<Question> questionList) {
     questions = new ConcurrentHashMap<Question, Integer>();
     for (Question q: questionList) {
       questions.put(q, 0);
     }
-    
+    timeLim = 10;
   }
-  
-  //public void run() {}
-  
+
   public List<Question> getQuestions() {
     ArrayList<Question> questionList = new ArrayList<Question>();
     questionList.addAll(questions.keySet());
@@ -38,6 +37,14 @@ public class Hours {
     if (!questions.containsKey(newQuestion)) {
       questions.put(newQuestion, 0);
     }
+  }
+  
+  public int getTimeLim() {
+    return timeLim;
+  }
+  
+  public void setTimeLim(int newLim) {
+    timeLim = newLim;
   }
   
 //  public List<QuestionInterface> mostPopularQuestions() {

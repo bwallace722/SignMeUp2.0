@@ -211,6 +211,7 @@ public class AccountHandler {
       } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
+        //TODO: Deal with an account already existing
         return "account exists";
       }
       return user.getLogin();

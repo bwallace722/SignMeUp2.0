@@ -107,7 +107,7 @@ setInterval(function(t) {
 			var queueList = queueString.split(",");
 			var queue = document.getElementByClass("queue");
 			var studentList = "";
-			for(int i=0; i < queueList.length; i++) {
+			for(var i=0; i < queueList.length; i++) {
 				var student = queueList[i];
 				studentList.append(queueHTMLStart + student + queueHTMLEnd);
 			}

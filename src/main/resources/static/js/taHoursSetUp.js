@@ -2,10 +2,17 @@ var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 var courseId = splitURL[splitURL.length -1];
 
+//var params = {"courseId": courseId};
+//var url = "/getQuestions/"+courseId;
+//$.get(url, function(responseJSON) {
+//	console.log(responseJSON);
+//	//ADD QUESTIONS
+//});
+
 function startHours() {
 	var postUrl = "/startHours/" + courseId;
 	var hoursUrl = "/onHours/" + courseId;
-
+	
 	$.post(postUrl, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {

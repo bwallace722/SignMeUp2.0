@@ -38,6 +38,8 @@ public class TAHandler {
         new FreeMarkerEngine());
     Spark.post("/addQuestionForHours/:courseId", new AddQuestionForHours());
     Spark.post("/setHoursTimeLimit/:courseId", new SetHoursTimeLimit());
+//    Spark.post("/getQuestions/:courseId", new GetQuestionHandler(),
+//        new FreeMarkerEngine());
     Spark.get("/onHours/:courseId", new TAOnHoursHandler(),
         new FreeMarkerEngine());
     Spark.get("/courseSetUp/:courseId", new TACourseSetUpHandler(),
@@ -207,15 +209,16 @@ public class TAHandler {
       // list of popular questions, list of clinic suggestions.
       Queue courseQueue = runningHours.getQueueForCourse(courseId);
       Hours hours = runningHours.getHoursForCourse(courseId);
-      //TODO GET TIME LIMIT for this course
       List<Question> questions = null;
+      int timeLim = 10;
       if (hours != null) {
         questions = hours.getQuestions();
+        timeLim = hours.getTimeLim();
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("queue", courseQueue).put("questions", questions)
-              .put("time", null).build();
+              .put("time", timeLim).build();
       return new ModelAndView(variables, "taOnHours.html");
     }
   }
@@ -225,7 +228,9 @@ public class TAHandler {
       String courseId = req.params(":courseId");
       QueryParamsMap qm = req.queryMap();
       String newTimeLimit = qm.value("newTimeLimit");
-      System.out.println(courseId);
+      Hours hours = runningHours.getHoursForCourse(courseId);
+      hours.setTimeLim(Integer.parseInt(newTimeLimit));
+//      System.out.println(courseId);
       // send list of students on queue
       // send list of added students on queue? whichever is faster/better
       Map<String, Object> variables =
@@ -251,6 +256,22 @@ public class TAHandler {
       return 1;
     }
   }
+  
+//  private class GetQuestionHandler implements TemplateViewRoute {
+//    @Override
+//    public ModelAndView handle(final Request req, final Response res) {
+//      String courseId = req.params(":courseId");
+//      List<Question> questions;
+//      try {
+//        questions = db.getCourseQuestions(courseId);
+//      } catch (Exception e) {
+//        System.err.println("ERROR: "+e);
+//      }
+//      Map<String, Object> variables =
+//          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
+//      return new ModelAndView(variables, "taCreateClass.html");
+//    }
+//  }
   /**
    * This class prints out errors if the spark server fails.
    * @author kb25
