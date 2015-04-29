@@ -219,6 +219,10 @@ public class QueueHandler {
       String[] reqParams = courseAndUserId.split("~");
       String courseId = reqParams[0];
       String login = reqParams[1];
+      String qStartTags = "    <div class=\"checkbox\"><label><input type=\"checkbox\" value=\"";
+      String closeValTags = "\">";
+      String qEndTags = "</label></div>";
+
       Hours hours = runningHours.getHoursForCourse(courseId);
       List<Question> questions = new ArrayList<Question>();
       boolean running = false;
@@ -226,9 +230,14 @@ public class QueueHandler {
         running = true;
         questions = hours.getQuestions();
       }
+      StringBuilder qs = new StringBuilder();
+      for(Question q : questions) {
+        qs.append(qStartTags + q.content() + closeValTags + q.content() + qEndTags);
+      }
+      System.out.println(qs.toString());
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("login", login).put("questions", questions).put(
+              courseId).put("login", login).put("questions", qs.toString()).put(
               "running", running).build();
       return new ModelAndView(variables, "signUpForHours.html");
     }
