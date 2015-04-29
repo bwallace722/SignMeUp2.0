@@ -207,7 +207,6 @@ public class TAHandler {
       // initially sends the queue.
       // to be sent: list of students in the queue, list of current questions,
       // list of popular questions, list of clinic suggestions.
-      Queue courseQueue = runningHours.getQueueForCourse(courseId);
       Hours hours = runningHours.getHoursForCourse(courseId);
       List<Question> questions = null;
       int timeLim = 10;
@@ -217,7 +216,7 @@ public class TAHandler {
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("queue", courseQueue).put("questions", questions)
+              courseId).put("questions", questions)
               .put("time", timeLim).build();
       return new ModelAndView(variables, "taOnHours.html");
     }

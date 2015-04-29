@@ -85,7 +85,7 @@ public class QueueHandler {
         return 0;
       }
       // TODO: Calculate and set student priority field;
-      account.setPriority(0);
+      account.setPriorityMultiplier(true);
       if (queue == null) {
         // FUCK
       }
@@ -133,7 +133,7 @@ public class QueueHandler {
         return 0;
       }
       // TODO: Calculate and set student priority field;
-      account.setPriority(Math.random());
+      account.setPriorityMultiplier(false);
       queue.add(account);
       toReturn = 1;
       return toReturn;
@@ -145,7 +145,6 @@ public class QueueHandler {
       String courseId = req.params(":courseId");
       System.out.println(courseId);
       Queue currentQueue = runningHours.getQueueForCourse(courseId);
-      System.out.println("here");
       List<String> toReturn = currentQueue.getStudentsInOrder();
       for (String s : toReturn) {
         System.out.println(s);
