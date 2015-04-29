@@ -4,10 +4,6 @@ var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 var user = splitURL[splitURL.length -1];
 
-
-var userCourseList = document.getElementById("userCourseList");
-console.log(userCourseList);
-
 $(".clickable-row").bind('click', function(e) {
 	var cells = this.getElementsByTagName('td');
 	

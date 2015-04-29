@@ -45,6 +45,7 @@ public class QueueHandler {
     Spark.post("/updateQueue/:courseId", new UpdateQueueHandler());
     Spark.post("/callStudent/:courseId", new CallStudentToHours());
     Spark.post("/checkQueue", new QueueChecker());
+    Spark.post("/endHours/:courseId", new EndHours());
   }
   /**
    * This handler checks to see if the hours for a particular class have started
@@ -63,6 +64,25 @@ public class QueueHandler {
       return 1;
     }
   }
+  
+  /**
+   * This handler ends hours for the given course.
+   * @author kj13
+   */
+  private class EndHours implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("course");
+      //TODO end hours
+      Queue queue = runningHours.getQueueForCourse(course);
+      if (queue == null) {
+        return 0;
+      }
+      return 1;
+    }
+  }
+  
   /**
    * This class handles the adding of lab check offs to the queue.
    * @author omadarik
@@ -123,6 +143,8 @@ public class QueueHandler {
       QueryParamsMap qm = req.queryMap();
       String course = qm.value("course");
       String login = qm.value("login");
+      String qList = qm.value("questions");
+      String[] questions = qList.split("/");
       int toReturn = 0;
       Queue queue = runningHours.getQueueForCourse(course);
       Account account;
@@ -219,9 +241,9 @@ public class QueueHandler {
       String[] reqParams = courseAndUserId.split("~");
       String courseId = reqParams[0];
       String login = reqParams[1];
-      String qStartTags = "    <div class=\"checkbox\"><label><input type=\"checkbox\" value=\"";
+      String qStartTags = "<label><input type=\"checkbox\" value=\"";
       String closeValTags = "\">";
-      String qEndTags = "</label></div>";
+      String qEndTags = "</label><br>";
 
       Hours hours = runningHours.getHoursForCourse(courseId);
       List<Question> questions = new ArrayList<Question>();
