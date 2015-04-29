@@ -4,7 +4,7 @@ var courseId = splitURL[splitURL.length -1];
 updateQueue();
 //var queueHTMLStart = "<div class=\"row studentOnQueue\">" +
 //    "<div class=\"col-sm-8 col-sm-push-1\" data-toggle=\"modal\" data-target=\"#queueModal\"><h5>";
-var queueHTMLStart = "<div class=\"row studentOnQueue\">" +
+var queueHTMLStart = "<div class=\"row studentOnQueue\" onclick=\"callStudent()\">" +
 "<div class=\"col-sm-8 col-sm-push-1\"><h5>";
 var queueHTMLEnd = "</h5></div><br><hr>";
 
@@ -63,9 +63,8 @@ var studentToCall;
 //	});
 
 //}
-
-$(".studentOnQueue").bind('click', function(s) {
-	console.log("hi");	
+function callStudent() {
+	console.log("here");
 	var text = $(this).text();
 
 	var message = prompt("Please enter a message to call the student to hours", "You're up for hours!");
@@ -91,15 +90,13 @@ $(".studentOnQueue").bind('click', function(s) {
 			}
 		});
 	}
-	
-});
+}
 
 //updates the queue every 10 seconds.
 //setInterval(updateQueue(), 1000);
 
 function updateQueue() {
  	var postUrl = "/updateQueue/" + courseId;
- 	console.log("hi");
 	$.post(postUrl, function(responseJSON) {
 		var queueString = responseJSON.substring(1,responseJSON.length-1);
 		console.log(queueString);
@@ -121,7 +118,6 @@ function updateQueue() {
 
 setInterval(function(t) {
  	var postUrl = "/updateQueue/" + courseId;
- 	console.log("hi");
 	$.post(postUrl, function(responseJSON) {
 		var queueString = responseJSON.substring(1,responseJSON.length-1);
 		console.log(queueString);
