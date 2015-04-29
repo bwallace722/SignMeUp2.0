@@ -104,12 +104,10 @@ public class QueueHandler {
         System.err.println("ERROR: sql error on add lab checkoff");
         return 0;
       }
-      // TODO: Calculate and set student priority field;
-      account.setPriorityMultiplier(true);
       if (queue == null) {
         // FUCK
       }
-      queue.add(account);
+      queue.add(account, .5);
       toReturn = 1;
       return toReturn;
     }
@@ -154,9 +152,7 @@ public class QueueHandler {
         System.err.println("ERROR: sql error on add lab checkoff");
         return 0;
       }
-      // TODO: Calculate and set student priority field;
-      account.setPriorityMultiplier(false);
-      queue.add(account);
+      queue.add(account, account.getQuestionsAsked());
       toReturn = 1;
       return toReturn;
     }
@@ -165,13 +161,13 @@ public class QueueHandler {
     @Override
     public Object handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
-      System.out.println(courseId);
+//      System.out.println(courseId);
       Queue currentQueue = runningHours.getQueueForCourse(courseId);
       List<String> toReturn = currentQueue.getStudentsInOrder();
-      System.out.println(toReturn.toString());
-      for (String s : toReturn) {
-        System.out.println(s);
-      }
+      System.out.println("past the list");
+//      for (String s : toReturn) {
+//        System.out.println(s);
+//      }
       return toReturn;
     }
   }

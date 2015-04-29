@@ -3,28 +3,35 @@ package edu.brown.cs.signMeUpBeta.onhours;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.PriorityBlockingQueue;
 
 import edu.brown.cs.signMeUpBeta.student.Account;
 
 public class Queue {
-  private PriorityQueue<Account> pq;
-  private double cutOff;
+  private PriorityBlockingQueue<Account> pq;
+  //private double cutOff;
   private Map<String, Integer> studentCheckMap;
+  private Map<String, Long> signUpTime;
+  private Map<String, Double> priorityMult;
+  
   public Queue() {
-    pq = new PriorityQueue(new PriorityComp());
+    pq = new PriorityBlockingQueue(2, new PriorityComp());
     studentCheckMap = new ConcurrentHashMap<String, Integer>();
-    cutOff = Double.POSITIVE_INFINITY;
+    signUpTime = new ConcurrentHashMap<String, Long>();
+    priorityMult = new ConcurrentHashMap<String, Double>();
+    //cutOff = Double.POSITIVE_INFINITY;
   }
   private class PriorityComp implements Comparator<Account> {
-    public PriorityComp() {}
     @Override
     public int compare(Account a, Account b) {
-      double aPrior = a.priorityMultiplier();
-      double bPrior = b.priorityMultiplier();
+      long currTime = (new Date()).getTime();
+      double aPrior = priorityMult.get(a.getLogin())*(currTime - signUpTime.get(a.getLogin()));
+      double bPrior = priorityMult.get(b.getLogin())*(currTime - signUpTime.get(b.getLogin()));
       if (aPrior > bPrior) {
         return 1;
       } else if (aPrior < bPrior) {
@@ -35,23 +42,42 @@ public class Queue {
     }
   }
   public List<String> getStudentsInOrder() {
+//    List<String> toReturn = new ArrayList<String>();
+//    System.out.println("2");
+//    Account[] toSort = new Account[pq.size()];
+//    toSort = pq.toArray(toSort);
+//    System.out.println("3");
+//    Arrays.sort(toSort, new PriorityComp());
+//    System.out.println("4");
+//    for (Account a : toSort) {
+//      System.out.println(a.getLogin());
+//      toReturn.add(a.getLogin());
+//    }
+//    return toReturn;
+    
     List<String> toReturn = new ArrayList<String>();
-    Object[] toSort = pq.toArray();
-    Arrays.sort(toSort);
-    for (Object a : toSort) {
-      Account acc = (Account) a;
-      System.out.println(acc.getLogin());
-      toReturn.add(acc.getLogin());
+    PriorityBlockingQueue<Account> copy = new PriorityBlockingQueue<Account>(pq);
+    System.out.println("bout2loop");
+    while (!copy.isEmpty()) {
+      Account curr = copy.poll();
+      System.out.println(curr.getLogin());
+      toReturn.add(curr.getLogin());
     }
     return toReturn;
   }
-  public void add(Account s) {
-    pq.add(s);
+  
+  public void add(Account s, double pMult) {
+    signUpTime.put(s.getLogin(), (new Date()).getTime());
     studentCheckMap.put(s.getLogin(), 0);
+    priorityMult.put(s.getLogin(), pMult);
+    pq.add(s);
   }
+  
   public void remove(Account s) {
     pq.remove(s);
+    signUpTime.remove(s.getLogin());
     studentCheckMap.remove(s.getLogin());
+    priorityMult.remove(s.getLogin());
   }
   public int calledToHours(String login) {
     return studentCheckMap.get(login);
@@ -68,7 +94,7 @@ public class Queue {
 //  public double getPriority(Account s1) {
 //    return s1.priority();
 //  }
-  public void setCutOff(double time) {
-    cutOff = time;
-  }
+//  public void setCutOff(double time) {
+//    cutOff = time;
+//  }
 }
