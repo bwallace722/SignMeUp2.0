@@ -133,7 +133,6 @@ setInterval(function(t) {
 			for(var i=0; i < queueList.length; i++) {
 				var student = queueList[i];
 				var studentTags = queueHTMLStart + student + queueHTMLEnd;
-
 				studentList = studentList.concat(studentTags);
 			}
 			queue.innerHTML = studentList;
