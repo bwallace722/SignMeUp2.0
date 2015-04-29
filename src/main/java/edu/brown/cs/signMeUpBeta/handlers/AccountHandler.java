@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
+import edu.brown.cs.signMeUpBeta.onhours.Queue;
 import edu.brown.cs.signMeUpBeta.student.Account;
 import spark.ExceptionHandler;
 import spark.ModelAndView;
@@ -36,7 +37,21 @@ public class AccountHandler {
         new FreeMarkerEngine());
     Spark.get("/addCourses/:login", new AddCourseHandler(),
         new FreeMarkerEngine());
+    Spark.post("/signOut/:login", new SignOutHandler());
   }
+  /**
+   * This handler signs out the given user.
+   * @author kj13
+   */
+  private class SignOutHandler implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      String login = req.params(":login");
+      //TODO signout
+      return 1;
+    }
+  }
+  
   /**
    * This renders a page where the user can see a list of their courses, and be
    * bale to add new courses.

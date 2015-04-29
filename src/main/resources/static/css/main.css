@@ -18,6 +18,17 @@ h1 {
   color: #fff;
 }
 
+.signOutBtn {
+	float: right;
+	background-color: #000;
+	border-color: #000;
+	color: #fff;
+	font-weight: bold !important;
+	margin-top: 2%;
+	margin-right: 5%;
+	
+}
+
 #allCategories hr {
   width: 30%;
 }
