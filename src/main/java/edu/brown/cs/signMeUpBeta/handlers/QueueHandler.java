@@ -146,6 +146,7 @@ public class QueueHandler {
       System.out.println(courseId);
       Queue currentQueue = runningHours.getQueueForCourse(courseId);
       List<String> toReturn = currentQueue.getStudentsInOrder();
+      System.out.println(toReturn.toString());
       for (String s : toReturn) {
         System.out.println(s);
       }
