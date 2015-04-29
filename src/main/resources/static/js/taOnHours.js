@@ -64,7 +64,6 @@ var studentToCall;
 
 //}
 function callStudent() {
-	console.log("here");
 	var text = $(this).text();
 
 	var message = prompt("Please enter a message to call the student to hours", "You're up for hours!");
@@ -140,9 +139,11 @@ setInterval(function(t) {
 var timer;
 
 function startTimer() {
-	var timeLimit = document.getElementById("timeLim");
-	var tSeconds = parseInt(timeLimit) * 1000;
-	timer = window.setTimeout(timerLimit(), tSeconds);
+	var timeLimit = document.getElementById("timeLimit").innerHTML;
+	console.log(timeLimit);
+	var tSeconds = parseInt(timeLimit) * 10000;
+	console.log(tSeconds + " seconds");
+	timer = window.setTimeout(timerLimit, tSeconds);
 }
 
 function timerLimit() {

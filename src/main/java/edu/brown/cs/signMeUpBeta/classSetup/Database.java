@@ -208,8 +208,11 @@ public class Database {
     response = "Success.";
     return response;
   }
-  public void removeAssessmentsByCourse(String table, String course) throws SQLException {
-    String query = "DELETE FROM " + table + " WHERE course_id = ?;";
+  public void removeAssessmentsByCourse(String table, String course)
+      throws SQLException {
+    String query = "DELETE FROM "
+        + table
+        + " WHERE course_id = ?;";
     System.out.println(query);
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, course);
@@ -283,18 +286,31 @@ public class Database {
    * @throws SQLException On SQL error
    */
   public void updateAccount(String studentLogin, int timeAtHours,
-      int timeOnProject, int questionsAsked) throws SQLException {
+      int timeOnProject) throws SQLException {
+    String query = "SELECT * from account WHERE login = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ResultSet rs = ps.executeQuery();
+    int currTimeAtHours = 0;
+    int currTimeOnProject = 0;
+    int currQuestionsAsked = 0;
+    while (rs.next()) {
+      currTimeAtHours = rs.getInt(5);
+      currTimeOnProject = rs.getInt(6);
+      currQuestionsAsked = rs.getInt(7);
+    }
     String update =
         "UPDATE account SET time_spent_at_hours=?, time_spent_curr_project=?, questions_asked=? WHERE login=?;";
-    PreparedStatement ps = conn.prepareStatement(update);
-    ps.setInt(1, timeAtHours);
-    ps.setInt(2, timeOnProject);
-    ps.setInt(3, questionsAsked);
+    ps = conn.prepareStatement(update);
+    ps.setInt(1, currTimeAtHours
+        + timeAtHours);
+    ps.setInt(2, currTimeOnProject
+        + timeOnProject);
+    ps.setInt(3, currQuestionsAsked + 1);
     ps.setString(4, studentLogin);
     ps.executeUpdate();
     ps.close();
     Account student = allAccounts.get(studentLogin);
-    student.setQuestionsAsked(questionsAsked);
+    student.setQuestionsAsked(currQuestionsAsked + 1);
     student.setTimeOnCurrentProject(timeOnProject);
     student.setTimeAtHours(timeAtHours);
   }
