@@ -165,6 +165,7 @@ public class QueueHandler {
       String message = qm.value("message");
       Queue queue = runningHours.getQueueForCourse(courseId);
       queue.callOffQueue(studentLogin);
+      
       toReturn = 1;
       return toReturn;
     }
