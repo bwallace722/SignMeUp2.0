@@ -364,7 +364,7 @@ public class QueueHandler {
     }
   }
   private StringBuilder getQuestions(List<Question> questions) {
-    String qStartTags = "<label id=\"aptQ\"><input type=\"checkbox\" value=\"";
+    String qStartTags = "<label><input type=\"checkbox\" value=\"";
     String closeValTags = "\">";
     String qEndTags = "</label><br>";
     StringBuilder qs = new StringBuilder();

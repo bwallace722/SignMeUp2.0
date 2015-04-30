@@ -43,13 +43,12 @@ $(".aptTime").bind('click', function(a) {
 function confirmApt() {
 	
 	var checkedQ = "";
-	var qs = $('#checkbox :checked');
+	var qs = $('#questionsForApt :checked');
 	console.log(qs);
 	qs.each(function() {
 		checkedQ = checkedQ.concat($(this).val() + "/");
     });
-
-	var otherQ = document.getElementById("otherQuestion").value;
+	var otherQ = document.getElementById("otherQ").value;
 	console.log(checkedQ);
  	var postParameters = {"time": aptTime, 
  			"login": login, 
@@ -57,19 +56,16 @@ function confirmApt() {
  			"questions": checkedQ,
  			"otherQ": otherQ};
  	$.post("/confirmAppointment", postParameters, function(responseJSON){
-		responseObject = JSON.parse(responseJSON);
 		console.log(responseJSON + " = response");
-		resultWords = responseObject.results;
-		console.log(resultWords + " - hi");
-		questionsList = resultWords.split("!");
-		var success = questionsList[0];
-		if(resultWords == 1) {
+		if(responseJSON == 1) {
+			alert("You're all set for you appointment! Just head up to hours at "+aptTime+".");
 			//figure out some animation for showing time
 			//show time and reveal questions container
 
 
 		} else {
-			//show
+
+			alert("It looks like this appointment time is taken. Try another");
 		}
 
 	});
