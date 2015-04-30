@@ -151,15 +151,13 @@ public class Database {
      * The student isn't a TA for this class and isn't already in the table.
      * Thus they are eligible to be enrolled.
      */
-    String update = "INSERT INTO student_course VALUES (?,?,?,?,?,?,?);";
+    String update = "INSERT INTO student_course VALUES (?,?,?,?,?);";
     ps = conn.prepareStatement(update);
     ps.setString(1, studentId);
     ps.setString(2, courseId);
-    ps.setDouble(3, 0.0); //all values are 0 when a student first signs up for a course
-    ps.setDouble(4, 0.0);
-    ps.setInt(5, 0);
-    ps.setInt(6, 0);
-    ps.setString(7, ""); //no current project because haven't signed up for hours yet
+    ps.setInt(3, 0);
+    ps.setInt(4, 0);
+    ps.setString(5, ""); //no current project because haven't signed up for hours yet
     ps.executeUpdate();
     ps.close();
     response = "Success.";
@@ -515,7 +513,7 @@ public class Database {
   // "CREATE TABLE questions(question TEXT, course_id TEXT, assessment_name TEXT, count INT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
   //
   // schema =
-  // CREATE TABLE student_course(student_id TEXT, course_id TEXT, time_spend_at_hours REAL, time_spent_curr_project REAL, questions_asked INT, questions_asked_curr_project INT, last_project TEXT, FOREIGN KEY(student_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));
+  // CREATE TABLE student_course(student_id TEXT, course_id TEXT, questions_asked INT, questions_asked_curr_project INT, last_project TEXT, FOREIGN KEY(student_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));
   // schema =
   // "CREATE TABLE ta_course(ta_id TEXT, course_id TEXT, FOREIGN KEY(ta_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));";
   // /**
