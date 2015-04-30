@@ -2,6 +2,8 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -37,10 +39,11 @@ public class QueueHandler {
   }
   public void runSpark() {
     Spark.post("/confirmAppointment", new ConfirmAppointmentHandler());
-    // Spark.get("/makeAppointment/:courseIdAndUserId",
-    // new MakeAppointmentHandler(), new FreeMarkerEngine());
+     Spark.get("/makeAppointment/:courseIdAndUserId",
+     new MakeAppointmentHandler(), new FreeMarkerEngine());
     Spark.get("/signUpForHours/:courseAndUserId", new StudentSignUpForHours(),
         new FreeMarkerEngine());
+    Spark.post("/checkAppointments", new CheckAppointmentHandler());
     Spark.post("/startHours/:courseId", new StartCourseHours());
     Spark.post("/addStudentToQueue", new AddStudentToQueue());
     Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
@@ -67,6 +70,19 @@ public class QueueHandler {
       return 1;
     }
   }
+  private class CheckAppointmentHandler implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("course");
+      Queue queue = runningHours.getQueueForCourse(course);
+      if (queue == null) {
+        return 0;
+      }
+      return 1;
+    }
+  }
+  
   private class RemoveStudent implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -253,50 +269,56 @@ public class QueueHandler {
       return toReturn;
     }
   }
-  // private class MakeAppointmentHandler implements TemplateViewRoute {
-  // @Override
-  // public ModelAndView handle(final Request req, final Response res) {
-  // String courseAndUserId = req.params(":courseIdAndUserId");
-  // String[] reqParams = courseAndUserId.split("~");
-  // String courseId = reqParams[0];
-  // String login = reqParams[1];
-  // String timesHTMLTags =
-  // "<button class=\"aptTime btn btn-success btn-lg\">";
-  // String closeTag = "</button>";
-  // Map<Date, String> timesMap =
-  // runningHours.getHoursForCourse(courseId).getAppointments();
-  // // NEEDED: AVAILABLE APPOINTMENT TIMES
-  // List<String> availTimes = new ArrayList<String>();
-  // for (Date d : timesMap.keySet()) {
-  // DateFormat timeFormat = new SimpleDateFormat("h:mm a");
-  // String time = timeFormat.format(d.clone());
-  // availTimes.add(time);
-  // }
-  // StringBuilder timesHTML = new StringBuilder();
-  // for (String a : availTimes) {
-  // String t = timesHTMLTags
-  // + a
-  // + closeTag;
-  // timesHTML.append(t);
-  // }
-  // // NEEDED: SUBQUESTIONS PER QUESTION
-  // Hours hours = runningHours.getHoursForCourse(courseId);
-  // List<Question> questionsList = new ArrayList<Question>();
-  // StringBuilder questions = new StringBuilder();
-  // boolean running = false;
-  // if (hours != null) {
-  // running = true;
-  // questionsList = hours.getQuestions();
-  // questions = getQuestions(questionsList);
-  // }
-  // Map<String, Object> variables =
-  // new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-  // courseId).put("login", login).put("aptTimes", timesHTML).put(
-  // "questions", questions.toString()).put("running", running)
-  // .build();
-  // return new ModelAndView(variables, "makeAppointment.html");
-  // }
-  // }
+   private class MakeAppointmentHandler implements TemplateViewRoute {
+   @Override
+   public ModelAndView handle(final Request req, final Response res) {
+     String courseAndUserId = req.params(":courseIdAndUserId");
+     String[] reqParams = courseAndUserId.split("~");
+     String courseId = reqParams[0];
+     String login = reqParams[1];
+     String timesHTMLTags =
+     "<button class=\"aptTime btn btn-success btn-lg\">";
+     String closeTag = "</button>";
+     Map<Date, String> timesMap =
+     runningHours.getHoursForCourse(courseId).getAppointments();
+     // NEEDED: AVAILABLE APPOINTMENT TIMES
+     List<String> availTimes = new ArrayList<String>();
+     for (Date d : timesMap.keySet()) {
+       DateFormat timeFormat = new SimpleDateFormat("h:mm a");
+       String time = timeFormat.format(d.clone());
+       availTimes.add(time);
+     }
+     StringBuilder timesHTML = new StringBuilder();
+     for (String a : availTimes) {
+       String t = timesHTMLTags
+       + a
+       + closeTag;
+       timesHTML.append(t);
+     }
+     // NEEDED: SUBQUESTIONS PER QUESTION
+     Hours hours = runningHours.getHoursForCourse(courseId);
+     List<Question> questionsList = new ArrayList<Question>();
+     StringBuilder questions = new StringBuilder();
+     boolean running = false;
+     if (hours != null) {
+       running = true;
+       questionsList = hours.getQuestions();
+       questions = getQuestions(questionsList);
+     }
+     String currAss = "none";
+     try {
+       currAss = db.getCurrAssessment(courseId);
+     } catch (Exception e) {
+       System.err.println(e);
+     }
+     Map<String, Object> variables =
+       new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+       courseId).put("login", login).put("aptTimes", timesHTML).put(
+       "questions", questions.toString()).put("currAss", currAss).put("running", running)
+       .build();
+     return new ModelAndView(variables, "makeAppointment.html");
+     }
+   }
   /**
    * This handler initially displays the signupforhours page. It will display
    * the assignment, questions, and subquestions relevant to that student's
@@ -310,7 +332,7 @@ public class QueueHandler {
       String[] reqParams = courseAndUserId.split("~");
       String courseId = reqParams[0];
       String login = reqParams[1];
-      String qStartTags = "<label><input type=\"checkbox\" value=\"";
+      String qStartTags = "<label ><input type=\"checkbox\" value=\"";
       String closeValTags = "\">";
       String qEndTags = "</label><br>";
       Hours hours = runningHours.getHoursForCourse(courseId);
@@ -342,7 +364,7 @@ public class QueueHandler {
     }
   }
   private StringBuilder getQuestions(List<Question> questions) {
-    String qStartTags = "<label><input type=\"checkbox\" value=\"";
+    String qStartTags = "<label id=\"aptQ\"><input type=\"checkbox\" value=\"";
     String closeValTags = "\">";
     String qEndTags = "</label><br>";
     StringBuilder qs = new StringBuilder();

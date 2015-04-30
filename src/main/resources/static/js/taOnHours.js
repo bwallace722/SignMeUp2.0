@@ -13,7 +13,12 @@ function returnToSetup() {
 	window.location.href = "/taHoursSetUp/" + courseId;
 }
 
-
+var currAsign = document.getElementById("currAsign");
+console.log(currAsign.innerHTML);
+if(currAsign.innerHTML == "none"){
+	currAsign.innerHTML = "There is no assignment assigned for today.";
+	$("#currQs").hide();
+}
 
 function removeStudent() {
 	var text = $(this).text();

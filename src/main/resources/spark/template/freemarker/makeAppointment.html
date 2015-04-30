@@ -25,25 +25,21 @@
         <h3 class="appointmentTimeHeader">Pick a time</h3>
     </div>
   <div class="row">
-    <div class="availAppointments">
     <!--NEED LOOP FOR AVAILABLE APPOINTMENTS, class="time", href="confirmAppointment.html"?<encodedAppointmentTime>-->
     <!--ex:<button class="time" href="confirmAppointment.html">
     <h4>"time"</h4></button>-->
     <!--If there are no available times, leave a message and make button to go back-->
-    <div class="col-sm-6 col-sm-offset-3">${aptTimes}</div>
-    </div>
+    <div class="col-md-7 col-md-offset-3">${aptTimes}</div>
     </div>
     <div class="row">
-    <div class="confirmAptContainer">
+    <div class="confirmAptContainer panel">
+    	<h2 id="chosenTime"></h2>
         <h3> What is your question?</h3>
         <div class="quetionContainer">
-
-            <div class="categories">
-                <h4>Bacon</h4>
-                <div class="questions">
+                <h4 id="currAss" style="text-align:center;">${currAss}</h4>
+                <div class="questions" id="questionsForApt">
                 ${questions}
-                </div>
-            </div>
+            	</div>
         </div>
 
         <div class="otherQuestion">
@@ -51,7 +47,7 @@
             <input type="text" class="form-control" id="otherQ" placeholder="Describe Your Question here">
         </div>
         <br>
-        <button class="btn btn-primary confirmAptBtn">Confirm Appointment</button>
+        <button class="btn btn-primary confirmAptBtn" onclick="confirmApt()">Confirm Appointment</button>
     </div>
   </div>
   </div>

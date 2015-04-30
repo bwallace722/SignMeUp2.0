@@ -44,27 +44,12 @@
       <div class="col-sm-5">
       <!--loop through questions from db-->
      <section class="onHoursBlock" id="currQs">
-      <h3>Current Questions</h3>
-      <div class="row question">
-      <div class="col-sm-4  col-sm-push-1">
-      <h5>Gui</h5>
-      </div>
-      <div class="col-sm-4 col-sm-push-2">
-         <h5>login</h5>
-      </div>
-         <br>
-         <hr>
-      </div>
-      <div class="row question">
-      <div class="col-sm-4 col-sm-push-1">
-      <h5>Dijkstras</h5>
-      </div>
-         <br>
-         <hr>
-      </div>
+      <h3>Questions for </h3><h3 id="currAss">${currAss}</h3>
+      ${questions}
      </section>
-     <section class="onHoursBlock" id="popularQs">
-     <h3>Popular Questions</h3>
+     <section class="onHoursBlock" id="appointments">
+     <h3>Appointments</h3>
+     
            <div class="row question">
       <div class="col-sm-4 col-sm-push-1">
       <h5>Dijkstras</h5>
