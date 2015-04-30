@@ -2,7 +2,10 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -182,7 +185,12 @@ public class QueueHandler {
     @Override
     public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
-      return runningHours.startHours(courseId);
+      int duration = Integer.getInteger(req.params("duration"));
+      Date currentDate = new Date();
+      int toReturn = runningHours.startHours(courseId);
+      Hours currHours = runningHours.getHoursForCourse(courseId);
+      currHours.setUpAppointments(currentDate, duration);
+      return toReturn;
     }
   }
   private static class ConfirmAppointmentHandler implements Route {
@@ -209,8 +217,15 @@ public class QueueHandler {
       String timesHTMLTags =
           "<button class=\"aptTime btn btn-success btn-lg\">";
       String closeTag = "</button>";
+      Map<Date, String> timesMap =
+          runningHours.getHoursForCourse(courseId).getAppointments();
       // NEEDED: AVAILABLE APPOINTMENT TIMES
       List<String> availTimes = new ArrayList<String>();
+      for (Date d : timesMap.keySet()) {
+        DateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        String time = timeFormat.format(d.clone());
+        availTimes.add(time);
+      }
       StringBuilder timesHTML = new StringBuilder();
       for (String a : availTimes) {
         String t = timesHTMLTags
