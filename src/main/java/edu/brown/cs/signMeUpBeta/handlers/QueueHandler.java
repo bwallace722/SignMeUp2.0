@@ -140,15 +140,15 @@ public class QueueHandler {
       QueryParamsMap qm = req.queryMap();
       String courseId = qm.value("course");
       String login = qm.value("login");
+      String qList = qm.value("questions");
+      String[] questions = qList.split("/");
       // TODO: CHECK IF CURRENT PROJ = LAST PROJ ->> reset values;
       try {
-        db.incrementNumberQuestions(login, courseId);
+        db.incrementNumberQuestions(login, courseId, questions, "");
       } catch (Exception e) {
         System.err.println("ERROR: "
             + e);
       }
-      String qList = qm.value("questions");
-      String[] questions = qList.split("/");
       int toReturn = 0;
       Queue queue = runningHours.getQueueForCourse(courseId);
       Account account;
@@ -260,6 +260,7 @@ public class QueueHandler {
       if (hours != null) {
         running = true;
         questions = hours.getQuestions();
+        System.out.println(questions.size());
       }
       StringBuilder qs = new StringBuilder();
       for (Question q : questions) {
