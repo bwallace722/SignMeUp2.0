@@ -142,10 +142,16 @@ public class QueueHandler {
       String login = qm.value("login");
       String qList = qm.value("questions");
       String otherQ = qm.value("otherQ");
+      //check what is when blank
       String[] questions = qList.split("/");
       
-      String currAss = "";
-      
+      String currAss = "none";
+      try {
+        currAss = db.getCurrAssessment(courseId);
+      } catch (Exception e) {
+        System.err.println(e);
+      }
+      System.out.println(currAss);
       // TODO: CHECK IF CURRENT PROJ = LAST PROJ ->> reset values;
       
       try {
@@ -265,7 +271,6 @@ public class QueueHandler {
       if (hours != null) {
         running = true;
         questions = hours.getQuestions();
-        System.out.println(questions.size());
       }
       StringBuilder qs = new StringBuilder();
       for (Question q : questions) {
@@ -275,7 +280,6 @@ public class QueueHandler {
             + q.content()
             + qEndTags);
       }
-      System.out.println(qs.toString());
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("login", login).put("questions", qs.toString())

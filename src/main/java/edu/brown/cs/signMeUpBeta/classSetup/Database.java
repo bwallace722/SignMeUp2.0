@@ -1,6 +1,7 @@
 package edu.brown.cs.signMeUpBeta.classSetup;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -241,8 +242,8 @@ public class Database {
     System.out.println(query);
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, name);
-    ps.setString(2, startDate);
-    ps.setString(3, endDate);
+    ps.setDate(2, java.sql.Date.valueOf(startDate));
+    ps.setDate(3, java.sql.Date.valueOf(endDate));
     ps.setString(4, courseId);
     ps.executeUpdate();
     ps.close();
@@ -425,10 +426,22 @@ public class Database {
   
   
   
-  public String getCurrProject(String courseId) {
-    //TODO: FIGURE THIS SHIT OUT
-    
-    return "";
+  public String getCurrAssessment(String courseId) throws SQLException {
+    String query = "SELECT assignment_name, start_date, end_date FROM assignment WHERE course_id = ?";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, courseId);
+    ResultSet rs = ps.executeQuery();
+    String curr = "none";
+    java.sql.Date start, end;
+    java.util.Date today = new java.util.Date();
+    while (rs.next()) {
+      start = rs.getDate(2);
+      end = rs.getDate(3);
+      if ((today.after(start)) && (today.before(end))) {
+        curr = rs.getString(1);
+      }
+    }
+    return curr;
   }
   
   
@@ -439,7 +452,6 @@ public class Database {
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
     ps.setString(2, courseId);
-    System.out.println("student: "+login+", course: "+courseId);
     ResultSet rs = ps.executeQuery();
     int num = 0;
     if (rs.next()) {
@@ -466,7 +478,6 @@ public class Database {
       ps.executeUpdate();
       ps.close();
     }
-    //TODO: Check if student isn't in the database???? -- probably dont have to do this
   }
   public String getLastProject(String login, String course) throws SQLException{
     String query = "SELECT last_project FROM student_course WHERE student_id = ? AND course_id = ?;";
@@ -474,11 +485,13 @@ public class Database {
     ps.setString(1, login);
     ps.setString(2, course);
     ResultSet rs = ps.executeQuery();
-    String name, email;
+    String last = "none";
     if (rs.next()) {
-      //return getAccount(login);
+      last = rs.getString(1);
     }
-    return "";
+    ps.close();
+    rs.close();
+    return last;
   }
   
   // SCHEMAS

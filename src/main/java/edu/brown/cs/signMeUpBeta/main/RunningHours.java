@@ -28,7 +28,7 @@ public class RunningHours {
       String currProject = "";
       List<Question> questions;
       try {
-        currProject = db.getCurrProject(courseID);
+        currProject = db.getCurrAssessment(courseID);
         questions = db.getQuestions(courseID, currProject);
       } catch (SQLException e) {
         questions = new ArrayList<Question>();
