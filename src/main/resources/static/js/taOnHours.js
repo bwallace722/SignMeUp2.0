@@ -3,7 +3,7 @@ var splitURL = windowURL.split("/");
 var courseId = splitURL[splitURL.length -1];
 //var queueHTMLStart = "<div class=\"row studentOnQueue\">" +
 //    "<div class=\"col-sm-8 col-sm-push-1\" data-toggle=\"modal\" data-target=\"#queueModal\"><h5>";
-var queueHTMLStart = "<div class=\"row studentOnQueue\" onclick=\"callStudent()\">" +
+var queueHTMLStart = "<div class=\"row studentOnQueue\" data-toggle=\"modal\" data-target=\"#queueModal\">" +
 "<div class=\"col-sm-8 col-sm-push-1\"><h5>";
 var queueHTMLEnd = "</h5></div><br><hr>";
 
