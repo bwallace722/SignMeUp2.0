@@ -125,8 +125,33 @@
                           </div>
    </div>
    <div class="startHours">
-   		<a class="btn btn-success btn-lg" id="startHoursBtn" onclick="startHours()">Start Hours</a>
+   		<a class="btn btn-success btn-lg" id="startHoursBtn" data-toggle="modal" data-target="#hoursModal">Start Hours</a>
    </div>
+            <div class="modal fade" id="hoursModal" tabindex="-1" role="dialog" aria-labelledby="hoursModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
+                            <h4 class="modal-title" id="release" style="color: #000; text-align: center;">Set hours length</h4>
+                          </div>
+                          <div class="modal-body">
+                                        <!-- <form class="timeLimit_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
+                                        <form class="hours_form" id="hours_form">
+                                              <h4 style="color: #000; text-align: center;">How many hours will hours be held today?</h4>
+												<input type="number" class="form-control" id="hoursLength" placeholder="10 hours">
+												<br>
+                                            <div class="form-actions">
+                                                <button class="btn btn-primary" data-dismiss="modal" onclick="startHours()">Start session</button>
+                                                <br>
+                                                <br>
+                                            </div>
+                                        </form>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+   
 </div>
 
 

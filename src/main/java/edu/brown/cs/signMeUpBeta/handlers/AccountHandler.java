@@ -35,6 +35,7 @@ public class AccountHandler {
     Spark.post("/updateCourse/:login", new UpdateCourseHandler());
     Spark.get("/courses/:login", new CourseListHandler(),
         new FreeMarkerEngine());
+    Spark.post("/removeCourse", new RemoveCourseHandler());
     Spark.get("/addCourses/:login", new AddCourseHandler(),
         new FreeMarkerEngine());
     Spark.post("/signOut/:login", new SignOutHandler());
@@ -48,6 +49,7 @@ public class AccountHandler {
     public Object handle(Request req, Response res) {
       String login = req.params(":login");
       //TODO signout
+      
       return 1;
     }
   }
@@ -62,9 +64,11 @@ public class AccountHandler {
     public ModelAndView handle(final Request req, final Response res) {
       String login = req.params(":login");
       StringBuilder classList = new StringBuilder();
+      String courseDropdown = "";
       try {
         List<String> studentClasses = db.getStudentClasses(login);
         List<String> taClasses = db.getTAClasses(login);
+
         if (studentClasses.size() == 0
             && taClasses.size() == 0) {
           String noClasses =
@@ -76,13 +80,12 @@ public class AccountHandler {
           String tableTags =
               "<table class=\"table table-hover\" id=\"courseTable\">"
                   + "<thead><tr><th>Course</th><th>Position</th></tr></thead><tbody id=\"courseTableBody\">";
-          String closeTableTags = "</tbody></table>"
-              + "<a class=\"btn btn-primary btn-sm\""
-              + "onclick=\"addCourses()\" id=\"addCourseBtn\">Add a Course</a>";
+          String closeTableTags = "</tbody></table>";
           classList.append(tableTags);
           String startTags = "<tr class=\"clickable-row\">"
               + "<td class=\"courseId\">";
           String middleTags = "</td><td>";
+          // add in String for removing class 
           String endTags = "</td></tr>";
           for (String tClass : taClasses) {
             String line = startTags
@@ -91,6 +94,11 @@ public class AccountHandler {
                 + "TA"
                 + endTags;
             classList.append(line);
+            courseDropdown = courseDropdown.concat("<option value=\""
+                + tClass
+                + "\">"
+                + tClass.toUpperCase()
+                + "</option>");
           }
           for (String sClass : studentClasses) {
             String line = startTags
@@ -99,13 +107,18 @@ public class AccountHandler {
                 + "Student"
                 + endTags;
             classList.append(line);
+            courseDropdown = courseDropdown.concat("<option value=\""
+                + sClass
+                + "\">"
+                + sClass.toUpperCase()
+                + "</option>");
           }
           classList.append(closeTableTags);
         }
         Map<String, Object> variables =
             new ImmutableMap.Builder().put("userCourseList",
                 classList.toString()).put("title", "SignMeUp 2.0").put("user",
-                login).build();
+                login).put("courseDropdown", courseDropdown).build();
         return new ModelAndView(variables, "myClasses.html");
       } catch (SQLException e) {
         System.out.println("ERROR: "
@@ -175,6 +188,20 @@ public class AccountHandler {
       return response;
     }
   }
+  
+  
+  private class RemoveCourseHandler implements Route {
+    @Override
+    public Object handle(final Request req, final Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("courseId");
+      String login = qm.value("login");
+      System.out.println("removing");
+      //TODO remove this course from the login's courses.
+      return null;
+    }
+  }
+  
   /**
    * This method handles the logging in of a student checking the input login
    * and password.

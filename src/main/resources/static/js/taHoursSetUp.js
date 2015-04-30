@@ -12,8 +12,9 @@ var courseId = splitURL[splitURL.length -1];
 function startHours() {
 	var postUrl = "/startHours/" + courseId;
 	var hoursUrl = "/onHours/" + courseId;
-	
-	$.post(postUrl, function(responseJSON) {
+	var hoursLength = document.getElementById("hoursLength").value;
+	var postParameters = {"duration": hoursLength};
+	$.post(postUrl, postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {
 			window.location.href= hoursUrl;

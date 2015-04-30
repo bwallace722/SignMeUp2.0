@@ -37,6 +37,8 @@ function addAsgn() {
 
 
 function saveAssignments() {
+	console.log(assignmentCount);
+	console.log(assignments.length + " - length");
 	if(assignmentCount > assignments.length) {
 		if(addAsgn()) {
 			postAsngs();
@@ -104,7 +106,7 @@ function addExam() {
 
 
 function saveExams() {
-	if(examCounts > exams.length) {
+	if(examCount > exams.length) {
 		if(addExam()) {
 			postExams();
 		}
@@ -243,6 +245,13 @@ function validateFormGroup(n,s,e) {
 	return toReturn;
 }
 
+
+function finishCourseSetUp() {
+	saveAssignments();
+	saveExams();
+	saveLabs();
+	window.location.href = "/taHoursSetUp/" + course;
+}
 
 function addSubQ() {
 	var newQ = $("#newQuestion").val();

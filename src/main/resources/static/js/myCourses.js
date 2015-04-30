@@ -22,6 +22,19 @@ $(".clickable-row").bind('click', function(e) {
 	window.location.href=url;
 });
 
+function removeCourse() {
+	var courses = document.getElementById("courseDropdown");
+	
+	var courseSelected = courses.options[courses.selectedIndex].value;
+	console.log(courseSelected);
+	
+	var posturl = "/removeCourse";
+	var postParameters = {"course": courseSelected, "login": user};
+	$.post("/removeCourse", postParameters, function(responseJSON) {
+		window.location.href = "/courses/" + user;
+	});
+}
+
 function addCourses() {
 	var url = "/addCourses/"+user;
 	window.location.href = url;

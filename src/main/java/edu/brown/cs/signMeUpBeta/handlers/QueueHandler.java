@@ -75,11 +75,11 @@ public class QueueHandler {
   private class EndHours implements Route {
     @Override
     public Object handle(Request req, Response res) {
-      QueryParamsMap qm = req.queryMap();
-      String course = qm.value("course");
-      // TODO end hours
+      String course = req.params(":courseId");
+      runningHours.endHours(course);
       Queue queue = runningHours.getQueueForCourse(course);
-      if (queue == null) {
+      if (queue != null) {
+        System.out.println("Did not remove queue");
         return 0;
       }
       return 1;
@@ -143,15 +143,15 @@ public class QueueHandler {
       QueryParamsMap qm = req.queryMap();
       String courseId = qm.value("course");
       String login = qm.value("login");
+      String qList = qm.value("questions");
+      String[] questions = qList.split("/");
       // TODO: CHECK IF CURRENT PROJ = LAST PROJ ->> reset values;
       try {
-        db.incrementNumberQuestions(login, courseId);
+        db.incrementNumberQuestions(login, courseId, questions, "");
       } catch (Exception e) {
         System.err.println("ERROR: "
             + e);
       }
-      String qList = qm.value("questions");
-      String[] questions = qList.split("/");
       int toReturn = 0;
       Queue queue = runningHours.getQueueForCourse(courseId);
       Account account;
@@ -185,12 +185,19 @@ public class QueueHandler {
     @Override
     public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
+      // <<<<<<< HEAD
       int duration = Integer.getInteger(req.params("duration"));
       Date currentDate = new Date();
       int toReturn = runningHours.startHours(courseId);
       Hours currHours = runningHours.getHoursForCourse(courseId);
       currHours.setUpAppointments(currentDate, duration);
       return toReturn;
+      // =======
+      // QueryParamsMap qm = req.queryMap();
+      // String hoursLength = qm.value("hoursLength");
+      // //TODO set hours length --> define appointments
+      // return runningHours.startHours(courseId);
+      // >>>>>>> ab4d0ebc2c628598e3f678dcee08a5b67cdc1f3c
     }
   }
   private static class ConfirmAppointmentHandler implements Route {
@@ -235,16 +242,19 @@ public class QueueHandler {
       }
       // NEEDED: SUBQUESTIONS PER QUESTION
       Hours hours = runningHours.getHoursForCourse(courseId);
-      List<Question> questions = new ArrayList<Question>();
+      List<Question> questionsList = new ArrayList<Question>();
+      StringBuilder questions = new StringBuilder();
       boolean running = false;
       if (hours != null) {
         running = true;
-        questions = hours.getQuestions();
+        questionsList = hours.getQuestions();
+        questions = getQuestions(questionsList);
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("login", login).put("aptTimes", timesHTML).put(
-              "questions", questions).put("running", running).build();
+              "questions", questions.toString()).put("running", running)
+              .build();
       return new ModelAndView(variables, "makeAppointment.html");
     }
   }
@@ -270,6 +280,7 @@ public class QueueHandler {
       if (hours != null) {
         running = true;
         questions = hours.getQuestions();
+        System.out.println(questions.size());
       }
       StringBuilder qs = new StringBuilder();
       for (Question q : questions) {
@@ -286,6 +297,20 @@ public class QueueHandler {
               .put("running", running).build();
       return new ModelAndView(variables, "signUpForHours.html");
     }
+  }
+  private StringBuilder getQuestions(List<Question> questions) {
+    String qStartTags = "<label><input type=\"checkbox\" value=\"";
+    String closeValTags = "\">";
+    String qEndTags = "</label><br>";
+    StringBuilder qs = new StringBuilder();
+    for (Question q : questions) {
+      qs.append(qStartTags
+          + q.content()
+          + closeValTags
+          + q.content()
+          + qEndTags);
+    }
+    return qs;
   }
   /**
    * This class prints out errors if the spark server fails.
