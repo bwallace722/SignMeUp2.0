@@ -182,6 +182,9 @@ public class QueueHandler {
     @Override
     public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
+      QueryParamsMap qm = req.queryMap();
+      String hoursLength = qm.value("hoursLength");
+      //TODO set hours length --> define appointments
       return runningHours.startHours(courseId);
     }
   }
@@ -220,16 +223,18 @@ public class QueueHandler {
       }
       // NEEDED: SUBQUESTIONS PER QUESTION
       Hours hours = runningHours.getHoursForCourse(courseId);
-      List<Question> questions = new ArrayList<Question>();
+      List<Question> questionsList = new ArrayList<Question>();
+      StringBuilder questions = new StringBuilder();
       boolean running = false;
       if (hours != null) {
         running = true;
-        questions = hours.getQuestions();
+        questionsList = hours.getQuestions();
+        questions = getQuestions(questionsList);
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("login", login).put("aptTimes", timesHTML).put(
-              "questions", questions).put("running", running).build();
+              courseId).put("login", login).put("aptTimes", timesHTML)
+              .put("questions", questions.toString()).put("running", running).build();
       return new ModelAndView(variables, "makeAppointment.html");
     }
   }
@@ -273,6 +278,18 @@ public class QueueHandler {
       return new ModelAndView(variables, "signUpForHours.html");
     }
   }
+  
+  private StringBuilder getQuestions(List<Question> questions) {
+    String qStartTags = "<label><input type=\"checkbox\" value=\"";
+    String closeValTags = "\">";
+    String qEndTags = "</label><br>";
+    StringBuilder qs = new StringBuilder();
+    for(Question q : questions) {
+      qs.append(qStartTags + q.content() + closeValTags + q.content() + qEndTags);
+    }
+    return qs;
+  }
+  
   /**
    * This class prints out errors if the spark server fails.
    * @author kb25
