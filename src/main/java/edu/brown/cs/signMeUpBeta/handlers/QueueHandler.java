@@ -36,7 +36,8 @@ public class QueueHandler {
   }
   public void runSpark() {
     Spark.post("/confirmAppointment", new ConfirmAppointmentHandler());
-    Spark.get("/makeAppointment/:courseIdAndUserId", new MakeAppointmentHandler(), new FreeMarkerEngine());
+    Spark.get("/makeAppointment/:courseIdAndUserId",
+        new MakeAppointmentHandler(), new FreeMarkerEngine());
     Spark.get("/signUpForHours/:courseAndUserId", new StudentSignUpForHours(),
         new FreeMarkerEngine());
     Spark.post("/startHours/:courseId", new StartCourseHours());
@@ -64,7 +65,6 @@ public class QueueHandler {
       return 1;
     }
   }
-  
   /**
    * This handler ends hours for the given course.
    * @author kj13
@@ -82,7 +82,6 @@ public class QueueHandler {
       return 1;
     }
   }
-  
   /**
    * This class handles the adding of lab check offs to the queue.
    * @author omadarik
@@ -141,21 +140,15 @@ public class QueueHandler {
       QueryParamsMap qm = req.queryMap();
       String courseId = qm.value("course");
       String login = qm.value("login");
-      
-      
-      //TODO: CHECK IF CURRENT PROJ = LAST PROJ ->> reset values;
-      
-      
+      // TODO: CHECK IF CURRENT PROJ = LAST PROJ ->> reset values;
       try {
         db.incrementNumberQuestions(login, courseId);
       } catch (Exception e) {
-        System.err.println("ERROR: " + e);
+        System.err.println("ERROR: "
+            + e);
       }
-      
       String qList = qm.value("questions");
       String[] questions = qList.split("/");
-      
-      
       int toReturn = 0;
       Queue queue = runningHours.getQueueForCourse(courseId);
       Account account;
@@ -167,7 +160,7 @@ public class QueueHandler {
         System.err.println("ERROR: sql error on add student to queue");
         return 0;
       }
-      queue.add(account, (1/(numQuestions+1)));
+      queue.add(account, (1 / (numQuestions + 1)));
       toReturn = 1;
       return toReturn;
     }
@@ -176,12 +169,12 @@ public class QueueHandler {
     @Override
     public Object handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
-//      System.out.println(courseId);
+      // System.out.println(courseId);
       Queue currentQueue = runningHours.getQueueForCourse(courseId);
       List<String> toReturn = currentQueue.getStudentsInOrder();
-//      for (String s : toReturn) {
-//        System.out.println(s);
-//      }
+      // for (String s : toReturn) {
+      // System.out.println(s);
+      // }
       return toReturn;
     }
   }
@@ -209,20 +202,23 @@ public class QueueHandler {
   private class MakeAppointmentHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-      String courseAndUserId = req.params(":courseAndUserId");
+      String courseAndUserId = req.params(":courseIdAndUserId");
       String[] reqParams = courseAndUserId.split("~");
       String courseId = reqParams[0];
       String login = reqParams[1];
-      String timesHTMLTags = "<button class=\"aptTime btn btn-success btn-lg\">";
+      String timesHTMLTags =
+          "<button class=\"aptTime btn btn-success btn-lg\">";
       String closeTag = "</button>";
-      //NEEDED: AVAILABLE APPOINTMENT TIMES 
+      // NEEDED: AVAILABLE APPOINTMENT TIMES
       List<String> availTimes = new ArrayList<String>();
       StringBuilder timesHTML = new StringBuilder();
-      for(String a : availTimes) {
-        String t = timesHTMLTags + a + closeTag;
+      for (String a : availTimes) {
+        String t = timesHTMLTags
+            + a
+            + closeTag;
         timesHTML.append(t);
       }
-      //NEEDED: SUBQUESTIONS PER QUESTION
+      // NEEDED: SUBQUESTIONS PER QUESTION
       Hours hours = runningHours.getHoursForCourse(courseId);
       List<Question> questions = new ArrayList<Question>();
       boolean running = false;
@@ -232,12 +228,11 @@ public class QueueHandler {
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("login", login).put("aptTimes", timesHTML)
-              .put("questions", questions).put("running", running).build();
-      return new ModelAndView(variables, "signUpForHours.html");
+              courseId).put("login", login).put("aptTimes", timesHTML).put(
+              "questions", questions).put("running", running).build();
+      return new ModelAndView(variables, "makeAppointment.html");
     }
   }
-  
   /**
    * This handler initially displays the signupforhours page. It will display
    * the assignment, questions, and subquestions relevant to that student's
@@ -254,7 +249,6 @@ public class QueueHandler {
       String qStartTags = "<label><input type=\"checkbox\" value=\"";
       String closeValTags = "\">";
       String qEndTags = "</label><br>";
-
       Hours hours = runningHours.getHoursForCourse(courseId);
       List<Question> questions = new ArrayList<Question>();
       boolean running = false;
@@ -263,14 +257,18 @@ public class QueueHandler {
         questions = hours.getQuestions();
       }
       StringBuilder qs = new StringBuilder();
-      for(Question q : questions) {
-        qs.append(qStartTags + q.content() + closeValTags + q.content() + qEndTags);
+      for (Question q : questions) {
+        qs.append(qStartTags
+            + q.content()
+            + closeValTags
+            + q.content()
+            + qEndTags);
       }
       System.out.println(qs.toString());
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("login", login).put("questions", qs.toString()).put(
-              "running", running).build();
+              courseId).put("login", login).put("questions", qs.toString())
+              .put("running", running).build();
       return new ModelAndView(variables, "signUpForHours.html");
     }
   }
