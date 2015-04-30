@@ -185,38 +185,45 @@ public class QueueHandler {
   private class StartCourseHours implements Route {
     @Override
     public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
       String courseId = req.params(":courseId");
-      // <<<<<<< HEAD
-      System.out.println(req.params("duration"));
-      // System.out.println("We aight");
-      // Date currentDate = new Date();
+      Integer duration = Integer.parseInt(qm.value("duration"));
+      Date currentDate = new Date();
       int toReturn = runningHours.startHours(courseId);
-      // System.out.println("We aight");
-      // Hours currHours = runningHours.getHoursForCourse(courseId);
-      // System.out.println("We aight");
-      // currHours.setUpAppointments(currentDate, duration);
-      // System.out.println("We aight");
+      Hours currHours = runningHours.getHoursForCourse(courseId);
+      currHours.setUpAppointments(currentDate, duration);
       return toReturn;
-      // =======
-      // QueryParamsMap qm = req.queryMap();
-      // String hoursLength = qm.value("hoursLength");
-      // //TODO set hours length --> define appointments
-      // return runningHours.startHours(courseId);
-      // >>>>>>> ab4d0ebc2c628598e3f678dcee08a5b67cdc1f3c
     }
   }
-  private static class ConfirmAppointmentHandler implements Route {
+  private class ConfirmAppointmentHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
-      // JSONParser parser = new JSONParser();
-      // try {
-      // JSONObject apt = (JSONObject) parser.parse(req.body());
-      // Time appointmentTime = (Time) apt.get("time");
-      // } catch (ParseException e) {
-      // System.out.println("ERROR: "
-      // + e.getMessage());
-      // }
-      return null;
+      QueryParamsMap qm = req.queryMap();
+      String courseId = qm.value("courseId");
+      String login = qm.value("login");
+      String time = qm.value("time");
+      Queue queue = runningHours.getQueueForCourse(courseId);
+      Account account;
+      int toReturn = 0;
+      // TODO: sorrt out questions
+      String[] questions = null;
+      try {
+        db.incrementNumberQuestions(login, courseId, questions, "");
+      } catch (Exception e) {
+        System.err.println("ERROR: "
+            + e);
+      }
+      int numQuestions = 0;
+      try {
+        account = db.getAccount(login);
+        numQuestions = db.getNumberQuestionsAsked(login, courseId);
+      } catch (Exception e) {
+        System.err.println("ERROR: sql error on add student to queue");
+        return 0;
+      }
+      queue.add(account, (1 / (numQuestions + 1)));
+      toReturn = 1;
+      return toReturn;
     }
   }
   private class MakeAppointmentHandler implements TemplateViewRoute {
