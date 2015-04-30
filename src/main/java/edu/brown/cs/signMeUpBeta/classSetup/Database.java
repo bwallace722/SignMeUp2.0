@@ -461,11 +461,12 @@ public class Database {
     rs.close();
     return num;
   }
-  public void incrementNumberQuestions(String login, String courseId, String[] questions, String currAss) throws SQLException {
-    String query = "UPDATE student_course SET questions_asked = questions_asked+1, questions_asked_curr_project = questions_asked_curr_project+1 WHERE student_id = ? AND course_id = ?;";
+  public void updateStudentInfo(String login, String courseId, String[] questions, String currAss) throws SQLException {
+    String query = "UPDATE student_course SET questions_asked = questions_asked+1, questions_asked_curr_project = questions_asked_curr_project+1, last_project = ? WHERE student_id = ? AND course_id = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, login);
-    ps.setString(2, courseId);
+    ps.setString(1, currAss);
+    ps.setString(2, login);
+    ps.setString(3, courseId);
     ps.executeUpdate();
     ps.close();
     
