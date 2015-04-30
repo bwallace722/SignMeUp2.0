@@ -194,11 +194,15 @@ public class AccountHandler {
     @Override
     public Object handle(final Request req, final Response res) {
       QueryParamsMap qm = req.queryMap();
-      String course = qm.value("courseId");
+      String courseId = qm.value("courseId");
       String login = qm.value("login");
-      System.out.println("removing");
-      //TODO remove this course from the login's courses.
-      return null;
+      try {
+        db.removeAccountCoursePair(login, courseId);
+      } catch (Exception e) {
+        System.err.println(e);
+        return 0;
+      }
+      return 1;
     }
   }
   

@@ -29,12 +29,25 @@ h1 {
 	
 }
 
+#signUpForHrsBtn {
+	margin-bottom: 20%;
+}
+
+.queueBtn {
+	display: inline;
+	margin-left: 10%;
+	margin-right: 5%;
+}
+
 #allCategories hr {
   width: 30%;
 }
 
 .timeLimit .panel {
   width: 20%;
+}
+#timeLimit {
+	display: none;
 }
 
 .startHours {

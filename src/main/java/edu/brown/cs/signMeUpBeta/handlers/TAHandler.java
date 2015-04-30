@@ -3,6 +3,7 @@ package edu.brown.cs.signMeUpBeta.handlers;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -157,10 +158,28 @@ public class TAHandler {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
-      System.out.println(courseId);
+      String currAss = "none";
+      List<Question> questions = new ArrayList<Question>();
+      try {
+        currAss= db.getCurrAssessment(courseId);
+        questions = db.getQuestions(courseId, currAss);
+      } catch (Exception e) {
+        System.err.println(e);
+      }
+      String qStartTags = "<h6>";
+      String qEndTags = "</h6>";
+      StringBuilder qs = new StringBuilder();
+      for (Question q : questions) {
+        qs.append(qStartTags
+            + q.content()
+            + qEndTags);
+      }
+      
+//      System.out.println(courseId);
       Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).build();
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
+          .put("currAss", currAss).put("questions", qs.toString())
+          .put("course",courseId).build();
       return new ModelAndView(variables, "taHoursSetUp.html");
     }
   }

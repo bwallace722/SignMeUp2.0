@@ -24,18 +24,18 @@
     <div class="assignments">
     <div class="panel">
     <button class="btn btn-primary btn-sm" id="seeAssignments" data-toggle="collapse" data-target="#allCategories" href="">See all Assignments</button>
-    <a class="btn btn-primary btn-sm" id="editAssignments" href="taClassSetUp">Edit Assignments</a><br>
+    <a class="btn btn-primary btn-sm" id="editAssignments" onclick="taCourseSetUp()">Edit Assignments</a><br>
     <!--div for results-->
          <h3>Today's assignment</h3>
     <div class="panel-body">
      <div class="hoursSetUpCategories">
 
-<h4 id="currAsign">Maps</h4>
+<h4 id="currAsign">${currAss}</h4>
          <div class="onHoursBlock">
       <!--populate with request-->
                 <h5 style="text-decoration: underline;">Questions</h5>
       <div class="currSubs" id="currSubs">
-
+		${questions}
       </div>
             <button type="button" class="btn btn-default btn-sm" data-toggle="modal" data-target="#subQModal">
               <span class="glyphicon glyphicon-plus-sign" aria-hidden="true"></span> Add question
@@ -111,7 +111,7 @@
                                         <!-- <form class="timeLimit_form" id="timeLimit_form" action="{% url 'execute_release' %}" method="POST"> -->
                                         <form class="timeLimit_form" id="timeLimit_form">
                                               <h4 style="color: #000; text-align: center;">What is your desired time limit?</h4>
-<input type="number" class="form-control" id="newTimeLim" placeholder="10"><h5 style="color: #000; text-align: center;">minutes</h5>
+<input type="text" class="form-control" id="newTimeLim" placeholder="10"><h5 style="color: #000; text-align: center;">minutes</h5>
 <br>
 <!--                                             <div class="form-actions"> -->
                                                 <button class="btn btn-primary" data-dismiss="modal" onclick="setTimeLimit()">Set</button>

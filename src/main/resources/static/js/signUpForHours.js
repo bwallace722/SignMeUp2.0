@@ -8,6 +8,13 @@ var login = splitCourseAndLogin[1];
 var calledToHours = false;
 console.log("course: " + courseId + " , login: " + login);
 
+var currAsign = document.getElementById("currAsign");
+console.log(currAsign.innerHTML);
+if(currAsign.innerHTML == "none"){
+	currAsign.innerHTML = "There is no assignment assigned for today.";
+	$("#checkbox").hide();
+}
+
 
 function getOnQueue() {
 	var checkedQ = "";
@@ -17,14 +24,9 @@ function getOnQueue() {
 		checkedQ = checkedQ.concat($(this).val() + "/");
     });
 	console.log(qs.length);
-//	console.log(qs[0].innerText);
+
 	var otherQ = document.getElementById("otherQuestion").value;
-//	for(var i = 0; i < qs.length; i++) {
-//		console.log(i);
-//		if(qs[i].checked) {
-//			checkedQ = checkedQ.concat(qs[i].innerText + ",");
-//		}
-//	}
+
 	console.log(checkedQ);
 	var postParameters = {"course": courseId, "login": login, 
 			"questions": checkedQ,
