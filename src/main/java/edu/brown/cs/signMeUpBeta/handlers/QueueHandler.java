@@ -79,6 +79,14 @@ public class QueueHandler {
       if (queue == null) {
         return 0;
       }
+      Account account;
+      try {
+        account = db.getAccount(studentLogin);
+      } catch (Exception e) {
+        System.err.println(e);
+        return 0;
+      }
+      queue.remove(account);
       return 1;
     }
   }

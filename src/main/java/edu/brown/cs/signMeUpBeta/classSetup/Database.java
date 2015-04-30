@@ -223,6 +223,21 @@ public class Database {
     ps.executeUpdate();
     ps.close();
   }
+  public void removeAccountCoursePair(String login, String courseId) throws SQLException {
+    String query = "DELETE FROM student_course WHERE student_id = ? AND course_id = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, login);
+    ps.setString(2, courseId);
+    ps.executeUpdate();
+    ps.close();
+    
+    query = "DELETE FROM ta_course WHERE ta_id = ? AND course_id = ?;";
+    ps = conn.prepareStatement(query);
+    ps.setString(1, login);
+    ps.setString(2, courseId);
+    ps.executeUpdate();
+    ps.close();
+  }
   /**
    * This method inserts an entry into the lab table. This assessment item can
    * be either an assignment, an exam, or a lab.
@@ -345,7 +360,7 @@ public class Database {
       /*
        * Getting the courses the student is enrolled in.
        */
-      query = "SELECT course_id FROM student_course WHERE student_id = ?";
+      query = "SELECT course_id FROM student_course WHERE student_id = ?;";
       ps = conn.prepareStatement(query);
       ps.setString(1, login);
       rs = ps.executeQuery();
@@ -358,7 +373,7 @@ public class Database {
       /*
        * Getting the courses the student is a TA in.
        */
-      query = "SELECT course_id FROM ta_course WHERE ta_id = ?";
+      query = "SELECT course_id FROM ta_course WHERE ta_id = ?;";
       ps = conn.prepareStatement(query);
       ps.setString(1, login);
       rs = ps.executeQuery();
@@ -424,10 +439,8 @@ public class Database {
     return courses;
   }
   
-  
-  
   public String getCurrAssessment(String courseId) throws SQLException {
-    String query = "SELECT assignment_name, start_date, end_date FROM assignment WHERE course_id = ?";
+    String query = "SELECT assignment_name, start_date, end_date FROM assignment WHERE course_id = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, courseId);
     ResultSet rs = ps.executeQuery();
@@ -443,7 +456,6 @@ public class Database {
     }
     return curr;
   }
-  
   
   public int getNumberQuestionsAsked(String login, String courseId) throws SQLException {
     String query = "SELECT questions_asked_curr_project FROM student_course WHERE student_id=? AND course_id=?;";
