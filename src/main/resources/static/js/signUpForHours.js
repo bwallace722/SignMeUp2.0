@@ -17,14 +17,9 @@ function getOnQueue() {
 		checkedQ = checkedQ.concat($(this).val() + "/");
     });
 	console.log(qs.length);
-//	console.log(qs[0].innerText);
+
 	var otherQ = document.getElementById("otherQuestion").value;
-//	for(var i = 0; i < qs.length; i++) {
-//		console.log(i);
-//		if(qs[i].checked) {
-//			checkedQ = checkedQ.concat(qs[i].innerText + ",");
-//		}
-//	}
+
 	console.log(checkedQ);
 	var postParameters = {"course": courseId, "login": login, 
 			"questions": checkedQ,

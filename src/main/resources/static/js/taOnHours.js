@@ -3,7 +3,7 @@ var splitURL = windowURL.split("/");
 var courseId = splitURL[splitURL.length -1];
 //var queueHTMLStart = "<div class=\"row studentOnQueue\">" +
 //    "<div class=\"col-sm-8 col-sm-push-1\" data-toggle=\"modal\" data-target=\"#queueModal\"><h5>";
-var queueHTMLStart = "<div class=\"row studentOnQueue\" onclick=\"callStudent()\">" +
+var queueHTMLStart = "<div class=\"row studentOnQueue\" data-toggle=\"modal\" data-target=\"#queueModal\">" +
 "<div class=\"col-sm-8 col-sm-push-1\"><h5>";
 var queueHTMLEnd = "</h5></div><br><hr>";
 
@@ -11,6 +11,20 @@ var emptyQueue = "<h4>There are no students on the Queue!</h4>";
 
 function returnToSetup() {
 	window.location.href = "/taHoursSetUp/" + courseId;
+}
+
+function removeStudent() {
+	var text = $(this).text();
+	var text = text.trim();
+	var textList = text.split(" ");
+	var login = text.split(" ")[textList.length - 1];
+	var postParameters = {"studentLogin": login, 
+			"course": courseId};
+	$.post("/removeStudent", postParameters, function(responseJSON) {
+		if(responseJSON == 1) {
+			$(this).hide();
+		}
+	});
 }
 
 var studentToCall;

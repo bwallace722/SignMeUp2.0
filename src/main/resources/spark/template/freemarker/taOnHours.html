@@ -27,22 +27,18 @@
 		</div>
             <div class="modal fade" id="queueModal" tabindex="-1" role="dialog" aria-labelledby="qModalLabel" aria-hidden="true">
                   <div class="modal-dialog">
-                        <div class="modal-content">
-
-                          <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
-                          </div>
-                          <div class="modal-body">
-                                        <!-- <form class="timeLimit_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
-                          <button class="btn btn-success btn-lg" data-dismiss="modal" onclick="callStudent()">Call Student</button>
-                          <button class="btn btn-danger btn-lg" data-dismiss="modal" onclick="removeStudent()">Remove Student</button>
+                        <div class="modal-content" style="width:80%;">
+                        <div class="modal-body" >
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
+                          	<button class="btn btn-success queueBtn btn-lg" data-dismiss="modal" onclick="callStudent()">Call Student</button>
+                          	<button class="btn btn-danger queueBtn btn-lg" data-dismiss="modal" onclick="removeStudent()">Remove Student</button>
                           </div>
                           </div>
                    </div>
              </div>
         </div>
 
-<a class="btn btn-success btn-lg" onclick="startTimer()">Start Timer</a>
+<a class="btn btn-success btn-lg" style="background-color: #000; border-color: #000;"onclick="startTimer()">Start Timer</a>
 <div id="timeLimit">${time}</div>
 
       <div class="col-sm-5">
