@@ -16,7 +16,9 @@ var LINE_CUTOFF_MESSAGE = "The line has been cut off, though you may still" +
 var OFF_HOURS_MESSAGE = "There are not hours right now. " +
 		"We couldn't sign you up.";
 
-
+function myCourses() {
+	window.location.href = "/courses/" + login;
+}
 
 $(".labConfirm").hide(0);
 
