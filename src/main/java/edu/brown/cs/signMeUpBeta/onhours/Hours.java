@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 
 import edu.brown.cs.signMeUpBeta.project.Question;
 import edu.brown.cs.signMeUpBeta.project.QuestionInterface;
-import edu.brown.cs.signMeUpBeta.student.Appointment;
 
 public class Hours {
   private ConcurrentHashMap<Question, Integer> questions;
