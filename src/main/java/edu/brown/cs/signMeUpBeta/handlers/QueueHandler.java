@@ -173,7 +173,7 @@ public class QueueHandler {
       
       
       try {
-        db.incrementNumberQuestions(login, courseId, questions, currAss);
+        db.updateStudentInfo(login, courseId, questions, currAss);
       } catch (Exception e) {
         System.err.println("ERROR: "
             + e);
@@ -310,9 +310,17 @@ public class QueueHandler {
             + q.content()
             + qEndTags);
       }
+      String currAss = "none";
+      try {
+        currAss= db.getCurrAssessment(courseId);
+      } catch (Exception e) {
+        System.err.println(e);
+      }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("login", login).put("questions", qs.toString())
+              courseId).put("login", login)
+              .put("currAss", currAss)
+              .put("questions", qs.toString())
               .put("running", running).build();
       return new ModelAndView(variables, "signUpForHours.html");
     }

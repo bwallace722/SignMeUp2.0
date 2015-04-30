@@ -8,6 +8,13 @@ var login = splitCourseAndLogin[1];
 var calledToHours = false;
 console.log("course: " + courseId + " , login: " + login);
 
+var currAsign = document.getElementById("currAsign");
+console.log(currAsign.innerHTML);
+if(currAsign.innerHTML == "none"){
+	currAsign.innerHTML = "There is no assignment assigned for today.";
+	$("#checkbox").hide();
+}
+
 
 function getOnQueue() {
 	var checkedQ = "";

@@ -397,14 +397,14 @@ public class Database {
   }
   
   public List<Question> getQuestions(String courseID, String assessment) throws SQLException {
-    String query = "SELECT * FROM questions WHERE course_id=? AND assessment_name=?;";
+    String query = "SELECT question FROM questions WHERE course_id=? AND assessment_name=?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, courseID);
     ps.setString(2, assessment);
     ResultSet rs = ps.executeQuery();
     List<Question> questionList = new ArrayList<Question>();
     while (rs.next()) {
-      Question q = new Question(courseID, rs.getString(3), rs.getString(1));
+      Question q = new Question(courseID, rs.getString(1), assessment);
       questionList.add(q);
     }
     ps.close();

@@ -29,6 +29,14 @@ function taCourseSetUp() {
 	window.location.href = "/courseSetUp/"+courseId;
 }
 
+
+var currAsign = document.getElementById("currAsign");
+console.log(currAsign.innerHTML);
+if(currAsign.innerHTML == "none"){
+	currAsign.innerHTML = "There is no assignment assigned for today.";
+	$(".onHoursBlock").hide();
+}
+
 function addQuestion() {
 	var currSubs = $("#currSubs");
 	var newQuestion = document.getElementById("newQuestion").value;

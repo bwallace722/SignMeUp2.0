@@ -13,6 +13,8 @@ function returnToSetup() {
 	window.location.href = "/taHoursSetUp/" + courseId;
 }
 
+
+
 function removeStudent() {
 	var text = $(this).text();
 	var text = text.trim();

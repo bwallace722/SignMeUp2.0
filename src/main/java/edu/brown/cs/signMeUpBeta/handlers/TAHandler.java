@@ -166,24 +166,20 @@ public class TAHandler {
       } catch (Exception e) {
         System.err.println(e);
       }
-      
-      //TODO: KAMILLE - fix these to be right.
-      String qStartTags = "<label><input type=\"checkbox\" value=\"";
-      String closeValTags = "\">";
-      String qEndTags = "</label><br>";
+      String qStartTags = "<h6>";
+      String qEndTags = "</h6>";
       StringBuilder qs = new StringBuilder();
       for (Question q : questions) {
         qs.append(qStartTags
-            + q.content()
-            + closeValTags
             + q.content()
             + qEndTags);
       }
       
 //      System.out.println(courseId);
       Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).build();
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
+          .put("currAss", currAss).put("questions", qs.toString())
+          .put("course",courseId).build();
       return new ModelAndView(variables, "taHoursSetUp.html");
     }
   }

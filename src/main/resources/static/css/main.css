@@ -29,6 +29,10 @@ h1 {
 	
 }
 
+#signUpForHrsBtn {
+	margin-bottom: 20%;
+}
+
 .queueBtn {
 	display: inline;
 	margin-left: 10%;
