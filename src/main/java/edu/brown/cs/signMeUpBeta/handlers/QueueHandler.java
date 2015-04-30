@@ -142,9 +142,13 @@ public class QueueHandler {
       String login = qm.value("login");
       String qList = qm.value("questions");
       String[] questions = qList.split("/");
+      
+      String currAss = "";
+      
       // TODO: CHECK IF CURRENT PROJ = LAST PROJ ->> reset values;
+      
       try {
-        db.incrementNumberQuestions(login, courseId, questions, "");
+        db.incrementNumberQuestions(login, courseId, questions, currAss);
       } catch (Exception e) {
         System.err.println("ERROR: "
             + e);

@@ -449,7 +449,7 @@ public class Database {
     rs.close();
     return num;
   }
-  public void incrementNumberQuestions(String login, String courseId, String[] questions, String currProj) throws SQLException {
+  public void incrementNumberQuestions(String login, String courseId, String[] questions, String currAss) throws SQLException {
     String query = "UPDATE student_course SET questions_asked = questions_asked+1, questions_asked_curr_project = questions_asked_curr_project+1 WHERE student_id = ? AND course_id = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
@@ -462,37 +462,25 @@ public class Database {
       ps = conn.prepareStatement(query);
       ps.setString(1, q);
       ps.setString(2, courseId);
-      ps.setString(3, currProj);
+      ps.setString(3, currAss);
       ps.executeUpdate();
       ps.close();
     }
     //TODO: Check if student isn't in the database???? -- probably dont have to do this
   }
+  public String getLastProject(String login, String course) throws SQLException{
+    String query = "SELECT last_project FROM student_course WHERE student_id = ? AND course_id = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, login);
+    ps.setString(2, course);
+    ResultSet rs = ps.executeQuery();
+    String name, email;
+    if (rs.next()) {
+      //return getAccount(login);
+    }
+    return "";
+  }
   
-  
-  // /**
-  // * This method checks the input credentials and returns a student object if
-  // * the credentials are approved.
-  // * @param taId
-  // * @param password
-  // * @return
-  // * @throws SQLException
-  // */
-  // public TA getTAByLogin(String taId, String password) throws SQLException {
-  // String query =
-  // "SELECT * FROM ta WHERE ta.ta_login = ? AND ta.ta_password = ?;";
-  // PreparedStatement ps = conn.prepareStatement(query);
-  // ps.setString(1, taId);
-  // ps.setString(2, password);
-  // ResultSet rs = ps.executeQuery();
-  // if (rs.next()) {
-  // TA loggedInTA =
-  // new TA(rs.getString(1), rs.getString(2), rs.getString(3), rs
-  // .getString(4));
-  // return loggedInTA;
-  // }
-  // return null;
-  // }
   // SCHEMAS
   // String schema =
   // "CREATE TABLE course(course_id TEXT PRIMARY KEY, course_title TEXT);";
@@ -502,39 +490,15 @@ public class Database {
   // "CREATE TABLE exam(exam_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
   // schema =
   // "CREATE TABLE lab(lab_name TEXT, start_date DATE, end_date DATE, course_id TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
-  //
   // schema =
   // "CREATE TABLE account(login TEXT PRIMARY KEY, name TEXT, email TEXT, password TEXT, contact_method TEXT);";
-  //
-  // ATTENDANCE TABLE NOT CREATED
-  // schema = "CREATE TABLE attendance(student_id TEXT, time TEXT);";
-  //
   // schema =
   // "CREATE TABLE questions(question TEXT, course_id TEXT, assessment_name TEXT, count INT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
-  //
   // schema =
   // CREATE TABLE student_course(student_id TEXT, course_id TEXT, questions_asked INT, questions_asked_curr_project INT, last_project TEXT, FOREIGN KEY(student_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));
   // schema =
   // "CREATE TABLE ta_course(ta_id TEXT, course_id TEXT, FOREIGN KEY(ta_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));";
-  // /**
-  // * This method adds a ta into the ta table.
-  // * @param taLogin - the login of the teaching assistant
-  // * @param taName - the name of the teaching assistant
-  // * @param email - the email of the teaching assistant
-  // * @param password - the password to the teaching assistant's account
-  // * @throws SQLException on SQL error
-  // */
-  // public
-  // void
-  // addTA(String taLogin, String taName, String email, String password)
-  // throws SQLException {
-  // String query = "INSERT INTO ta VALUES (?,?,?,?);";
-  // PreparedStatement ps = conn.prepareStatement(query);
-  // ps.setString(1, taLogin);
-  // ps.setString(2, taName);
-  // ps.setString(3, email);
-  // ps.setString(4, password);
-  // ps.executeUpdate();
-  // ps.close();
-  // }
+  // 
+  // ATTENDANCE TABLE NOT CREATED
+  // schema = "CREATE TABLE attendance(student_id TEXT, time TEXT);";
 }
