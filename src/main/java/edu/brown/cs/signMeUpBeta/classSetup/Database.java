@@ -101,11 +101,12 @@ public class Database {
    */
   public Question addQuestion(String assessmentName, String question,
       String course, String currProject) throws SQLException {
-    String query = "INSERT INTO questions VALUES (?,?,?);";
+    String query = "INSERT INTO questions VALUES (?,?,?,?);";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, question);
     ps.setString(2, course);
     ps.setString(3, assessmentName);
+    ps.setInt(4, 0);
     ps.executeUpdate();
     ps.close();
     Question q = new Question(course, question, assessmentName);
@@ -480,13 +481,23 @@ public class Database {
     rs.close();
     return num;
   }
-  public void incrementNumberQuestions(String login, String courseId) throws SQLException {
+  public void incrementNumberQuestions(String login, String courseId, String[] questions, String currProj) throws SQLException {
     String query = "UPDATE student_course SET questions_asked = questions_asked+1, questions_asked_curr_project = questions_asked_curr_project+1 WHERE student_id = ? AND course_id = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
     ps.setString(2, courseId);
     ps.executeUpdate();
     ps.close();
+    
+    for (String q: questions) {
+      query = "UPDATE questions SET count = count+1 WHERE question = ? AND course_id = ? AND assessment_name = ?;";
+      ps = conn.prepareStatement(query);
+      ps.setString(1, q);
+      ps.setString(2, courseId);
+      ps.setString(3, currProj);
+      ps.executeUpdate();
+      ps.close();
+    }
     //TODO: Check if student isn't in the database???? -- probably dont have to do this
   }
   
@@ -531,7 +542,7 @@ public class Database {
   // schema = "CREATE TABLE attendance(student_id TEXT, time TEXT);";
   //
   // schema =
-  // "CREATE TABLE questions(question TEXT, course_id TEXT, assessment_name TEXT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
+  // "CREATE TABLE questions(question TEXT, course_id TEXT, assessment_name TEXT, count INT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
   //
   // schema =
   // CREATE TABLE student_course(student_id TEXT, course_id TEXT, time_spend_at_hours REAL, time_spent_curr_project REAL, questions_asked INT, questions_asked_curr_project INT, last_project TEXT, FOREIGN KEY(student_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));
