@@ -64,9 +64,11 @@ public class AccountHandler {
     public ModelAndView handle(final Request req, final Response res) {
       String login = req.params(":login");
       StringBuilder classList = new StringBuilder();
+      String courseDropdown = "";
       try {
         List<String> studentClasses = db.getStudentClasses(login);
         List<String> taClasses = db.getTAClasses(login);
+
         if (studentClasses.size() == 0
             && taClasses.size() == 0) {
           String noClasses =
@@ -78,9 +80,7 @@ public class AccountHandler {
           String tableTags =
               "<table class=\"table table-hover\" id=\"courseTable\">"
                   + "<thead><tr><th>Course</th><th>Position</th></tr></thead><tbody id=\"courseTableBody\">";
-          String closeTableTags = "</tbody></table>"
-              + "<a class=\"btn btn-primary btn-sm\""
-              + "onclick=\"addCourses()\" id=\"addCourseBtn\">Add a Course</a>";
+          String closeTableTags = "</tbody></table>";
           classList.append(tableTags);
           String startTags = "<tr class=\"clickable-row\">"
               + "<td class=\"courseId\">";
@@ -94,6 +94,11 @@ public class AccountHandler {
                 + "TA"
                 + endTags;
             classList.append(line);
+            courseDropdown = courseDropdown.concat("<option value=\""
+                + tClass
+                + "\">"
+                + tClass.toUpperCase()
+                + "</option>");
           }
           for (String sClass : studentClasses) {
             String line = startTags
@@ -102,13 +107,18 @@ public class AccountHandler {
                 + "Student"
                 + endTags;
             classList.append(line);
+            courseDropdown = courseDropdown.concat("<option value=\""
+                + sClass
+                + "\">"
+                + sClass.toUpperCase()
+                + "</option>");
           }
           classList.append(closeTableTags);
         }
         Map<String, Object> variables =
             new ImmutableMap.Builder().put("userCourseList",
                 classList.toString()).put("title", "SignMeUp 2.0").put("user",
-                login).build();
+                login).put("courseDropdown", courseDropdown).build();
         return new ModelAndView(variables, "myClasses.html");
       } catch (SQLException e) {
         System.out.println("ERROR: "
@@ -186,8 +196,8 @@ public class AccountHandler {
       QueryParamsMap qm = req.queryMap();
       String course = qm.value("courseId");
       String login = qm.value("login");
-      //TODO 
-      //remove this course from the login's courses.
+      System.out.println("removing");
+      //TODO remove this course from the login's courses.
       return null;
     }
   }

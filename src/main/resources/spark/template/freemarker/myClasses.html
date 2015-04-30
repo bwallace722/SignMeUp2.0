@@ -28,8 +28,45 @@
 
      <div class="panel-body" id="userCoursePanel">
 				${userCourseList}
+				
+				<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#coursesModal">Edit Courses</a>
+				
      <!--loop through classes to display, add a button to drop class for each-->
       </div>
+            <div class="modal fade" id="coursesModal" tabindex="-1" role="dialog" aria-labelledby="coursesModalLabel" aria-hidden="true">
+                      <div class="modal-dialog">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
+                            <h4 class="modal-title" id="release" style="color: #000; text-align: center;">Edit Courses</h4>
+                          </div>
+                          <div class="modal-body">
+                                        <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
+                                        <a class="btn btn-primary btn-sm editCourseBtn" onclick="addCourses()" data-dismiss="modal">Add a Course</a>
+                                        
+                   <hr>
+            <h5 style="color: #000; margin-left:auto; margin-right:auto; width:10%;">or</h5>
+
+            <hr>
+                                        <form class="edit_form" id="course_form">
+                                              <h4 style="color: #000; text-align: center;">Which course do you want to remove?</h4>
+												            <select id="courseDropdown">
+												            	${courseDropdown}
+												            <!--to be filled by get request (all classes registerd) -->
+												            </select>
+												
+												<br>
+                                            <div class="form-actions">
+                                                <a class="btn btn-primary btn-sm editCourseBtn" data-dismiss="modal" onclick="removeCourse()">Remove Course</a>
+                                                <br>
+                                                <br>
+                                            </div>
+                                        </form>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
      </div>
 
 </div>
@@ -39,6 +76,7 @@
      <script src="../js/jquery-2.1.1.js"></script>
      <!-- <script src="js/main.js"></script>-->
      <script src="../js/myCourses.js"></script>
+          <script src="../js/bootstrap.min.js"></script>
   </body>
   <!-- See http://html5boilerplate.com/ for a good place to start
        dealing with real world issues like old browsers.  -->

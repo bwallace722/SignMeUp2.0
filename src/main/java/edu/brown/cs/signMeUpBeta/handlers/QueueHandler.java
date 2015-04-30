@@ -141,6 +141,7 @@ public class QueueHandler {
       String courseId = qm.value("course");
       String login = qm.value("login");
       String qList = qm.value("questions");
+      String otherQ = qm.value("otherQ");
       String[] questions = qList.split("/");
       
       String currAss = "";

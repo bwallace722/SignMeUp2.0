@@ -246,6 +246,13 @@ function validateFormGroup(n,s,e) {
 }
 
 
+function finishCourseSetUp() {
+	saveAssignments();
+	saveExams();
+	saveLabs();
+	window.location.href = "/taHoursSetUp/" + course;
+}
+
 function addSubQ() {
 	var newQ = $("#newQuestion").val();
 	document.getElementById('currSubs').innerHTML = document.getElementById('currSubs').innerHTML + newQ + "<br>";
