@@ -49,6 +49,7 @@ public class AccountHandler {
     public Object handle(Request req, Response res) {
       String login = req.params(":login");
       //TODO signout
+      
       return 1;
     }
   }

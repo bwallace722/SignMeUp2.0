@@ -103,7 +103,7 @@ function stopTimer() {
 
 function endHours() {
 	var postURL = "/endHours/" + courseId;
-	$.post(postUrl, function(responseJSON) {
+	$.post(postURL, function(responseJSON) {
 		if(responseJSON == 1) {
 			alert("hours have ended. redirecting to hours setup.");
 			window.location.href = "/taHoursSetUp/" + courseId;

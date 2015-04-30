@@ -39,10 +39,8 @@ public class RunningHours {
   }
   
   public void endHours(String courseID) {
-    if (queues.containsKey(courseID)) {
-      queues.remove(courseID);
-      hours.remove(courseID);
-    }
+    queues.remove(courseID);
+    hours.remove(courseID);
   }
   
   public Queue getQueueForCourse(String courseID) {
@@ -50,9 +48,6 @@ public class RunningHours {
   }
   
   public Hours getHoursForCourse(String courseID) {
-    if(hours.get(courseID) == null) {
-      return null;
-    }
     return hours.get(courseID);
   }
 
