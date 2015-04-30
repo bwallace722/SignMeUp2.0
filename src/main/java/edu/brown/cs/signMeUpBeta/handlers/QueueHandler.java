@@ -39,8 +39,8 @@ public class QueueHandler {
   }
   public void runSpark() {
     Spark.post("/confirmAppointment", new ConfirmAppointmentHandler());
-     Spark.get("/makeAppointment/:courseIdAndUserId",
-     new MakeAppointmentHandler(), new FreeMarkerEngine());
+    Spark.get("/makeAppointment/:courseIdAndUserId",
+        new MakeAppointmentHandler(), new FreeMarkerEngine());
     Spark.get("/signUpForHours/:courseAndUserId", new StudentSignUpForHours(),
         new FreeMarkerEngine());
     Spark.post("/checkAppointments", new CheckAppointmentHandler());
@@ -183,6 +183,12 @@ public class QueueHandler {
       String otherQ = qm.value("otherQ");
       // check what is when blank
       String[] questions = qList.split("/");
+      
+      Queue queue = runningHours.getQueueForCourse(courseId);
+      if (queue.alreadyOnQueue(login)) {
+        return 2;
+      }
+      
       String currAss = "none";
       try {
         currAss = db.getCurrAssessment(courseId);
@@ -195,7 +201,6 @@ public class QueueHandler {
             + e);
       }
       int toReturn = 0;
-      Queue queue = runningHours.getQueueForCourse(courseId);
       Account account;
       int numQuestions = 0;
       try {
@@ -269,6 +274,7 @@ public class QueueHandler {
       return toReturn;
     }
   }
+
    private class MakeAppointmentHandler implements TemplateViewRoute {
    @Override
    public ModelAndView handle(final Request req, final Response res) {

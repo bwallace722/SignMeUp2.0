@@ -73,6 +73,11 @@ public class Queue {
     studentCheckMap.remove(s.getLogin());
     priorityMult.remove(s.getLogin());
   }
+  
+  public boolean alreadyOnQueue(String login) {
+    return signUpTime.containsKey(login);
+  }
+  
   public int calledToHours(String login) {
     return studentCheckMap.get(login);
   }

@@ -10,7 +10,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import edu.brown.cs.signMeUpBeta.project.Question;
 
 public class Hours {
-  private ConcurrentHashMap<Question, Integer> questions;
+  private Map<Question, Integer> questions;
   private int timeLim;
   private Map<Date, String> appointments;
   private String currProject; // The project that spans the current date

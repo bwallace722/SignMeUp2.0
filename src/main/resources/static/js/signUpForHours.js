@@ -40,6 +40,8 @@ function getOnQueue() {
 		if(responseJSON == 1) {
 			alert("You've been added to the queue!");
 			updateStatus();
+		} else if (responseJSON == 2) {
+			alert("You are already on the queue!");
 		} else {
 			console.log("SQL Error.");
 		}

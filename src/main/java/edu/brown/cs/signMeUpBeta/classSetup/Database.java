@@ -1,7 +1,6 @@
 package edu.brown.cs.signMeUpBeta.classSetup;
 
 import java.sql.Connection;
-import java.sql.Date;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -158,7 +157,8 @@ public class Database {
     ps.setString(2, courseId);
     ps.setInt(3, 0);
     ps.setInt(4, 0);
-    ps.setString(5, ""); //no current project because haven't signed up for hours yet
+    ps.setString(5, ""); // no current project because haven't signed up for
+                         // hours yet
     ps.executeUpdate();
     ps.close();
     response = "Success.";
@@ -223,14 +223,15 @@ public class Database {
     ps.executeUpdate();
     ps.close();
   }
-  public void removeAccountCoursePair(String login, String courseId) throws SQLException {
-    String query = "DELETE FROM student_course WHERE student_id = ? AND course_id = ?;";
+  public void removeAccountCoursePair(String login, String courseId)
+      throws SQLException {
+    String query =
+        "DELETE FROM student_course WHERE student_id = ? AND course_id = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
     ps.setString(2, courseId);
     ps.executeUpdate();
     ps.close();
-    
     query = "DELETE FROM ta_course WHERE ta_id = ? AND course_id = ?;";
     ps = conn.prepareStatement(query);
     ps.setString(1, login);
@@ -285,8 +286,8 @@ public class Database {
     ps.executeUpdate();
     ps.close();
     Account account =
-        new Account(login, name, email, password,
-            new ArrayList<String>(), new ArrayList<String>());
+        new Account(login, name, email, password, new ArrayList<String>(),
+            new ArrayList<String>());
     allAccounts.put(login, account);
     return account;
   }
@@ -301,35 +302,35 @@ public class Database {
    *        student
    * @throws SQLException On SQL error
    */
-//  public void updateAccount(String studentLogin, int timeAtHours,
-//      int timeOnProject) throws SQLException {
-//    String query = "SELECT * from account WHERE login = ?;";
-//    PreparedStatement ps = conn.prepareStatement(query);
-//    ResultSet rs = ps.executeQuery();
-//    int currTimeAtHours = 0;
-//    int currTimeOnProject = 0;
-//    int currQuestionsAsked = 0;
-//    while (rs.next()) {
-//      currTimeAtHours = rs.getInt(5);
-//      currTimeOnProject = rs.getInt(6);
-//      currQuestionsAsked = rs.getInt(7);
-//    }
-//    String update =
-//        "UPDATE account SET time_spent_at_hours=?, time_spent_curr_project=?, questions_asked=? WHERE login=?;";
-//    ps = conn.prepareStatement(update);
-//    ps.setInt(1, currTimeAtHours
-//        + timeAtHours);
-//    ps.setInt(2, currTimeOnProject
-//        + timeOnProject);
-//    ps.setInt(3, currQuestionsAsked + 1);
-//    ps.setString(4, studentLogin);
-//    ps.executeUpdate();
-//    ps.close();
-//    Account student = allAccounts.get(studentLogin);
-//    student.setQuestionsAsked(currQuestionsAsked + 1);
-//    student.setTimeOnCurrentProject(timeOnProject);
-//    student.setTimeAtHours(timeAtHours);
-//  }
+  // public void updateAccount(String studentLogin, int timeAtHours,
+  // int timeOnProject) throws SQLException {
+  // String query = "SELECT * from account WHERE login = ?;";
+  // PreparedStatement ps = conn.prepareStatement(query);
+  // ResultSet rs = ps.executeQuery();
+  // int currTimeAtHours = 0;
+  // int currTimeOnProject = 0;
+  // int currQuestionsAsked = 0;
+  // while (rs.next()) {
+  // currTimeAtHours = rs.getInt(5);
+  // currTimeOnProject = rs.getInt(6);
+  // currQuestionsAsked = rs.getInt(7);
+  // }
+  // String update =
+  // "UPDATE account SET time_spent_at_hours=?, time_spent_curr_project=?, questions_asked=? WHERE login=?;";
+  // ps = conn.prepareStatement(update);
+  // ps.setInt(1, currTimeAtHours
+  // + timeAtHours);
+  // ps.setInt(2, currTimeOnProject
+  // + timeOnProject);
+  // ps.setInt(3, currQuestionsAsked + 1);
+  // ps.setString(4, studentLogin);
+  // ps.executeUpdate();
+  // ps.close();
+  // Account student = allAccounts.get(studentLogin);
+  // student.setQuestionsAsked(currQuestionsAsked + 1);
+  // student.setTimeOnCurrentProject(timeOnProject);
+  // student.setTimeAtHours(timeAtHours);
+  // }
   /**
    * Returns an account by the login of a student.
    * @param login
@@ -340,7 +341,8 @@ public class Database {
     if (allAccounts.containsKey(login)) {
       return allAccounts.get(login);
     } else {
-      String query = "SELECT name, email, password FROM account WHERE login = ?;";
+      String query =
+          "SELECT name, email, password FROM account WHERE login = ?;";
       PreparedStatement ps = conn.prepareStatement(query);
       ps.setString(1, login);
       ResultSet rs = ps.executeQuery();
@@ -396,7 +398,10 @@ public class Database {
    * @return
    * @throws SQLException
    */
-  public Account approveCredentials(String login, String password) //TODO: KIERAN LOOK AT THIS
+  public Account approveCredentials(String login, String password) // TODO:
+                                                                   // KIERAN
+                                                                   // LOOK AT
+                                                                   // THIS
       throws SQLException {
     String query = "SELECT * FROM account WHERE login = ? AND password = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
@@ -410,9 +415,10 @@ public class Database {
       return null;
     }
   }
-  
-  public List<Question> getQuestions(String courseID, String assessment) throws SQLException {
-    String query = "SELECT question FROM questions WHERE course_id=? AND assessment_name=?;";
+  public List<Question> getQuestions(String courseID, String assessment)
+      throws SQLException {
+    String query =
+        "SELECT question FROM questions WHERE course_id=? AND assessment_name=?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, courseID);
     ps.setString(2, assessment);
@@ -438,9 +444,9 @@ public class Database {
     rs.close();
     return courses;
   }
-  
   public String getCurrAssessment(String courseId) throws SQLException {
-    String query = "SELECT assignment_name, start_date, end_date FROM assignment WHERE course_id = ?;";
+    String query =
+        "SELECT assignment_name, start_date, end_date FROM assignment WHERE course_id = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, courseId);
     ResultSet rs = ps.executeQuery();
@@ -450,15 +456,17 @@ public class Database {
     while (rs.next()) {
       start = rs.getDate(2);
       end = rs.getDate(3);
-      if ((today.after(start)) && (today.before(end))) {
+      if ((today.after(start))
+          && (today.before(end))) {
         curr = rs.getString(1);
       }
     }
     return curr;
   }
-  
-  public int getNumberQuestionsAsked(String login, String courseId) throws SQLException {
-    String query = "SELECT questions_asked_curr_project FROM student_course WHERE student_id=? AND course_id=?;";
+  public int getNumberQuestionsAsked(String login, String courseId)
+      throws SQLException {
+    String query =
+        "SELECT questions_asked_curr_project FROM student_course WHERE student_id=? AND course_id=?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
     ps.setString(2, courseId);
@@ -471,17 +479,19 @@ public class Database {
     rs.close();
     return num;
   }
-  public void updateStudentInfo(String login, String courseId, String[] questions, String currAss) throws SQLException {
-    String query = "UPDATE student_course SET questions_asked = questions_asked+1, questions_asked_curr_project = questions_asked_curr_project+1, last_project = ? WHERE student_id = ? AND course_id = ?;";
+  public void updateStudentInfo(String login, String courseId,
+      String[] questions, String currAss) throws SQLException {
+    String query =
+        "UPDATE student_course SET questions_asked = questions_asked+1, questions_asked_curr_project = questions_asked_curr_project+1, last_project = ? WHERE student_id = ? AND course_id = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, currAss);
     ps.setString(2, login);
     ps.setString(3, courseId);
     ps.executeUpdate();
     ps.close();
-    
-    for (String q: questions) {
-      query = "UPDATE questions SET count = count+1 WHERE question = ? AND course_id = ? AND assessment_name = ?;";
+    for (String q : questions) {
+      query =
+          "UPDATE questions SET count = count+1 WHERE question = ? AND course_id = ? AND assessment_name = ?;";
       ps = conn.prepareStatement(query);
       ps.setString(1, q);
       ps.setString(2, courseId);
@@ -490,8 +500,9 @@ public class Database {
       ps.close();
     }
   }
-  public String getLastProject(String login, String course) throws SQLException{
-    String query = "SELECT last_project FROM student_course WHERE student_id = ? AND course_id = ?;";
+  public String getLastProject(String login, String course) throws SQLException {
+    String query =
+        "SELECT last_project FROM student_course WHERE student_id = ? AND course_id = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
     ps.setString(2, course);
@@ -504,16 +515,16 @@ public class Database {
     rs.close();
     return last;
   }
-  
-  public void resetNumQuestions(String login, String courseId) throws SQLException {
-    String query = "UPDATE student_course SET questions_asked_curr_project = 0 WHERE student_id = ? AND course_id = ?;";
+  public void resetNumQuestions(String login, String courseId)
+      throws SQLException {
+    String query =
+        "UPDATE student_course SET questions_asked_curr_project = 0 WHERE student_id = ? AND course_id = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
     ps.setString(2, courseId);
     ps.executeUpdate();
     ps.close();
   }
-  
   // SCHEMAS
   // String schema =
   // "CREATE TABLE course(course_id TEXT PRIMARY KEY, course_title TEXT);";
@@ -528,10 +539,13 @@ public class Database {
   // schema =
   // "CREATE TABLE questions(question TEXT, course_id TEXT, assessment_name TEXT, count INT, FOREIGN KEY(course_id) REFERENCES course(course_id));";
   // schema =
-  // CREATE TABLE student_course(student_id TEXT, course_id TEXT, questions_asked INT, questions_asked_curr_project INT, last_project TEXT, FOREIGN KEY(student_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));
+  // CREATE TABLE student_course(student_id TEXT, course_id TEXT,
+  // questions_asked INT, questions_asked_curr_project INT, last_project TEXT,
+  // FOREIGN KEY(student_id) REFERENCES account(login), FOREIGN KEY(course_id)
+  // REFERENCES course(course_id));
   // schema =
   // "CREATE TABLE ta_course(ta_id TEXT, course_id TEXT, FOREIGN KEY(ta_id) REFERENCES account(login), FOREIGN KEY(course_id) REFERENCES course(course_id));";
-  // 
+  //
   // ATTENDANCE TABLE NOT CREATED
   // schema = "CREATE TABLE attendance(student_id TEXT, time TEXT);";
 }
