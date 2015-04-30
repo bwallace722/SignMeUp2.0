@@ -13,7 +13,6 @@ function startHours() {
 	var postUrl = "/startHours/" + courseId;
 	var hoursUrl = "/onHours/" + courseId;
 	var hoursLength = document.getElementById("hoursLength").value;
-	console.log(hoursLength);
 	var postParameters = {"duration": hoursLength};
 	$.post(postUrl, postParameters, function(responseJSON) {
 		if(responseJSON == 1) {
