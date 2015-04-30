@@ -13,6 +13,20 @@ function returnToSetup() {
 	window.location.href = "/taHoursSetUp/" + courseId;
 }
 
+function removeStudent() {
+	var text = $(this).text();
+	var text = text.trim();
+	var textList = text.split(" ");
+	var login = text.split(" ")[textList.length - 1];
+	var postParameters = {"studentLogin": login, 
+			"course": courseId};
+	$.post("/removeStudent", postParameters, function(responseJSON) {
+		if(responseJSON == 1) {
+			$(this).hide();
+		}
+	});
+}
+
 var studentToCall;
 
 //function removeStudent() {

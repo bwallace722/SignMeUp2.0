@@ -49,6 +49,7 @@ public class QueueHandler {
     Spark.post("/updateQueue/:courseId", new UpdateQueueHandler());
     Spark.post("/callStudent/:courseId", new CallStudentToHours());
     Spark.post("/checkQueue", new QueueChecker());
+    Spark.post("/removeStudent", new RemoveStudent());
     Spark.post("/endHours/:courseId", new EndHours());
   }
   /**
@@ -61,6 +62,19 @@ public class QueueHandler {
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
       String course = qm.value("course");
+      Queue queue = runningHours.getQueueForCourse(course);
+      if (queue == null) {
+        return 0;
+      }
+      return 1;
+    }
+  }
+  private class RemoveStudent implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("course");
+      String studentLogin = qm.value("studentLogin");
       Queue queue = runningHours.getQueueForCourse(course);
       if (queue == null) {
         return 0;
