@@ -56,12 +56,33 @@ h1 {
 	margin-right: auto;
 }
 
+.aptTime {
+	margin-left: 6%;
+	margin-bottom: 5% !important;
+	margin-right: 8%;
+}
+
 .quetionContainer {
-	margin-left: 30%;
+	width:50%;
+	margin-left: auto;
+	margin-right: auto;
+}
+#questionsForApt {
+	width:50%;
+	margin-left:auto;
+	margin-right:auto;
+}
+
+#aptQ {
+	margin-left:auto;
+	margin-right:auto;
 }
 
 #startHoursBtn, .editCourseBtn {
 	margin-left:30%;
+}
+#chosenTime {
+	text-align:center;
 }
 
 #seeAssignments {

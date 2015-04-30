@@ -50,7 +50,6 @@ function getOnQueue() {
 
 //interval set to every second.
 function updateStatus() {
-
 	setInterval(checkStatus, 1000);
 }
 

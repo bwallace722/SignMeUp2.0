@@ -6,52 +6,67 @@ var splitCourseAndLogin = courseIdAndLogin.split("~");
 var courseId = splitCourseAndLogin[0];
 var login = splitCourseAndLogin[1];
 
+var chosenTimeString = "Your appointment time <br>";
+
 $(".confirmApt").bind('click', function(c) {
 	//post to queue
 	//success: send alert via email too (?)
 	alert("You're signed up for your <time> appointment!");
 });
 
+var currAsign = document.getElementById("currAss");
+console.log(currAsign.innerHTML);
+if(currAsign.innerHTML == "none"){
+	currAsign.innerHTML = "There is no assignment assigned for today.";
+	$("#questions").hide();
+}
+
 $(".confirmAptContainer").hide(0);
+var aptTime;
 $(".aptTime").bind('click', function(a) {
+	var timeClicked = $(this)[0].innerHTML;
+	//NIFEMI - DO YOU WANT "PM" OR NO?
+	var time= timeClicked.split(" ")[0];
+	//var time = timeClicked;
+	console.log(time);
+	var timeString = chosenTimeString + $(this)[0].innerHTML;
+	aptTime = time;
+	console.log($(this)[0].innerHTML);
+	var timeString = chosenTimeString + $(this)[0].innerHTML;
+	aptTime = $(this).val();
+	var chosenTime = document.getElementById("chosenTime");
+	console.log(timeString);
+	chosenTime.innerHTML = timeString;
 	$(".confirmAptContainer").show(1000);
 });
 
-$(".time").bind('click', function(e) {
-
-
- 	var postParameters = {"time": $(this).text(), "login": login, "courseId": courseId};
+function confirmApt() {
+	
+	var checkedQ = "";
+	var qs = $('#questionsForApt :checked');
+	console.log(qs);
+	qs.each(function() {
+		checkedQ = checkedQ.concat($(this).val() + "/");
+    });
+	var otherQ = document.getElementById("otherQ").value;
+	console.log(checkedQ);
+ 	var postParameters = {"time": aptTime, 
+ 			"login": login, 
+ 			"courseId": courseId, 
+ 			"questions": checkedQ,
+ 			"otherQ": otherQ};
  	$.post("/confirmAppointment", postParameters, function(responseJSON){
-		responseObject = JSON.parse(responseJSON);
-		resultWords = responseObject.results;
-		questionsList = resultWords.split("!");
-		var success = questionsList[0];
-		if(resultWords == 1) {
+		console.log(responseJSON + " = response");
+		if(responseJSON == 1) {
+			alert("You're all set for you appointment! Just head up to hours at "+aptTime+".");
 			//figure out some animation for showing time
 			//show time and reveal questions container
 
-			$(".appointmentHeaderMessage").fadeOut(1000);
-			$(".appointmentHeaderMessage").innerHTML = "Appointment Time";
-			$(".appointmentHeaderMessage").fadeIn(1000);
-			//this.val() = time selection
-			$(".appointmentTimeHeader").fadeOut(1000);
-			$(".appointmentTimeHeader").innerHTML = this.val();
-			$(".appointmentTimeHeader").fadeIn(1000);
 
-			$(".availAppointments").fadeOut(1000);
-
-			//in resultWords, get questions and update questionsContainer
-			//category divs must have their questions already written in
-			var categories = $(".categories").innerHTML
-			//$(".questionsContainer")
-			// for(i = 1; i < questionsList.length; i++) {
-			// 	categories +=
-			// }
-			$(".questionsContainer").innerHTML = categories;
-			$(".confirmAptContainer").fadeIn(1000);
 		} else {
-			//show
+
+			alert("It looks like this appointment time is taken. Try another");
 		}
 
 	});
-});
+}

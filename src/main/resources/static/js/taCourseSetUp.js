@@ -6,8 +6,8 @@ var assignments = [];
 var labs = [];
 var exams = [];
 var assignmentCount = 1;
-var examCount = 1;
-var labCount = 1;
+var examCount = 0;
+var labCount = 0;
 
 
 $("#removeAsgnBtn").hide();
@@ -91,15 +91,17 @@ function addExamHTML() {
 
 function addExam() {
 	var toReturn = true;
-	var n = document.getElementById("examName"+examCount);
-	var s = document.getElementById("examStartDate"+examCount);
-	var e = document.getElementById("examEndDate"+examCount);
-	
-	if(validateFormGroup(n,s,e)) {
-		var newExam = {name:n.value, start:s.value, end:e.value};
-		exams[exams.length] = newExam;
-	} else {
-		toReturn = false;
+	if(examCount > 0) {
+		var n = document.getElementById("examName"+examCount);
+		var s = document.getElementById("examStartDate"+examCount);
+		var e = document.getElementById("examEndDate"+examCount);
+		
+		if(validateFormGroup(n,s,e)) {
+			var newExam = {name:n.value, start:s.value, end:e.value};
+			exams[exams.length] = newExam;
+		} else {
+			toReturn = false;
+		}
 	}
 	return toReturn;
 }
@@ -156,21 +158,23 @@ function addLabHTML() {
 }
 function addLab() {
 	var toReturn = true;
-	var n = document.getElementById("labName"+labCount);
-	var s = document.getElementById("labStartDate"+labCount);
-	var e = document.getElementById("labEndDate"+labCount);
-	if(validateFormGroup(n,s,e)) {
-		var newLab = {name:n.value, start:s.value, end:e.value};
-		labs[labs.length] = newLab;
-	} else {
-		toReturn = false;
+	if(labCount > 0) {
+		var n = document.getElementById("labName"+labCount);
+		var s = document.getElementById("labStartDate"+labCount);
+		var e = document.getElementById("labEndDate"+labCount);
+		if(validateFormGroup(n,s,e)) {
+			var newLab = {name:n.value, start:s.value, end:e.value};
+			labs[labs.length] = newLab;
+		} else {
+			toReturn = false;
+		}
 	}
 	return toReturn;
 }
 
 function saveLabs() {
 	console.log("saving labs");
-	if(labCounts > labs.length) {
+	if(labCount > labs.length) {
 		if(addLab()) {
 			postLabs();
 		}

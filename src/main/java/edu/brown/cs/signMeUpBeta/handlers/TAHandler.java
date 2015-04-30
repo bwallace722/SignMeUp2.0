@@ -233,13 +233,26 @@ public class TAHandler {
         questions = hours.getQuestions();
         timeLim = hours.getTimeLim();
       }
+      StringBuilder questionsStr = getQuestions(questions);
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("questions", questions)
+              courseId).put("questions", questionsStr.toString())
               .put("time", timeLim).build();
       return new ModelAndView(variables, "taOnHours.html");
     }
   }
+  private StringBuilder getQuestions(List<Question> questions) {
+    String qStartTags = "<div class=\"row question\">";
+    String qEndTags = "</div><br><hr>";
+    StringBuilder qs = new StringBuilder();
+    for (Question q : questions) {
+      qs.append(qStartTags
+          + q.content()
+          + qEndTags);
+    }
+    return qs;
+  }
+  
   private class SetHoursTimeLimit implements Route {
     @Override
     public Object handle(final Request req, final Response res) {
