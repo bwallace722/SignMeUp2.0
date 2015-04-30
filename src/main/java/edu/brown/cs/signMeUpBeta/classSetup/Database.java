@@ -389,41 +389,11 @@ public class Database {
     ps.setString(2, password);
     ResultSet rs = ps.executeQuery();
     String name, email;
-    int timeOnHours, timeCurrProject, numQuestions;
     if (rs.next()) {
-      name = rs.getString(2);
-      email = rs.getString(3);
-      timeOnHours = rs.getInt(5);
-      timeCurrProject = rs.getInt(6);
-      numQuestions = rs.getInt(7);
+      return getAccount(login);
     } else {
       return null;
     }
-    ps.close();
-    rs.close();
-    query = "SELECT course_id FROM student_course WHERE student_id = ?";
-    ps = conn.prepareStatement(query);
-    ps.setString(1, login);
-    rs = ps.executeQuery();
-    List<String> enrolledCourses = new ArrayList<String>();
-    if (rs.next()) {
-      enrolledCourses.add(rs.getString(1));
-    }
-    ps.close();
-    rs.close();
-    query = "SELECT course_id FROM ta_course WHERE ta_id = ?";
-    ps = conn.prepareStatement(query);
-    ps.setString(1, login);
-    rs = ps.executeQuery();
-    List<String> TACourses = new ArrayList<String>();
-    if (rs.next()) {
-      TACourses.add(rs.getString(1));
-    }
-    ps.close();
-    rs.close();
-    Account account =
-        new Account(login, name, email, password, enrolledCourses, TACourses);
-    return account;
   }
   
   public List<Question> getQuestions(String courseID, String assessment) throws SQLException {
