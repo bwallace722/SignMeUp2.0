@@ -2,7 +2,10 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
@@ -193,10 +196,23 @@ public class QueueHandler {
     @Override
     public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
-      QueryParamsMap qm = req.queryMap();
-      String hoursLength = qm.value("hoursLength");
-      //TODO set hours length --> define appointments
-      return runningHours.startHours(courseId);
+      // <<<<<<< HEAD
+      System.out.println(req.params("duration"));
+      // System.out.println("We aight");
+      // Date currentDate = new Date();
+      int toReturn = runningHours.startHours(courseId);
+      // System.out.println("We aight");
+      // Hours currHours = runningHours.getHoursForCourse(courseId);
+      // System.out.println("We aight");
+      // currHours.setUpAppointments(currentDate, duration);
+      // System.out.println("We aight");
+      return toReturn;
+      // =======
+      // QueryParamsMap qm = req.queryMap();
+      // String hoursLength = qm.value("hoursLength");
+      // //TODO set hours length --> define appointments
+      // return runningHours.startHours(courseId);
+      // >>>>>>> ab4d0ebc2c628598e3f678dcee08a5b67cdc1f3c
     }
   }
   private static class ConfirmAppointmentHandler implements Route {
@@ -223,8 +239,15 @@ public class QueueHandler {
       String timesHTMLTags =
           "<button class=\"aptTime btn btn-success btn-lg\">";
       String closeTag = "</button>";
+      Map<Date, String> timesMap =
+          runningHours.getHoursForCourse(courseId).getAppointments();
       // NEEDED: AVAILABLE APPOINTMENT TIMES
       List<String> availTimes = new ArrayList<String>();
+      for (Date d : timesMap.keySet()) {
+        DateFormat timeFormat = new SimpleDateFormat("h:mm a");
+        String time = timeFormat.format(d.clone());
+        availTimes.add(time);
+      }
       StringBuilder timesHTML = new StringBuilder();
       for (String a : availTimes) {
         String t = timesHTMLTags
@@ -244,8 +267,9 @@ public class QueueHandler {
       }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("login", login).put("aptTimes", timesHTML)
-              .put("questions", questions.toString()).put("running", running).build();
+              courseId).put("login", login).put("aptTimes", timesHTML).put(
+              "questions", questions.toString()).put("running", running)
+              .build();
       return new ModelAndView(variables, "makeAppointment.html");
     }
   }
@@ -287,18 +311,20 @@ public class QueueHandler {
       return new ModelAndView(variables, "signUpForHours.html");
     }
   }
-  
   private StringBuilder getQuestions(List<Question> questions) {
     String qStartTags = "<label><input type=\"checkbox\" value=\"";
     String closeValTags = "\">";
     String qEndTags = "</label><br>";
     StringBuilder qs = new StringBuilder();
-    for(Question q : questions) {
-      qs.append(qStartTags + q.content() + closeValTags + q.content() + qEndTags);
+    for (Question q : questions) {
+      qs.append(qStartTags
+          + q.content()
+          + closeValTags
+          + q.content()
+          + qEndTags);
     }
     return qs;
   }
-  
   /**
    * This class prints out errors if the spark server fails.
    * @author kb25
