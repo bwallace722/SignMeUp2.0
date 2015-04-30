@@ -54,7 +54,7 @@ public class Queue {
     PriorityBlockingQueue<Account> copy = new PriorityBlockingQueue<Account>(pq);
     while (!copy.isEmpty()) {
       Account curr = copy.poll();
-      System.out.println(curr.getLogin());
+//      System.out.println(curr.getLogin());
       toReturn.add(curr.getLogin());
     }
     return toReturn;

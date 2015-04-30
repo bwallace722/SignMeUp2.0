@@ -104,7 +104,7 @@ function addExam() {
 
 
 function saveExams() {
-	if(examCounts > exams.length) {
+	if(examCount > exams.length) {
 		if(addExam()) {
 			postExams();
 		}

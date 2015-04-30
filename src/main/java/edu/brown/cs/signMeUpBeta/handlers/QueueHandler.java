@@ -72,11 +72,11 @@ public class QueueHandler {
   private class EndHours implements Route {
     @Override
     public Object handle(Request req, Response res) {
-      QueryParamsMap qm = req.queryMap();
-      String course = qm.value("course");
-      //TODO end hours
+      String course = req.params(":courseId");
+      runningHours.endHours(course);
       Queue queue = runningHours.getQueueForCourse(course);
-      if (queue == null) {
+      if (queue != null) {
+        System.out.println("Did not remove queue");
         return 0;
       }
       return 1;

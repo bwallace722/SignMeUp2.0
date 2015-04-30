@@ -470,6 +470,7 @@ public class Database {
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
     ps.setString(2, courseId);
+    System.out.println("student: "+login+", course: "+courseId);
     ResultSet rs = ps.executeQuery();
     int num = 0;
     if (rs.next()) {
@@ -480,14 +481,16 @@ public class Database {
     return num;
   }
   public void incrementNumberQuestions(String login, String courseId) throws SQLException {
-    String query = "UPDATE student_course SET questions_asked = questions_asked+1 AND questions_asked_curr_project = questions_asked_curr_project+1 WHERE student_id = ? AND course_id = ?;";
+    String query = "UPDATE student_course SET questions_asked = questions_asked+1, questions_asked_curr_project = questions_asked_curr_project+1 WHERE student_id = ? AND course_id = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, login);
     ps.setString(2, courseId);
-    ps.executeQuery();
+    ps.executeUpdate();
     ps.close();
     //TODO: Check if student isn't in the database???? -- probably dont have to do this
   }
+  
+  
   // /**
   // * This method checks the input credentials and returns a student object if
   // * the credentials are approved.
