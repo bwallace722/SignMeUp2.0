@@ -35,6 +35,7 @@ public class AccountHandler {
     Spark.post("/updateCourse/:login", new UpdateCourseHandler());
     Spark.get("/courses/:login", new CourseListHandler(),
         new FreeMarkerEngine());
+    Spark.post("/removeCourse", new RemoveCourseHandler());
     Spark.get("/addCourses/:login", new AddCourseHandler(),
         new FreeMarkerEngine());
     Spark.post("/signOut/:login", new SignOutHandler());
@@ -83,6 +84,7 @@ public class AccountHandler {
           String startTags = "<tr class=\"clickable-row\">"
               + "<td class=\"courseId\">";
           String middleTags = "</td><td>";
+          // add in String for removing class 
           String endTags = "</td></tr>";
           for (String tClass : taClasses) {
             String line = startTags
@@ -175,6 +177,20 @@ public class AccountHandler {
       return response;
     }
   }
+  
+  
+  private class RemoveCourseHandler implements Route {
+    @Override
+    public Object handle(final Request req, final Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("courseId");
+      String login = qm.value("login");
+      //TODO 
+      //remove this course from the login's courses.
+      return null;
+    }
+  }
+  
   /**
    * This method handles the logging in of a student checking the input login
    * and password.

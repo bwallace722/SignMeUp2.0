@@ -37,6 +37,8 @@ function addAsgn() {
 
 
 function saveAssignments() {
+	console.log(assignmentCount);
+	console.log(assignments.length + " - length");
 	if(assignmentCount > assignments.length) {
 		if(addAsgn()) {
 			postAsngs();
