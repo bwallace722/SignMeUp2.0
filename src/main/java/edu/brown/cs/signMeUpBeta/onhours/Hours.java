@@ -48,7 +48,7 @@ public class Hours {
   public void setUpAppointments(Date currDate, int durationOfHours) {
     long numberOfAppointments = durationOfHours * 2;
     long millisecondsInAMinute = 60000;
-    for (int i = 1; i <= numberOfAppointments; i++) {
+    for (long i = 1; i <= numberOfAppointments; i++) {
       Date slot = new Date();
       slot.setTime(currDate.getTime()
           + (i * 15 * millisecondsInAMinute));

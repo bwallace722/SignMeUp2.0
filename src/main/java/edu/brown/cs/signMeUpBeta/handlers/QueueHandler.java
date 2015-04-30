@@ -187,11 +187,15 @@ public class QueueHandler {
     public Object handle(Request req, Response res) {
       String courseId = req.params(":courseId");
       // <<<<<<< HEAD
-      int duration = Integer.getInteger(req.params("duration"));
-      Date currentDate = new Date();
+      System.out.println(req.params("duration"));
+      // System.out.println("We aight");
+      // Date currentDate = new Date();
       int toReturn = runningHours.startHours(courseId);
-      Hours currHours = runningHours.getHoursForCourse(courseId);
-      currHours.setUpAppointments(currentDate, duration);
+      // System.out.println("We aight");
+      // Hours currHours = runningHours.getHoursForCourse(courseId);
+      // System.out.println("We aight");
+      // currHours.setUpAppointments(currentDate, duration);
+      // System.out.println("We aight");
       return toReturn;
       // =======
       // QueryParamsMap qm = req.queryMap();
