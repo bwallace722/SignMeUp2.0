@@ -79,6 +79,14 @@ public class QueueHandler {
       if (queue == null) {
         return 0;
       }
+      Account account;
+      try {
+        account = db.getAccount(studentLogin);
+      } catch (Exception e) {
+        System.err.println(e);
+        return 0;
+      }
+      queue.remove(account);
       return 1;
     }
   }
@@ -165,14 +173,9 @@ public class QueueHandler {
       String currAss = "none";
       try {
         currAss = db.getCurrAssessment(courseId);
-      } catch (Exception e) {
-        System.err.println(e);
-      }
-      // TODO: CHECK IF CURRENT PROJ = LAST PROJ ->> reset values;
-      
-      
-      
-      try {
+        if (db.getLastProject(login, courseId) != currAss) {
+          db.resetNumQuestions(login, courseId);
+        }
         db.updateStudentInfo(login, courseId, questions, currAss);
       } catch (Exception e) {
         System.err.println("ERROR: "
