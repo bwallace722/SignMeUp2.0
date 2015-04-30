@@ -169,6 +169,12 @@ public class QueueHandler {
       String otherQ = qm.value("otherQ");
       // check what is when blank
       String[] questions = qList.split("/");
+      
+      Queue queue = runningHours.getQueueForCourse(courseId);
+      if (queue.alreadyOnQueue(login)) {
+        return 2;
+      }
+      
       String currAss = "none";
       try {
         currAss = db.getCurrAssessment(courseId);
@@ -181,7 +187,6 @@ public class QueueHandler {
             + e);
       }
       int toReturn = 0;
-      Queue queue = runningHours.getQueueForCourse(courseId);
       Account account;
       int numQuestions = 0;
       try {
