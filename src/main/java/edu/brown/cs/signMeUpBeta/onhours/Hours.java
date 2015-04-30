@@ -13,14 +13,14 @@ public class Hours {
   private Map<Question, Integer> questions;
   private int timeLim;
   private Map<Date, String> appointments;
-  private String currProject; // The project that spans the current date
-  public Hours(String currProject, List<Question> questionList) {
+  private String currAss; // The project that spans the current date
+  public Hours(String currAss, List<Question> questionList) {
     questions = new ConcurrentHashMap<Question, Integer>();
     for (Question q : questionList) {
       questions.put(q, 0);
     }
     timeLim = 10;
-    this.currProject = currProject;
+    this.currAss = currAss;
     this.appointments = new HashMap<Date, String>();
   }
   public List<Question> getQuestions() {
@@ -55,8 +55,12 @@ public class Hours {
       this.appointments.put(slot, null);
     }
   }
+//  public void scheduleAppointment(String login, )
   public Map<Date, String> getAppointments() {
     return this.appointments;
+  }
+  public String getCurrAssessment() {
+    return currAss;
   }
   // public List<QuestionInterface> mostPopularQuestions() {
   // return null;

@@ -171,13 +171,13 @@ public class QueueHandler {
       String[] questions = qList.split("/");
       
       Queue queue = runningHours.getQueueForCourse(courseId);
+      Hours hours = runningHours.getHoursForCourse(courseId);
       if (queue.alreadyOnQueue(login)) {
         return 2;
       }
       
-      String currAss = "none";
+      String currAss = hours.getCurrAssessment();
       try {
-        currAss = db.getCurrAssessment(courseId);
         if (db.getLastProject(login, courseId) != currAss) {
           db.resetNumQuestions(login, courseId);
         }
@@ -233,9 +233,15 @@ public class QueueHandler {
       String time = qm.value("time");
       String qList = qm.value("questions");
       String[] questions = qList.split("/");
-      String currAss = "none";
+      
+      Queue queue = runningHours.getQueueForCourse(courseId);
+      Hours hours = runningHours.getHoursForCourse(courseId);
+      if (queue.alreadyOnQueue(login)) {
+        return 2;
+      }
+      
+      String currAss = hours.getCurrAssessment();
       try {
-        currAss = db.getCurrAssessment(courseId);
         if (db.getLastProject(login, courseId) != currAss) {
           db.resetNumQuestions(login, courseId);
         }
@@ -245,7 +251,6 @@ public class QueueHandler {
             + e);
       }
       int toReturn = 0;
-      Queue queue = runningHours.getQueueForCourse(courseId);
       Account account;
       int numQuestions = 0;
       try {
