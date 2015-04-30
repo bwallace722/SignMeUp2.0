@@ -165,15 +165,10 @@ public class QueueHandler {
       String currAss = "none";
       try {
         currAss = db.getCurrAssessment(courseId);
-      } catch (Exception e) {
-        System.err.println(e);
-      }
-      // TODO: CHECK IF CURRENT PROJ = LAST PROJ ->> reset values;
-      
-      
-      
-      try {
-        db.incrementNumberQuestions(login, courseId, questions, currAss);
+        if (db.getLastProject(login, courseId) != currAss) {
+          db.resetNumQuestions(login, courseId);
+        }
+        db.updateStudentInfo(login, courseId, questions, currAss);
       } catch (Exception e) {
         System.err.println("ERROR: "
             + e);
