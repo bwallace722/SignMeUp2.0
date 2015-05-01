@@ -62,7 +62,8 @@ public class QueueHandler {
       String otherQ) {
     Queue queue = runningHours.getQueueForCourse(courseId);
     Hours hours = runningHours.getHoursForCourse(courseId);
-    if (queue.alreadyOnQueue(login)) {
+    if (queue.alreadyOnQueue(login)
+        || hours.alreadyMadeAppointment(login)) {
       return 2;
     }
     String currAss = hours.getCurrAssessment();
@@ -324,40 +325,9 @@ public class QueueHandler {
       String login = qm.value("login");
       String qList = qm.value("questions");
       String otherQ = qm.value("otherQ");
-      System.out.println(qList);
       String[] questions = qList.split("/");
-      Queue queue = runningHours.getQueueForCourse(courseId);
-      Hours hours = runningHours.getHoursForCourse(courseId);
-      if (queue.alreadyOnQueue(login)
-          || hours.alreadyMadeAppointment(login)) {
-        return 2;
-      }
-      String currAss = hours.getCurrAssessment();
-      try {
-        if (db.getLastProject(login, courseId) != currAss) {
-          db.resetNumQuestions(login, courseId);
-        }
-        db.updateStudentInfo(login, courseId, questions, currAss);
-      } catch (Exception e) {
-        System.err.println("ERROR: "
-            + e);
-      }
-      int toReturn = 0;
-      Account account;
-      int numQuestions = 0;
-      try {
-        account = db.getAccount(login);
-        numQuestions = db.getNumberQuestionsAsked(login, courseId);
-      } catch (Exception e) {
-        System.err.println("ERROR: sql error on add student to queue");
-        return 0;
-      }
-      queue.add(account, (1 / (numQuestions + 1)));
-      hours.updateQuestions(login, new ArrayList<String>(Arrays
-          .asList(questions)));
-      hours.incrementQuestion(otherQ);
-      toReturn = 1;
-      return toReturn;
+      // System.out.println("login: "+login+", course: "+courseId+", questions: "+questions[0]+", other: "+otherQ);
+      return addToQueue(login, courseId, questions, otherQ);
     }
   }
   private class UpdateQueueHandler implements Route {

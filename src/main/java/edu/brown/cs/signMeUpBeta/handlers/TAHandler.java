@@ -235,7 +235,6 @@ public class TAHandler {
       } catch (Exception e) {
         System.err.println(e);
       }
-      System.out.println("here");
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("currAss", currAss).put("title",
               "SignMeUp 2.0").put("course", courseId).put("questions",
