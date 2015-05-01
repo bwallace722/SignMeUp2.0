@@ -47,12 +47,15 @@ public class QueueHandler {
     Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
     Spark.post("/updateQueue/:courseId", new UpdateQueueHandler());
     Spark.post("/updateAppointments/:courseId", new UpdateAppointmentsHandler());
+    Spark.post("/updateClinic/:courseId", new UpdateClinicHandler());
     Spark.post("/callStudent/:courseId", new CallStudentToHours());
+    Spark.post("/callClinic", new CallClinicToHours());
     Spark.post("/checkQueue", new QueueChecker());
     Spark.post("/removeStudent", new RemoveStudent());
     Spark.post("/endHours/:courseId", new EndHours());
     Spark.post("/removeAppointment", new RemoveAppointment());
     Spark.post("/checkOffAppointment", new CheckOffAppointment());
+
   }
   /**
    * This handler checks to see if the hours for a particular class have started
@@ -102,6 +105,45 @@ public class QueueHandler {
       return aptStr.toString();
     }
   }
+  /**
+   * this handler gives the front-end an updated list of all the clinic suggestions.
+   * @author kj13
+   */
+  private class UpdateClinicHandler implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      String course = req.params(":courseId");
+      Map<String, String> apts = runningHours.getHoursForCourse(course).getAppointments();
+      StringBuilder aptStr = new StringBuilder();
+      for(String key: apts.keySet()){
+        String login = apts.get(key);
+        if(login!=null){
+          aptStr.append(login + "~ "+ key + ",");
+        }
+      }
+      return aptStr.toString();
+    }
+  }
+  
+  private class CallClinicToHours implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("course");
+      String question = qm.value("question");
+      String students = qm.value("students");
+      Map<String, String> apts = runningHours.getHoursForCourse(course).getAppointments();
+      StringBuilder aptStr = new StringBuilder();
+      for(String key: apts.keySet()){
+        String login = apts.get(key);
+        if(login!=null){
+          aptStr.append(login + "~ "+ key + ",");
+        }
+      }
+      return aptStr.toString();
+    }
+  }
+  
   private class RemoveStudent implements Route {
     @Override
     public Object handle(Request req, Response res) {

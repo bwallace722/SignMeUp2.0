@@ -11,6 +11,9 @@ var aptHTMLStart = "<div class=\"row aptOnHrs\" data-toggle=\"modal\" data-targe
 var aptHTMLTime = "</h5></div><div class=\"col-sm-4 col-sm-push-2\"><h5 id=\"aptTime\">";
 var aptHTMLEnd = "</h5></div><br><hr></div>";
 
+var clinicHTMLStart = "<div class=\"row question\"><div class=\"col-sm-4 col-sm-push-1\"><h5>";
+var clinicHTMLEnd = "</h5></div><br><hr></div>";
+
 var emptyQueue = "<h4>There are no students on the Queue!</h4>";
 var emptyApts = "<h4>There are no students with Appointments!</h4>";
 
@@ -25,6 +28,19 @@ if(currAss.innerHTML == "none"){
 }
 
 var studentToCall;
+
+$(document).on('click', '.aptOnHrs', function(e) {
+
+	var text = $(this).text();
+	console.log(text);
+	var text = text.trim();
+	var textList = text.split(" ");
+	var time = textList[textList.length - 2];
+	var amPm = textList[textList.length - 1];
+	console.log(login);
+
+	aptTime = time + " " + amPm;
+});
 
 var studentApt;
 var aptTime;
@@ -188,6 +204,34 @@ setInterval(function(t) {
 	});
 }, 1000);
 
+
+setInterval(function(t) {
+ 	var postUrl = "/updateClinic/" + courseId;
+	$.post(postUrl, function(responseJSON) {
+		console.log(responseJSON);
+		var aptString = responseJSON;
+		var apt = document.getElementById("clinicSuggs");
+		var updatedApts;
+		if(aptString) {
+			var aptList = aptString.split(",");
+			var studentList = "<h3>Clinic Suggestions</h3>";
+			for(var i=0; i < aptList.length; i++) {
+				var apt = aptList[i];
+				if(apt != "") {
+				var studentTime = apt.split("~");
+				var student = studentTime[0];
+				var time = studentTime[1];
+				var aptTags = aptHTMLStart + student + aptHTMLTime + time + aptHTMLEnd;
+				studentList = studentList.concat(aptTags);
+				}
+			}
+			updatedApts = studentList;
+		} else {
+			updatedApts = emptyApts;
+		}
+		document.getElementById("appointments").innerHTML = updatedApts;
+	});
+}, 60000);
 
 setInterval(function(t) {
  	var postUrl = "/updateAppointments/" + courseId;

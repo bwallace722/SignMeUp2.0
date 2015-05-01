@@ -412,7 +412,7 @@ hr {
 
 .onHoursBlock {
   width: 100%;
-  background-color: rgba(40, 40, 40, 0.3);
+  background-color: rgba(40, 40, 40, 0.7);
   border-radius: 3px;
   text-align: center;
   float: right;
