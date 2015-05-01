@@ -1,4 +1,7 @@
-console.log("hi");
+var windowURL = window.location.href;
+var splitURL = windowURL.split("/");
+var login = splitURL[splitURL.length -1];
+
 
 function createClass() {
 	var courseID = document.getElementById("courseID").value;
@@ -13,6 +16,20 @@ function createClass() {
 			window.location.href = "/courseSetUp/" + courseID;
 		} else {
 			alert("course could not be created. Try again");
+		}
+	});
+}
+
+
+function signOut() {
+	var url = "/signOut/" + login;
+
+	$.post(url, function(responseJSON) {
+	console.log(responseJSON);
+		if(responseJSON == 1) {
+			window.location.href = "/home";
+		} else {
+			alert("We had problems signing you out. Try again.");
 		}
 	});
 }

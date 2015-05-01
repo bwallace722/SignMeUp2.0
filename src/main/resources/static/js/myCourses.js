@@ -22,6 +22,18 @@ $(".clickable-row").bind('click', function(e) {
 	window.location.href=url;
 });
 
+function signOut() {
+	var url = "/signOut/" + login;
+
+	$.post(url, function(responseJSON) {
+	console.log(responseJSON);
+		if(responseJSON == 1) {
+			window.location.href = "/home";
+		}
+	});
+}
+
+
 function removeCourse() {
 	var courses = document.getElementById("courseDropdown");
 	
@@ -38,4 +50,8 @@ function removeCourse() {
 function addCourses() {
 	var url = "/addCourses/"+user;
 	window.location.href = url;
+}
+
+function startAnalytics() {
+	window.location.href="/analytics_home";
 }
