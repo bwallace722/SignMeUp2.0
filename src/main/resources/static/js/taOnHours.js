@@ -5,7 +5,7 @@ var courseId = splitURL[splitURL.length -1];
 //    "<div class=\"col-sm-8 col-sm-push-1\" data-toggle=\"modal\" data-target=\"#queueModal\"><h5>";
 var queueHTMLStart = "<div class=\"row studentOnQueue\" data-toggle=\"modal\" data-target=\"#queueModal\">" +
 "<div class=\"col-sm-8 col-sm-push-1\"><h5>";
-var queueHTMLEnd = "</h5></div><br><hr>";
+var queueHTMLEnd = "</h5></div></div><br><hr>";
 
 var aptHTMLStart = "<div class=\"row aptOnHrs\" data-toggle=\"modal\" data-target=\"#aptModal\"><div class=\"col-sm-5 col-sm-push-1\"><h5>";
 var aptHTMLTime = "</h5></div><div class=\"col-sm-4 col-sm-push-2\"><h5 id=\"aptTime\">";
@@ -46,6 +46,7 @@ $(document).on('click', '.aptOnHrs', function(e) {
 });
 
 $(document).on('click', '.studentOnQueue', function(e) {
+	console.log($(this).text() + " - student");
 	var text = $(this).text();
 	var text = text.trim();
 	var textList = text.split(" ");
@@ -268,11 +269,7 @@ setInterval(function(t) {
 				var cName = c[0];
 				if(c != "") {
 				var sList = c[1].split(",");
-				var students = "";
-				for(var j = 0; j < sList.length; j++) {
-					students = students.concat(sList[j]);
-				}
-				var clTags = clinicHTMLStart + cName + " " + clinicHTMLStudents + students + clinicHTMLEnd;
+				var clTags = clinicHTMLStart + cName + " " + clinicHTMLStudents + sList + clinicHTMLEnd;
 				studentList = studentList.concat(clTags);
 				}
 			}

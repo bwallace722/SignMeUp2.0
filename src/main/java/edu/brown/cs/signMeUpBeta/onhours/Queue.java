@@ -35,18 +35,6 @@ public class Queue {
     }
   }
   public List<String> getStudentsInOrder() {
-    // List<String> toReturn = new ArrayList<String>();
-    // System.out.println("2");
-    // Account[] toSort = new Account[pq.size()];
-    // toSort = pq.toArray(toSort);
-    // System.out.println("3");
-    // Arrays.sort(toSort, new PriorityComp());
-    // System.out.println("4");
-    // for (Account a : toSort) {
-    // System.out.println(a.getLogin());
-    // toReturn.add(a.getLogin());
-    // }
-    // return toReturn;
     List<String> toReturn = new ArrayList<String>();
     PriorityBlockingQueue<Account> copy =
         new PriorityBlockingQueue<Account>(pq);

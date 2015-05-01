@@ -387,6 +387,7 @@ public class Database {
       rs.close();
       Account account =
           new Account(login, name, email, password, enrolledCourses, TACourses);
+      allAccounts.put(login, account);
       return account;
     }
   }
