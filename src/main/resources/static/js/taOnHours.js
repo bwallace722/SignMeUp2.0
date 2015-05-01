@@ -11,11 +11,13 @@ var aptHTMLStart = "<div class=\"row aptOnHrs\" data-toggle=\"modal\" data-targe
 var aptHTMLTime = "</h5></div><div class=\"col-sm-4 col-sm-push-2\"><h5 id=\"aptTime\">";
 var aptHTMLEnd = "</h5></div><br><hr></div>";
 
-var clinicHTMLStart = "<div class=\"row question\"><div class=\"col-sm-4 col-sm-push-1\"><h5>";
+var clinicHTMLStart = "<div class=\"row clinicQ\"><div class=\"col-sm-4 col-sm-push-1\"><h5>";
+var clinicHTMLStudents = "</h5></div><div class=\"col-sm-4 col-sm-push-2\"><h5 id=\"clinicStudents\">";
 var clinicHTMLEnd = "</h5></div><br><hr></div>";
 
 var emptyQueue = "<h4>There are no students on the Queue!</h4>";
 var emptyApts = "<h4>There are no students with Appointments!</h4>";
+var emptyClinics = "<h4>There are no clinic suggestions!</h4>";
 
 function returnToSetup() {
 	window.location.href = "/taHoursSetUp/" + courseId;
@@ -28,20 +30,6 @@ if(currAss.innerHTML == "none"){
 }
 
 var studentToCall;
-
-$(document).on('click', '.aptOnHrs', function(e) {
-
-	var text = $(this).text();
-	console.log(text);
-	var text = text.trim();
-	var textList = text.split(" ");
-	var time = textList[textList.length - 2];
-	var amPm = textList[textList.length - 1];
-	console.log(login);
-
-	aptTime = time + " " + amPm;
-});
-
 var studentApt;
 var aptTime;
 
@@ -64,6 +52,28 @@ $(document).on('click', '.studentOnQueue', function(e) {
 	var textList = text.split(" ");
 	var login = text.split(" ")[textList.length - 1];
 	studentToCall = login;
+});
+
+//var clinicToCall;
+
+$(document).on('click', '.clinicQ', function(e) {
+	var text = $(this).text();
+	var text = text.trim();
+	console.log(text);
+	var textList = text.split(" ");
+	console.log(textList);
+	var question = textList[textList.length - 2];
+	var students = textList[textList.length - 1];
+	console.log(question + " - questions");
+	console.log(students + " - students");
+	//clinicToCall = students;
+	var postParameters = { "clinicQ": question,
+			"students": students,
+			"course": courseId};
+	$.post("/callClinic", postParameters, function(responseJSON) {
+		updateClinic();
+	});
+	
 });
 
 function checkOffApt() {
@@ -145,6 +155,38 @@ function updateQueue() {
 	});
 }
 
+function updateClinic() {
+ 	var postUrl = "/updateClinic/" + courseId;
+	$.post(postUrl, function(responseJSON) {
+		console.log(responseJSON);
+		var cString = responseJSON;
+		var clinic = document.getElementById("clinicSuggs");
+		var updatedClinics;
+		if(cString) {
+			
+			var cList = cString.split("!");
+			var studentList = "<h3>Clinic Suggestions</h3>";
+			for(var i=0; i < cList.length; i++) {
+				var c = cList[i].split("~");
+				var cName = c[0];
+				if(c != "") {
+				var sList = c[1].split(",");
+				var students = "";
+				for(var j = 0; j < sList.length; j++) {
+					students = students.concat(sList[j] + ",");
+				}
+				var clTags = clinicHTMLStart + cName + clinicHTMLStudents + students + clinicHTMLEnd;
+				studentList = studentList.concat(clTags);
+				}
+			}
+			updatedClinics = studentList;
+		} else {
+			updatedClinics = emptyClinics;
+		}
+		document.getElementById("clinicSuggs").innerHTML = updatedClinics;
+	});
+}
+
 //function removeStudent() {
 //var url = "/callStudent/" + courseId;
 //	var postParameters = {"studentLogin": studentToCall, 
@@ -209,27 +251,31 @@ setInterval(function(t) {
  	var postUrl = "/updateClinic/" + courseId;
 	$.post(postUrl, function(responseJSON) {
 		console.log(responseJSON);
-		var aptString = responseJSON;
-		var apt = document.getElementById("clinicSuggs");
-		var updatedApts;
-		if(aptString) {
-			var aptList = aptString.split(",");
+		var cString = responseJSON;
+		var clinic = document.getElementById("clinicSuggs");
+		var updatedClinics;
+		if(cString) {
+			
+			var cList = cString.split("!");
 			var studentList = "<h3>Clinic Suggestions</h3>";
-			for(var i=0; i < aptList.length; i++) {
-				var apt = aptList[i];
-				if(apt != "") {
-				var studentTime = apt.split("~");
-				var student = studentTime[0];
-				var time = studentTime[1];
-				var aptTags = aptHTMLStart + student + aptHTMLTime + time + aptHTMLEnd;
-				studentList = studentList.concat(aptTags);
+			for(var i=0; i < cList.length; i++) {
+				var c = cList[i].split("~");
+				var cName = c[0];
+				if(c != "") {
+				var sList = c[1].split(",");
+				var students = "";
+				for(var j = 0; j < sList.length; j++) {
+					students = students.concat(sList[j]);
+				}
+				var clTags = clinicHTMLStart + cName + clinicHTMLStudents + students + clinicHTMLEnd;
+				studentList = studentList.concat(clTags);
 				}
 			}
-			updatedApts = studentList;
+			updatedClinics = studentList;
 		} else {
-			updatedApts = emptyApts;
+			updatedClinics = emptyClinics;
 		}
-		document.getElementById("appointments").innerHTML = updatedApts;
+		document.getElementById("clinicSuggs").innerHTML = updatedClinics;
 	});
 }, 60000);
 

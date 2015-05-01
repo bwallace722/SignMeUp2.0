@@ -118,15 +118,17 @@ public class QueueHandler {
       StringBuilder clinicStr = new StringBuilder();    
       Hours hours = runningHours.getHoursForCourse(course);
       List<String> popQs = hours.mostPopularQuestions();
-      List<List<String>> students = new ArrayList<List<String>>();
+      //List<List<String>> students = new ArrayList<List<String>>();
+      
+      //EXAMPLE STRING to send - "dijkstras~kj13,kb25,!gui~kb25,omadarik,!"
       for (String q: popQs) {
-        students.add(hours.studentsWhoAsked(q));
-
+        List<String> students = hours.studentsWhoAsked(q);
+        StringBuilder studentStr = new StringBuilder();
+        for(String s : students) {
+          studentStr.append(s + ",");
+        }
+        clinicStr.append(q + "~"+studentStr.toString()+"!");
       }
-      
-      
-      
-      
       return clinicStr.toString();
     }
   }
@@ -136,17 +138,12 @@ public class QueueHandler {
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
       String course = qm.value("course");
-      String question = qm.value("question");
+      String question = qm.value("clinicQ");
       String students = qm.value("students");
-      Map<String, String> apts = runningHours.getHoursForCourse(course).getAppointments();
-      StringBuilder aptStr = new StringBuilder();
-      for(String key: apts.keySet()){
-        String login = apts.get(key);
-        if(login!=null){
-          aptStr.append(login + "~ "+ key + ",");
-        }
-      }
-      return aptStr.toString();
+      //EXAMPLE STRING of students received - "kj13,kb25,omadarik" --> split on ","
+      //TODO KIERAN
+
+      return null;
     }
   }
   
