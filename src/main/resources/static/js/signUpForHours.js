@@ -15,6 +15,16 @@ if(currAsign.innerHTML == "none"){
 	$("#checkbox").hide();
 }
 
+function signOut() {
+	var url = "/signOut/" + login;
+
+	$.post(url, function(responseJSON) {
+	console.log(responseJSON);
+		if(responseJSON == 1) {
+			window.location.href = "/home";
+		}
+	});
+}
 
 function getOnQueue() {
 	var checkedQ = "";
@@ -24,7 +34,7 @@ function getOnQueue() {
 		checkedQ = checkedQ.concat($(this).val() + "/");
     });
 	console.log(qs.length);
-
+	console.log(document.getElementById("otherQuestion").value);
 	var otherQ = document.getElementById("otherQuestion").value;
 
 	console.log(checkedQ);

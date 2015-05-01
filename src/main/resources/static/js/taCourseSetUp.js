@@ -10,6 +10,7 @@ var examCount = 0;
 var labCount = 0;
 
 
+
 $("#removeAsgnBtn").hide();
 
 function addAsgnHTML() {

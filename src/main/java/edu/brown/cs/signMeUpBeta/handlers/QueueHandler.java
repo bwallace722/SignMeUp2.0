@@ -51,7 +51,7 @@ public class QueueHandler {
         .post("/updateAppointments/:courseId", new UpdateAppointmentsHandler());
     Spark.post("/updateClinic/:courseId", new UpdateClinicHandler());
     Spark.post("/callStudent/:courseId", new CallStudentToHours());
-    Spark.post("/callClinic", new CallClinicToHours());
+    Spark.post("/getClinicStudents", new CallClinicToHours());
     Spark.post("/checkQueue", new QueueChecker());
     Spark.post("/removeStudent", new RemoveStudent());
     Spark.post("/endHours/:courseId", new EndHours());
@@ -186,10 +186,11 @@ public class QueueHandler {
       String studentsString = qm.value("students");
       // TODO KIERAN
       String[] students = studentsString.split(",");
+      Queue queue = runningHours.getQueueForCourse(courseId);
       for (String s : students) {
-        addToQueue(s, courseId, questions, null);
+        queue.callOffQueue(s);
       }
-      return null;
+      return 1;
     }
   }
   private class RemoveStudent implements Route {
@@ -212,7 +213,7 @@ public class QueueHandler {
       }
       queue.remove(account);
       hours.removeStudent(studentLogin);
-      System.out.println(queue.getStudentsInOrder().size());
+      System.out.println(queue.getStudentsInOrder().size() + " - queue");
       return 1;
     }
   }
