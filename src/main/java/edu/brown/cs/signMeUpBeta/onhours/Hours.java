@@ -1,5 +1,7 @@
 package edu.brown.cs.signMeUpBeta.onhours;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,7 +14,7 @@ import edu.brown.cs.signMeUpBeta.project.Question;
 public class Hours {
   private Map<Question, Integer> questions;
   private int timeLim;
-  private Map<Date, String> appointments;
+  private Map<String, String> appointments;
   private String currProject; // The project that spans the current date
   public Hours(String currProject, List<Question> questionList) {
     questions = new ConcurrentHashMap<Question, Integer>();
@@ -21,7 +23,7 @@ public class Hours {
     }
     timeLim = 10;
     this.currProject = currProject;
-    this.appointments = new HashMap<Date, String>();
+    this.appointments = new HashMap<String, String>();
   }
   public List<Question> getQuestions() {
     ArrayList<Question> questionList = new ArrayList<Question>();
@@ -52,10 +54,12 @@ public class Hours {
       Date slot = new Date();
       slot.setTime(currDate.getTime()
           + (i * 15 * millisecondsInAMinute));
-      this.appointments.put(slot, null);
+      DateFormat timeFormat = new SimpleDateFormat("h:mm a");
+      String time = timeFormat.format(slot.clone());
+      this.appointments.put(time, null);
     }
   }
-  public Map<Date, String> getAppointments() {
+  public Map<String, String> getAppointments() {
     return this.appointments;
   }
   // public List<QuestionInterface> mostPopularQuestions() {

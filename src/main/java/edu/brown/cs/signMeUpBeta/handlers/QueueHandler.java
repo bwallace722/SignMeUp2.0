@@ -2,8 +2,6 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -268,7 +266,13 @@ public class QueueHandler {
         return 0;
       }
       queue.add(account, (1 / (numQuestions + 1)));
-      toReturn = 1;
+      Map<String, String> times =
+          runningHours.getHoursForCourse(courseId).getAppointments();
+      if (times.containsKey(time)
+          && times.get(time) == null) {
+        times.put(time, login);
+        toReturn = 1;
+      }
       return toReturn;
     }
   }
@@ -282,13 +286,11 @@ public class QueueHandler {
       String timesHTMLTags =
           "<button class=\"aptTime btn btn-success btn-lg\">";
       String closeTag = "</button>";
-      Map<Date, String> timesMap =
+      Map<String, String> timesMap =
           runningHours.getHoursForCourse(courseId).getAppointments();
       // NEEDED: AVAILABLE APPOINTMENT TIMES
       List<String> availTimes = new ArrayList<String>();
-      for (Date d : timesMap.keySet()) {
-        DateFormat timeFormat = new SimpleDateFormat("h:mm a");
-        String time = timeFormat.format(d.clone());
+      for (String time : timesMap.keySet()) {
         availTimes.add(time);
       }
       StringBuilder timesHTML = new StringBuilder();
