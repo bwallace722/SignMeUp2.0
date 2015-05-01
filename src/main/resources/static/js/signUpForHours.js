@@ -24,7 +24,7 @@ function getOnQueue() {
 		checkedQ = checkedQ.concat($(this).val() + "/");
     });
 	console.log(qs.length);
-
+	console.log(document.getElementById("otherQuestion").value);
 	var otherQ = document.getElementById("otherQuestion").value;
 
 	console.log(checkedQ);
