@@ -6,6 +6,7 @@ import java.util.List;
 import joptsimple.OptionParser;
 import joptsimple.OptionSet;
 import joptsimple.OptionSpec;
+import edu.brown.cs.signMeUpBeta.analytics.DatabaseQuery;
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.handlers.AllHandlers;
 
@@ -46,8 +47,10 @@ public class Main {
       String dbPath = params.get(0);
       
       Database db = new Database(dbPath);
+      //TODO: make sure the databases align enough to use this:
+      DatabaseQuery dbq = new DatabaseQuery(dbPath);
       RunningHours hours = new RunningHours(db);
-      AllHandlers gui = new AllHandlers(db, hours);
+      AllHandlers gui = new AllHandlers(db, dbq, hours);
       
     } else {
       System.out.println("ERROR: database path not found.");

@@ -7,6 +7,9 @@ import java.util.Map;
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
+import edu.brown.cs.signMeUpBeta.analytics.AnalyticsWebHandler.AnalyticsHomeHandler;
+import edu.brown.cs.signMeUpBeta.analytics.AnalyticsWebHandler.QueryHandler;
+import edu.brown.cs.signMeUpBeta.analytics.DatabaseQuery;
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.main.RunningHours;
 // import org.json.simple.JSONArray;
@@ -24,15 +27,17 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class AllHandlers {
   private static final Gson GSON = new Gson();
   private static Database db;
+  private DatabaseQuery dbq;
   private RunningHours runningHours;
   // private Map<String, Queue> onHoursQueue;
   /**
-   * This is te constructor for this class.
+   * This is the constructor for this class.
    * @param db
    */
-  public AllHandlers(Database db, RunningHours hours) {
+  public AllHandlers(Database db, DatabaseQuery dbq, RunningHours hours) {
     // onHoursQueue = new HashMap<String, Queue>();
     AllHandlers.db = db;
+    this.dbq = dbq;
     this.runningHours = hours;
     runSparkServer();
   }
@@ -62,6 +67,8 @@ public class AllHandlers {
     TAHandler taHandler = new TAHandler(db, runningHours);
     QueueHandler queueHandler = new QueueHandler(db, runningHours);
     Spark.get("/home", new FrontHandler(), new FreeMarkerEngine());
+    Spark.get("/analytics_home", new AnalyticsHomeHandler(), new FreeMarkerEngine());
+    Spark.post("/analytics_query", new QueryHandler(dbq)); 
     // Spark.get("/classes/:login", new CourseHandler(), new
     // FreeMarkerEngine());
     // Spark.get("/addCourses/:login", new AddCourseHandler(),
