@@ -47,7 +47,8 @@ public class QueueHandler {
     Spark.post("/addStudentToQueue", new AddStudentToQueue());
     Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
     Spark.post("/updateQueue/:courseId", new UpdateQueueHandler());
-    Spark.post("/updateAppointments/:courseId", new UpdateAppointmentsHandler());
+    Spark
+        .post("/updateAppointments/:courseId", new UpdateAppointmentsHandler());
     Spark.post("/updateClinic/:courseId", new UpdateClinicHandler());
     Spark.post("/callStudent/:courseId", new CallStudentToHours());
     Spark.post("/callClinic", new CallClinicToHours());
@@ -56,7 +57,6 @@ public class QueueHandler {
     Spark.post("/endHours/:courseId", new EndHours());
     Spark.post("/removeAppointment", new RemoveAppointment());
     Spark.post("/checkOffAppointment", new CheckOffAppointment());
-
   }
   /**
    * This handler checks to see if the hours for a particular class have started
@@ -95,44 +95,52 @@ public class QueueHandler {
     @Override
     public Object handle(Request req, Response res) {
       String course = req.params(":courseId");
-      Map<String, String> apts = runningHours.getHoursForCourse(course).getAppointments();
+      Map<String, String> apts =
+          runningHours.getHoursForCourse(course).getAppointments();
       StringBuilder aptStr = new StringBuilder();
-      for(String key: apts.keySet()){
+      for (String key : apts.keySet()) {
         String login = apts.get(key);
-        if(login!=null){
-          aptStr.append(login + "~ "+ key + ",");
+        if (login != null) {
+          aptStr.append(login
+              + "~ "
+              + key
+              + ",");
         }
       }
       return aptStr.toString();
     }
   }
   /**
-   * this handler gives the front-end an updated list of all the clinic suggestions.
+   * this handler gives the front-end an updated list of all the clinic
+   * suggestions.
    * @author kj13
    */
   private class UpdateClinicHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
       String course = req.params(":courseId");
-      Map<String, String> apts = runningHours.getHoursForCourse(course).getAppointments();
-      StringBuilder clinicStr = new StringBuilder();    
+      Map<String, String> apts =
+          runningHours.getHoursForCourse(course).getAppointments();
+      StringBuilder clinicStr = new StringBuilder();
       Hours hours = runningHours.getHoursForCourse(course);
       List<String> popQs = hours.mostPopularQuestions();
-      //List<List<String>> students = new ArrayList<List<String>>();
-      
-      //EXAMPLE STRING to send - "dijkstras~kj13,kb25,!gui~kb25,omadarik,!"
-      for (String q: popQs) {
+      // List<List<String>> students = new ArrayList<List<String>>();
+      // EXAMPLE STRING to send - "dijkstras~kj13,kb25,!gui~kb25,omadarik,!"
+      for (String q : popQs) {
         List<String> students = hours.studentsWhoAsked(q);
         StringBuilder studentStr = new StringBuilder();
-        for(String s : students) {
-          studentStr.append(s + ",");
+        for (String s : students) {
+          studentStr.append(s
+              + ",");
         }
-        clinicStr.append(q + "~"+studentStr.toString()+"!");
+        clinicStr.append(q
+            + "~"
+            + studentStr.toString()
+            + "!");
       }
       return clinicStr.toString();
     }
   }
-  
   private class CallClinicToHours implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -140,13 +148,12 @@ public class QueueHandler {
       String course = qm.value("course");
       String question = qm.value("clinicQ");
       String students = qm.value("students");
-      //EXAMPLE STRING of students received - "kj13,kb25,omadarik" --> split on ","
-      //TODO KIERAN
-
+      // EXAMPLE STRING of students received - "kj13,kb25,omadarik" --> split on
+      // ","
+      // TODO KIERAN
       return null;
     }
   }
-  
   private class RemoveStudent implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -285,7 +292,8 @@ public class QueueHandler {
       String[] questions = qList.split("/");
       Queue queue = runningHours.getQueueForCourse(courseId);
       Hours hours = runningHours.getHoursForCourse(courseId);
-      if (queue.alreadyOnQueue(login)) {
+      if (queue.alreadyOnQueue(login)
+          || hours.alreadyMadeAppointment(login)) {
         return 2;
       }
       String currAss = hours.getCurrAssessment();
@@ -309,7 +317,8 @@ public class QueueHandler {
         return 0;
       }
       queue.add(account, (1 / (numQuestions + 1)));
-      hours.updateQuestions(login, new ArrayList<String>(Arrays.asList(questions)));
+      hours.updateQuestions(login, new ArrayList<String>(Arrays
+          .asList(questions)));
       hours.incrementQuestion(otherQ);
       toReturn = 1;
       return toReturn;
@@ -366,7 +375,7 @@ public class QueueHandler {
       int toReturn = 0;
       toReturn = hours.scheduleAppointment(time, login);
       if (toReturn == 1) {
-        for (String q: questions) {
+        for (String q : questions) {
           hours.incrementQuestion(q);
         }
         hours.incrementQuestion(otherQ);
