@@ -56,6 +56,8 @@ $(document).on('click', '.studentOnQueue', function(e) {
 
 //var clinicToCall;
 
+updateClinic();
+
 $(document).on('click', '.clinicQ', function(e) {
 	var text = $(this).text();
 	var text = text.trim();

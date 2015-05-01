@@ -23,7 +23,7 @@ $(".clickable-row").bind('click', function(e) {
 });
 
 function signOut() {
-	var url = "/signOut/" + login;
+	var url = "/signOut/" + user;
 
 	$.post(url, function(responseJSON) {
 	console.log(responseJSON);
