@@ -324,7 +324,7 @@ public class QueueHandler {
       String login = qm.value("login");
       String qList = qm.value("questions");
       String otherQ = qm.value("otherQ");
-      System.out.println(otherQ);
+      System.out.println(qList);
       String[] questions = qList.split("/");
       Queue queue = runningHours.getQueueForCourse(courseId);
       Hours hours = runningHours.getHoursForCourse(courseId);
