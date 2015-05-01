@@ -36,20 +36,16 @@ function confirmApt() {
 	
 	var checkedQ = "";
 	var qs = $('#questionsForApt :checked');
-	console.log(qs);
 	qs.each(function() {
 		checkedQ = checkedQ.concat($(this).val() + "/");
     });
 	var otherQ = document.getElementById("otherQ").value;
-	console.log(checkedQ);
-	console.log(aptTime);
  	var postParameters = {"time": aptTime, 
  			"login": login, 
  			"courseId": courseId, 
  			"questions": checkedQ,
  			"otherQ": otherQ};
  	$.post("/confirmAppointment", postParameters, function(responseJSON){
-		console.log(responseJSON + " = response");
 		if(responseJSON == 1) {
 			alert("You're all set for you appointment! Just head up to hours at "+aptTime+".");
 		} else {
