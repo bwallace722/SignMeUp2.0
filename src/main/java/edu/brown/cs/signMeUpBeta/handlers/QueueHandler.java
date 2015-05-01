@@ -46,6 +46,7 @@ public class QueueHandler {
     Spark.post("/addStudentToQueue", new AddStudentToQueue());
     Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
     Spark.post("/updateQueue/:courseId", new UpdateQueueHandler());
+    Spark.post("/updateAppointments", new UpdateAppointmentsHandler());
     Spark.post("/callStudent/:courseId", new CallStudentToHours());
     Spark.post("/checkQueue", new QueueChecker());
     Spark.post("/removeStudent", new RemoveStudent());
@@ -79,6 +80,19 @@ public class QueueHandler {
       }
       return 1;
     }
+  }
+  /**
+   * this handler gives the front-end an updated list of all the appointments.
+   * @author kj13
+   */
+  private class UpdateAppointmentsHandler implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("course");
+      return null;
+    }
+    
   }
   private class RemoveStudent implements Route {
     @Override

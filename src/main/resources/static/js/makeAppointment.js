@@ -52,6 +52,7 @@ function confirmApt() {
 		console.log(responseJSON + " = response");
 		if(responseJSON == 1) {
 			alert("You're all set for you appointment! Just head up to hours at "+aptTime+".");
+			window.location.href = "/courses/"+login;
 		} else {
 
 			alert("It looks like this appointment time is taken. Try another");
