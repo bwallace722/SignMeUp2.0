@@ -132,19 +132,19 @@ setInterval(function(t) {
 setInterval(function(t) {
  	var postUrl = "/updateAppointments/" + courseId;
 	$.post(postUrl, function(responseJSON) {
-		var queueString = responseJSON.substring(1,responseJSON.length-1);
-		var queue = document.getElementById("queue");
-		if(queueString) {
-			var queueList = queueString.split(",");
+		var aptString = responseJSON.substring(1,responseJSON.length-1);
+		var apt = document.getElementById("appointments");
+		if(aptString) {
+			var aptList = aptString.split(",");
 			var studentList = "";
-			for(var i=0; i < queueList.length; i++) {
-				var student = queueList[i];
-				var studentTags = queueHTMLStart + student + queueHTMLEnd;
+			for(var i=0; i < aptList.length; i++) {
+				var student = aptList[i];
+				var studentTags = aptHTMLStart + student + aptHTMLEnd;
 				studentList = studentList.concat(studentTags);
 			}
-			queue.innerHTML = studentList;
+			apt.innerHTML = studentList;
 		} else {
-			queue.innerHTML = emptyQueue;
+			apt.innerHTML = emptyQueue;
 		}
 	});
 }, 1000);
