@@ -41,7 +41,6 @@ $(document).on('click', '.aptOnHrs', function(e) {
 	var textList = text.split(" ");
 	var time = textList[textList.length - 2];
 	var amPm = textList[textList.length - 1];
-	console.log(login);
 
 	aptTime = time + " " + amPm;
 });
