@@ -41,6 +41,7 @@ function getOnQueue() {
 	var postParameters = {"course": courseId, "login": login, 
 			"questions": checkedQ,
 			"otherQ": otherQ};
+	console.log(postParameters);
 	$.post("/addStudentToQueue", postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		/*

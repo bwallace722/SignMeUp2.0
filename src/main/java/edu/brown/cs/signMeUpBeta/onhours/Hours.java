@@ -73,7 +73,7 @@ public class Hours {
   }
   public boolean alreadyMadeAppointment(String login) {
     for (String k : appointments.keySet()) {
-      if (appointments.get(k).equals(login)) {
+      if (login.equals(appointments.get(k))) {
         return true;
       }
     }
