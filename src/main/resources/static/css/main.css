@@ -78,6 +78,10 @@ h1 {
 	margin-right:auto;
 }
 
+.aptOnHrs h5{
+	font-weight:bold;
+}
+
 #startHoursBtn, .editCourseBtn {
 	margin-left:30%;
 }

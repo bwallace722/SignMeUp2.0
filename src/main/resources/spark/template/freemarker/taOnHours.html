@@ -31,7 +31,7 @@
                         <div class="modal-body" >
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
                           	<button class="btn btn-success queueBtn btn-lg" data-dismiss="modal" onclick="callStudent()">Call Student</button>
-                          	<button class="btn btn-danger queueBtn btn-lg" data-dismiss="modal" id="removeStudent">Remove Student</button>
+                          	<button class="btn btn-danger queueBtn btn-lg" data-dismiss="modal" id="removeStudent()">Remove Student</button>
                           </div>
                           </div>
                    </div>
@@ -44,20 +44,24 @@
       <div class="col-sm-5">
       <!--loop through questions from db-->
      <section class="onHoursBlock" id="currQs">
-      <h3>Questions for </h3><h3 id="currAss">${currAss}</h3>
+      <h3>Questions for <span id="currAss">${currAss}</span></h3>
       ${questions}
      </section>
-     <section class="onHoursBlock" id="appointments">
-     <h3>Appointments</h3>
+     <div class="onHoursBlock" id="appointments">
      
-           <!--<div class="row question">
-      <div class="col-sm-4 col-sm-push-1">
-      <h5>Dijkstras</h5>
-      </div>
-         <br>
-         <hr>
-      </div>-->
-     </section>
+                 <div class="modal fade" id="aptModal" tabindex="-1" role="dialog" aria-labelledby="aptModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                        <div class="modal-content" style="width:80%;">
+                        <div class="modal-body" >
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
+                          	<button class="btn btn-success queueBtn btn-lg" data-dismiss="modal" onclick="checkOffApt()">CheckOff Appointment</button>
+                          	<button class="btn btn-danger queueBtn btn-lg" data-dismiss="modal" id="cancelApt()">Cancel Appointment</button>
+                          </div>
+                          </div>
+                   </div>
+             </div>
+     </div>
+     
     <!--loop through analyzed questions list-->
      <section class="onHoursBlock" id="clinicSuggs">
      <h3>Clinic Suggestions</h3>
