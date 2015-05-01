@@ -100,7 +100,6 @@ function cancelApt() {
 }
 
 function removeStudent() {
-	console.log(studentToCall);
 	var postParameters = {"studentLogin": studentToCall, 
 			"course": courseId};
 	$.post("/removeStudent", postParameters, function(responseJSON) {
