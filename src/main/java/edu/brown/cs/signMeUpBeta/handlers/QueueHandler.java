@@ -115,14 +115,19 @@ public class QueueHandler {
     public Object handle(Request req, Response res) {
       String course = req.params(":courseId");
       Map<String, String> apts = runningHours.getHoursForCourse(course).getAppointments();
-      StringBuilder aptStr = new StringBuilder();
-      for(String key: apts.keySet()){
-        String login = apts.get(key);
-        if(login!=null){
-          aptStr.append(login + "~ "+ key + ",");
-        }
+      StringBuilder clinicStr = new StringBuilder();    
+      Hours hours = runningHours.getHoursForCourse(course);
+      List<String> popQs = hours.mostPopularQuestions();
+      List<List<String>> students = new ArrayList<List<String>>();
+      for (String q: popQs) {
+        students.add(hours.studentsWhoAsked(q));
+
       }
-      return aptStr.toString();
+      
+      
+      
+      
+      return clinicStr.toString();
     }
   }
   
