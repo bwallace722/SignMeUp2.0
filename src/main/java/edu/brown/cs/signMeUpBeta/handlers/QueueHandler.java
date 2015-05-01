@@ -241,7 +241,7 @@ public class QueueHandler {
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
       String time = qm.value("time");
-      String courseID = qm.value("courseId");
+      String courseID = qm.value("course");
       Hours hrs = runningHours.getHoursForCourse(courseID);
       if (hrs.checkOffAppointment(time) != 1) {
         return 0;
