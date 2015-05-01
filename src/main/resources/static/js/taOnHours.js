@@ -7,10 +7,12 @@ var queueHTMLStart = "<div class=\"row studentOnQueue\" data-toggle=\"modal\" da
 "<div class=\"col-sm-8 col-sm-push-1\"><h5>";
 var queueHTMLEnd = "</h5></div><br><hr>";
 
-var aptHTMLStart = "<div class=\"row apt\">div class=\"col-sm-4 col-sm-push-1\"><h5>";
+var aptHTMLStart = "<div class=\"row aptOnHrs\" data-toggle=\"modal\" data-target=\"#aptModal\"><div class=\"col-sm-5 col-sm-push-1\"><h5>";
+var aptHTMLTime = "</h5></div><div class=\"col-sm-4 col-sm-push-2\"><h5 id=\"aptTime\">";
 var aptHTMLEnd = "</h5></div><br><hr></div>";
 
 var emptyQueue = "<h4>There are no students on the Queue!</h4>";
+var emptyApts = "<h4>There are no students with Appointments!</h4>";
 
 function returnToSetup() {
 	window.location.href = "/taHoursSetUp/" + courseId;
@@ -24,6 +26,22 @@ if(currAss.innerHTML == "none"){
 
 var studentToCall;
 
+var studentApt;
+var aptTime;
+
+$(document).on('click', '.aptOnHrs', function(e) {
+
+	var text = $(this).text();
+	console.log(text);
+	var text = text.trim();
+	var textList = text.split(" ");
+	var time = textList[textList.length - 2];
+	var amPm = textList[textList.length - 1];
+	console.log(login);
+
+	aptTime = time + " " + amPm;
+});
+
 $(document).on('click', '.studentOnQueue', function(e) {
 	var text = $(this).text();
 	var text = text.trim();
@@ -31,6 +49,22 @@ $(document).on('click', '.studentOnQueue', function(e) {
 	var login = text.split(" ")[textList.length - 1];
 	studentToCall = login;
 });
+
+function checkOffApt() {
+	var postParameters = { "time": aptTime,
+			"course": courseId};
+	$.post("/checkOffAppointment", postParameters, function(responseJSON) {
+		updateAppointments();
+	});
+}
+
+function cancelApt() {
+	var postParameters = { "time": aptTime,
+			"course": courseId};
+	$.post("/cancelAppointment", postParameters, function(responseJSON) {
+		updateAppointments();
+	});
+}
 
 function removeStudent() {
 	console.log(studentToCall);
@@ -42,6 +76,34 @@ function removeStudent() {
 		if (responseJSON == 1) {
 			updateQueue();
 		}
+	});
+}
+
+function updateAppointments() {
+ 	var postUrl = "/updateAppointments/" + courseId;
+	$.post(postUrl, function(responseJSON) {
+		console.log(responseJSON);
+		var aptString = responseJSON;
+		var apt = document.getElementById("appointments");
+		var updatedApts;
+		if(aptString) {
+			var aptList = aptString.split(",");
+			var studentList = "<h3>Appointments</h3>";
+			for(var i=0; i < aptList.length; i++) {
+				var apt = aptList[i];
+				if(apt != "") {
+				var studentTime = apt.split("~");
+				var student = studentTime[0];
+				var time = studentTime[1];
+				var aptTags = aptHTMLStart + student + aptHTMLTime + time + aptHTMLEnd;
+				studentList = studentList.concat(aptTags);
+				}
+			}
+			updatedApts = studentList;
+		} else {
+			updatedApts = emptyApts;
+		}
+		document.getElementById("appointments").innerHTML = updatedApts;
 	});
 }
 
@@ -57,12 +119,10 @@ function updateQueue() {
 			var studentList = "";
 			for(var i=0; i < queueList.length; i++) {
 				var student = queueList[i];
-				console.log(student);
 				var studentTags = queueHTMLStart + student + queueHTMLEnd;
 				studentList = studentList.concat(studentTags);
 			}
 			queue.innerHTML = studentList;
-			console.log("updated");
 		} else {
 			queue.innerHTML = emptyQueue;
 		}
@@ -132,20 +192,28 @@ setInterval(function(t) {
 setInterval(function(t) {
  	var postUrl = "/updateAppointments/" + courseId;
 	$.post(postUrl, function(responseJSON) {
-		var aptString = responseJSON.substring(1,responseJSON.length-1);
+		console.log(responseJSON);
+		var aptString = responseJSON;
 		var apt = document.getElementById("appointments");
+		var updatedApts;
 		if(aptString) {
 			var aptList = aptString.split(",");
-			var studentList = "";
+			var studentList = "<h3>Appointments</h3>";
 			for(var i=0; i < aptList.length; i++) {
-				var student = aptList[i];
-				var studentTags = aptHTMLStart + student + aptHTMLEnd;
-				studentList = studentList.concat(studentTags);
+				var apt = aptList[i];
+				if(apt != "") {
+				var studentTime = apt.split("~");
+				var student = studentTime[0];
+				var time = studentTime[1];
+				var aptTags = aptHTMLStart + student + aptHTMLTime + time + aptHTMLEnd;
+				studentList = studentList.concat(aptTags);
+				}
 			}
-			apt.innerHTML = studentList;
+			updatedApts = studentList;
 		} else {
-			apt.innerHTML = emptyQueue;
+			updatedApts = emptyApts;
 		}
+		document.getElementById("appointments").innerHTML = updatedApts;
 	});
 }, 1000);
 
@@ -154,7 +222,7 @@ var timer;
 function startTimer() {
 	var timeLimit = document.getElementById("timeLimit").innerHTML;
 	console.log(timeLimit);
-	var tSeconds = parseInt(timeLimit) * 10000;
+	var tSeconds = parseInt(timeLimit) * 60000;
 	console.log(tSeconds + " seconds");
 	timer = window.setTimeout(timerLimit, tSeconds);
 }
