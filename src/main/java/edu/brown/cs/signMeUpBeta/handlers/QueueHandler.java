@@ -270,14 +270,7 @@ public class QueueHandler {
         System.err.println("ERROR: sql error on add student to queue");
         return 0;
       }
-//      queue.add(account, (1 / (numQuestions + 1)));
-      Map<String, String> times =
-          runningHours.getHoursForCourse(courseId).getAppointments();
-      if (times.containsKey(time)
-          && times.get(time) == null) {
-        times.put(time, login);
-        toReturn = 1;
-      }
+
       toReturn = hours.scheduleAppointment(time, login);
       return toReturn;
     }
