@@ -70,6 +70,14 @@ public class Hours {
     appointments.put(time, null);
     return 1;
   }
+  public boolean alreadyMadeAppointment(String login) {
+    for (String k : appointments.keySet()) {
+      if (appointments.get(k).equals(login)) {
+        return true;
+      }
+    }
+    return false;
+  }
   public int checkOffAppointment(String time) {
     if (appointments.get(time) == null) {
       return 0;

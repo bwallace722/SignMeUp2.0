@@ -47,7 +47,8 @@ public class QueueHandler {
     Spark.post("/addStudentToQueue", new AddStudentToQueue());
     Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
     Spark.post("/updateQueue/:courseId", new UpdateQueueHandler());
-    Spark.post("/updateAppointments/:courseId", new UpdateAppointmentsHandler());
+    Spark
+        .post("/updateAppointments/:courseId", new UpdateAppointmentsHandler());
     Spark.post("/updateClinic/:courseId", new UpdateClinicHandler());
     Spark.post("/callStudent/:courseId", new CallStudentToHours());
     Spark.post("/callClinic", new CallClinicToHours());
@@ -56,10 +57,9 @@ public class QueueHandler {
     Spark.post("/endHours/:courseId", new EndHours());
     Spark.post("/removeAppointment", new RemoveAppointment());
     Spark.post("/checkOffAppointment", new CheckOffAppointment());
-
   }
-  
-  public int addToQueue(String login, String courseId, String[] questions, String otherQ) {
+  public int addToQueue(String login, String courseId, String[] questions,
+      String otherQ) {
     Queue queue = runningHours.getQueueForCourse(courseId);
     Hours hours = runningHours.getHoursForCourse(courseId);
     if (queue.alreadyOnQueue(login)) {
@@ -86,7 +86,8 @@ public class QueueHandler {
       return 0;
     }
     queue.add(account, (1 / (numQuestions + 1)));
-    hours.updateQuestions(login, new ArrayList<String>(Arrays.asList(questions)));
+    hours.updateQuestions(login,
+        new ArrayList<String>(Arrays.asList(questions)));
     if (otherQ != null) {
       hours.incrementQuestion(otherQ);
     }
@@ -130,43 +131,50 @@ public class QueueHandler {
     @Override
     public Object handle(Request req, Response res) {
       String course = req.params(":courseId");
-      Map<String, String> apts = runningHours.getHoursForCourse(course).getAppointments();
+      Map<String, String> apts =
+          runningHours.getHoursForCourse(course).getAppointments();
       StringBuilder aptStr = new StringBuilder();
-      for(String key: apts.keySet()){
+      for (String key : apts.keySet()) {
         String login = apts.get(key);
-        if(login!=null){
-          aptStr.append(login + "~ "+ key + ",");
+        if (login != null) {
+          aptStr.append(login
+              + "~ "
+              + key
+              + ",");
         }
       }
       return aptStr.toString();
     }
   }
   /**
-   * this handler gives the front-end an updated list of all the clinic suggestions.
+   * this handler gives the front-end an updated list of all the clinic
+   * suggestions.
    * @author kj13
    */
   private class UpdateClinicHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
       String course = req.params(":courseId");
-      Map<String, String> apts = runningHours.getHoursForCourse(course).getAppointments();
-      StringBuilder clinicStr = new StringBuilder();    
+      Map<String, String> apts =
+          runningHours.getHoursForCourse(course).getAppointments();
+      StringBuilder clinicStr = new StringBuilder();
       Hours hours = runningHours.getHoursForCourse(course);
       List<String> popQs = hours.mostPopularQuestions();
-      
-      //EXAMPLE STRING to send - "dijkstras~kj13,kb25,!gui~kb25,omadarik,!"
-      for (String q: popQs) {
+      for (String q : popQs) {
         List<String> students = hours.studentsWhoAsked(q);
         StringBuilder studentStr = new StringBuilder();
-        for(String s : students) {
-          studentStr.append(s + ",");
+        for (String s : students) {
+          studentStr.append(s
+              + ",");
         }
-        clinicStr.append(q + "~"+studentStr.toString()+"!");
+        clinicStr.append(q
+            + "~"
+            + studentStr.toString()
+            + "!");
       }
       return clinicStr.toString();
     }
   }
-  
   private class CallClinicToHours implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -175,16 +183,14 @@ public class QueueHandler {
       String q = qm.value("clinicQ");
       String[] questions = {q};
       String studentsString = qm.value("students");
-      //TODO KIERAN
-      
+      // TODO KIERAN
       String[] students = studentsString.split(",");
-      for (String s: students) {
+      for (String s : students) {
         addToQueue(s, courseId, questions, null);
       }
       return null;
     }
   }
-  
   private class RemoveStudent implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -320,8 +326,38 @@ public class QueueHandler {
       String otherQ = qm.value("otherQ");
       System.out.println(otherQ);
       String[] questions = qList.split("/");
-      
-      return addToQueue(login, courseId, questions, otherQ);
+      Queue queue = runningHours.getQueueForCourse(courseId);
+      Hours hours = runningHours.getHoursForCourse(courseId);
+      if (queue.alreadyOnQueue(login)
+          || hours.alreadyMadeAppointment(login)) {
+        return 2;
+      }
+      String currAss = hours.getCurrAssessment();
+      try {
+        if (db.getLastProject(login, courseId) != currAss) {
+          db.resetNumQuestions(login, courseId);
+        }
+        db.updateStudentInfo(login, courseId, questions, currAss);
+      } catch (Exception e) {
+        System.err.println("ERROR: "
+            + e);
+      }
+      int toReturn = 0;
+      Account account;
+      int numQuestions = 0;
+      try {
+        account = db.getAccount(login);
+        numQuestions = db.getNumberQuestionsAsked(login, courseId);
+      } catch (Exception e) {
+        System.err.println("ERROR: sql error on add student to queue");
+        return 0;
+      }
+      queue.add(account, (1 / (numQuestions + 1)));
+      hours.updateQuestions(login, new ArrayList<String>(Arrays
+          .asList(questions)));
+      hours.incrementQuestion(otherQ);
+      toReturn = 1;
+      return toReturn;
     }
   }
   private class UpdateQueueHandler implements Route {
@@ -375,7 +411,8 @@ public class QueueHandler {
       int toReturn = 0;
       toReturn = hours.scheduleAppointment(time, login);
       if (toReturn == 1) {
-        hours.updateQuestions(login, new ArrayList<String>(Arrays.asList(questions)));
+        hours.updateQuestions(login, new ArrayList<String>(Arrays
+            .asList(questions)));
         hours.incrementQuestion(otherQ);
       }
       return toReturn;
