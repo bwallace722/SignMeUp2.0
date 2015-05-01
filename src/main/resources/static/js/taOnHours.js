@@ -13,10 +13,10 @@ function returnToSetup() {
 	window.location.href = "/taHoursSetUp/" + courseId;
 }
 
-var currAsign = document.getElementById("currAsign");
-console.log(currAsign.innerHTML);
-if(currAsign.innerHTML == "none"){
-	currAsign.innerHTML = "There is no assignment assigned for today.";
+var currAss = document.getElementById("currAss");
+console.log(currAss.innerHTML);
+if(currAss.innerHTML == "none"){
+	currAss.innerHTML = "There is no assignment assigned for today.";
 	$("#currQs").hide();
 }
 
@@ -89,7 +89,7 @@ setInterval(function(t) {
 			var queueList = queueString.split(",");
 			var studentList = "";
 			for(var i=0; i < queueList.length; i++) {
-				var student = queueList[i];				
+				var student = queueList[i];
 				var studentTags = queueHTMLStart + student + queueHTMLEnd;
 				studentList = studentList.concat(studentTags);
 			}

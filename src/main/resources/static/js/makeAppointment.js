@@ -9,8 +9,6 @@ var login = splitCourseAndLogin[1];
 var chosenTimeString = "Your appointment time <br>";
 
 $(".confirmApt").bind('click', function(c) {
-	//post to queue
-	//success: send alert via email too (?)
 	alert("You're signed up for your <time> appointment!");
 });
 
@@ -25,17 +23,11 @@ $(".confirmAptContainer").hide(0);
 var aptTime;
 $(".aptTime").bind('click', function(a) {
 	var timeClicked = $(this)[0].innerHTML;
-	//NIFEMI - DO YOU WANT "PM" OR NO?
 	var time= timeClicked.split(" ")[0];
-	//var time = timeClicked;
-	console.log(time);
 	var timeString = chosenTimeString + $(this)[0].innerHTML;
-	aptTime = time;
-	console.log($(this)[0].innerHTML);
+	aptTime = $(this)[0].innerHTML;
 	var timeString = chosenTimeString + $(this)[0].innerHTML;
-	aptTime = $(this).val();
 	var chosenTime = document.getElementById("chosenTime");
-	console.log(timeString);
 	chosenTime.innerHTML = timeString;
 	$(".confirmAptContainer").show(1000);
 });
@@ -50,6 +42,7 @@ function confirmApt() {
     });
 	var otherQ = document.getElementById("otherQ").value;
 	console.log(checkedQ);
+	console.log(aptTime);
  	var postParameters = {"time": aptTime, 
  			"login": login, 
  			"courseId": courseId, 
@@ -64,7 +57,6 @@ function confirmApt() {
 		} else if (responseJSON == 2) {
 			alert("You're already on the queue. You can't make an appointment and be signed up for hours.");
  		} else {
-
 			alert("It looks like this appointment time is taken. Try another");
 		}
 

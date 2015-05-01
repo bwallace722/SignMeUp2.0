@@ -2,8 +2,6 @@ package edu.brown.cs.signMeUpBeta.handlers;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -82,7 +80,6 @@ public class QueueHandler {
       return 1;
     }
   }
-  
   private class RemoveStudent implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -183,13 +180,11 @@ public class QueueHandler {
       String otherQ = qm.value("otherQ");
       // check what is when blank
       String[] questions = qList.split("/");
-      
       Queue queue = runningHours.getQueueForCourse(courseId);
       Hours hours = runningHours.getHoursForCourse(courseId);
       if (queue.alreadyOnQueue(login)) {
         return 2;
       }
-      
       String currAss = hours.getCurrAssessment();
       try {
         if (db.getLastProject(login, courseId) != currAss) {
@@ -246,6 +241,7 @@ public class QueueHandler {
       String login = qm.value("login");
       String time = qm.value("time");
       String qList = qm.value("questions");
+      String other = qm.value("otherQ");
       String[] questions = qList.split("/");
       
       Queue queue = runningHours.getQueueForCourse(courseId);
@@ -274,62 +270,66 @@ public class QueueHandler {
         System.err.println("ERROR: sql error on add student to queue");
         return 0;
       }
-      queue.add(account, (1 / (numQuestions + 1)));
-      toReturn = 1;
+//      queue.add(account, (1 / (numQuestions + 1)));
+      Map<String, String> times =
+          runningHours.getHoursForCourse(courseId).getAppointments();
+      if (times.containsKey(time)
+          && times.get(time) == null) {
+        times.put(time, login);
+        toReturn = 1;
+      }
+      toReturn = hours.scheduleAppointment(time, login);
       return toReturn;
     }
   }
-
-   private class MakeAppointmentHandler implements TemplateViewRoute {
-   @Override
-   public ModelAndView handle(final Request req, final Response res) {
-     String courseAndUserId = req.params(":courseIdAndUserId");
-     String[] reqParams = courseAndUserId.split("~");
-     String courseId = reqParams[0];
-     String login = reqParams[1];
-     String timesHTMLTags =
-     "<button class=\"aptTime btn btn-success btn-lg\">";
-     String closeTag = "</button>";
-     Map<Date, String> timesMap =
-     runningHours.getHoursForCourse(courseId).getAppointments();
-     // NEEDED: AVAILABLE APPOINTMENT TIMES
-     List<String> availTimes = new ArrayList<String>();
-     for (Date d : timesMap.keySet()) {
-       DateFormat timeFormat = new SimpleDateFormat("h:mm a");
-       String time = timeFormat.format(d.clone());
-       availTimes.add(time);
-     }
-     StringBuilder timesHTML = new StringBuilder();
-     for (String a : availTimes) {
-       String t = timesHTMLTags
-       + a
-       + closeTag;
-       timesHTML.append(t);
-     }
-     // NEEDED: SUBQUESTIONS PER QUESTION
-     Hours hours = runningHours.getHoursForCourse(courseId);
-     List<Question> questionsList = new ArrayList<Question>();
-     StringBuilder questions = new StringBuilder();
-     boolean running = false;
-     if (hours != null) {
-       running = true;
-       questionsList = hours.getQuestions();
-       questions = getQuestions(questionsList);
-     }
-     String currAss = "none";
-     try {
-       currAss = db.getCurrAssessment(courseId);
-     } catch (Exception e) {
-       System.err.println(e);
-     }
-     Map<String, Object> variables =
-       new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-       courseId).put("login", login).put("aptTimes", timesHTML).put(
-       "questions", questions.toString()).put("currAss", currAss).put("running", running)
-       .build();
-     return new ModelAndView(variables, "makeAppointment.html");
-     }
-   }
+  private class MakeAppointmentHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      String courseAndUserId = req.params(":courseIdAndUserId");
+      String[] reqParams = courseAndUserId.split("~");
+      String courseId = reqParams[0];
+      String login = reqParams[1];
+      String timesHTMLTags =
+          "<button class=\"aptTime btn btn-success btn-lg\">";
+      String closeTag = "</button>";
+      Map<String, String> timesMap =
+          runningHours.getHoursForCourse(courseId).getAppointments();
+      // NEEDED: AVAILABLE APPOINTMENT TIMES
+      List<String> availTimes = new ArrayList<String>();
+      for (String time : timesMap.keySet()) {
+        availTimes.add(time);
+      }
+      StringBuilder timesHTML = new StringBuilder();
+      for (String a : availTimes) {
+        String t = timesHTMLTags
+            + a
+            + closeTag;
+        timesHTML.append(t);
+      }
+      // NEEDED: SUBQUESTIONS PER QUESTION
+      Hours hours = runningHours.getHoursForCourse(courseId);
+      List<Question> questionsList = new ArrayList<Question>();
+      StringBuilder questions = new StringBuilder();
+      boolean running = false;
+      if (hours != null) {
+        running = true;
+        questionsList = hours.getQuestions();
+        questions = getQuestions(questionsList);
+      }
+      String currAss = "none";
+      try {
+        currAss = db.getCurrAssessment(courseId);
+      } catch (Exception e) {
+        System.err.println(e);
+      }
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+              courseId).put("login", login).put("aptTimes", timesHTML).put(
+              "questions", questions.toString()).put("currAss", currAss).put(
+              "running", running).build();
+      return new ModelAndView(variables, "makeAppointment.html");
+    }
+  }
   /**
    * This handler initially displays the signupforhours page. It will display
    * the assignment, questions, and subquestions relevant to that student's

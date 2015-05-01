@@ -1,5 +1,7 @@
 package edu.brown.cs.signMeUpBeta.onhours;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
@@ -12,7 +14,7 @@ import edu.brown.cs.signMeUpBeta.project.Question;
 public class Hours {
   private Map<Question, Integer> questions;
   private int timeLim;
-  private Map<Date, String> appointments;
+  private Map<String, String> appointments;
   private String currAss; // The project that spans the current date
   public Hours(String currAss, List<Question> questionList) {
     questions = new ConcurrentHashMap<Question, Integer>();
@@ -21,7 +23,7 @@ public class Hours {
     }
     timeLim = 10;
     this.currAss = currAss;
-    this.appointments = new HashMap<Date, String>();
+    this.appointments = new HashMap<String, String>();
   }
   public List<Question> getQuestions() {
     ArrayList<Question> questionList = new ArrayList<Question>();
@@ -52,11 +54,21 @@ public class Hours {
       Date slot = new Date();
       slot.setTime(currDate.getTime()
           + (i * 15 * millisecondsInAMinute));
-      this.appointments.put(slot, null);
+      DateFormat timeFormat = new SimpleDateFormat("h:mm a");
+      String time = timeFormat.format(slot.clone());
+      this.appointments.put(time, null);
     }
   }
-//  public void scheduleAppointment(String login, )
-  public Map<Date, String> getAppointments() {
+  public int scheduleAppointment(String time, String login) {
+    if (appointments.get(time) != null) {
+      return 0;
+    }
+    appointments.put(time, login);
+    return 1;
+  }
+  
+  
+  public Map<String, String> getAppointments() {
     return this.appointments;
   }
   public String getCurrAssessment() {
