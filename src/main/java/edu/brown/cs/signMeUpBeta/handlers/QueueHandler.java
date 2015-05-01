@@ -55,7 +55,7 @@ public class QueueHandler {
     Spark.post("/checkQueue", new QueueChecker());
     Spark.post("/removeStudent", new RemoveStudent());
     Spark.post("/endHours/:courseId", new EndHours());
-    Spark.post("/removeAppointment", new RemoveAppointment());
+    Spark.post("/cancelAppointment", new CancelAppointment());
     Spark.post("/checkOffAppointment", new CheckOffAppointment());
   }
   public int addToQueue(String login, String courseId, String[] questions,
@@ -219,12 +219,12 @@ public class QueueHandler {
    * This handler removes an appointment from the stored appointments.
    * @author omadarik
    */
-  private class RemoveAppointment implements Route {
+  private class CancelAppointment implements Route {
     @Override
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
       String time = qm.value("time");
-      String courseID = qm.value("courseId");
+      String courseID = qm.value("course");
       Hours hrs = runningHours.getHoursForCourse(courseID);
       if (hrs.removeAppointment(time) != 1) {
         return 0;
@@ -241,7 +241,7 @@ public class QueueHandler {
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
       String time = qm.value("time");
-      String courseID = qm.value("courseId");
+      String courseID = qm.value("course");
       Hours hrs = runningHours.getHoursForCourse(courseID);
       if (hrs.checkOffAppointment(time) != 1) {
         return 0;

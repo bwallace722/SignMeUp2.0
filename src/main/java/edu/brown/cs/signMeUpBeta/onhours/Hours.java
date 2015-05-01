@@ -64,6 +64,7 @@ public class Hours {
     return 1;
   }
   public int removeAppointment(String time) {
+    System.out.println(time);
     if (appointments.get(time) == null) {
       return 0;
     }
@@ -134,7 +135,6 @@ public class Hours {
     }
     return ret;
   }
-  
   public void removeStudent(String login) {
     studentQuestions.remove(login);
   }
