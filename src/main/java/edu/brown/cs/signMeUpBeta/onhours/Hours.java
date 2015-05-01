@@ -66,8 +66,20 @@ public class Hours {
     appointments.put(time, login);
     return 1;
   }
-  
-  
+  public int removeAppointment(String time) {
+    if (appointments.get(time) == null) {
+      return 0;
+    }
+    appointments.put(time, null);
+    return 1;
+  }
+  public int checkOffAppointment(String time) {
+    if (appointments.get(time) == null) {
+      return 0;
+    }
+    appointments.remove(time);
+    return 1;
+  }
   public Map<String, String> getAppointments() {
     return this.appointments;
   }

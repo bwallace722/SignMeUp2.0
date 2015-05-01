@@ -51,6 +51,8 @@ public class QueueHandler {
     Spark.post("/checkQueue", new QueueChecker());
     Spark.post("/removeStudent", new RemoveStudent());
     Spark.post("/endHours/:courseId", new EndHours());
+    Spark.post("/removeAppointment", new RemoveAppointment());
+    Spark.post("/checkOffAppointment", new CheckOffAppointment());
   }
   /**
    * This handler checks to see if the hours for a particular class have started
@@ -99,7 +101,6 @@ public class QueueHandler {
       }
       return aptStr.toString();
     }
-    
   }
   private class RemoveStudent implements Route {
     @Override
@@ -121,6 +122,40 @@ public class QueueHandler {
       }
       queue.remove(account);
       System.out.println(queue.getStudentsInOrder().size());
+      return 1;
+    }
+  }
+  /**
+   * This handler removes an appointment from the stored appointments.
+   * @author omadarik
+   */
+  private class RemoveAppointment implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String time = qm.value("time");
+      String courseID = qm.value("courseId");
+      Hours hrs = runningHours.getHoursForCourse(courseID);
+      if (hrs.removeAppointment(time) != 1) {
+        return 0;
+      }
+      return 1;
+    }
+  }
+  /**
+   * This handlers checks off a student from the stored appointments.
+   * @author omadarik
+   */
+  private class CheckOffAppointment implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String time = qm.value("time");
+      String courseID = qm.value("courseId");
+      Hours hrs = runningHours.getHoursForCourse(courseID);
+      if (hrs.checkOffAppointment(time) != 1) {
+        return 0;
+      }
       return 1;
     }
   }
@@ -266,13 +301,11 @@ public class QueueHandler {
       String qList = qm.value("questions");
       String other = qm.value("otherQ");
       String[] questions = qList.split("/");
-      
       Queue queue = runningHours.getQueueForCourse(courseId);
       Hours hours = runningHours.getHoursForCourse(courseId);
       if (queue.alreadyOnQueue(login)) {
         return 2;
       }
-      
       String currAss = hours.getCurrAssessment();
       try {
         if (db.getLastProject(login, courseId) != currAss) {
