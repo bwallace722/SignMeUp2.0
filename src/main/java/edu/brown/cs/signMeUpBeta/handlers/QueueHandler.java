@@ -87,6 +87,7 @@ public class QueueHandler {
       String course = qm.value("course");
       String studentLogin = qm.value("studentLogin");
       Queue queue = runningHours.getQueueForCourse(course);
+      System.out.println(queue.getStudentsInOrder().size());
       if (queue == null) {
         return 0;
       }
@@ -98,6 +99,7 @@ public class QueueHandler {
         return 0;
       }
       queue.remove(account);
+      System.out.println(queue.getStudentsInOrder().size());
       return 1;
     }
   }
