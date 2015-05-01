@@ -252,7 +252,6 @@ setInterval(function(t) {
 setInterval(function(t) {
  	var postUrl = "/updateClinic/" + courseId;
 	$.post(postUrl, function(responseJSON) {
-		console.log(responseJSON);
 		var cString = responseJSON;
 		var clinic = document.getElementById("clinicSuggs");
 		var updatedClinics;
@@ -284,7 +283,6 @@ setInterval(function(t) {
 setInterval(function(t) {
  	var postUrl = "/updateAppointments/" + courseId;
 	$.post(postUrl, function(responseJSON) {
-		console.log(responseJSON);
 		var aptString = responseJSON;
 		var apt = document.getElementById("appointments");
 		var updatedApts;

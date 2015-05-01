@@ -55,7 +55,7 @@ public class QueueHandler {
     Spark.post("/checkQueue", new QueueChecker());
     Spark.post("/removeStudent", new RemoveStudent());
     Spark.post("/endHours/:courseId", new EndHours());
-    Spark.post("/removeAppointment", new RemoveAppointment());
+    Spark.post("/cancelAppointment", new RemoveAppointment());
     Spark.post("/checkOffAppointment", new CheckOffAppointment());
   }
   public int addToQueue(String login, String courseId, String[] questions,
