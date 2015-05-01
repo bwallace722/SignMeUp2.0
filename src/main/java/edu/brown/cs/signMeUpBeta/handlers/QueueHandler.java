@@ -3,6 +3,7 @@ package edu.brown.cs.signMeUpBeta.handlers;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -306,6 +307,8 @@ public class QueueHandler {
         return 0;
       }
       queue.add(account, (1 / (numQuestions + 1)));
+      hours.updateQuestions(login, new ArrayList<String>(Arrays.asList(questions)));
+      hours.incrementQuestion(otherQ);
       toReturn = 1;
       return toReturn;
     }
@@ -341,7 +344,7 @@ public class QueueHandler {
       String login = qm.value("login");
       String time = qm.value("time");
       String qList = qm.value("questions");
-      String other = qm.value("otherQ");
+      String otherQ = qm.value("otherQ");
       String[] questions = qList.split("/");
       Queue queue = runningHours.getQueueForCourse(courseId);
       Hours hours = runningHours.getHoursForCourse(courseId);
@@ -360,6 +363,12 @@ public class QueueHandler {
       }
       int toReturn = 0;
       toReturn = hours.scheduleAppointment(time, login);
+      if (toReturn == 1) {
+        for (String q: questions) {
+          hours.incrementQuestion(q);
+        }
+        hours.incrementQuestion(otherQ);
+      }
       return toReturn;
     }
   }
