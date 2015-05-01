@@ -3,6 +3,7 @@ package edu.brown.cs.signMeUpBeta.handlers;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -222,9 +223,7 @@ public class QueueHandler {
         return 0;
       }
       queue.add(account, (1 / (numQuestions + 1)));
-      for (String q: questions) {
-        hours.incrementQuestion(q);
-      }
+      hours.updateQuestions(login, new ArrayList<String>(Arrays.asList(questions)));
       hours.incrementQuestion(otherQ);
       toReturn = 1;
       return toReturn;

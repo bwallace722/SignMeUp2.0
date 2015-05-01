@@ -3,10 +3,11 @@ package edu.brown.cs.signMeUpBeta.onhours;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
 import edu.brown.cs.signMeUpBeta.project.Question;
@@ -14,6 +15,7 @@ import edu.brown.cs.signMeUpBeta.project.Question;
 public class Hours {
   private Map<String, Integer> questionCount;
   private List<Question> questions;
+  private Map<String, List<String>> studentQuestions;
   private int timeLim;
   private Map<String, String> appointments;
   private String currAss;
@@ -25,7 +27,8 @@ public class Hours {
     }
     timeLim = 10;
     this.currAss = currAss;
-    appointments = new HashMap<String, String>();
+    appointments = new ConcurrentHashMap<String, String>();
+    studentQuestions = new ConcurrentHashMap<String, List<String>>();
   }
   public List<Question> getQuestions() {
     return questions;
@@ -60,7 +63,6 @@ public class Hours {
     return 1;
   }
   
-  
   public Map<String, String> getAppointments() {
     return appointments;
   }
@@ -74,9 +76,44 @@ public class Hours {
       questionCount.put(q, 1);
     }
   }
-  // public List<QuestionInterface> mostPopularQuestions() {
-  // return null;
-  // }
+  public void updateQuestions(String login, List<String> questions) {
+    studentQuestions.put(login, questions);
+    for (String q: questions) {
+      incrementQuestion(q);
+    }
+  }
+  
+  private class CountComp implements Comparator<String> {
+    @Override
+    public int compare(String a, String b) {
+      return questionCount.get(b) - questionCount.get(a);
+    }
+  }
+  
+  public List<String> mostPopularQuestions() {
+    PriorityQueue<String> pq = new PriorityQueue<String>(new CountComp());
+    for (String q: questionCount.keySet()) {
+      pq.add(q);
+    }
+    List<String> ret = new ArrayList<String>();
+    for (int i = 0; i < 3; i++) {
+      if (!pq.isEmpty()) {
+        ret.add(pq.poll());
+      }
+    }
+    return ret;
+  }
+  
+  public List<String> studentsWhoAsked(String question) {
+    List<String> ret = new ArrayList<String>();
+    for (String student: studentQuestions.keySet()) {
+      List<String> questions = studentQuestions.get(student);
+      if (questions.contains(question)) {
+        ret.add(student);
+      }
+    }
+    return ret;
+  }
   //
   // public List<QuestionInterface> currentQuestions() {
   // return null;
