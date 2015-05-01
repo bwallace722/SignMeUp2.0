@@ -48,8 +48,11 @@ function confirmApt() {
  	$.post("/confirmAppointment", postParameters, function(responseJSON){
 		if(responseJSON == 1) {
 			alert("You're all set for you appointment! Just head up to hours at "+aptTime+".");
-		} else {
-
+			//figure out some animation for showing time
+			//show time and reveal questions container
+		} else if (responseJSON == 2) {
+			alert("You're already on the queue. You can't make an appointment and be signed up for hours.");
+ 		} else {
 			alert("It looks like this appointment time is taken. Try another");
 		}
 
