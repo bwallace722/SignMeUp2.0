@@ -12,6 +12,7 @@ var courseId = splitURL[splitURL.length -1];
 function startHours() {
 	var postUrl = "/startHours/" + courseId;
 	var hoursUrl = "/onHours/" + courseId;
+<<<<<<< HEAD
 	var hoursLength = document.getElementById("hoursLength");
 	var hoursSplit = hoursLength.value.split(" ");
 	var hours = hoursSplit[0];
@@ -31,6 +32,19 @@ function startHours() {
 		alert("Please input a valid integer to represent the number of hours for this TA session");
 	}
 
+=======
+	var hoursLength = document.getElementById("hoursLength").value;
+	var postParameters = {"duration": hoursLength};
+	$.post(postUrl, postParameters, function(responseJSON) {
+		console.log(responseJSON);
+		if(responseJSON == 1) {
+			window.location.href= hoursUrl;
+		} else {
+			alert("Hours haven't been started yet. " +
+					"Check your connection and try again");
+		}
+	});
+>>>>>>> eb2b91059e163333699035bda27e5fa276ce4387
 }
 
 function taCourseSetUp() {
