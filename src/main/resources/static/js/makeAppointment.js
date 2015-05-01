@@ -36,25 +36,24 @@ function confirmApt() {
 	
 	var checkedQ = "";
 	var qs = $('#questionsForApt :checked');
-	console.log(qs);
 	qs.each(function() {
 		checkedQ = checkedQ.concat($(this).val() + "/");
     });
 	var otherQ = document.getElementById("otherQ").value;
-	console.log(checkedQ);
-	console.log(aptTime);
  	var postParameters = {"time": aptTime, 
  			"login": login, 
  			"courseId": courseId, 
  			"questions": checkedQ,
  			"otherQ": otherQ};
  	$.post("/confirmAppointment", postParameters, function(responseJSON){
-		console.log(responseJSON + " = response");
-		if(responseJSON == 1) {
+		if (responseJSON == 1) {
 			alert("You're all set for you appointment! Just head up to hours at "+aptTime+".");
 			window.location.href = "/courses/"+login;
-		} else {
-
+			//figure out some animation for showing time
+			//show time and reveal questions container
+		} else if (responseJSON == 2) {
+			alert("You're already on the queue. You can't make an appointment and be signed up for hours.");
+ 		} else {
 			alert("It looks like this appointment time is taken. Try another");
 		}
 
