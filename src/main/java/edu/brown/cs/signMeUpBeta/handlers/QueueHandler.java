@@ -58,6 +58,42 @@ public class QueueHandler {
     Spark.post("/removeAppointment", new RemoveAppointment());
     Spark.post("/checkOffAppointment", new CheckOffAppointment());
   }
+  public int addToQueue(String login, String courseId, String[] questions,
+      String otherQ) {
+    Queue queue = runningHours.getQueueForCourse(courseId);
+    Hours hours = runningHours.getHoursForCourse(courseId);
+    if (queue.alreadyOnQueue(login)) {
+      return 2;
+    }
+    String currAss = hours.getCurrAssessment();
+    try {
+      if (db.getLastProject(login, courseId) != currAss) {
+        db.resetNumQuestions(login, courseId);
+      }
+      db.updateStudentInfo(login, courseId, questions, currAss);
+    } catch (Exception e) {
+      System.err.println("ERROR: "
+          + e);
+    }
+    int toReturn = 0;
+    Account account;
+    int numQuestions = 0;
+    try {
+      account = db.getAccount(login);
+      numQuestions = db.getNumberQuestionsAsked(login, courseId);
+    } catch (Exception e) {
+      System.err.println("ERROR: sql error on add student to queue");
+      return 0;
+    }
+    queue.add(account, (1 / (numQuestions + 1)));
+    hours.updateQuestions(login,
+        new ArrayList<String>(Arrays.asList(questions)));
+    if (otherQ != null) {
+      hours.incrementQuestion(otherQ);
+    }
+    toReturn = 1;
+    return toReturn;
+  }
   /**
    * This handler checks to see if the hours for a particular class have started
    * running yet.
@@ -124,8 +160,6 @@ public class QueueHandler {
       StringBuilder clinicStr = new StringBuilder();
       Hours hours = runningHours.getHoursForCourse(course);
       List<String> popQs = hours.mostPopularQuestions();
-      // List<List<String>> students = new ArrayList<List<String>>();
-      // EXAMPLE STRING to send - "dijkstras~kj13,kb25,!gui~kb25,omadarik,!"
       for (String q : popQs) {
         List<String> students = hours.studentsWhoAsked(q);
         StringBuilder studentStr = new StringBuilder();
@@ -145,12 +179,15 @@ public class QueueHandler {
     @Override
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
-      String course = qm.value("course");
-      String question = qm.value("clinicQ");
-      String students = qm.value("students");
-      // EXAMPLE STRING of students received - "kj13,kb25,omadarik" --> split on
-      // ","
+      String courseId = qm.value("course");
+      String q = qm.value("clinicQ");
+      String[] questions = {q};
+      String studentsString = qm.value("students");
       // TODO KIERAN
+      String[] students = studentsString.split(",");
+      for (String s : students) {
+        addToQueue(s, courseId, questions, null);
+      }
       return null;
     }
   }
@@ -161,7 +198,7 @@ public class QueueHandler {
       String course = qm.value("course");
       String studentLogin = qm.value("studentLogin");
       Queue queue = runningHours.getQueueForCourse(course);
-      System.out.println(queue.getStudentsInOrder().size());
+      Hours hours = runningHours.getHoursForCourse(course);
       if (queue == null) {
         return 0;
       }
@@ -173,6 +210,7 @@ public class QueueHandler {
         return 0;
       }
       queue.remove(account);
+      hours.removeStudent(studentLogin);
       System.out.println(queue.getStudentsInOrder().size());
       return 1;
     }
@@ -238,8 +276,6 @@ public class QueueHandler {
       QueryParamsMap qm = req.queryMap();
       String course = qm.value("course");
       String login = qm.value("login");
-      // are we being passed the student's password too? I'll need it to get
-      // their account
       int toReturn = 0;
       Queue queue = runningHours.getQueueForCourse(course);
       Account account;
@@ -288,7 +324,7 @@ public class QueueHandler {
       String login = qm.value("login");
       String qList = qm.value("questions");
       String otherQ = qm.value("otherQ");
-      // check what is when blank
+      System.out.println(otherQ);
       String[] questions = qList.split("/");
       Queue queue = runningHours.getQueueForCourse(courseId);
       Hours hours = runningHours.getHoursForCourse(courseId);
@@ -375,9 +411,8 @@ public class QueueHandler {
       int toReturn = 0;
       toReturn = hours.scheduleAppointment(time, login);
       if (toReturn == 1) {
-        for (String q : questions) {
-          hours.incrementQuestion(q);
-        }
+        hours.updateQuestions(login, new ArrayList<String>(Arrays
+            .asList(questions)));
         hours.incrementQuestion(otherQ);
       }
       return toReturn;

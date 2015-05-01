@@ -134,6 +134,10 @@ public class Hours {
     }
     return ret;
   }
+  
+  public void removeStudent(String login) {
+    studentQuestions.remove(login);
+  }
   //
   // public List<QuestionInterface> currentQuestions() {
   // return null;

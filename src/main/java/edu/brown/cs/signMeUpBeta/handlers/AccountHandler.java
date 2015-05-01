@@ -10,6 +10,7 @@ import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
 
 import edu.brown.cs.signMeUpBeta.classSetup.Database;
+import edu.brown.cs.signMeUpBeta.main.RunningHours;
 import edu.brown.cs.signMeUpBeta.onhours.Queue;
 import edu.brown.cs.signMeUpBeta.student.Account;
 import spark.ExceptionHandler;
@@ -25,8 +26,10 @@ import spark.template.freemarker.FreeMarkerEngine;
 public class AccountHandler {
   private static final Gson GSON = new Gson();
   private static Database db;
-  public AccountHandler(Database db) {
-    AccountHandler.db = db;
+  private RunningHours runningHours;
+  public AccountHandler(Database db, RunningHours runningHours) {
+    this.db = db;
+    this.runningHours = runningHours;
     runSpark();
   }
   public void runSpark() {
@@ -48,8 +51,14 @@ public class AccountHandler {
     @Override
     public Object handle(Request req, Response res) {
       String login = req.params(":login");
-      //TODO signout
-      
+      Account account;
+      try {
+        account = db.getAccount(login);
+      } catch (Exception e) {
+        System.err.println(e);
+        return 0;
+      }
+      runningHours.removeFromAll(account);
       return 1;
     }
   }
