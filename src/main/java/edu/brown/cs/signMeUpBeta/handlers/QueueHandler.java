@@ -261,16 +261,6 @@ public class QueueHandler {
             + e);
       }
       int toReturn = 0;
-      Account account;
-      int numQuestions = 0;
-      try {
-        account = db.getAccount(login);
-        numQuestions = db.getNumberQuestionsAsked(login, courseId);
-      } catch (Exception e) {
-        System.err.println("ERROR: sql error on add student to queue");
-        return 0;
-      }
-
       toReturn = hours.scheduleAppointment(time, login);
       return toReturn;
     }
