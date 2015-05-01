@@ -15,6 +15,7 @@ function startHours() {
 	var hoursLength = document.getElementById("hoursLength").value;
 	var postParameters = {"duration": hoursLength};
 	$.post(postUrl, postParameters, function(responseJSON) {
+		console.log(responseJSON);
 		if(responseJSON == 1) {
 			window.location.href= hoursUrl;
 		} else {
