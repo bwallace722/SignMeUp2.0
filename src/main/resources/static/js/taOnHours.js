@@ -71,6 +71,7 @@ $(document).on('click', '.clinicQ', function(e) {
 			"students": students,
 			"course": courseId};
 	$.post("/callClinic", postParameters, function(responseJSON) {
+		alert("you have just called")
 		updateClinic();
 	});
 	

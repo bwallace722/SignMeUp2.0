@@ -12,16 +12,25 @@ var courseId = splitURL[splitURL.length -1];
 function startHours() {
 	var postUrl = "/startHours/" + courseId;
 	var hoursUrl = "/onHours/" + courseId;
-	var hoursLength = document.getElementById("hoursLength").value;
-	var postParameters = {"duration": hoursLength};
-	$.post(postUrl, postParameters, function(responseJSON) {
-		if(responseJSON == 1) {
-			window.location.href= hoursUrl;
-		} else {
-			alert("Hours haven't been started yet. " +
-					"Check your connection and try again");
-		}
-	});
+	var hoursLength = document.getElementById("hoursLength");
+	var hoursSplit = hoursLength.value.split(" ");
+	var hours = hoursSplit[0];
+	console.log(hours);
+	console.log(isNaN(hours));
+	if(!isNaN(hours)) {
+		var postParameters = {"duration": hours};
+		$.post(postUrl, postParameters, function(responseJSON) {
+			if(responseJSON == 1) {
+				window.location.href= hoursUrl;
+			} else {
+				alert("Hours haven't been started yet. " +
+						"Check your connection and try again");
+			}
+		});
+	} else {
+		alert("Please input a valid integer to represent the number of hours for this TA session");
+	}
+
 }
 
 function taCourseSetUp() {

@@ -48,7 +48,7 @@ public class TAHandler {
     Spark.post("/saveExam", new SaveExam());
     Spark.post("/saveLab", new SaveLab());
     Spark.post("/addCourse/:courseId", new AddCourseToDatabase());
-    Spark.get("/createCourse", new CreateCourseHandler(),
+    Spark.get("/createCourse/:login", new CreateCourseHandler(),
         new FreeMarkerEngine());
   }
   private class SaveAssignment implements Route {
