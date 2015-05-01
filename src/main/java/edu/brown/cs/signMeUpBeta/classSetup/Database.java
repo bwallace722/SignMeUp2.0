@@ -398,10 +398,7 @@ public class Database {
    * @return
    * @throws SQLException
    */
-  public Account approveCredentials(String login, String password) // TODO:
-                                                                   // KIERAN
-                                                                   // LOOK AT
-                                                                   // THIS
+  public Account approveCredentials(String login, String password)
       throws SQLException {
     String query = "SELECT * FROM account WHERE login = ? AND password = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
