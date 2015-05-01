@@ -287,7 +287,7 @@ public class QueueHandler {
         return 0;
       }
       if (queue == null) {
-        // FUCK
+        toReturn = 2;
       }
       queue.add(account, 2);
       toReturn = 1;
@@ -334,7 +334,6 @@ public class QueueHandler {
     @Override
     public Object handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
-      // System.out.println(courseId);
       Queue currentQueue = runningHours.getQueueForCourse(courseId);
       List<String> toReturn = currentQueue.getStudentsInOrder();
       return toReturn;

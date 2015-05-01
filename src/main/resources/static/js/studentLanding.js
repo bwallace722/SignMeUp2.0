@@ -34,9 +34,15 @@ $(".checkOffButton").bind('click', function(c) {
 	var postParameters = {"course": courseId, "login": login };
 	$.post(url, postParameters, function(responseJSON) {
 		//TODO : based on response, give message and put into modal.
+		if(responseJSON == 1) {
+			alert("You're signed up for lab!");
+		} else if (responseJSON == 2) {
+			alert("Hours haven't started yet!");
+		} else {
+			alert("looks like we've had some trouble. Try again in a bit.");
+		}
 		
-		
-		alert("You're signed up for lab!");
+
 	});
 	
 
@@ -68,4 +74,31 @@ function makeAppointment() {
 			alert("The queue for this class isn't running yet! Sorry!");
 		}
 	});
+}
+
+//interval set to every second.
+function updateStatus() {
+	setInterval(checkStatus, 1000);
+}
+
+/*
+ * Checks student's call status. If the ta has called them to hours,
+ * an alert will appear.
+ */
+var checkStatus = function() {
+	if(!calledToHours) {
+	var postParameters = {"course": courseId, "login": login}; 
+	$.post("/checkCallStatus", postParameters, function(responseJSON) {
+		/*
+		 * responseJSON is a boolean, returning true 
+		 * if the student has been called to hours
+		 * and false otherwise.
+		 */
+		if(responseJSON == 1) {
+			calledToHours = true;
+			alert("You've been called up for hours!");
+			clearInterval(checkStatus);
+		}
+	});
+	}
 }

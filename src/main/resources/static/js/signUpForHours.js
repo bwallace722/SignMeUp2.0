@@ -40,38 +40,43 @@ function getOnQueue() {
 		 */
 		if(responseJSON == 1) {
 			alert("You've been added to the queue!");
-			updateStatus();
+			console.log("redirect");
+			window.location.href = "/studentLanding/" + courseIdAndLogin;
+			//updateStatus();
 		} else if (responseJSON == 2) {
 			alert("You are already on the queue!");
+
+			console.log("redirect");
+			window.location.href = "/studentLanding/" + courseIdAndLogin;
 		} else {
 			console.log("SQL Error.");
 		}
 	});
 }
 
-//interval set to every second.
-function updateStatus() {
-	setInterval(checkStatus, 1000);
-}
-
-/*
- * Checks student's call status. If the ta has called them to hours,
- * an alert will appear.
- */
-var checkStatus = function() {
-	if(!calledToHours) {
-	var postParameters = {"course": courseId, "login": login}; 
-	$.post("/checkCallStatus", postParameters, function(responseJSON) {
-		/*
-		 * responseJSON is a boolean, returning true 
-		 * if the student has been called to hours
-		 * and false otherwise.
-		 */
-		if(responseJSON == 1) {
-			calledToHours = true;
-			alert("You've been called up for hours!");
-			clearInterval(checkStatus);
-		}
-	});
-	}
-}
+////interval set to every second.
+//function updateStatus() {
+//	setInterval(checkStatus, 1000);
+//}
+//
+///*
+// * Checks student's call status. If the ta has called them to hours,
+// * an alert will appear.
+// */
+//var checkStatus = function() {
+//	if(!calledToHours) {
+//	var postParameters = {"course": courseId, "login": login}; 
+//	$.post("/checkCallStatus", postParameters, function(responseJSON) {
+//		/*
+//		 * responseJSON is a boolean, returning true 
+//		 * if the student has been called to hours
+//		 * and false otherwise.
+//		 */
+//		if(responseJSON == 1) {
+//			calledToHours = true;
+//			alert("You've been called up for hours!");
+//			clearInterval(checkStatus);
+//		}
+//	});
+//	}
+//}
