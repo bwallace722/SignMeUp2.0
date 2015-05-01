@@ -90,7 +90,7 @@ function checkOffApt() {
 function cancelApt() {
 	var postParameters = { "time": aptTime,
 			"course": courseId};
-	$.post("/removeAppointment", postParameters, function(responseJSON) {
+	$.post("/cancelAppointment", postParameters, function(responseJSON) {
 		updateAppointments();
 	});
 }
