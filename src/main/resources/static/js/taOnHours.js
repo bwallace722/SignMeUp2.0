@@ -81,6 +81,7 @@ $(document).on('click', '.clinicQ', function(e) {
 function checkOffApt() {
 	var postParameters = { "time": aptTime,
 			"course": courseId};
+	console.log(aptTime);
 	$.post("/checkOffAppointment", postParameters, function(responseJSON) {
 		updateAppointments();
 	});
@@ -89,7 +90,7 @@ function checkOffApt() {
 function cancelApt() {
 	var postParameters = { "time": aptTime,
 			"course": courseId};
-	$.post("/cancelAppointment", postParameters, function(responseJSON) {
+	$.post("/removeAppointment", postParameters, function(responseJSON) {
 		updateAppointments();
 	});
 }
