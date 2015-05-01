@@ -12,34 +12,27 @@ import java.util.concurrent.ConcurrentHashMap;
 import edu.brown.cs.signMeUpBeta.project.Question;
 
 public class Hours {
-  private Map<Question, Integer> questions;
+  private Map<String, Integer> questionCount;
+  private List<Question> questions;
   private int timeLim;
   private Map<String, String> appointments;
-  private String currAss; // The project that spans the current date
+  private String currAss;
   public Hours(String currAss, List<Question> questionList) {
-    questions = new ConcurrentHashMap<Question, Integer>();
+    questions = questionList;
+    questionCount = new ConcurrentHashMap<String, Integer>();
     for (Question q : questionList) {
-      questions.put(q, 0);
+      questionCount.put(q.content(), 0);
     }
     timeLim = 10;
     this.currAss = currAss;
-    this.appointments = new HashMap<String, String>();
+    appointments = new HashMap<String, String>();
   }
   public List<Question> getQuestions() {
-    ArrayList<Question> questionList = new ArrayList<Question>();
-    questionList.addAll(questions.keySet());
-    return questionList;
-  }
-  public void incrementQuestion(Question qToIncrement) {
-    if (questions.containsKey(qToIncrement)) {
-      int newVal = questions.get(qToIncrement) + 1;
-      questions.put(qToIncrement, newVal);
-    }
+    return questions;
   }
   public void addQuestion(Question newQuestion) {
-    if (!questions.containsKey(newQuestion)) {
-      questions.put(newQuestion, 0);
-    }
+    questions.add(newQuestion);
+    questionCount.putIfAbsent(newQuestion.content(), 0);
   }
   public int getTimeLim() {
     return timeLim;
@@ -56,7 +49,7 @@ public class Hours {
           + (i * 15 * millisecondsInAMinute));
       DateFormat timeFormat = new SimpleDateFormat("h:mm a");
       String time = timeFormat.format(slot.clone());
-      this.appointments.put(time, null);
+      appointments.put(time, null);
     }
   }
   public int scheduleAppointment(String time, String login) {
@@ -69,10 +62,17 @@ public class Hours {
   
   
   public Map<String, String> getAppointments() {
-    return this.appointments;
+    return appointments;
   }
   public String getCurrAssessment() {
     return currAss;
+  }
+  public void incrementQuestion(String q) {
+    if (questionCount.containsKey(q)) {
+      questionCount.put(q, questionCount.get(q)+1);
+    } else {
+      questionCount.put(q, 1);
+    }
   }
   // public List<QuestionInterface> mostPopularQuestions() {
   // return null;
