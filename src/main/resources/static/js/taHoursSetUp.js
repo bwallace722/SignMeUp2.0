@@ -5,7 +5,10 @@ var courseId = splitURL[splitURL.length -1];
 function startHours() {
 	var postUrl = "/startHours/" + courseId;
 	var hoursUrl = "/onHours/" + courseId;
+<<<<<<< HEAD
 
+=======
+>>>>>>> 3b285daea1cc9ebdd44e1f56cae6b6210d126d1a
 	var hoursLength = document.getElementById("hoursLength");
 	var hoursSplit = hoursLength.value.split(" ");
 	var hours = hoursSplit[0];
