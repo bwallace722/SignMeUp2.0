@@ -81,6 +81,7 @@ $(document).on('click', '.clinicQ', function(e) {
 function checkOffApt() {
 	var postParameters = { "time": aptTime,
 			"course": courseId};
+	console.log(aptTime);
 	$.post("/checkOffAppointment", postParameters, function(responseJSON) {
 		updateAppointments();
 	});
@@ -252,7 +253,6 @@ setInterval(function(t) {
 setInterval(function(t) {
  	var postUrl = "/updateClinic/" + courseId;
 	$.post(postUrl, function(responseJSON) {
-		console.log(responseJSON);
 		var cString = responseJSON;
 		var clinic = document.getElementById("clinicSuggs");
 		var updatedClinics;
@@ -284,7 +284,6 @@ setInterval(function(t) {
 setInterval(function(t) {
  	var postUrl = "/updateAppointments/" + courseId;
 	$.post(postUrl, function(responseJSON) {
-		console.log(responseJSON);
 		var aptString = responseJSON;
 		var apt = document.getElementById("appointments");
 		var updatedApts;
