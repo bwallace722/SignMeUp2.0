@@ -61,9 +61,9 @@ function confirmApt() {
 			alert("You're all set for you appointment! Just head up to hours at "+aptTime+".");
 			//figure out some animation for showing time
 			//show time and reveal questions container
-
-
-		} else {
+		} else if (responseJSON == 2) {
+			alert("You're already on the queue. You can't make an appointment and be signed up for hours.");
+ 		} else {
 
 			alert("It looks like this appointment time is taken. Try another");
 		}
