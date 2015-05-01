@@ -46,8 +46,9 @@ function confirmApt() {
  			"questions": checkedQ,
  			"otherQ": otherQ};
  	$.post("/confirmAppointment", postParameters, function(responseJSON){
-		if(responseJSON == 1) {
+		if (responseJSON == 1) {
 			alert("You're all set for you appointment! Just head up to hours at "+aptTime+".");
+			window.location.href = "/courses/"+login;
 			//figure out some animation for showing time
 			//show time and reveal questions container
 		} else if (responseJSON == 2) {
