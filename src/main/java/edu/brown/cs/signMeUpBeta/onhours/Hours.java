@@ -5,6 +5,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.PriorityQueue;
@@ -27,7 +28,7 @@ public class Hours {
     }
     timeLim = 10;
     this.currAss = currAss;
-    appointments = new ConcurrentHashMap<String, String>();
+    appointments = new HashMap<String, String>();
     studentQuestions = new ConcurrentHashMap<String, List<String>>();
   }
   public List<Question> getQuestions() {
@@ -62,7 +63,6 @@ public class Hours {
     appointments.put(time, login);
     return 1;
   }
-
   public int removeAppointment(String time) {
     if (appointments.get(time) == null) {
       return 0;
@@ -77,7 +77,6 @@ public class Hours {
     appointments.remove(time);
     return 1;
   }
-
   public Map<String, String> getAppointments() {
     return appointments;
   }
@@ -86,28 +85,27 @@ public class Hours {
   }
   public void incrementQuestion(String q) {
     if (questionCount.containsKey(q)) {
-      questionCount.put(q, questionCount.get(q)+1);
+      questionCount.put(q, questionCount.get(q) + 1);
     } else {
       questionCount.put(q, 1);
     }
   }
   public void updateQuestions(String login, List<String> questions) {
     studentQuestions.put(login, questions);
-    for (String q: questions) {
+    for (String q : questions) {
       incrementQuestion(q);
     }
   }
-  
   private class CountComp implements Comparator<String> {
     @Override
     public int compare(String a, String b) {
-      return questionCount.get(b) - questionCount.get(a);
+      return questionCount.get(b)
+          - questionCount.get(a);
     }
   }
-  
   public List<String> mostPopularQuestions() {
     PriorityQueue<String> pq = new PriorityQueue<String>(new CountComp());
-    for (String q: questionCount.keySet()) {
+    for (String q : questionCount.keySet()) {
       pq.add(q);
     }
     List<String> ret = new ArrayList<String>();
@@ -118,10 +116,9 @@ public class Hours {
     }
     return ret;
   }
-  
   public List<String> studentsWhoAsked(String question) {
     List<String> ret = new ArrayList<String>();
-    for (String student: studentQuestions.keySet()) {
+    for (String student : studentQuestions.keySet()) {
       List<String> questions = studentQuestions.get(student);
       if (questions.contains(question)) {
         ret.add(student);
