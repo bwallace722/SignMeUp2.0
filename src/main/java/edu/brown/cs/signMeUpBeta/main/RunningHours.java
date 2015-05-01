@@ -9,6 +9,7 @@ import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.onhours.Hours;
 import edu.brown.cs.signMeUpBeta.onhours.Queue;
 import edu.brown.cs.signMeUpBeta.project.Question;
+import edu.brown.cs.signMeUpBeta.student.Account;
 
 public class RunningHours {
   
@@ -50,5 +51,13 @@ public class RunningHours {
   public Hours getHoursForCourse(String courseID) {
     return hours.get(courseID);
   }
-
+  
+  public void removeFromAll(Account a) {
+    for (Queue q: queues.values()) {
+      q.remove(a);
+    }
+    for (Hours h: hours.values()) {
+      h.removeStudent(a.getLogin());
+    }
+  }
 }

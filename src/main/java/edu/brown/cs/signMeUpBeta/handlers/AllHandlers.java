@@ -62,7 +62,7 @@ public class AllHandlers {
     Spark.externalStaticFileLocation("src/main/resources/static");
     Spark.exception(Exception.class, new ExceptionPrinter());
     // FreeMarkerEngine freeMarker = createEngine();
-    AccountHandler accountHandler = new AccountHandler(db);
+    AccountHandler accountHandler = new AccountHandler(db, runningHours);
     StudentHandler studentHandler = new StudentHandler(db, runningHours);
     TAHandler taHandler = new TAHandler(db, runningHours);
     QueueHandler queueHandler = new QueueHandler(db, runningHours);
