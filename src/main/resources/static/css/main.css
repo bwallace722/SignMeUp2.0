@@ -82,7 +82,7 @@ h1 {
 	font-weight:bold;
 }
 
-#startHoursBtn, .editCourseBtn {
+#startHoursBtn, .editCourseBtn, #startCourseBtn {
 	margin-left:30%;
 }
 #chosenTime {

@@ -235,6 +235,7 @@ public class TAHandler {
       } catch (Exception e) {
         System.err.println(e);
       }
+      //TODO GET ALL ASSIGNMENTS AND SEND AS VARIABLE, "allAss"
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("currAss", currAss).put("title",
               "SignMeUp 2.0").put("course", courseId).put("questions",

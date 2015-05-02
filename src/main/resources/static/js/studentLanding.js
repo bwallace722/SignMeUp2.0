@@ -41,6 +41,7 @@ $(".checkOffButton").bind('click', function(c) {
 		} else {
 			alert("looks like we've had some trouble. Try again in a bit.");
 		}
+		window.location.href= "/studentLanding/" + courseIdAndLogin ;
 		
 
 	});
