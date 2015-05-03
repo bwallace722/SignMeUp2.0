@@ -56,6 +56,26 @@ public class Database {
     }
     return toReturn;
   }
+  public void removeAssignmentItem(String table, String assignmentName)
+      throws SQLException {
+    String update = "DELETE FROM ? WHERE assignment_name = ?;";
+    PreparedStatement ps = conn.prepareStatement(update);
+    ps.setString(1, table);
+    ps.setString(2, assignmentName);
+    ps.executeUpdate();
+    ps.close();
+  }
+  public String getStudentEmail(String login) throws SQLException {
+    String query = "SELECT email FROM account WHERE login = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, login);
+    ResultSet rs = ps.executeQuery();
+    String toReturn = null;
+    if (rs.next()) {
+      toReturn = rs.getString(1);
+    }
+    return toReturn;
+  }
   /**
    * This method returns all the classes in which a student serves as a teaching
    * student.
@@ -217,7 +237,6 @@ public class Database {
     String query = "DELETE FROM "
         + table
         + " WHERE course_id = ?;";
-    System.out.println(query);
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, course);
     ps.executeUpdate();
@@ -255,7 +274,6 @@ public class Database {
     String query = "INSERT INTO "
         + table
         + " VALUES (?,?,?,?);";
-    System.out.println(query);
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, name);
     ps.setDate(2, java.sql.Date.valueOf(startDate));
@@ -449,13 +467,13 @@ public class Database {
     ps.setString(1, courseId);
     ResultSet rs = ps.executeQuery();
     String curr = "none";
-    java.sql.Date start, end;
+    java.util.Date start, end;
     java.util.Date today = new java.util.Date();
     while (rs.next()) {
-      start = rs.getDate(2);
-      end = rs.getDate(3);
-      if ((today.after(start))
-          && (today.before(end))) {
+      start = new java.util.Date(rs.getDate(2).getTime());
+      end = new java.util.Date(rs.getDate(3).getTime());
+      if (today.after(start)
+          && today.before(end)) {
         curr = rs.getString(1);
       }
     }
@@ -472,11 +490,15 @@ public class Database {
     String name = "";
     while (rs.next()) {
       StringBuilder ass = new StringBuilder();
-      name = rs.getString(1); 
+      name = rs.getString(1);
       start = rs.getDate(2);
       end = rs.getDate(3);
-      ass.append(name + ":" + start +"," + end);
-        allAss.add(ass.toString());
+      ass.append(name
+          + ":"
+          + start
+          + ","
+          + end);
+      allAss.add(ass.toString());
     }
     return allAss;
   }

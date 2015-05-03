@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
@@ -14,6 +15,14 @@ import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.main.RunningHours;
 import edu.brown.cs.signMeUpBeta.onhours.Hours;
 import edu.brown.cs.signMeUpBeta.project.Question;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
@@ -52,6 +61,52 @@ public class TAHandler {
         new FreeMarkerEngine());
     Spark.get("/editCourse/:courseId", new EditCourseHandler(),
         new FreeMarkerEngine());
+    Spark.post("/removeAssessmentItem", new RemoveAssessmentItem());
+    Spark.post("/emailStudent", new EmailStudent());
+  }
+  private class EmailStudent implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      Properties props = new Properties();
+      Session session = Session.getDefaultInstance(props, null);
+      QueryParamsMap qm = req.queryMap();
+      String messageBody = qm.value("message");
+      String studentLogin = qm.value("studentLogin");
+      String taEmail = qm.value("taEmail");
+      String recipient;
+      try {
+        recipient = db.getStudentEmail(studentLogin);
+        Message msg = new MimeMessage(session);
+        msg.setFrom(new InternetAddress(taEmail));
+        msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+            recipient));
+        msg.setSubject("You're Up For Hours!");
+        msg.setText(messageBody);
+        Transport.send(msg);
+      } catch (SQLException | MessagingException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
+      return 1;
+    }
+  }
+  private class RemoveAssessmentItem implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("course");
+      String table = qm.value("table");
+      String assignmentName = qm.value("assignmentName");
+      try {
+        db.removeAssignmentItem(table, assignmentName);
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
+      return 1;
+    }
   }
   private class SaveAssignment implements Route {
     @Override
@@ -197,8 +252,10 @@ public class TAHandler {
   private class TAHoursSetUpHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-      String assStartTag = "<div class=\"assignment row\"><div class=\"col-sm-3 col-sm-push-1\"><h5>";
-      String assDateTag = "</h5></div><div class=\"col-sm-5 col-sm-push-1\"><h5>";
+      String assStartTag =
+          "<div class=\"assignment row\"><div class=\"col-sm-3 col-sm-push-1\"><h5>";
+      String assDateTag =
+          "</h5></div><div class=\"col-sm-5 col-sm-push-1\"><h5>";
       String assEndTag = "</h5></div></div>";
       String courseId = req.params(":courseId");
       String currAss = "none";
@@ -220,18 +277,18 @@ public class TAHandler {
             + qEndTags);
       }
       StringBuilder allAssTags = new StringBuilder();
-      for(String s : allAss) {
+      for (String s : allAss) {
         String[] sSplit = s.split(":");
         String name = sSplit[0];
         String date = sSplit[1];
         allAssTags.append(assStartTag + name + assDateTag + date + assEndTag);
+
       }
       // System.out.println(courseId);
       Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
-          .put("allAss", allAssTags.toString())
-          .put("currAss", currAss).put("questions", qs.toString())
-          .put("course",courseId).build();
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("allAss",
+              allAssTags.toString()).put("currAss", currAss).put("questions",
+              qs.toString()).put("course", courseId).build();
       return new ModelAndView(variables, "taHoursSetUp.html");
     }
   }
@@ -274,7 +331,6 @@ public class TAHandler {
   private class TAOnHoursHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-
       String courseId = req.params(":courseId");
       Hours hours = runningHours.getHoursForCourse(courseId);
       List<Question> questions = null;
@@ -283,16 +339,13 @@ public class TAHandler {
         questions = hours.getQuestions();
         timeLim = hours.getTimeLim();
       }
-
       String currAss = "none";
       try {
         currAss = db.getCurrAssessment(courseId);
-
       } catch (Exception e) {
         System.err.println(e);
       }
       StringBuilder questionsStr = getQuestions(questions);
-
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("currAss", currAss).put("title",
               "SignMeUp 2.0").put("course", courseId).put("questions",
