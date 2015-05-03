@@ -217,7 +217,6 @@ public class Database {
     String query = "DELETE FROM "
         + table
         + " WHERE course_id = ?;";
-    System.out.println(query);
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, course);
     ps.executeUpdate();
@@ -255,7 +254,6 @@ public class Database {
     String query = "INSERT INTO "
         + table
         + " VALUES (?,?,?,?);";
-    System.out.println(query);
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, name);
     ps.setDate(2, java.sql.Date.valueOf(startDate));
@@ -449,13 +447,13 @@ public class Database {
     ps.setString(1, courseId);
     ResultSet rs = ps.executeQuery();
     String curr = "none";
-    java.sql.Date start, end;
+    java.util.Date start, end;
     java.util.Date today = new java.util.Date();
     while (rs.next()) {
-      start = rs.getDate(2);
-      end = rs.getDate(3);
-      if ((today.after(start))
-          && (today.before(end))) {
+      start = new java.util.Date(rs.getDate(2).getTime());
+      end = new java.util.Date(rs.getDate(3).getTime());
+      if (today.after(start)
+          && today.before(end)) {
         curr = rs.getString(1);
       }
     }
