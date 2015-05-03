@@ -30,7 +30,7 @@ function startHours() {
 }
 
 function taCourseSetUp() {
-	window.location.href = "/courseSetUp/"+courseId;
+	window.location.href = "/editCourse/"+courseId;
 }
 
 
@@ -64,7 +64,9 @@ function setTimeLimit() {
 	var postParameters = {"newTimeLimit": newTimeLim};
 	$.post(postUrl, postParameters, function(responseJSON) {
 		if(responseJSON == 1) {
-			alert("The time limit has been changed for " + courseId + " hours");
+			
+			var timeLimMinutes = document.getElementById("timeLimMinutes").innerHTML;
+			timeLimMinutes = newTimeLim;
 		} else {
 			alert("The time limit could not be changed for " + courseId + " hours." +
 					"Try again.");
@@ -72,4 +74,9 @@ function setTimeLimit() {
 
 	});
 	
+}
+
+
+function startAnalytics() {
+	window.location.href="/analytics_home";
 }

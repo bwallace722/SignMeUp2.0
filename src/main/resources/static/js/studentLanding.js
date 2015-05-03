@@ -19,14 +19,6 @@ var OFF_HOURS_MESSAGE = "There are not hours right now. " +
 function myCourses() {
 	window.location.href = "/courses/" + login;
 }
-
-$(".labConfirm").hide(0);
-
-$(".labCheckOff").bind('click', function(l){
-	$(".labHeader").hide(0);
-	$(".labConfirm").show();
-});
-
 $(".checkOffButton").bind('click', function(c) {
 	//post to queue
 	//success: send alert via email too (?)

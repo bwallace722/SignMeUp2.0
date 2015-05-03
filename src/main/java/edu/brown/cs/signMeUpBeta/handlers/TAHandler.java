@@ -50,6 +50,8 @@ public class TAHandler {
     Spark.post("/addCourse/:courseId", new AddCourseToDatabase());
     Spark.get("/createCourse/:login", new CreateCourseHandler(),
         new FreeMarkerEngine());
+    Spark.get("/editCourse/:courseId", new EditCourseHandler(),
+        new FreeMarkerEngine());
   }
   private class SaveAssignment implements Route {
     @Override
@@ -145,6 +147,45 @@ public class TAHandler {
       return 1;
     }
   }
+  
+  private class EditCourseHandler implements TemplateViewRoute {
+    @Override
+    public ModelAndView handle(final Request req, final Response res) {
+      String courseId = req.params(":courseId");
+      StringBuilder assList = new StringBuilder();
+      String tableTags =
+          "<table class=\"table table-hover courseInfoTable\">"
+              + "<thead><tr><th>Name</th><th>Start Date</th><th>End Date</th>"
+              + "</tr></thead><tbody id=\"courseInfoTableBody\">";
+      String closeTableTags = "</tbody></table>";
+      assList.append(tableTags);
+      String startTags = "<tr class=\"clickable-row\" data-toggle=\"modal\" data-target=\"#assModal\">"
+          + "<td class=\"itemName\">";
+      String middleTags = "</td><td>";
+      String endTags = "</td></tr>";
+      List<String> allAss = new ArrayList<String>();
+      try {
+        allAss = db.getAllAssessments(courseId);
+      } catch (Exception e) {
+        System.err.println(e);
+      }
+      StringBuilder allAssTags = new StringBuilder();
+      for(String s : allAss) {
+        String[] sSplit = s.split(":");
+        String name = sSplit[0];
+        String[] date = sSplit[1].split(",");
+        String start = date[0];
+        String end = date[1];
+        assList.append(startTags + name + middleTags + start + middleTags + end + endTags);
+      }
+      assList.append(closeTableTags);
+      Map<String, Object> variables =
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
+          .put("course", courseId)
+          .put("allAss", assList.toString()).build();
+      return new ModelAndView(variables, "taEditCourse.html");
+    }
+  }
   private class CreateCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
@@ -182,10 +223,8 @@ public class TAHandler {
       for(String s : allAss) {
         String[] sSplit = s.split(":");
         String name = sSplit[0];
-        String[] date = sSplit[1].split(",");
-        String start = "Start:" + date[0];
-        String end = ", End:" + date[1];
-        allAssTags.append(assStartTag + name + assDateTag + start + end + assEndTag);
+        String date = sSplit[1];
+        allAssTags.append(assStartTag + name + assDateTag + date + assEndTag);
       }
       // System.out.println(courseId);
       Map<String, Object> variables =
@@ -280,13 +319,9 @@ public class TAHandler {
       String newTimeLimit = qm.value("newTimeLimit");
       Hours hours = runningHours.getHoursForCourse(courseId);
       hours.setTimeLim(Integer.parseInt(newTimeLimit));
-      // System.out.println(courseId);
-      // send list of students on queue
-      // send list of added students on queue? whichever is faster/better
-      Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).build();
-      return null;
+      //TODO KIERAN: this method never returns one. where is it getting stuck?
+      System.out.println("hi");
+      return 1;
     }
   }
   private class AddQuestionForHours implements Route {
@@ -297,8 +332,7 @@ public class TAHandler {
       String question = qm.value("newQuestion");
       String assessmentName = qm.value("name");
       Question questionObject;
-      String currProject = "fix"; // TODO: KAMILLE: make the front end store the
-                                  // curr project at some point
+      String currProject = "fix";
       try {
         questionObject =
             db.addQuestion(assessmentName, question, courseId, currProject);

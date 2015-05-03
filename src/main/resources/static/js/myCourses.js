@@ -51,7 +51,3 @@ function addCourses() {
 	var url = "/addCourses/"+user;
 	window.location.href = url;
 }
-
-function startAnalytics() {
-	window.location.href="/analytics_home";
-}

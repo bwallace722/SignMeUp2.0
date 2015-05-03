@@ -18,9 +18,16 @@
     <br>
     <br>
     <br>
-  <div class="container">
+  <div class="container panel">
   <!--header changes once time is selected.-->
 
+<div class="row" style="background-color: #000; border-bottom: 2px solid #fff;">
+<h1>Please input all the course information below before starting the course.</h1>
+</div>
+   	<div class="row">
+        <a id="startCourseBtn" onclick="finishCourseSetUp()" class="btn btn-success btn-lg">Start Course</a>
+	</div>
+	<hr>
 <div class="row">
 <div class="asgnInterview col-sm-4">
   <h1> Assignments </h1>
@@ -150,10 +157,11 @@
 
           </div>
   </div>
-        <a id="startCourseBtn" onclick="finishCourseSetUp()" class="btn btn-primary btn-lg">Start Course</a>
 
   <!--should ta's individually build in their hours?-->
   </div>
+  <br>
+
 </div>
        <!-- Again, we're serving up the unminified source for clarity. -->
      <script src="../js/jquery-2.1.1.js"></script>
