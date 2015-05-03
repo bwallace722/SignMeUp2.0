@@ -29,47 +29,51 @@
      <div class="panel-body" id="userCoursePanel">
 				${userCourseList}
 				
-				<a class="btn btn-primary btn-sm" data-toggle="modal" data-target="#coursesModal">Edit Courses</a>
+				<a class="btn btn-primary btn-sm editCourseBtn" data-toggle="modal" data-target="#coursesModal">Edit Courses</a>
 				
      <!--loop through classes to display, add a button to drop class for each-->
       </div>
-      <a class="btn btn-primary btn-lg" onclick="startAnalytics()">Analytics</a>
+
             <div class="modal fade" id="coursesModal" tabindex="-1" role="dialog" aria-labelledby="coursesModalLabel" aria-hidden="true">
-                      <div class="modal-dialog">
+                      <div class="modal-dialog modal-lg">
                         <div class="modal-content">
 
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
-                            <h4 class="modal-title" id="release" style="color: #000; text-align: center;">Edit Courses</h4>
+                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Edit Courses</h4>
                           </div>
                           <div class="modal-body">
                                         <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
-                                        <a class="btn btn-primary btn-sm editCourseBtn" onclick="addCourses()" data-dismiss="modal">Add a Course</a>
-                                        
-                   <hr>
-            <h5 style="color: #000; margin-left:auto; margin-right:auto; width:10%;">or</h5>
+                              <div class="row">
+                              <div class="col-sm-5" id="editCourseModalDiv">
+                                  <a class="btn btn-primary btn-sm editCourseModalBtn" id="addCourseBtn" onclick="addCourses()" data-dismiss="modal">Add a Course</a>
+      </div>
+   							   <div class="col-sm-7" id="editCourseModalDiv">
 
-            <hr>
                                         <form class="edit_form" id="course_form">
                                               <h4 style="color: #000; text-align: center;">Which course do you want to remove?</h4>
-												            <select id="courseDropdown">
+												            <select id="editCourseDropdown">
 												            	${courseDropdown}
 												            <!--to be filled by get request (all classes registerd) -->
 												            </select>
 												
 												<br>
+												<br>
                                             <div class="form-actions">
-                                                <a class="btn btn-primary btn-sm editCourseBtn" data-dismiss="modal" onclick="removeCourse()">Remove Course</a>
+                                            
+                                                <a class="btn btn-primary btn-sm editCourseModalBtn" id="removeCourseBtn" data-dismiss="modal" onclick="removeCourse()">Remove Course</a>
                                                 <br>
                                                 <br>
                                             </div>
                                         </form>
+                                        </div>
+                                                                      </div>
                           </div>
                           </div>
                           </div>
                           </div>
      </div>
-
+      <a class="btn btn-primary btn-lg " id="analysisBtn" onclick="startAnalytics()">Analytics</a>
 </div>
 
 

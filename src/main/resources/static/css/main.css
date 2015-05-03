@@ -56,6 +56,10 @@ h1 {
 	margin-right: auto;
 }
 
+.clickable-row:hover {
+    cursor: pointer;
+}
+
 .aptTime {
 	margin-left: 6%;
 	margin-bottom: 5% !important;
@@ -82,7 +86,7 @@ h1 {
 	font-weight:bold;
 }
 
-#startHoursBtn, .editCourseBtn, #startCourseBtn {
+#startHoursBtn, #startCourseBtn {
 	margin-left:30%;
 }
 #chosenTime {
@@ -169,6 +173,29 @@ h3 {
 	background-color: rgba(127,127,127, 0.5);
 	color: #fff;
 	border: none;
+}
+
+#editCourseDropdown {
+	border-radius: 5px;
+	width: 70%;
+	height: 50%;
+	margin-left: 20%;
+	background-color: rgba(48,48,48, 0.5);
+	color: #000;
+}
+.modal-header {
+	border-bottom: 1px solid rgba(48,48,48, 0.5) !important;
+}
+
+.modal-body hr {
+	  border-top: 1px solid rgba(48,48,48, 0.5) !important;
+	  width: 35%;
+	  margin-top: 10%;
+	  margin-bottom: 2%;
+}
+
+#editCourseModalDiv {
+	border-left: 1px solid rgba(48,48,48, 0.5) !important;
 }
 
 #classDropdown option {
@@ -420,9 +447,21 @@ hr {
 }
 
 
-.user_classes a {
+.editCourseBtn {
   float: right;
   color: white;
+}
+
+#analysisBtn {
+	margin-left: 46%;
+}
+
+#addCourseBtn {
+	margin-top: 40%;
+	margin-left: 16%;
+}
+#removeCourseBtn {
+		margin-left: 20%;
 }
 
 

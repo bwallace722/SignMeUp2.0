@@ -156,12 +156,17 @@ public class TAHandler {
   private class TAHoursSetUpHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
+      String assStartTag = "<div class=\"assignment row\"><div class=\"col-sm-3 col-sm-push-1\"><h5>";
+      String assDateTag = "</h5></div><div class=\"col-sm-5 col-sm-push-1\"><h5>";
+      String assEndTag = "</h5></div></div>";
       String courseId = req.params(":courseId");
       String currAss = "none";
       List<Question> questions = new ArrayList<Question>();
+      List<String> allAss = new ArrayList<String>();
       try {
         currAss = db.getCurrAssessment(courseId);
         questions = db.getQuestions(courseId, currAss);
+        allAss = db.getAllAssessments(courseId);
       } catch (Exception e) {
         System.err.println(e);
       }
@@ -173,11 +178,21 @@ public class TAHandler {
             + q.content()
             + qEndTags);
       }
+      StringBuilder allAssTags = new StringBuilder();
+      for(String s : allAss) {
+        String[] sSplit = s.split(":");
+        String name = sSplit[0];
+        String[] date = sSplit[1].split(",");
+        String start = "Start:" + date[0];
+        String end = ", End:" + date[1];
+        allAssTags.append(assStartTag + name + assDateTag + start + end + assEndTag);
+      }
       // System.out.println(courseId);
       Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put(
-              "currAss", currAss).put("questions", qs.toString()).put("course",
-              courseId).build();
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
+          .put("allAss", allAssTags.toString())
+          .put("currAss", currAss).put("questions", qs.toString())
+          .put("course",courseId).build();
       return new ModelAndView(variables, "taHoursSetUp.html");
     }
   }
@@ -220,6 +235,7 @@ public class TAHandler {
   private class TAOnHoursHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
+
       String courseId = req.params(":courseId");
       Hours hours = runningHours.getHoursForCourse(courseId);
       List<Question> questions = null;
@@ -228,14 +244,16 @@ public class TAHandler {
         questions = hours.getQuestions();
         timeLim = hours.getTimeLim();
       }
-      StringBuilder questionsStr = getQuestions(questions);
+
       String currAss = "none";
       try {
         currAss = db.getCurrAssessment(courseId);
+
       } catch (Exception e) {
         System.err.println(e);
       }
-      //TODO GET ALL ASSIGNMENTS AND SEND AS VARIABLE, "allAss"
+      StringBuilder questionsStr = getQuestions(questions);
+
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("currAss", currAss).put("title",
               "SignMeUp 2.0").put("course", courseId).put("questions",
