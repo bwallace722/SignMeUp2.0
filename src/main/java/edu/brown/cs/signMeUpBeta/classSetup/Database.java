@@ -65,6 +65,17 @@ public class Database {
     ps.executeUpdate();
     ps.close();
   }
+  public String getStudentEmail(String login) throws SQLException {
+    String query = "SELECT email FROM account WHERE login = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, login);
+    ResultSet rs = ps.executeQuery();
+    String toReturn = null;
+    if (rs.next()) {
+      toReturn = rs.getString(1);
+    }
+    return toReturn;
+  }
   /**
    * This method returns all the classes in which a student serves as a teaching
    * student.

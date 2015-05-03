@@ -6,6 +6,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Properties;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.gson.Gson;
@@ -14,6 +15,14 @@ import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.main.RunningHours;
 import edu.brown.cs.signMeUpBeta.onhours.Hours;
 import edu.brown.cs.signMeUpBeta.project.Question;
+
+import javax.mail.Message;
+import javax.mail.MessagingException;
+import javax.mail.Session;
+import javax.mail.Transport;
+import javax.mail.internet.InternetAddress;
+import javax.mail.internet.MimeMessage;
+
 import spark.ExceptionHandler;
 import spark.ModelAndView;
 import spark.QueryParamsMap;
@@ -51,6 +60,34 @@ public class TAHandler {
     Spark.get("/createCourse/:login", new CreateCourseHandler(),
         new FreeMarkerEngine());
     Spark.post("/removeAssessmentItem", new RemoveAssessmentItem());
+    Spark.post("/emailStudent", new EmailStudent());
+  }
+  private class EmailStudent implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      Properties props = new Properties();
+      Session session = Session.getDefaultInstance(props, null);
+      QueryParamsMap qm = req.queryMap();
+      String messageBody = qm.value("message");
+      String studentLogin = qm.value("studentLogin");
+      String taEmail = qm.value("taEmail");
+      String recipient;
+      try {
+        recipient = db.getStudentEmail(studentLogin);
+        Message msg = new MimeMessage(session);
+        msg.setFrom(new InternetAddress(taEmail));
+        msg.addRecipient(Message.RecipientType.TO, new InternetAddress(
+            recipient));
+        msg.setSubject("You're Up For Hours!");
+        msg.setText(messageBody);
+        Transport.send(msg);
+      } catch (SQLException | MessagingException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
+      return 1;
+    }
   }
   private class RemoveAssessmentItem implements Route {
     @Override
