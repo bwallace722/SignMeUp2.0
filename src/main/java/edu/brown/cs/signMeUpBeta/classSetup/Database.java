@@ -459,6 +459,25 @@ public class Database {
     }
     return curr;
   }
+  public List<String> getAllAssessments(String courseId) throws SQLException {
+    String query =
+        "SELECT assignment_name, start_date, end_date FROM assignment WHERE course_id = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, courseId);
+    ResultSet rs = ps.executeQuery();
+    List<String> allAss = new ArrayList<String>();
+    java.sql.Date start, end;
+    String name = "";
+    while (rs.next()) {
+      StringBuilder ass = new StringBuilder();
+      name = rs.getString(1); 
+      start = rs.getDate(2);
+      end = rs.getDate(3);
+      ass.append(name + ":" + start +"," + end);
+        allAss.add(ass.toString());
+    }
+    return allAss;
+  }
   public int getNumberQuestionsAsked(String login, String courseId)
       throws SQLException {
     String query =

@@ -6,8 +6,8 @@ var assignments = [];
 var labs = [];
 var exams = [];
 var assignmentCount = 1;
-var examCount = 0;
-var labCount = 0;
+var examCount = 1;
+var labCount = 1;
 
 
 

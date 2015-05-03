@@ -8,6 +8,10 @@ var login = splitCourseAndLogin[1];
 
 var chosenTimeString = "Your appointment time <br>";
 
+function myCourses() {
+	window.location.href = "/courses/" + login;
+}
+
 $(".confirmApt").bind('click', function(c) {
 	alert("You're signed up for your <time> appointment!");
 });
