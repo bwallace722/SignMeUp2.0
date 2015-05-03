@@ -56,6 +56,15 @@ public class Database {
     }
     return toReturn;
   }
+  public void removeAssignmentItem(String table, String assignmentName)
+      throws SQLException {
+    String update = "DELETE FROM ? WHERE assignment_name = ?;";
+    PreparedStatement ps = conn.prepareStatement(update);
+    ps.setString(1, table);
+    ps.setString(2, assignmentName);
+    ps.executeUpdate();
+    ps.close();
+  }
   /**
    * This method returns all the classes in which a student serves as a teaching
    * student.
@@ -470,11 +479,15 @@ public class Database {
     String name = "";
     while (rs.next()) {
       StringBuilder ass = new StringBuilder();
-      name = rs.getString(1); 
+      name = rs.getString(1);
       start = rs.getDate(2);
       end = rs.getDate(3);
-      ass.append(name + ":" + start +"," + end);
-        allAss.add(ass.toString());
+      ass.append(name
+          + ":"
+          + start
+          + ","
+          + end);
+      allAss.add(ass.toString());
     }
     return allAss;
   }

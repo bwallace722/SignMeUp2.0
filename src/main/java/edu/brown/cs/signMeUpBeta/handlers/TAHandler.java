@@ -50,6 +50,24 @@ public class TAHandler {
     Spark.post("/addCourse/:courseId", new AddCourseToDatabase());
     Spark.get("/createCourse/:login", new CreateCourseHandler(),
         new FreeMarkerEngine());
+    Spark.post("/removeAssessmentItem", new RemoveAssessmentItem());
+  }
+  private class RemoveAssessmentItem implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("course");
+      String table = qm.value("table");
+      String assignmentName = qm.value("assignmentName");
+      try {
+        db.removeAssignmentItem(table, assignmentName);
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
+      return 1;
+    }
   }
   private class SaveAssignment implements Route {
     @Override
@@ -156,8 +174,10 @@ public class TAHandler {
   private class TAHoursSetUpHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-      String assStartTag = "<div class=\"assignment row\"><div class=\"col-sm-3 col-sm-push-1\"><h5>";
-      String assDateTag = "</h5></div><div class=\"col-sm-5 col-sm-push-1\"><h5>";
+      String assStartTag =
+          "<div class=\"assignment row\"><div class=\"col-sm-3 col-sm-push-1\"><h5>";
+      String assDateTag =
+          "</h5></div><div class=\"col-sm-5 col-sm-push-1\"><h5>";
       String assEndTag = "</h5></div></div>";
       String courseId = req.params(":courseId");
       String currAss = "none";
@@ -179,20 +199,26 @@ public class TAHandler {
             + qEndTags);
       }
       StringBuilder allAssTags = new StringBuilder();
-      for(String s : allAss) {
+      for (String s : allAss) {
         String[] sSplit = s.split(":");
         String name = sSplit[0];
         String[] date = sSplit[1].split(",");
-        String start = "Start:" + date[0];
-        String end = ", End:" + date[1];
-        allAssTags.append(assStartTag + name + assDateTag + start + end + assEndTag);
+        String start = "Start:"
+            + date[0];
+        String end = ", End:"
+            + date[1];
+        allAssTags.append(assStartTag
+            + name
+            + assDateTag
+            + start
+            + end
+            + assEndTag);
       }
       // System.out.println(courseId);
       Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
-          .put("allAss", allAssTags.toString())
-          .put("currAss", currAss).put("questions", qs.toString())
-          .put("course",courseId).build();
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("allAss",
+              allAssTags.toString()).put("currAss", currAss).put("questions",
+              qs.toString()).put("course", courseId).build();
       return new ModelAndView(variables, "taHoursSetUp.html");
     }
   }
@@ -235,7 +261,6 @@ public class TAHandler {
   private class TAOnHoursHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-
       String courseId = req.params(":courseId");
       Hours hours = runningHours.getHoursForCourse(courseId);
       List<Question> questions = null;
@@ -244,16 +269,13 @@ public class TAHandler {
         questions = hours.getQuestions();
         timeLim = hours.getTimeLim();
       }
-
       String currAss = "none";
       try {
         currAss = db.getCurrAssessment(courseId);
-
       } catch (Exception e) {
         System.err.println(e);
       }
       StringBuilder questionsStr = getQuestions(questions);
-
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("currAss", currAss).put("title",
               "SignMeUp 2.0").put("course", courseId).put("questions",
