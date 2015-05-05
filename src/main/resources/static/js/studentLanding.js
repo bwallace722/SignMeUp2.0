@@ -39,11 +39,7 @@ $(".checkOffButton").bind('click', function(c) {
 			alert("looks like we've had some trouble. Try again in a bit.");
 		}
 		window.location.href= "/studentLanding/" + courseIdAndLogin ;
-		
-
 	});
-	
-
 });
 
 $(".hoursSignUp").bind('click', function(h) {
