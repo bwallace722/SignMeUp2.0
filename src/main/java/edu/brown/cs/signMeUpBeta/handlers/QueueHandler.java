@@ -59,43 +59,6 @@ public class QueueHandler {
     Spark.post("/cancelAppointment", new CancelAppointment());
     Spark.post("/checkOffAppointment", new CheckOffAppointment());
   }
-  public int addToQueue(String login, String courseId, String[] questions,
-      String otherQ) {
-    Queue queue = runningHours.getQueueForCourse(courseId);
-    Hours hours = runningHours.getHoursForCourse(courseId);
-    if (queue.alreadyOnQueue(login)
-        || hours.alreadyMadeAppointment(login)) {
-      return 2;
-    }
-    String currAss = hours.getCurrAssessment();
-    try {
-      if (db.getLastProject(login, courseId) != currAss) {
-        db.resetNumQuestions(login, courseId);
-      }
-      db.updateStudentInfo(login, courseId, questions, currAss);
-    } catch (Exception e) {
-      System.err.println("ERROR: "
-          + e);
-    }
-    int toReturn = 0;
-    Account account;
-    int numQuestions = 0;
-    try {
-      account = db.getAccount(login);
-      numQuestions = db.getNumberQuestionsAsked(login, courseId);
-    } catch (Exception e) {
-      System.err.println("ERROR: sql error on add student to queue");
-      return 0;
-    }
-    queue.add(account, (1 / (numQuestions + 1)));
-    hours.updateQuestions(login,
-        new ArrayList<String>(Arrays.asList(questions)));
-    if (otherQ != null) {
-      hours.incrementQuestion(otherQ);
-    }
-    toReturn = 1;
-    return toReturn;
-  }
   /**
    * This handler checks to see if the hours for a particular class have started
    * running yet.
@@ -327,11 +290,38 @@ public class QueueHandler {
       QueryParamsMap qm = req.queryMap();
       String courseId = qm.value("course");
       String login = qm.value("login");
-      String qList = qm.value("questions");
-      String otherQ = qm.value("otherQ");
-      String[] questions = qList.split("/");
+      String topic = qm.value("topic");
+      String question = qm.value("question");
       // System.out.println("login: "+login+", course: "+courseId+", questions: "+questions[0]+", other: "+otherQ);
-      return addToQueue(login, courseId, questions, otherQ);
+      
+      //TODO: increment topic count, create question
+      
+      
+      Queue queue = runningHours.getQueueForCourse(courseId);
+      Hours hours = runningHours.getHoursForCourse(courseId);
+      if (queue.alreadyOnQueue(login)
+          || hours.alreadyMadeAppointment(login)) {
+        return 2;
+      }
+      int toReturn = 0;
+      Account account;
+      int numQuestions = 0;
+      try {
+        account = db.getAccount(login);
+        numQuestions = db.getNumberQuestionsAsked(login, courseId, hours.getCurrAssessment());
+      } catch (Exception e) {
+        System.err.println("ERROR: sql error on add student to queue");
+        return 0;
+      }
+      queue.add(account, (1 / (numQuestions + 1)));
+//      hours.updateQuestions(login,
+////          new ArrayList<String>(Arrays.asList(questions)));
+////      if (otherQ != null) {
+////        hours.incrementQuestion(otherQ);
+//      }
+      toReturn = 1;
+      return toReturn;
+//      return addToQueue(login, courseId, questions, otherQ);
     }
   }
   private class UpdateQueueHandler implements Route {
@@ -374,9 +364,8 @@ public class QueueHandler {
       String courseId = qm.value("courseId");
       String login = qm.value("login");
       String time = qm.value("time");
-      String qList = qm.value("questions");
-      String otherQ = qm.value("otherQ");
-      String[] questions = qList.split("/");
+      String topic = qm.value("topic");
+      String question = qm.value("question");
       Queue queue = runningHours.getQueueForCourse(courseId);
       Hours hours = runningHours.getHoursForCourse(courseId);
       if (queue.alreadyOnQueue(login)) {
@@ -384,10 +373,7 @@ public class QueueHandler {
       }
       String currAss = hours.getCurrAssessment();
       try {
-        if (db.getLastProject(login, courseId) != currAss) {
-          db.resetNumQuestions(login, courseId);
-        }
-        db.updateStudentInfo(login, courseId, questions, currAss);
+        db.incrementTopicCount(login, courseId, questionc, currAss);
       } catch (Exception e) {
         System.err.println("ERROR: "
             + e);
