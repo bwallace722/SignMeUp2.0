@@ -29,12 +29,14 @@
 
      <!--on hours sign up button (take you to that class' sign up for hours pages)-->
 
-     <div class="panel-body" id="assignmentsCoursePanel">
+          <div class="panel-body" >
+     	<div id="assignmentsCoursePanel">
 				${allAss}
-					<a class="btn btn-primary btn-sm editCourseBtn">Add Assignment</a>
+					
      <!--loop through classes to display, add a button to drop class for each-->
       </div>
-
+      <a class="btn btn-primary btn-sm editCourseBtn" data-toggle="modal" data-target="#addAssModal">New Assignment</a>
+		</div>
             <div class="modal fade" id="assModal" tabindex="-1" role="dialog" aria-labelledby="assModalLabel" aria-hidden="true">
                       <div class="modal-dialog modal-lg">
                         <div class="modal-content">
@@ -75,7 +77,44 @@
                           </div>
                           </div>
                           </div>
-     </div>
+
+            <div class="modal fade" id="addAssModal" tabindex="-1" role="dialog" aria-labelledby="addAssModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
+                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Create a new assignment</h4>
+                          </div>
+                          <div class="modal-body">
+                                        <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
+                              <div class="row">
+                              <div class="col-sm-12" id="editCourseModalDiv">
+                                 <form class="edit_form" id="edit_course_form">
+									<label class="col-sm-5" for="assignmentName">Name</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="asgnName">
+						            <br>
+						            <br>
+						            <label class="col-sm-5" for="start">Start Date</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="asgnStartDate">
+						            <br>
+						            <br>
+						            <label class="col-sm-5" for="end">End Date</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="asgnEndDate">
+						
+						            <br>
+												<br>
+												<br>
+                                            <div class="form-actions">
+                                                <a class="btn btn-primary btn-block editCourseModalBtn" id="addAssBtn" data-dismiss="modal" onclick="addAss()">Save Assignment</a>
+                                            </div>
+                                        </form>
+                                                            </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
      </div>
      
        <div class="labs">
@@ -86,9 +125,11 @@
 
      <!--on hours sign up button (take you to that class' sign up for hours pages)-->
 
-     <div class="panel-body" id="labsCoursePanel">
+     <div class="panel-body" >
+     	<div id="labsCoursePanel">
 				${allLabs}
-			<a class="btn btn-primary btn-sm editCourseBtn">Add Lab</a>
+				</div>
+			<a class="btn btn-primary btn-sm editCourseBtn" data-toggle="modal" data-target="#addLabModal">New Lab</a>
      <!--loop through classes to display, add a button to drop class for each-->
       </div>
 
@@ -98,7 +139,7 @@
 
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
-                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Edit Assignment</h4>
+                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Edit Lab</h4>
                           </div>
                           <div class="modal-body">
                                         <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
@@ -120,10 +161,10 @@
 												<br>
 												<br>
                                             <div class="form-actions">
-                                                <a class="btn btn-primary btn-sm editCourseModalBtn" id="changeLabBtn" data-dismiss="modal" onclick="changeLab()">Change Lab</a>
+                                                <a class="btn btn-primary btn-block editCourseModalBtn" id="changeLabBtn" data-dismiss="modal" onclick="changeLab()">Change Lab</a>
                                                 <br>
                                                 <br>
-                                                <a class="btn btn-danger btn-sm editCourseModalBtn" id="removeLabBtn" data-dismiss="modal" onclick="removeLab()">Remove Lab</a>
+                                                <a class="btn btn-danger btn-block editCourseModalBtn" id="removeLabBtn" data-dismiss="modal" onclick="removeLab()">Remove Lab</a>
                                             </div>
                                         </form>
                                                             </div>
@@ -132,6 +173,43 @@
                           </div>
                           </div>
                           </div>
+          <div class="modal fade" id="addLabsModal" tabindex="-1" role="dialog" aria-labelledby="addLabsModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
+                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Create a new lab!</h4>
+                          </div>
+                          <div class="modal-body">
+                                        <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
+                              <div class="row">
+                              <div class="col-sm-12" id="editCourseModalDiv">
+                                 <form class="edit_form" id="edit_course_form">
+									<label class="col-sm-5" for="labName">Name</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="labName">
+						            <br>
+						            <br>
+						            <label class="col-sm-5" for="start">Start Date</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="labStartDate">
+						            <br>
+						            <br>
+						            <label class="col-sm-5" for="end">End Date</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="labEndDate">
+						
+						            <br>
+												<br>
+												<br>
+                                            <div class="form-actions">
+                                                <a class="btn btn-primary btn-block editCourseModalBtn" id="addLabBtn" data-dismiss="modal" onclick="addLab()">Save Lab</a>
+                                            </div>
+                                        </form>
+                                                            </div>
+                </div>
+                </div>
+                </div>
+                </div>
+                </div>
      </div>
      </div>
      
@@ -142,11 +220,13 @@
      <div class="user_classes panel">
 
      <!--on hours sign up button (take you to that class' sign up for hours pages)-->
-
-     <div class="panel-body" id="examsCoursePanel">
+     <div class="panel-body" >
+     	<div id="examsCoursePanel">
+     
 				${allExams}
-					<a class="btn btn-primary btn-sm editCourseBtn">Add Exam</a>					
-     <!--loop through classes to display, add a button to drop class for each-->
+      </div>
+      <a class="btn btn-primary btn-sm editCourseBtn" data-toggle="modal" data-target="#addExamModal">New Exam</a>					
+      
       </div>
 
             <div class="modal fade" id="examsModal" tabindex="-1" role="dialog" aria-labelledby="examsModalLabel" aria-hidden="true">
@@ -155,7 +235,7 @@
 
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
-                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Edit Assignment</h4>
+                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Edit Exam</h4>
                           </div>
                           <div class="modal-body">
                                         <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
@@ -177,10 +257,10 @@
 												<br>
 												<br>
                                             <div class="form-actions">
-                                                <a class="btn btn-primary btn-sm editCourseModalBtn" id="changeExamBtn" data-dismiss="modal" onclick="changeExam()">Change Lab</a>
+                                                <a class="btn btn-primary btn-block editCourseModalBtn" id="changeExamBtn" data-dismiss="modal" onclick="changeExam()">Change Exam</a>
                                                 <br>
                                                 <br>
-                                                <a class="btn btn-danger btn-sm editCourseModalBtn" id="removeExamBtn" data-dismiss="modal" onclick="removeExam()">Remove Lab</a>
+                                                <a class="btn btn-danger btn-block editCourseModalBtn" id="removeExamBtn" data-dismiss="modal" onclick="removeExam()">Remove Exam</a>
                                             </div>
                                         </form>
                                                             </div>
@@ -189,7 +269,43 @@
                           </div>
                           </div>
                           </div>
-     </div>
+                 <div class="modal fade" id="addExamModal" tabindex="-1" role="dialog" aria-labelledby="addExamModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
+                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Create a new exam!</h4>
+                          </div>
+                          <div class="modal-body">
+                                        <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
+                              <div class="row">
+                              <div class="col-sm-12" id="editCourseModalDiv">
+                                 <form class="edit_form" id="edit_course_form">
+									<label class="col-sm-5" for="examName">Name</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="examName">
+						            <br>
+						            <br>
+						            <label class="col-sm-5" for="start">Start Date</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="examStartDate">
+						            <br>
+						            <br>
+						            <label class="col-sm-5" for="end">End Date</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="examEndDate">
+						
+						            <br>
+												<br>
+												<br>
+                                            <div class="form-actions">
+                                                <a class="btn btn-primary btn-block editCourseModalBtn" id="addExamBtn" data-dismiss="modal" onclick="addExam()">Save Exam</a>
+                                            </div>
+                                        </form>
+                                                            </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
      </div>  
 
 </div>

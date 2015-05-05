@@ -14,14 +14,15 @@
   </head>
   <body>
   <div class="container">
-  <div class="row">
-  <div class="col-sm-12 setUp">
-
+<a class="btn btn-success btn-lg" style="background-color: #000; border-color: #000;"onclick="startTimer()">Start Timer</a>
      <h1> ${course} Hours</h1>
+     <br>
+	 <br>
+         <div class="row" style="padding-left:6%;">
 
   <!--NOTE: each time the page is reloaded, each of these divs must be repopulated-->
     <!--div for stduents in line-->
-     <div class="col-sm-7 panel">
+     <div class="col-sm-5 panel">
             <h3>Queue</h3>
      <div id="queue" class="queue">
 		</div>
@@ -38,10 +39,10 @@
              </div>
         </div>
 
-<a class="btn btn-success btn-lg" style="background-color: #000; border-color: #000;"onclick="startTimer()">Start Timer</a>
+
 <div id="timeLimit">${time}</div>
 
-      <div class="col-sm-5">
+     <div class="col-sm-5 panel">
       <!--loop through questions from db-->
 
      <div class="onHoursBlock" id="appointments">
@@ -73,13 +74,12 @@
 
      <br>
        </div>
-    <div class="setUp row">
-            <a class="btn btn-success btn-lg" onclick="returnToSetup()">Return to Setup</a>
+    </div>
+    <div class="row">
+            <a class="setupBtn btn btn-success btn-lg" onclick="returnToSetup()">Return to Setup</a>
+            <a class="setupBtn btn btn-danger btn-lg" onclick="endHours()">End Hours</a>
      </div>
-          <div class="setUp row">
-            <a class="btn btn-danger btn-lg" onclick="endHours()">End Hours</a>
-     </div>
-          </div>
+
      </div>
 </div>
 

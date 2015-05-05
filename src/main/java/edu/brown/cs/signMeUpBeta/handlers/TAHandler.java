@@ -239,9 +239,7 @@ public class TAHandler {
           + "<thead><tr><th>Name</th><th>Start Date</th><th>End Date</th>"
           + "</tr></thead><tbody id=\"courseInfoTableBody\">";
       String closeTableTags = "</tbody></table>";
-      assList.append(tableTags);
-      labList.append(tableTags);
-      examList.append(tableTags);
+
       String assStartTags =
           "<tr class=\"clickable-row ass\" data-toggle=\"modal\" data-target=\"#assModal\">"
               + "<td class=\"itemName\">";
@@ -264,38 +262,50 @@ public class TAHandler {
         System.err.println(e);
       }
       StringBuilder allAssTags = new StringBuilder();
-      for (String s : allAss) {
-        String[] sSplit = s.split(":");
-        String name = sSplit[0];
-        String[] date = sSplit[1].split(",");
-        String start = date[0];
-        String end = date[1];
-        assList.append(assStartTags
-            + name
-            + middleTags
-            + start
-            + middleTags
-            + end
-            + endTags);
+      if(allAss.size() > 0) {
+        assList.append(tableTags);
+        for (String s : allAss) {
+          String[] sSplit = s.split(":");
+          String name = sSplit[0];
+          String[] date = sSplit[1].split(",");
+          String start = date[0];
+          String end = date[1];
+          assList.append(assStartTags
+              + name
+              + middleTags
+              + start
+              + middleTags
+              + end
+              + endTags);
+        }
+        assList.append(closeTableTags);
+      } else {
+        assList.append("none");
       }
-      assList.append(closeTableTags);
       StringBuilder allLabsTags = new StringBuilder();
-      for (String s : allLabs) {
-        String[] sSplit = s.split(":");
-        String name = sSplit[0];
-        String[] date = sSplit[1].split(",");
-        String start = date[0];
-        String end = date[1];
-        labList.append(labStartTags
-            + name
-            + middleTags
-            + start
-            + middleTags
-            + end
-            + endTags);
+      if(allLabs.size() > 0) {
+        labList.append(tableTags);
+        for (String s : allLabs) {
+          String[] sSplit = s.split(":");
+          String name = sSplit[0];
+          String[] date = sSplit[1].split(",");
+          String start = date[0];
+          String end = date[1];
+          labList.append(labStartTags
+              + name
+              + middleTags
+              + start
+              + middleTags
+              + end
+              + endTags);
+        }
+        labList.append(closeTableTags);
+      } else {
+        labList.append("none");
       }
-      labList.append(closeTableTags);
       StringBuilder allExamsTags = new StringBuilder();
+      if(allExams.size() > 0) {
+        examList.append(tableTags);
       for (String s : allExams) {
         String[] sSplit = s.split(":");
         String name = sSplit[0];
@@ -311,6 +321,9 @@ public class TAHandler {
             + endTags);
       }
       examList.append(closeTableTags);
+      } else {
+        examList.append("none");
+      }
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("allAss", assList.toString()).put("allExams",

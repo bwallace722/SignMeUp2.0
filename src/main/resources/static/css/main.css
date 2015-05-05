@@ -230,10 +230,19 @@ h3 {
 	color: #000;
 }
 
+#examsCoursePanel h4, #labsCoursePanel h4, #assignmentsCoursePanel h4 {
+	text-align:center;
+}
+
 #addCoursePanel h4 {
 	text-align: center;
 	font-weight: bold;
 	color: #fff;
+}
+
+.setupBtn {
+	margin-left: auto;
+	margin-right: auto;
 }
 
 .radioSelections label {
@@ -304,11 +313,12 @@ form button {
 
 .queue {
   width: 90%;
-  height: 500px;
+  height: 480px;
   margin-left: 5%;
   background-color: rgba(0,0,0, 0.7);
   border-radius: 5px;
   padding-top: 1%;
+  margin-bottom: 10%;
 }
 
 .currQs{
@@ -319,10 +329,10 @@ form button {
 
 
 .setUp a {
-  float: right;
   color: rgb(255, 255, 255) !important;
   margin-top: 1%;
-  margin-right: 3%;
+  margin-right: auto;
+  margin-left:auto;
   margin-bottom: 5%;
 }
 
@@ -400,7 +410,11 @@ hr {
 }
 
 .makeAppointment {
-	
+	margin-top:7%;
+}
+.hoursSignUp, .labCheckOff {
+	  padding-top: 3%;
+	  margin-top: 5%;
 }
 
 .makeAppointment, .hoursSignUp, .labCheckOff {
@@ -409,14 +423,15 @@ hr {
   background-color:  rgba(40, 40, 40, 0.7);
   border-radius: 5px;
   text-align: center;
-  padding-top: 3%;
-  margin-top: 5%;
+  
+
   float: left;
   margin-left: 15%;
   border: 1px solid rgb(40, 40, 40);
   text-decoration: none;
   color: #fff;
 }
+
 
 .makeAppointment:hover, .hoursSignUp:hover, .labCheckOff:hover {
 	  background-color:  rgba(127, 140, 140, 0.7);
