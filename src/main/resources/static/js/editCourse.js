@@ -81,15 +81,15 @@ function addAss() {
 	var newAsgnStart = document.getElementById("newAsgnStartDate");
 	var newAsgnEnd = document.getElementById("newAsgnEndDate");
 	if(validateFormGroup(newAsgnName, newAsgnStart, newAsgnEnd)) {
-	var postParameters = {"table": "assignment", "courseId": courseId, "name": newAsgnName.value, "start": newAsgnStart.value, "end": newAsgnEnd.value};
-	$.post("/addAssessment", postParameters, function(responseJSON) {
-		console.log(responseJSON);
-		if(responseJSON == 1) {
-			
-		} else {
-			alert("problems");
-		}
-	});
+		var postParameters = {"table": "assignment", "courseId": courseId, "name": newAsgnName.value, "start": newAsgnStart.value, "end": newAsgnEnd.value};
+		$.post("/addAssessment", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+			if(responseJSON == 1) {
+				
+			} else {
+				alert("problems");
+			}
+		});
 	} else {
 		alert("There was a problem with your form, please attempt to create the assignment again.");
 	}
@@ -141,7 +141,7 @@ function removeLab() {
 				alert("problems");
 			}
 		});
-	}
+	} 
 }
 
 function addLab() {
@@ -239,6 +239,7 @@ function highlightField(field, id) {
 }
 
 function validateDate(s) {
+	var toReturn = true;
 	console.log(s.value);
 	if(s.value.length == 0) {
 		toReturn = false;
@@ -256,6 +257,7 @@ function validateDate(s) {
 			highlightField(s);
 		}
 	}
+	return toReturn;
 }
 
 
