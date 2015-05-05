@@ -233,33 +233,24 @@ public class TAHandler {
     public ModelAndView handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
       StringBuilder assList = new StringBuilder();
-<<<<<<< HEAD
+      StringBuilder labList = new StringBuilder();
+      StringBuilder examList = new StringBuilder();
       String tableTags = "<table class=\"table table-hover courseInfoTable\">"
           + "<thead><tr><th>Name</th><th>Start Date</th><th>End Date</th>"
           + "</tr></thead><tbody id=\"courseInfoTableBody\">";
       String closeTableTags = "</tbody></table>";
       assList.append(tableTags);
-      String startTags =
-          "<tr class=\"clickable-row\" data-toggle=\"modal\" data-target=\"#assModal\">"
-              + "<td class=\"itemName\">";
-=======
-      StringBuilder labList = new StringBuilder();
-      StringBuilder examList = new StringBuilder();
-      String tableTags =
-          "<table class=\"table table-hover courseInfoTable\">"
-              + "<thead><tr><th>Name</th><th>Start Date</th><th>End Date</th>"
-              + "</tr></thead><tbody id=\"courseInfoTableBody\">";
-      String closeTableTags = "</tbody></table>";
-      assList.append(tableTags);
       labList.append(tableTags);
       examList.append(tableTags);
-      String assStartTags = "<tr class=\"clickable-row ass\" data-toggle=\"modal\" data-target=\"#assModal\">"
-          + "<td class=\"itemName\">";
-      String labStartTags = "<tr class=\"clickable-row lab\" data-toggle=\"modal\" data-target=\"#labsModal\">"
-          + "<td class=\"itemName\">";
-      String examStartTags = "<tr class=\"clickable-row exam\" data-toggle=\"modal\" data-target=\"#examModal\">"
-          + "<td class=\"itemName\">";
->>>>>>> 4a6e3227f6656d79add93ecfbb5c7e20aa340ce1
+      String assStartTags =
+          "<tr class=\"clickable-row ass\" data-toggle=\"modal\" data-target=\"#assModal\">"
+              + "<td class=\"itemName\">";
+      String labStartTags =
+          "<tr class=\"clickable-row lab\" data-toggle=\"modal\" data-target=\"#labsModal\">"
+              + "<td class=\"itemName\">";
+      String examStartTags =
+          "<tr class=\"clickable-row exam\" data-toggle=\"modal\" data-target=\"#examModal\">"
+              + "<td class=\"itemName\">";
       String middleTags = "</td><td>";
       String endTags = "</td></tr>";
       List<String> allAss = new ArrayList<String>();
@@ -279,52 +270,51 @@ public class TAHandler {
         String[] date = sSplit[1].split(",");
         String start = date[0];
         String end = date[1];
-<<<<<<< HEAD
-        assList.append(startTags
+        assList.append(assStartTags
             + name
             + middleTags
             + start
             + middleTags
             + end
             + endTags);
-=======
-        assList.append(assStartTags + name + middleTags + start + middleTags + end + endTags);
->>>>>>> 4a6e3227f6656d79add93ecfbb5c7e20aa340ce1
       }
       assList.append(closeTableTags);
-      
       StringBuilder allLabsTags = new StringBuilder();
-      for(String s : allLabs) {
+      for (String s : allLabs) {
         String[] sSplit = s.split(":");
         String name = sSplit[0];
         String[] date = sSplit[1].split(",");
         String start = date[0];
         String end = date[1];
-        labList.append(labStartTags + name + middleTags + start + middleTags + end + endTags);
+        labList.append(labStartTags
+            + name
+            + middleTags
+            + start
+            + middleTags
+            + end
+            + endTags);
       }
       labList.append(closeTableTags);
-      
       StringBuilder allExamsTags = new StringBuilder();
-      for(String s : allExams) {
+      for (String s : allExams) {
         String[] sSplit = s.split(":");
         String name = sSplit[0];
         String[] date = sSplit[1].split(",");
         String start = date[0];
         String end = date[1];
-        examList.append(examStartTags + name + middleTags + start + middleTags + end + endTags);
+        examList.append(examStartTags
+            + name
+            + middleTags
+            + start
+            + middleTags
+            + end
+            + endTags);
       }
       examList.append(closeTableTags);
       Map<String, Object> variables =
-<<<<<<< HEAD
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).put("allAss", assList.toString()).build();
-=======
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
-          .put("course", courseId)
-          .put("allAss", assList.toString())
-          .put("allExams", examList.toString())
-          .put("allLabs", labList).build();
->>>>>>> 4a6e3227f6656d79add93ecfbb5c7e20aa340ce1
+              courseId).put("allAss", assList.toString()).put("allExams",
+              examList.toString()).put("allLabs", labList).build();
       return new ModelAndView(variables, "taEditCourse.html");
     }
   }
