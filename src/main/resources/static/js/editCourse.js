@@ -49,7 +49,7 @@ function changeAss() {
 		$.post("/changeAssessment", postParameters, function(responseJSON) {
 			console.log(responseJSON);
 			if(responseJSON == 1) {
-				
+				window.location.href = "/editCourse/"+courseId;
 			} else {
 				alert("problems");
 			}
@@ -66,7 +66,7 @@ function removeAss() {
 	var postParameters = {"table": "assignment", "courseId": courseId, "name": assName};
 	$.post("/removeAssessment", postParameters, function(responseJSON) {
 		if(responseJSON == 1) {
-			
+			window.location.href = "/editCourse/"+courseId;
 		} else {
 			alert("problems");
 		}
@@ -85,7 +85,7 @@ function addAss() {
 		$.post("/addAssessment", postParameters, function(responseJSON) {
 			console.log(responseJSON);
 			if(responseJSON == 1) {
-				
+				window.location.href = "/editCourse/"+courseId;
 			} else {
 				alert("problems");
 			}
@@ -120,7 +120,7 @@ function changeLab() {
 		$.post("/changeAssessment", postParameters, function(responseJSON) {
 			console.log(responseJSON);
 			if(responseJSON == 1) {
-				
+				window.location.href = "/editCourse/"+courseId;
 			} else {
 				alert("problems");
 			}
@@ -136,7 +136,7 @@ function removeLab() {
 		$.post("/removeAssessment", postParameters, function(responseJSON) {
 			console.log(responseJSON);
 			if(responseJSON == 1) {
-				
+				window.location.href = "/editCourse/"+courseId;
 			} else {
 				alert("problems");
 			}
@@ -154,7 +154,7 @@ function addLab() {
 		$.post("/addAssessment", postParameters, function(responseJSON) {
 			console.log(responseJSON + "- lab");
 			if(responseJSON == 1) {
-				
+				window.location.href = "/editCourse/"+courseId;
 			} else {
 				alert("problems");
 			}
@@ -189,7 +189,7 @@ function changeExam() {
 		$.post("/changeAssessment", postParameters, function(responseJSON) {
 			console.log(responseJSON);
 			if(responseJSON == 1) {
-				
+				window.location.href = "/editCourse/"+courseId;
 			} else {
 				alert("problems");
 			}
@@ -205,7 +205,7 @@ function removeExam() {
 		$.post("/removeAssessment", postParameters, function(responseJSON) {
 			console.log(responseJSON);
 			if(responseJSON == 1) {
-				
+				window.location.href = "/editCourse/"+courseId;
 			} else {
 				alert("problems");
 			}
@@ -222,7 +222,7 @@ function addExam() {
 		$.post("/addAssessment", postParameters, function(responseJSON) {
 			console.log(responseJSON);
 			if(responseJSON == 1) {
-				
+				window.location.href = "/editCourse/"+courseId;
 			} else {
 				alert("problems");
 			}

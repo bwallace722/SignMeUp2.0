@@ -16,6 +16,9 @@ th, td, .container h1, .container h3, .landingHeader h1, .landingHeader h3,
 	font-family: 'Roboto', Verdana, Geneva, sans-serif;
 }
 
+#editCourseBtn {
+	margin-right:5%;
+}
 
 h1 {
   text-align: center;
