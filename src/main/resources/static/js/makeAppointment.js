@@ -1,17 +1,19 @@
 var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 //url contains student
-var courseIdAndLogin = splitURL[splitURL.length -1];
-var splitCourseAndLogin = courseIdAndLogin.split("~");
-var courseId = splitCourseAndLogin[0];
-var login = splitCourseAndLogin[1];
-
+var courseId = splitURL[splitURL.length -1];
+var login = getCookie("login");
 
 var chosenTimeString = "Your appointment time <br>";
 var currAsign = document.getElementById("currAss");
 if(currAsign.innerHTML == "none"){
 	currAsign.innerHTML = "There is no assignment assigned for today.";
 	$("#questionsForApt").hide();
+}
+function getCookie(name) {
+	  var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
+	  var result = regexp.exec(document.cookie);
+	  return (result === null) ? null : result[1];
 }
 
 var aptTimes = document.getElementById("aptTimes");
