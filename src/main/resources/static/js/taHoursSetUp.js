@@ -49,10 +49,9 @@ function addQuestion() {
 	var postParameters = {"newQuestion": newQuestion, "name": assignmentName};
 	$.post(postUrl, postParameters, function(responseJSON) {
 		if(responseJSON == 1) {
-			alert("we've added your question");
 			currSubs.append("<h6>" + newQuestion + "</h6>");
 		} else {
-			alert("We couldn't add your question. Try again.");
+			alert("We couldn't add your question. Refresh this page and try again.");
 		}
 	});
 }
@@ -62,11 +61,10 @@ function setTimeLimit() {
 	
 	var postUrl = "/setHoursTimeLimit/" + courseId;
 	var postParameters = {"newTimeLimit": newTimeLim};
+
 	$.post(postUrl, postParameters, function(responseJSON) {
 		if(responseJSON == 1) {
-			
-			var timeLimMinutes = document.getElementById("timeLimMinutes").innerHTML;
-			timeLimMinutes = newTimeLim;
+			document.getElementById("timeLimMinutes").innerHTML = newTimeLim;
 		} else {
 			alert("The time limit could not be changed for " + courseId + " hours." +
 					"Try again.");

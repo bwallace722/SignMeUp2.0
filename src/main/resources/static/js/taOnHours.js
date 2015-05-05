@@ -5,7 +5,7 @@ var courseId = splitURL[splitURL.length -1];
 //    "<div class=\"col-sm-8 col-sm-push-1\" data-toggle=\"modal\" data-target=\"#queueModal\"><h5>";
 var queueHTMLStart = "<div class=\"row studentOnQueue\" data-toggle=\"modal\" data-target=\"#queueModal\">" +
 "<div class=\"col-sm-8 col-sm-push-1\"><h5>";
-var queueHTMLEnd = "</h5></div></div><br><hr>";
+var queueHTMLEnd = "</h5></div></div><hr>";
 
 var aptHTMLStart = "<div class=\"row aptOnHrs\" data-toggle=\"modal\" data-target=\"#aptModal\"><div class=\"col-sm-5 col-sm-push-1\"><h5>";
 var aptHTMLTime = "</h5></div><div class=\"col-sm-4 col-sm-push-2\"><h5 id=\"aptTime\">";

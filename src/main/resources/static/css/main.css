@@ -1,15 +1,21 @@
-
 body {
   background-color: #6699CC !important;
   background-image: url("../img/bigBrown.jpg");
   background-size: cover;
     background-repeat: no-repeat;
-  font-family: Verdana, Geneva, sans-serif;
+  font-family: 'Roboto', Verdana, Geneva, sans-serif;
   margin-top: 0%;
   margin-left: 0%;
   margin-right: 0%;
   color: #fff !important;
 }
+
+th, td, .container h1, .container h3, .landingHeader h1, .landingHeader h3, 
+#signIn h1, #signUp h1, label, .form-group input, 
+#signInButton, #signUpButton, .modal-title, .modal-body, a {
+	font-family: 'Roboto', Verdana, Geneva, sans-serif;
+}
+
 
 h1 {
   text-align: center;
@@ -470,7 +476,7 @@ a h3:hover {
 
 #addCourseBtn {
 	margin-top: 40%;
-	margin-left: 16%;
+	margin-left: 10%;
 }
 #removeCourseBtn {
 		margin-left: 20%;

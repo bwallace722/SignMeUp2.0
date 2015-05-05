@@ -280,8 +280,11 @@ public class TAHandler {
       for (String s : allAss) {
         String[] sSplit = s.split(":");
         String name = sSplit[0];
-        String date = sSplit[1];
-        allAssTags.append(assStartTag + name + assDateTag + date + assEndTag);
+        String[] date = sSplit[1].split(",");
+        String start = "Start: " + date[0];
+        String end = "<br> End: " + date[1]; 
+        
+        allAssTags.append(assStartTag + name + assDateTag + start + end + assEndTag);
 
       }
       // System.out.println(courseId);
@@ -355,7 +358,7 @@ public class TAHandler {
   }
   private StringBuilder getQuestions(List<Question> questions) {
     String qStartTags = "<div class=\"row question\">";
-    String qEndTags = "</div><br><hr>";
+    String qEndTags = "</div><hr>";
     StringBuilder qs = new StringBuilder();
     for (Question q : questions) {
       qs.append(qStartTags

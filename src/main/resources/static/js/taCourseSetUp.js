@@ -35,7 +35,12 @@ function addAsgn() {
 	}
 	return toReturn;
 }
+bootstrap_alert = function() {}
+bootstrap_alert.warning = function(message) {
+            $('#alert_placeholder').html('<div class="alert alert-success"><a class="close" data-dismiss="alert">×</a><span>'+message+'</span></div>')
+        }
 
+            
 
 function saveAssignments() {
 	console.log(assignmentCount);
@@ -56,7 +61,9 @@ function postAsngs() {
 
 		console.log(postParameters);
 		$.post("/saveAssignment", postParameters, function(responseJSON) {
-			console.log(responseJSON);
+			console.log(responseJSON + " - assignments saved");
+			
+			bootstrap_alert.warning('Your text goes here');
 		});
 	}
 }
@@ -209,6 +216,8 @@ function removeLab() {
 function highlightField(field) {
 	field.style.borderColor = "red";
 	field.style.borderWidth = "2px";
+	console.log(field);
+	field.tooltip({ placement: 'right'});
 }
 
 function validateFormGroup(n,s,e) {
