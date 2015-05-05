@@ -236,6 +236,7 @@ public class Database {
   }
   public void removeAccountCoursePair(String login, String courseId)
       throws SQLException {
+    System.out.println("login: "+login+", course: "+courseId);
     String query =
         "DELETE FROM student_course WHERE student_id = ? AND course_id = ?;";
     PreparedStatement ps = conn.prepareStatement(query);

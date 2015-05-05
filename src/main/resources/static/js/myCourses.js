@@ -49,7 +49,7 @@ function removeCourse() {
 	console.log(courseSelected);
 	
 	var posturl = "/removeCourse";
-	var postParameters = {"course": courseSelected, "login": user};
+	var postParameters = {"courseId": courseSelected, "login": user};
 	$.post("/removeCourse", postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {

@@ -1,7 +1,12 @@
 var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
-var login = splitURL[splitURL.length -1];
+var login = getCookie("login");
 
+function getCookie(name) {
+	  var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
+	  var result = regexp.exec(document.cookie);
+	  return (result === null) ? null : result[1];
+}
 
 function signOut() {
 	var url = "/signOut/" + login;
@@ -30,7 +35,7 @@ function signUp() {
 		console.log(responseJSON);
 		console.log("fsfd");
 		if(responseJSON == "Success.") {
-			window.location.href="/courses/" + login;
+			window.location.href="/courses";
 		} else if(responseJSON == "Student is a TA.") {
 			document.getElementById("resultBody").innerHTML = "It appears you're a TA for this class. You can't be a student too!";
 			$("#resultModal").modal('show');

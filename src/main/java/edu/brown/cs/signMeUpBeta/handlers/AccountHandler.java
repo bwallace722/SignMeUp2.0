@@ -190,6 +190,7 @@ public class AccountHandler {
       String role = qm.value("role");
       String login = req.params(":login");
       String response = null;
+      System.out.println(course+" "+role+" "+login);
       try {
         if (role.equals("TA")) {
           response = db.addTACoursePair(login, course);
@@ -211,7 +212,6 @@ public class AccountHandler {
       QueryParamsMap qm = req.queryMap();
       String courseId = qm.value("courseId");
       String login = qm.value("login");
-      //TODO KIERAN CHECK FUNCTIONALITY
       try {
         db.removeAccountCoursePair(login, courseId);
       } catch (Exception e) {
