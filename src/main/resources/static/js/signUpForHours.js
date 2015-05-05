@@ -26,7 +26,6 @@ function signOut() {
 		}
 	});
 }
-
 function getOnQueue() {
 	var checkedQ = "";
 	var qs = $('#checkbox :checked');

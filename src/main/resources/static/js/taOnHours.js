@@ -12,7 +12,8 @@ var aptHTMLTime = "</h5></div><div class=\"col-sm-4 col-sm-push-2\"><h5 id=\"apt
 var aptHTMLEnd = "</h5></div><br><hr></div>";
 
 var clinicHTMLStart = "<div class=\"row clinicQ\"><div class=\"col-sm-4 col-sm-push-1\"><h5>";
-var clinicHTMLStudents = "</h5></div><div class=\"col-sm-4 col-sm-push-2\"><h5 id=\"clinicStudents\">";
+var clinicHTMLStudents = "</h5></div><div style=\"display:none;\" id=\"divider\">+</div>" +
+		"<div class=\"col-sm-4 col-sm-push-2\"><h5 id=\"clinicStudents\">";
 var clinicHTMLEnd = "</h5></div><br><hr></div>";
 
 var emptyQueue = "<h4 style=\"text-align:center;\">There are no students on the Queue!</h4>";
@@ -54,24 +55,29 @@ $(document).on('click', '.studentOnQueue', function(e) {
 	studentToCall = login;
 });
 
-//var clinicToCall;
 
 updateClinic();
 
 $(document).on('click', '.clinicQ', function(e) {
 	var text = $(this).text();
+	console.log(text);
 	var text = text.trim();
 	console.log(text);
-	var textList = text.split(" ");
+	var textList = text.split("+");
 	console.log(textList);
 	var question = textList[textList.length - 2];
 	var students = textList[textList.length - 1];
 	console.log(question + " - questions");
 	console.log(students + " - students");
-	var postParameters = { "clinicQ": question,
-			"students": students,
-			"course": courseId};
-	callClinic(postParameters);
+	if(students != "" && students != ",") {
+		var postParameters = { "clinicQ": question,
+				"students": students,
+				"course": courseId};
+		callClinic(postParameters);
+	} else {
+		alert("there are no students for this topic.");
+	}
+
 	
 });
 
@@ -335,8 +341,12 @@ function startTimer() {
 	});
 }
 
-function stopTimer() {
-	window.clearTimeout(timer);
+function pauseTimer() {
+	$("#t").timer('pause');
+}
+
+function restartTimer() {
+	$("#t").timer('reset');
 }
 
 function endHours() {

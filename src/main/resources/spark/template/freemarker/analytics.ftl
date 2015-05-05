@@ -11,7 +11,7 @@
 
 <body>
 
-<div id="tab_box" class="box">
+<div id="tab_box" class="box panel">
 	<h4> Analytics <small>Select a Tab</small></h4>
 
 	<div class="tabbed_area">
