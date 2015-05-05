@@ -56,11 +56,29 @@ function changeAss() {
 }
 
 function removeAss() {
-	
+	var postParameters = {"courseId": courseId, "assName": assName, "assStart": assStart, "assEnd": assEnd};
+	$.post("/removeAss", postParameters, function(responseJSON) {
+		if(responseJSON == 1) {
+			
+		} else {
+			alert("problems");
+		}
+	}
 }
 
 function addAss() {
-	
+	var newAsgnName = document.getElementById("newAsgnName");
+	var newAsgnStart = document.getElementById("newAsgnStartDate");
+	var newAsgnEnd = document.getElementById("newAsgnEndDate");
+	var postParameters = {"courseId": courseId, "assName": newAsgnName, "assStart": newAsgnStart, "assEnd": newAsgnEnd};
+	$.post("/addAss", postParameters, function(responseJSON) {
+		console.log(responseJSON);
+		if(responseJSON == 1) {
+			
+		} else {
+			alert("problems");
+		}
+	});
 }
 
 var labName;
@@ -84,12 +102,44 @@ $(".lab").bind('click', function(e) {
 });
 
 function changeLab() {
-	
+	var postParameters = {"courseId": courseId, "labName": labName, "labStart": labStart, "labEnd": labEnd};
+	$.post("/changeLab", postParameters, function(responseJSON) {
+		console.log(responseJSON);
+		if(responseJSON == 1) {
+			
+		} else {
+			alert("problems");
+		}
+	});
 }
 
 function removeLab() {
-
+	var postParameters = {"courseId": courseId, "labName": labName, "labStart": labStart, "labEnd": labEnd};
+	$.post("/removeLab", postParameters, function(responseJSON) {
+		console.log(responseJSON);
+		if(responseJSON == 1) {
+			
+		} else {
+			alert("problems");
+		}
+	});
 }
+
+function addLab() {
+	var newLabName = document.getElementById("newLabName");
+	var newLabStart = document.getElementById("newLabStartDate");
+	var newLabEnd = document.getElementById("newLabEndDate");
+	var postParameters = {"courseId": courseId, "labName": newLabName, "labStart": newLabStart, "labEnd": newLabEnd};
+	$.post("/addLab", postParameters, function(responseJSON) {
+		console.log(responseJSON);
+		if(responseJSON == 1) {
+			
+		} else {
+			alert("problems");
+		}
+	});
+}
+
 
 var examName;
 var examStart;
@@ -99,9 +149,9 @@ $(".exam").bind('click', function(e) {
 	console.log("here");
 	var cells = this.getElementsByTagName('td');
 	
-	var examName = cells[0].innerHTML;
-	var examStart = cells[1].innerHTML;
-	var examEnd = cells[2].innerHTML;
+	examName = cells[0].innerHTML;
+	examStart = cells[1].innerHTML;
+	examEnd = cells[2].innerHTML;
 	var examNameForm = document.getElementById("examName");
 	var examStartForm = document.getElementById("examStartDate");
 	var examEndForm = document.getElementById("examEndDate");
@@ -113,9 +163,40 @@ $(".exam").bind('click', function(e) {
 });
 
 function changeExam() {
-	
+	var postParameters = {"courseId": courseId, "examName": examName, "examStart": examStart, "examEnd": examEnd};
+	$.post("/changeExam", postParameters, function(responseJSON) {
+		console.log(responseJSON);
+		if(responseJSON == 1) {
+			
+		} else {
+			alert("problems");
+		}
+	});
 }
 
 function removeExam() {
-	
+	var postParameters = {"courseId": courseId, "examName": examName, "examStart": examStart, "examEnd": examEnd};
+	$.post("/removeExam", postParameters, function(responseJSON) {
+		console.log(responseJSON);
+		if(responseJSON == 1) {
+			
+		} else {
+			alert("problems");
+		}
+	});
+}
+
+function addExam() {
+	var newExamName = document.getElementById("newExamName");
+	var newExamStart = document.getElementById("newExamStartDate");
+	var newExamEnd = document.getElementById("newExamEndDate");
+	var postParameters = {"courseId": courseId, "examName": newExamName, "examStart": newExamStart, "examEnd": newExamEnd};
+	$.post("/addExam", postParameters, function(responseJSON) {
+		console.log(responseJSON);
+		if(responseJSON == 1) {
+			
+		} else {
+			alert("problems");
+		}
+	});
 }
