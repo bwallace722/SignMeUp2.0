@@ -58,8 +58,12 @@ function signUp() {
 	//			console.log(responseJSON.equals(login));
 				console.log(responseJSON == login);
 				if(responseJSON == login) {
-					var url = "/addCourses/" + login;
+					//var url = "/addCourses/" + login;
+					var url = "/addCourses";
 					console.log(url);
+					document.cookie = "login="+login+"; ";
+					document.cookie = "password="+password+";";
+					console.log(document.cookie);
 					window.location.href=url;
 				} else if (responseJSON == account_exist){
 					alert("This account already exist");
@@ -130,12 +134,16 @@ function logIn() {
 		var login = document.getElementById("loginLogIn").value;
 		var password = document.getElementById("passwordLogIn").value;
 		console.log(login + " , " + password);
-		var postParameters = {"login": login, "password": password,};
+		var postParameters = {"login": login, "password": password};
 		$.post("/login", postParameters, function(responseJSON) {
 			console.log(responseJSON);
 			if(responseJSON == login) {
-				console.log(url);
-				var url = "/courses/" + login;
+				
+				document.cookie = "login="+login+"; ";
+				document.cookie = "password="+password+";";
+				console.log(document.cookie);
+				//var url = "/courses/" + login;
+				var url = "/courses";
 				window.location.href=url;
 			} else if(responseJSON == account_no_exist){
 				alert("This account does not exist");

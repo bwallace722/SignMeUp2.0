@@ -36,10 +36,12 @@ public class AccountHandler {
     Spark.post("/signUp", new AccountSetupHandler());
     Spark.post("/login", new AccountLoginHandler());
     Spark.post("/updateCourse/:login", new UpdateCourseHandler());
-    Spark.get("/courses/:login", new CourseListHandler(),
+//    Spark.get("/courses/:login", new CourseListHandler(),
+//        new FreeMarkerEngine());
+    Spark.get("/courses", new CourseListHandler(),
         new FreeMarkerEngine());
     Spark.post("/removeCourse", new RemoveCourseHandler());
-    Spark.get("/addCourses/:login", new AddCourseHandler(),
+    Spark.get("/addCourses", new AddCourseHandler(),
         new FreeMarkerEngine());
     Spark.post("/signOut/:login", new SignOutHandler());
   }
@@ -71,7 +73,10 @@ public class AccountHandler {
   private class CourseListHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-      String login = req.params(":login");
+      String login = req.cookie("login"); 
+      String p = req.cookie("password");
+      System.out.println("LOGIN:" + login);
+      System.out.println("PASSWORD:" + p);
       StringBuilder classList = new StringBuilder();
       String courseDropdown = "";
       try {
@@ -143,7 +148,8 @@ public class AccountHandler {
   private class AddCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-      String login = req.params(":login");
+      String login = req.cookie("login"); 
+      String p = req.cookie("password");
       // <option value="cs015">CS015</option>
       // <option value="cs016">CS016</option>
       // <option value="cs017">CS017</option>

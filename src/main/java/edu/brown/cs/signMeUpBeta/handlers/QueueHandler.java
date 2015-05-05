@@ -38,9 +38,9 @@ public class QueueHandler {
   }
   public void runSpark() {
     Spark.post("/confirmAppointment", new ConfirmAppointmentHandler());
-    Spark.get("/makeAppointment/:courseIdAndUserId",
+    Spark.get("/makeAppointment/:courseIdId",
         new MakeAppointmentHandler(), new FreeMarkerEngine());
-    Spark.get("/signUpForHours/:courseAndUserId", new StudentSignUpForHours(),
+    Spark.get("/signUpForHours/:courseId", new StudentSignUpForHours(),
         new FreeMarkerEngine());
     Spark.post("/checkAppointments", new CheckAppointmentHandler());
     Spark.post("/startHours/:courseId", new StartCourseHours());
@@ -405,10 +405,9 @@ public class QueueHandler {
   private class MakeAppointmentHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-      String courseAndUserId = req.params(":courseIdAndUserId");
-      String[] reqParams = courseAndUserId.split("~");
-      String courseId = reqParams[0];
-      String login = reqParams[1];
+      String courseId = req.params(":courseId");
+      String login = req.cookie("login"); 
+      String p = req.cookie("password");
       String timesHTMLTags =
           "<button class=\"aptTime btn btn-success btn-lg\">";
       String closeTag = "</button>";
@@ -459,10 +458,9 @@ public class QueueHandler {
   private class StudentSignUpForHours implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-      String courseAndUserId = req.params(":courseAndUserId");
-      String[] reqParams = courseAndUserId.split("~");
-      String courseId = reqParams[0];
-      String login = reqParams[1];
+      String courseId = req.params(":courseId");
+      String login = req.cookie("login"); 
+      String p = req.cookie("password");
       String qStartTags = "<label ><input type=\"checkbox\" value=\"";
       String closeValTags = "\">";
       String qEndTags = "</label><br>";

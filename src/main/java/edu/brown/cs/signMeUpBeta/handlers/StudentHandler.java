@@ -30,7 +30,7 @@ public class StudentHandler {
     runSpark();
   }
   public void runSpark() {
-    Spark.get("/studentLanding/:courseAndUserId",
+    Spark.get("/studentLanding/:courseId",
         new StudentCoursePageHandler(), new FreeMarkerEngine());
     Spark.post("/checkCallStatus", new StudentCheckCallStatus());
   }
@@ -57,11 +57,7 @@ public class StudentHandler {
   private class StudentCoursePageHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
-      String courseAndUserId = req.params(":courseAndUserId");
-      String[] reqParams = courseAndUserId.split("~");
-      //
-      System.out.println(courseAndUserId);
-      String courseId = reqParams[0];
+      String courseId = req.params(":courseId");
       String login = "";
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",

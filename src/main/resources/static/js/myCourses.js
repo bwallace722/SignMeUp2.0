@@ -2,10 +2,16 @@
 //requests needed: $("#class_list")
 var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
-var user = splitURL[splitURL.length -1];
+var user = getCookie("login");
 
-document.cooke = "login="+user+";";
+
 console.log(document.cookie);
+console.log(getCookie("login"));
+function getCookie(name) {
+	  var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
+	  var result = regexp.exec(document.cookie);
+	  return (result === null) ? null : result[1];
+}
 
 $(".clickable-row").bind('click', function(e) {
 	var cells = this.getElementsByTagName('td');
@@ -17,9 +23,7 @@ $(".clickable-row").bind('click', function(e) {
 		url = "/taHoursSetUp/" + courseID;
 		console.log(url);
 	} else {
-		user = user.trim();
-		//add course id and user's login to url.
-		url = "/studentLanding/" + courseID + "~" + user;
+		url = "/studentLanding/" + courseID;
 		console.log(url);
 	}
 	window.location.href=url;
@@ -48,7 +52,7 @@ function removeCourse() {
 	$.post("/removeCourse", postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {
-			window.location.href = "/courses/" + user;
+			window.location.href = "/courses";
 		} else {
 			alert("problems");
 		}
@@ -57,6 +61,5 @@ function removeCourse() {
 }
 
 function addCourses() {
-	var url = "/addCourses/"+user;
-	window.location.href = url;
+	window.location.href = "/addCourses";
 }

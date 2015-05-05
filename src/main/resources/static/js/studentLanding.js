@@ -1,10 +1,11 @@
 var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 //url contains student
-var courseIdAndLogin = splitURL[splitURL.length -1];
-var splitCourseAndLogin = courseIdAndLogin.split("~");
-var courseId = splitCourseAndLogin[0];
-var login = splitCourseAndLogin[1];
+var courseId = splitURL[splitURL.length -1];
+var login = getCookie("login");
+
+console.log(document.cookie);
+console.log(login);
 
 function getCookie(name) {
 	  var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
@@ -25,7 +26,7 @@ var queueHTMLEnd = "</h5></div></div><hr>";
 var emptyQueue = "<h4 style=\"text-align:center;\">There are no students on the Queue!</h4>";
 
 function myCourses() {
-	window.location.href = "/courses/" + login;
+	window.location.href = "/courses";
 }
 $(".checkOffButton").bind('click', function(c) {
 	//post to queue
@@ -45,18 +46,14 @@ $(".checkOffButton").bind('click', function(c) {
 			document.getElementById("resultBody").innerHTML = "looks like we've had some trouble. Try again in a bit.";
 			$("#resultModal").modal('show');
 		}
-		window.location.href= "/studentLanding/" + courseIdAndLogin ;
-<<<<<<< HEAD
-
-=======
->>>>>>> 0a0427883de555bf7aaef27998d350bba086e5c7
+		window.location.href= "/studentLanding/" + courseId ;
 	});
 });
 
 $(".hoursSignUp").bind('click', function(h) {
 	//get questions from server
 //	$.get("/signUpForHours");
-	var url = "/signUpForHours/" + courseIdAndLogin;
+	var url = "/signUpForHours/" + courseId;
 	var postParameters = {"course": courseId, "login": login };
 	$.post("/checkQueue", postParameters, function(responseJSON){
 		if(responseJSON == 1) {
@@ -71,7 +68,7 @@ $(".hoursSignUp").bind('click', function(h) {
 
 
 function makeAppointment() {
-	var url = "/makeAppointment/" + courseIdAndLogin;
+	var url = "/makeAppointment/" + courseId;
 	var postParameters = {"course": courseId, "login": login };
 	$.post("/checkQueue", postParameters, function(responseJSON){
 		if(responseJSON == 1) {
@@ -106,7 +103,7 @@ setInterval(function(t) {
 			calledToHours = true;
 			document.getElementById("resultBody").innerHTML = "You've been called up for hours!";
 			$("#resultModal").modal('show');
-			clearInterval(checkStatus);
+			clearInterval();
 		}
 	});
 	}
