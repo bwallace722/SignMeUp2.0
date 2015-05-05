@@ -104,7 +104,7 @@ public class Database {
       throws SQLException {
     String query = "INSERT INTO course VALUES (?, ?);";
     PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, courseNumber);
+    ps.setString(1, courseNumber.toLowerCase());
     ps.setString(2, courseTitle);
     ps.executeUpdate();
     ps.close();
