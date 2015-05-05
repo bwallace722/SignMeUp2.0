@@ -502,6 +502,52 @@ public class Database {
     }
     return allAss;
   }
+  public List<String> getAllLabs(String courseId) throws SQLException {
+    String query =
+        "SELECT lab_name, start_date, end_date FROM lab WHERE course_id = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, courseId);
+    ResultSet rs = ps.executeQuery();
+    List<String> allLabs = new ArrayList<String>();
+    java.sql.Date start, end;
+    String name = "";
+    while (rs.next()) {
+      StringBuilder lab = new StringBuilder();
+      name = rs.getString(1);
+      start = rs.getDate(2);
+      end = rs.getDate(3);
+      lab.append(name
+          + ":"
+          + start
+          + ","
+          + end);
+      allLabs.add(lab.toString());
+    }
+    return allLabs;
+  }
+  public List<String> getAllExams(String courseId) throws SQLException {
+    String query =
+        "SELECT exam_name, start_date, end_date FROM exam WHERE course_id = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, courseId);
+    ResultSet rs = ps.executeQuery();
+    List<String> allExams = new ArrayList<String>();
+    java.sql.Date start, end;
+    String name = "";
+    while (rs.next()) {
+      StringBuilder exam = new StringBuilder();
+      name = rs.getString(1);
+      start = rs.getDate(2);
+      end = rs.getDate(3);
+      exam.append(name
+          + ":"
+          + start
+          + ","
+          + end);
+      allExams.add(exam.toString());
+    }
+    return allExams;
+  }
   public int getNumberQuestionsAsked(String login, String courseId)
       throws SQLException {
     String query =
