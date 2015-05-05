@@ -347,6 +347,7 @@ public class TAHandler {
       String name = qm.value("name");
       String start = qm.value("start");
       String end = qm.value("end");
+      System.out.println(table);
       try {
         db.addAssessmentItem(table, name, start, end, course);
       } catch (SQLException e) {

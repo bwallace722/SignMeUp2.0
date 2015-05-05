@@ -145,13 +145,14 @@ function removeLab() {
 }
 
 function addLab() {
+	console.log("adding labz");
 	var newLabName = document.getElementById("newLabName");
 	var newLabStart = document.getElementById("newLabStartDate");
 	var newLabEnd = document.getElementById("newLabEndDate");
 	if(validateFormGroup(newLabName, newLabStart, newLabEnd)) {
 		var postParameters = {"table": "lab", "courseId": courseId, "name": newLabName.value, "start": newLabStart.value, "end": newLabEnd.value};
 		$.post("/addAssessment", postParameters, function(responseJSON) {
-			console.log(responseJSON);
+			console.log(responseJSON + "- lab");
 			if(responseJSON == 1) {
 				
 			} else {

@@ -287,6 +287,7 @@ public class Database {
       String endDate, String courseId) throws SQLException {
     String query =
         "UPDATE " + table + " SET start_date = ?, end_date = ? WHERE " + table + "_name = ? AND course_id = ?;";
+    System.out.println(query);
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setDate(1, java.sql.Date.valueOf(startDate));
     ps.setDate(2, java.sql.Date.valueOf(endDate));
