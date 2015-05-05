@@ -4,6 +4,9 @@ var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 var user = splitURL[splitURL.length -1];
 
+document.cooke = "login="+user+";";
+console.log(document.cookie);
+
 $(".clickable-row").bind('click', function(e) {
 	var cells = this.getElementsByTagName('td');
 	
