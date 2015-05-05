@@ -38,7 +38,7 @@ public class QueueHandler {
   }
   public void runSpark() {
     Spark.post("/confirmAppointment", new ConfirmAppointmentHandler());
-    Spark.get("/makeAppointment/:courseIdId",
+    Spark.get("/makeAppointment/:courseId",
         new MakeAppointmentHandler(), new FreeMarkerEngine());
     Spark.get("/signUpForHours/:courseId", new StudentSignUpForHours(),
         new FreeMarkerEngine());
@@ -406,8 +406,9 @@ public class QueueHandler {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
-      String login = req.cookie("login"); 
+      String login = req.cookie("login");
       String p = req.cookie("password");
+      System.out.println(courseId);
       String timesHTMLTags =
           "<button class=\"aptTime btn btn-success btn-lg\">";
       String closeTag = "</button>";

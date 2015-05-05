@@ -10,6 +10,11 @@ if(currAsign.innerHTML == "none"){
 	currAsign.innerHTML = "There is no assignment assigned for today.";
 	$("#questionsForApt").hide();
 }
+function getCookie(name) {
+	  var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
+	  var result = regexp.exec(document.cookie);
+	  return (result === null) ? null : result[1];
+}
 
 var aptTimes = document.getElementById("aptTimes");
 console.log(aptTimes.innerHTML);
