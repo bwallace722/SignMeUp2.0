@@ -15,7 +15,6 @@ function getCookie(name) {
 
 console.log("courseId: " + courseId + " , login: " + login);
 
-
 var LAB_SUCCESS_MESSAGE = "You're signed up to get your lab checked off!";
 var LINE_CUTOFF_MESSAGE = "The line has been cut off, though you may still" +
 		"get called to hours. We'll let you know!";
