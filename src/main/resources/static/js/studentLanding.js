@@ -39,7 +39,6 @@ $(".checkOffButton").bind('click', function(c) {
 			alert("looks like we've had some trouble. Try again in a bit.");
 		}
 		window.location.href= "/studentLanding/" + courseIdAndLogin ;
-		
 
 	});
 	
@@ -84,11 +83,10 @@ var calledToHours = false;
  * an alert will appear.
  */
 setInterval(function(t) {
-	console.log("hi");
 	if(!calledToHours) {
 	var postParameters = {"course": courseId, "login": login};
 	$.post("/checkCallStatus", postParameters, function(responseJSON) {
-		console.log(responseJSON);
+//		console.log(responseJSON);
 		/*
 		 * responseJSON is a boolean, returning true 
 		 * if the student has been called to hours

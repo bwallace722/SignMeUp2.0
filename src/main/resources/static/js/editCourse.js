@@ -44,8 +44,10 @@ $(".ass").bind('click', function(e) {
 });
 
 function changeAss() {
-	var postParameters = {"courseId": courseId, "assName": assName, "assStart": assStart, "assEnd": assEnd};
-	$.post("/changeAss", postParameters, function(responseJSON) {
+	var asgnStartForm = document.getElementById("asgnStartDate");
+	var asgnEndForm = document.getElementById("asgnEndDate");
+	var postParameters = {"table": "assignment", "courseId": courseId, "name": assName, "start": assStartForm.value, "end": assEndForm.value};
+	$.post("/changeAssessment", postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {
 			
@@ -56,23 +58,24 @@ function changeAss() {
 }
 
 function removeAss() {
-	var postParameters = {"courseId": courseId, "assName": assName, "assStart": assStart, "assEnd": assEnd};
-	$.post("/removeAss", postParameters, function(responseJSON) {
+	var postParameters = {"table": "assignment", "courseId": courseId, "name": assName};
+	$.post("/removeAssessment", postParameters, function(responseJSON) {
 		if(responseJSON == 1) {
 			
 		} else {
 			alert("problems");
 		}
-	}
+	});
 }
 
 function addAss() {
 	var newAsgnName = document.getElementById("newAsgnName");
 	var newAsgnStart = document.getElementById("newAsgnStartDate");
 	var newAsgnEnd = document.getElementById("newAsgnEndDate");
-	var postParameters = {"courseId": courseId, "assName": newAsgnName, "assStart": newAsgnStart, "assEnd": newAsgnEnd};
-	$.post("/addAss", postParameters, function(responseJSON) {
-		console.log(responseJSON);
+	var postParameters = {"table": "assignment", "courseId": courseId, "name": newAsgnName.value, "start": newAsgnStart.value, "end": newAsgnEnd.value};
+	console.log(postParameters);
+	$.post("/addAssessment", postParameters, function(responseJSON) {
+		console.log(responseJSON  + " - here");
 		if(responseJSON == 1) {
 			
 		} else {
@@ -86,7 +89,6 @@ var labStart;
 var labEnd;
 
 $(".lab").bind('click', function(e) {
-	console.log("here");
 	var cells = this.getElementsByTagName('td');
 	
 	labName = cells[0].innerHTML;
@@ -102,8 +104,10 @@ $(".lab").bind('click', function(e) {
 });
 
 function changeLab() {
-	var postParameters = {"courseId": courseId, "labName": labName, "labStart": labStart, "labEnd": labEnd};
-	$.post("/changeLab", postParameters, function(responseJSON) {
+	var labStartForm = document.getElementById("labStartDate");
+	var labEndForm = document.getElementById("labEndDate");
+	var postParameters = {"table": "lab", "courseId": courseId, "name": labName, "start": labStartForm.value, "end": labEndForm.value};
+	$.post("/changeAssessment", postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {
 			
@@ -114,8 +118,8 @@ function changeLab() {
 }
 
 function removeLab() {
-	var postParameters = {"courseId": courseId, "labName": labName, "labStart": labStart, "labEnd": labEnd};
-	$.post("/removeLab", postParameters, function(responseJSON) {
+	var postParameters = {"table": "lab", "courseId": courseId, "name": labName};
+	$.post("/removeAssessment", postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {
 			
@@ -129,8 +133,8 @@ function addLab() {
 	var newLabName = document.getElementById("newLabName");
 	var newLabStart = document.getElementById("newLabStartDate");
 	var newLabEnd = document.getElementById("newLabEndDate");
-	var postParameters = {"courseId": courseId, "labName": newLabName, "labStart": newLabStart, "labEnd": newLabEnd};
-	$.post("/addLab", postParameters, function(responseJSON) {
+	var postParameters = {"table": "lab", "courseId": courseId, "name": newLabName.value, "start": newLabStart.value, "end": newLabEnd.value};
+	$.post("/addAssessment", postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {
 			
@@ -146,7 +150,6 @@ var examStart;
 var examEnd;
 
 $(".exam").bind('click', function(e) {
-	console.log("here");
 	var cells = this.getElementsByTagName('td');
 	
 	examName = cells[0].innerHTML;
@@ -163,8 +166,10 @@ $(".exam").bind('click', function(e) {
 });
 
 function changeExam() {
-	var postParameters = {"courseId": courseId, "examName": examName, "examStart": examStart, "examEnd": examEnd};
-	$.post("/changeExam", postParameters, function(responseJSON) {
+	var examStartForm = document.getElementById("examStartDate");
+	var examEndForm = document.getElementById("examEndDate");
+	var postParameters = {"table": "exam", "courseId": courseId, "name": examName, "start": examStartForm.value, "end": examEndForm.value};
+	$.post("/changeAssessment", postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {
 			
@@ -175,8 +180,8 @@ function changeExam() {
 }
 
 function removeExam() {
-	var postParameters = {"courseId": courseId, "examName": examName, "examStart": examStart, "examEnd": examEnd};
-	$.post("/removeExam", postParameters, function(responseJSON) {
+	var postParameters = {"table": "exam", "courseId": courseId, "name": examName};
+	$.post("/removeAssessment", postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {
 			
@@ -190,8 +195,8 @@ function addExam() {
 	var newExamName = document.getElementById("newExamName");
 	var newExamStart = document.getElementById("newExamStartDate");
 	var newExamEnd = document.getElementById("newExamEndDate");
-	var postParameters = {"courseId": courseId, "examName": newExamName, "examStart": newExamStart, "examEnd": newExamEnd};
-	$.post("/addExam", postParameters, function(responseJSON) {
+	var postParameters = {"table": "exam", "courseId": courseId, "name": newExamName.value, "start": newExamStart.value, "end": newExamEnd.value};
+	$.post("/addAssessment", postParameters, function(responseJSON) {
 		console.log(responseJSON);
 		if(responseJSON == 1) {
 			

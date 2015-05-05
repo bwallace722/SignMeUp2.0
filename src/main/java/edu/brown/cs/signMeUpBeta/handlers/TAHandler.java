@@ -62,8 +62,10 @@ public class TAHandler {
         new FreeMarkerEngine());
     Spark.get("/editCourse/:courseId", new EditCourseHandler(),
         new FreeMarkerEngine());
-    Spark.post("/changeAss", new ChangeAssHandler());
-    Spark.post("/removeAssessmentItem", new RemoveAssessmentItem());
+    Spark.post("/changeAssessment", new ChangeAssessmentHandler());
+    Spark.post("/removeAssessment", new RemoveAssessmentHandler());
+    Spark.post("/addAssessment", new AddAssessmentHandler());
+//    Spark.post("/removeAssessmentItem", new RemoveAssessmentItem());
     Spark.post("/zwriteStudent", new ZWriteStudent());
   }
   private class EmailStudent implements Route {
@@ -111,23 +113,6 @@ public class TAHandler {
         String command = sb.toString();
         Process pr = rt.exec(command);
       } catch (IOException e) {
-        System.out.println("ERROR: "
-            + e.getMessage());
-        return 0;
-      }
-      return 1;
-    }
-  }
-  private class RemoveAssessmentItem implements Route {
-    @Override
-    public Object handle(Request req, Response res) {
-      QueryParamsMap qm = req.queryMap();
-      String course = qm.value("course");
-      String table = qm.value("table");
-      String assignmentName = qm.value("assignmentName");
-      try {
-        db.removeAssignmentItem(table, assignmentName);
-      } catch (SQLException e) {
         System.out.println("ERROR: "
             + e.getMessage());
         return 0;
@@ -332,18 +317,64 @@ public class TAHandler {
       return new ModelAndView(variables, "taEditCourse.html");
     }
   }
-  private class ChangeAssHandler implements Route {
+  private class ChangeAssessmentHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
       QueryParamsMap qm = req.queryMap();
+      String table = qm.value("table");
       String course = qm.value("courseId");
-      String name = qm.value("assName");
-      return null;
+      String name = qm.value("name");
+      String start = qm.value("start");
+      String end = qm.value("end");
+      
+      try {
+        db.editAssessmentItem(table, name, start, end, course);
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
+      return 1;
     }
   }
   
+  private class AddAssessmentHandler implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String table = qm.value("table");
+      String course = qm.value("courseId");
+      String name = qm.value("name");
+      String start = qm.value("start");
+      String end = qm.value("end");
+      try {
+        db.addAssessmentItem(table, name, start, end, course);
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
+      return 1;
+    }
+  }
   
-  
+  private class RemoveAssessmentHandler implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String table = qm.value("table");
+      String course = qm.value("courseId");
+      String name = qm.value("name");
+      try {
+        db.removeAssessmentItem(table, name, course);
+      } catch (SQLException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
+      return 1;
+    }
+  }
   
   private class CreateCourseHandler implements TemplateViewRoute {
     @Override
