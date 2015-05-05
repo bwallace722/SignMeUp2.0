@@ -15,6 +15,10 @@ var LINE_CUTOFF_MESSAGE = "The line has been cut off, though you may still" +
 		"get called to hours. We'll let you know!";
 var OFF_HOURS_MESSAGE = "There are not hours right now. " +
 		"We couldn't sign you up.";
+var queueHTMLStart = "<div class=\"row studentOnQueue\" data-toggle=\"modal\" data-target=\"#queueModal\">" +
+"<div class=\"col-sm-8 col-sm-push-1\"><h5>";
+var queueHTMLEnd = "</h5></div></div><hr>";
+var emptyQueue = "<h4 style=\"text-align:center;\">There are no students on the Queue!</h4>";
 
 function myCourses() {
 	window.location.href = "/courses/" + login;
@@ -96,3 +100,43 @@ var checkStatus = function() {
 	});
 	}
 }
+
+function updateQueue() {
+ 	var postUrl = "/updateQueue/" + courseId;
+	$.post(postUrl, function(responseJSON) {
+		var queueString = responseJSON.substring(1,responseJSON.length-1);
+		var queue = document.getElementById("queue");
+		if(queueString) {
+			var queueList = queueString.split(",");
+			var studentList = "";
+			for(var i=0; i < queueList.length; i++) {
+				var student = queueList[i];
+				var studentTags = queueHTMLStart + student + queueHTMLEnd;
+				studentList = studentList.concat(studentTags);
+			}
+			queue.innerHTML = studentList;
+		} else {
+			queue.innerHTML = emptyQueue;
+		}
+	});
+}
+
+setInterval(function(t) {
+ 	var postUrl = "/updateQueue/" + courseId;
+	$.post(postUrl, function(responseJSON) {
+		var queueString = responseJSON.substring(1,responseJSON.length-1);
+		var queue = document.getElementById("queue");
+		if(queueString) {
+			var queueList = queueString.split(",");
+			var studentList = "";
+			for(var i=0; i < queueList.length; i++) {
+				var student = queueList[i];
+				var studentTags = queueHTMLStart + student + queueHTMLEnd;
+				studentList = studentList.concat(studentTags);
+			}
+			queue.innerHTML = studentList;
+		} else {
+			queue.innerHTML = emptyQueue;
+		}
+	});
+}, 1000);

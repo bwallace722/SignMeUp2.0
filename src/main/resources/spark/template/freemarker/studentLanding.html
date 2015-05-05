@@ -21,29 +21,32 @@
 
   <div class="container">
      <h1> Welcome to ${course} Hours</h1>
+	<br>
+	<br>
+    <div class="row" style="padding-left:6%;">
+        <div class="col-sm-5 panel">
+		    <h3 id="queueHeader">Get yourself signed up!</h3>
+		    	     <div class="queue">
 
-    <div class="row">
-         <div class="col-sm-7">
-            <h3>Queue</h3>
+		        <a class="makeAppointment" onclick="makeAppointment()">
+		            <h3>Make an Appointment</h3>
+		        </a>
+		
+		        <a class="hoursSignUp">
+		            <h3>Sign Up for Hours</h3>
+		            <div class=""></div>
+		        </a>
+		
+		         <div class="labCheckOff checkOffButton" id="labCheckOff">
+		            <h3 class="labHeader">Lab Checkoff</h3>
+		         </div>
+			     </div>
+		</div>
+		<div class="col-sm-5 col-sm-push-1 panel">
+            <h3 id="queueHeader">Queue</h3>
 	     <div id="queue" class="queue">
 	     </div>
 	     </div>
-    
-	    <div id="studentLandingContainer panel">
-	        <a class="makeAppointment" onclick="makeAppointment()">
-	            <h3>Make an Appointment</h3>
-	        </a>
-	
-	        <a class="hoursSignUp">
-	            <h3>Sign Up for Hours</h3>
-	            <div class=""></div>
-	        </a>
-	
-	         <div class="labCheckOff checkOffButton" id="labCheckOff">
-	            <h3 class="labHeader">Lab Checkoff</h3>
-	         </div>
-	
-		</div>
     </div>
     </div>
 

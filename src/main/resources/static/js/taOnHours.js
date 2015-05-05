@@ -15,7 +15,7 @@ var clinicHTMLStart = "<div class=\"row clinicQ\"><div class=\"col-sm-4 col-sm-p
 var clinicHTMLStudents = "</h5></div><div class=\"col-sm-4 col-sm-push-2\"><h5 id=\"clinicStudents\">";
 var clinicHTMLEnd = "</h5></div><br><hr></div>";
 
-var emptyQueue = "<h4>There are no students on the Queue!</h4>";
+var emptyQueue = "<h4 style=\"text-align:center;\">There are no students on the Queue!</h4>";
 var emptyApts = "<h4>There are no students with Appointments!</h4>";
 var emptyClinics = "<h4>There are no clinic suggestions!</h4>";
 

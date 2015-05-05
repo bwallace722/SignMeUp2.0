@@ -303,7 +303,9 @@ form button {
 
 
 .queue {
-  width: 60%;
+  width: 90%;
+  height: 500px;
+  margin-left: 5%;
   background-color: rgba(0,0,0, 0.7);
   border-radius: 5px;
   padding-top: 1%;
@@ -397,31 +399,23 @@ hr {
   margin-right: auto;
 }
 
-.studentLandingContainer {
-  padding-left: 5%;
-  padding-right: 5%;
-  padding-top: 5%;
-  padding-bottom: 5%;
-  margin-left: 30%;
-  width: 70%;
-  background-color: rgba(47,79,79, 0.6);
-  border-radius: 4px;
+.makeAppointment {
+	
 }
 
 .makeAppointment, .hoursSignUp, .labCheckOff {
-  width: 30%;
-  height: 50%;
-  display:inline-block;
+  width: 70%;
+  height: 125px;
   background-color:  rgba(40, 40, 40, 0.7);
   border-radius: 5px;
   text-align: center;
-  padding-top: 5%;
-  padding-bottom: 5%;
+  padding-top: 3%;
+  margin-top: 5%;
   float: left;
-  margin-left: 3%;
+  margin-left: 15%;
   border: 1px solid rgb(40, 40, 40);
-  	text-decoration: none;
-	color: #fff;
+  text-decoration: none;
+  color: #fff;
 }
 
 .makeAppointment:hover, .hoursSignUp:hover, .labCheckOff:hover {
@@ -488,7 +482,7 @@ a h3:hover {
 
 .studentOnQueue:hover {
 	  cursor: pointer;
-	  color: 
+	  color: rgba(127, 140, 140, 0.7);
 }
 
 button .time {

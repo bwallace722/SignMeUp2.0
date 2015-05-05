@@ -6,13 +6,17 @@ function startAnalytics() {
 	window.location.href="/analytics_home";
 }
 
+var assName;
+var assStart;
+var assEnd;
+
 $(".ass").bind('click', function(e) {
 	console.log("here");
 	var cells = this.getElementsByTagName('td');
 	
-	var assName = cells[0].innerHTML;
-	var assStart = cells[1].innerHTML;
-	var assEnd = cells[2].innerHTML;
+	assName = cells[0].innerHTML;
+	assStart = cells[1].innerHTML;
+	assEnd = cells[2].innerHTML;
 	var asgnNameForm = document.getElementById("asgnName");
 	var asgnStartForm = document.getElementById("asgnStartDate");
 	var asgnEndForm = document.getElementById("asgnEndDate");
@@ -31,15 +35,17 @@ function removeAss() {
 	
 }
 
-
+var labName;
+var labStart;
+var labEnd;
 
 $(".lab").bind('click', function(e) {
 	console.log("here");
 	var cells = this.getElementsByTagName('td');
 	
-	var labName = cells[0].innerHTML;
-	var labStart = cells[1].innerHTML;
-	var labEnd = cells[2].innerHTML;
+	labName = cells[0].innerHTML;
+	labStart = cells[1].innerHTML;
+	labEnd = cells[2].innerHTML;
 	var labNameForm = document.getElementById("labName");
 	var labStartForm = document.getElementById("labStartDate");
 	var labEndForm = document.getElementById("labEndDate");
@@ -54,8 +60,12 @@ function changeLab() {
 }
 
 function removeLab() {
-	
+
 }
+
+var examName;
+var examStart;
+var examEnd;
 
 $(".exam").bind('click', function(e) {
 	console.log("here");
