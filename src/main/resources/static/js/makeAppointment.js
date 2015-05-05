@@ -6,8 +6,6 @@ var splitCourseAndLogin = courseIdAndLogin.split("~");
 var courseId = splitCourseAndLogin[0];
 var login = splitCourseAndLogin[1];
 
-var successMessage = "You're already on the queue. You can't make an appointment and be signed up for hours.";
-var takenMessage = "It looks like this appointment time is taken. Try another";
 
 var chosenTimeString = "Your appointment time <br>";
 var currAsign = document.getElementById("currAss");
@@ -29,10 +27,6 @@ function myCourses() {
 	window.location.href = "/courses/" + login;
 }
 
-$(".confirmApt").bind('click', function(c) {
-	alert("You're signed up for your <time> appointment!");
-});
-
 var currAsign = document.getElementById("currAss");
 if(currAsign.innerHTML == "none"){
 	currAsign.innerHTML = "There is no assignment assigned for today.";
@@ -52,6 +46,10 @@ $(".aptTime").bind('click', function(a) {
 	$(".confirmAptContainer").show(1000);
 });
 
+var successMessage = "You're all set for you appointment! Just head up to hours at "+aptTime+".";
+var onQueueMessage = "You're already on the queue. You can't make an appointment and be signed up for hours.";
+var takenMessage = "It looks like this appointment time is taken. Try another";
+
 function confirmApt() {
 	
 	var checkedQ = "";
@@ -67,15 +65,24 @@ function confirmApt() {
  			"otherQ": otherQ};
  	$.post("/confirmAppointment", postParameters, function(responseJSON){
 		if (responseJSON == 1) {
-			alert("You're all set for you appointment! Just head up to hours at "+aptTime+".");
-			window.location.href = "/courses/"+login;
+			document.getElementById("resultBody").innerHTML = successMessage;
+			$("#resultModal").modal('show');
 			//figure out some animation for showing time
 			//show time and reveal questions container
 		} else if (responseJSON == 2) {
-			alert(successMessage);
+			document.getElementById("resultBody").innerHTML = onQueueMessage;
+			$("#resultModal").modal('show');
  		} else {
-			alert(takenMessage);
+			document.getElementById("resultBody").innerHTML = takenMessage;
+			$("#resultModal").modal('show');
 		}
 
 	});
 }
+
+function returnToCourse() {
+	window.location.href = "/studentLanding/"+courseIdAndLogin;
+}
+
+
+

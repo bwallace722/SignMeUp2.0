@@ -10,11 +10,10 @@ var login = splitCourseAndLogin[1];
 console.log("courseId: " + courseId + " , login: " + login);
 
 
-var SUCCESS_MESSAGE = "You're signed up to get your lab checked off!";
+var LAB_SUCCESS_MESSAGE = "You're signed up to get your lab checked off!";
 var LINE_CUTOFF_MESSAGE = "The line has been cut off, though you may still" +
 		"get called to hours. We'll let you know!";
-var OFF_HOURS_MESSAGE = "There are not hours right now. " +
-		"We couldn't sign you up.";
+var OFF_HOURS_MESSAGE = "There are no hours right now. Check again later.";
 var queueHTMLStart = "<div class=\"row studentOnQueue\" data-toggle=\"modal\" data-target=\"#queueModal\">" +
 "<div class=\"col-sm-8 col-sm-push-1\"><h5>";
 var queueHTMLEnd = "</h5></div></div><hr>";
@@ -32,11 +31,14 @@ $(".checkOffButton").bind('click', function(c) {
 		//TODO : based on response, give message and put into modal.
 		console.log(responseJSON);
 		if(responseJSON == 1) {
-			alert("You're signed up for lab!");
+			document.getElementById("resultBody").innerHTML = LAB_SUCCESS_MESSAGE;
+			$("#resultModal").modal('show');
 		} else if (responseJSON == 2) {
-			alert("Hours haven't started yet!");
+			document.getElementById("resultBody").innerHTML = OFF_HOURS_MESSAGE;
+			$("#resultModal").modal('show');
 		} else {
-			alert("looks like we've had some trouble. Try again in a bit.");
+			document.getElementById("resultBody").innerHTML = "looks like we've had some trouble. Try again in a bit.";
+			$("#resultModal").modal('show');
 		}
 		window.location.href= "/studentLanding/" + courseIdAndLogin ;
 	});
@@ -51,7 +53,8 @@ $(".hoursSignUp").bind('click', function(h) {
 		if(responseJSON == 1) {
 			window.location.href= url;
 		} else {
-			alert("The queue for this class isn't running yet! Sorry!");
+			document.getElementById("resultBody").innerHTML = OFF_HOURS_MESSAGE;
+			$("#resultModal").modal('show');
 		}
 	});
 	
@@ -65,7 +68,8 @@ function makeAppointment() {
 		if(responseJSON == 1) {
 			window.location.href= url;
 		} else {
-			alert("The queue for this class isn't running yet! Sorry!");
+			document.getElementById("resultBody").innerHTML = OFF_HOURS_MESSAGE;
+			$("#resultModal").modal('show');
 		}
 	});
 }
@@ -92,7 +96,8 @@ setInterval(function(t) {
 		 */
 		if(responseJSON == 1) {
 			calledToHours = true;
-			alert("You've been called up for hours!");
+			document.getElementById("resultBody").innerHTML = "You've been called up for hours!";
+			$("#resultModal").modal('show');
 			clearInterval(checkStatus);
 		}
 	});
