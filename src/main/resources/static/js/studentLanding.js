@@ -34,7 +34,6 @@ $(".checkOffButton").bind('click', function(c) {
 	var url = "/labCheckOff/" + login;
 	var postParameters = {"course": courseId, "login": login };
 	$.post(url, postParameters, function(responseJSON) {
-		//TODO : based on response, give message and put into modal.
 		console.log(responseJSON);
 		if(responseJSON == 1) {
 			document.getElementById("resultBody").innerHTML = LAB_SUCCESS_MESSAGE;
