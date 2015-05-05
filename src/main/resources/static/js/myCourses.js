@@ -6,7 +6,8 @@ var user = getCookie("login");
 
 
 console.log(document.cookie);
-console.log(getCookie("login"));
+console.log(user);
+
 function getCookie(name) {
 	  var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
 	  var result = regexp.exec(document.cookie);

@@ -58,7 +58,9 @@ public class StudentHandler {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
-      String login = "";
+      String login = req.cookie("login"); 
+      System.out.println(login + " - login");
+      res.cookie("login", login);
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
               courseId).put("login", login).build();
