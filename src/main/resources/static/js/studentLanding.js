@@ -75,9 +75,8 @@ function makeAppointment() {
 }
 
 //interval set to every second.
-function updateStatus() {
-	setInterval(checkStatus, 1000);
-}
+
+setInterval(checkStatus, 1000);
 
 /*
  * Checks student's call status. If the ta has called them to hours,
@@ -85,8 +84,9 @@ function updateStatus() {
  */
 var checkStatus = function() {
 	if(!calledToHours) {
-	var postParameters = {"course": courseId, "login": login}; 
+	var postParameters = {"course": courseId, "login": login};
 	$.post("/checkCallStatus", postParameters, function(responseJSON) {
+		console.log(responseJSON);
 		/*
 		 * responseJSON is a boolean, returning true 
 		 * if the student has been called to hours

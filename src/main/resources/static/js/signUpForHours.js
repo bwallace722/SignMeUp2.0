@@ -63,30 +63,3 @@ function getOnQueue() {
 		}
 	});
 }
-
-////interval set to every second.
-//function updateStatus() {
-//	setInterval(checkStatus, 1000);
-//}
-//
-///*
-// * Checks student's call status. If the ta has called them to hours,
-// * an alert will appear.
-// */
-//var checkStatus = function() {
-//	if(!calledToHours) {
-//	var postParameters = {"course": courseId, "login": login}; 
-//	$.post("/checkCallStatus", postParameters, function(responseJSON) {
-//		/*
-//		 * responseJSON is a boolean, returning true 
-//		 * if the student has been called to hours
-//		 * and false otherwise.
-//		 */
-//		if(responseJSON == 1) {
-//			calledToHours = true;
-//			alert("You've been called up for hours!");
-//			clearInterval(checkStatus);
-//		}
-//	});
-//	}
-//}
