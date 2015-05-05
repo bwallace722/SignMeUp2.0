@@ -380,6 +380,7 @@ public class TAHandler {
   private class CreateCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
+      
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").build();
       return new ModelAndView(variables, "taCreateClass.html");
@@ -463,8 +464,9 @@ public class TAHandler {
       QueryParamsMap qm = req.queryMap();
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
-              courseId).build();
-      return new ModelAndView(variables, "taCourseSetUp.html");
+              courseId).put("allAss", "none").put("allExams",
+                  "none").put("allLabs", "none").build();
+      return new ModelAndView(variables, "taEditCourse.html");
     }
   }
   /**
