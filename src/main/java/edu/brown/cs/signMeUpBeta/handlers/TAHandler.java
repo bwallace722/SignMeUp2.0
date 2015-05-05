@@ -270,8 +270,8 @@ public class TAHandler {
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
           .put("course", courseId)
           .put("allAss", assList.toString())
-          .put("allExams", "")
-          .put("allLabs", "").build();
+          .put("allExams", examList.toString())
+          .put("allLabs", labList).build();
       return new ModelAndView(variables, "taEditCourse.html");
     }
   }
