@@ -214,7 +214,11 @@ public class TAHandler {
               + "</tr></thead><tbody id=\"courseInfoTableBody\">";
       String closeTableTags = "</tbody></table>";
       assList.append(tableTags);
-      String startTags = "<tr class=\"clickable-row\" data-toggle=\"modal\" data-target=\"#assModal\">"
+      String assStartTags = "<tr class=\"clickable-row ass\" data-toggle=\"modal\" data-target=\"#assModal\">"
+          + "<td class=\"itemName\">";
+      String labStartTags = "<tr class=\"clickable-row lab\" data-toggle=\"modal\" data-target=\"#labsModal\">"
+          + "<td class=\"itemName\">";
+      String examStartTags = "<tr class=\"clickable-row exam\" data-toggle=\"modal\" data-target=\"#examModal\">"
           + "<td class=\"itemName\">";
       String middleTags = "</td><td>";
       String endTags = "</td></tr>";
@@ -231,13 +235,15 @@ public class TAHandler {
         String[] date = sSplit[1].split(",");
         String start = date[0];
         String end = date[1];
-        assList.append(startTags + name + middleTags + start + middleTags + end + endTags);
+        assList.append(assStartTags + name + middleTags + start + middleTags + end + endTags);
       }
       assList.append(closeTableTags);
       Map<String, Object> variables =
           new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
           .put("course", courseId)
-          .put("allAss", assList.toString()).build();
+          .put("allAss", assList.toString())
+          .put("allExams", "")
+          .put("allLabs", "").build();
       return new ModelAndView(variables, "taEditCourse.html");
     }
   }

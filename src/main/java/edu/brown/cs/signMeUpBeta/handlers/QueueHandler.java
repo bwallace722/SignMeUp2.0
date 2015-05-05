@@ -185,7 +185,6 @@ public class QueueHandler {
       String q = qm.value("clinicQ");
       String[] questions = {q};
       String studentsString = qm.value("students");
-      // TODO KIERAN
       String[] students = studentsString.split(",");
       Queue queue = runningHours.getQueueForCourse(courseId);
       for (String s : students) {
@@ -290,9 +289,11 @@ public class QueueHandler {
       }
       if (queue == null) {
         toReturn = 2;
+      } else {
+        queue.add(account, 2);
+        toReturn = 1;
       }
-      queue.add(account, 2);
-      toReturn = 1;
+
       return toReturn;
     }
   }

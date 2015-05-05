@@ -19,7 +19,10 @@
     <br>
     <br>
   <div class="container">
-     <h1 id="course"> ${course}</h1><h1> Assignments</h1>
+       <h1 id="course"> ${course}</h1>
+  <div class="assignments">
+
+     <h1> Assignments</h1>
 
     <!--div for classes-->
      <div class="user_classes panel">
@@ -73,6 +76,121 @@
                           </div>
                           </div>
      </div>
+     </div>
+     
+       <div class="labs">
+     <h1> Labs</h1>
+
+    <!--div for classes-->
+     <div class="user_classes panel">
+
+     <!--on hours sign up button (take you to that class' sign up for hours pages)-->
+
+     <div class="panel-body" id="labsCoursePanel">
+				${allLabs}
+							
+     <!--loop through classes to display, add a button to drop class for each-->
+      </div>
+
+            <div class="modal fade" id="labsModal" tabindex="-1" role="dialog" aria-labelledby="labsModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
+                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Edit Assignment</h4>
+                          </div>
+                          <div class="modal-body">
+                                        <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
+                              <div class="row">
+                              <div class="col-sm-12" id="editCourseModalDiv">
+                                 <form class="edit_form" id="edit_course_form">
+									<label class="col-sm-4" for="labName">Name</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="labName">
+						            <br>
+						            <br>
+						            <label class="col-sm-4" for="start">Start Date</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="labStartDate">
+						            <br>
+						            <br>
+						            <label class="col-sm-4" for="end">End Date</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="labEndDate">
+						
+						            <br>
+												<br>
+												<br>
+                                            <div class="form-actions">
+                                                <a class="btn btn-primary btn-sm editCourseModalBtn" id="changeLabBtn" data-dismiss="modal" onclick="changeLab()">Change Lab</a>
+                                                <br>
+                                                <br>
+                                                <a class="btn btn-danger btn-sm editCourseModalBtn" id="removeLabBtn" data-dismiss="modal" onclick="removeLab()">Remove Lab</a>
+                                            </div>
+                                        </form>
+                                                            </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+     </div>
+     </div>
+     
+          <div class="exams">
+     <h1> Exams</h1>
+
+    <!--div for classes-->
+     <div class="user_classes panel">
+
+     <!--on hours sign up button (take you to that class' sign up for hours pages)-->
+
+     <div class="panel-body" id="examsCoursePanel">
+				${allExams}
+							
+     <!--loop through classes to display, add a button to drop class for each-->
+      </div>
+
+            <div class="modal fade" id="examsModal" tabindex="-1" role="dialog" aria-labelledby="examsModalLabel" aria-hidden="true">
+                      <div class="modal-dialog modal-lg">
+                        <div class="modal-content">
+
+                          <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
+                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Edit Assignment</h4>
+                          </div>
+                          <div class="modal-body">
+                                        <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
+                              <div class="row">
+                              <div class="col-sm-12" id="editCourseModalDiv">
+                                 <form class="edit_form" id="edit_course_form">
+									<label class="col-sm-4" for="examName">Name</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="examName">
+						            <br>
+						            <br>
+						            <label class="col-sm-4" for="start">Start Date</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="examStartDate">
+						            <br>
+						            <br>
+						            <label class="col-sm-4" for="end">End Date</label>
+						            <input class="col-sm-6" type="text" class="form-control" id="examEndDate">
+						
+						            <br>
+												<br>
+												<br>
+                                            <div class="form-actions">
+                                                <a class="btn btn-primary btn-sm editCourseModalBtn" id="changeExamBtn" data-dismiss="modal" onclick="changeExam()">Change Lab</a>
+                                                <br>
+                                                <br>
+                                                <a class="btn btn-danger btn-sm editCourseModalBtn" id="removeExamBtn" data-dismiss="modal" onclick="removeExam()">Remove Lab</a>
+                                            </div>
+                                        </form>
+                                                            </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+     </div>
+     </div>  
 
 </div>
 

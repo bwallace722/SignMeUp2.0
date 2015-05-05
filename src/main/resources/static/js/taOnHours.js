@@ -77,7 +77,7 @@ $(document).on('click', '.clinicQ', function(e) {
 
 function callClinic(postParameters) {
 	$.post("/getClinicStudents", postParameters, function(responseJSON) {
-		alert("you have just called");
+		alert("you have just called " + postParameters.students);
 		updateClinic();
 	});
 }
