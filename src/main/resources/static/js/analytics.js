@@ -6,7 +6,7 @@ function setupFilterSelectButtons() {
 
   var NUM_SELECT_BUTTONS = 4;
   var selectButtons = [];
-  var selectOptions = [[["cs0170", 170], ["cs0320", 320], ["cs0510", 510]],
+  var selectOptions = [[["cs0170", 170], ["cs0320", 320], ["cs0330", 330], ["cs0510", 510]],
                        [["homeworks", 1], ["projects", 2], ["labs", 3], ["exams", 4]],
                        [["hw01", 1], ["hw02", 2], ["hw03", 3]],
                        [["sheep score", 1], ["course policies", 2]]];
@@ -34,7 +34,7 @@ function setupFilterSelectButtons() {
       for (var i = 0; i < studentFrequencyData.length; i++) {
         studentFrequencyData[i][0] = String(studentFrequencyData[i][0]);
       }
-      studentFrequencyData.splice(0, 0, ["student id", "visits"]);
+      studentFrequencyData.splice(0, 0, ["student id", "Visits"]);
 
       drawHistogram();
       drawBarChart();
@@ -145,19 +145,15 @@ function drawBarChart() {
 //IN PROGRESS
 function drawHistogram() {
   console.log("drawing histogram");
-  google.load("visualization", "1", {packages:["corechart"]});
   // Create the data table.
   var data = google.visualization.arrayToDataTable(studentFrequencyData);
 
-  var options = {
-          title: 'Lengths of dinosaurs, in meters',
-          legend: { position: 'none' },
-        };
 
   // Set chart options
    var options = {'title':'Hours Frequency',
                  'width':400,
-                 'height':300};
+                 'height':300,
+                  'legend':{position: 'top', textStyle: {color: 'blue', fontSize: 10}}};
 
   // Instantiate and draw our chart, passing in some options.
   console.log("about to draw");
@@ -178,7 +174,8 @@ function drawPieChart() {
     // Set chart options
     var options = {'title':'Hours Frequency',
                    'width':400,
-                   'height':300};
+                   'height':300,
+                    'is3d':true};
 
     // Instantiate and draw our chart, passing in some options.
     var chart = new google.visualization.PieChart(document.getElementById('pie_chart_div'));
