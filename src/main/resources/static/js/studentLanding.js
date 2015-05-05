@@ -78,6 +78,8 @@ function makeAppointment() {
 
 setInterval(checkStatus, 1000);
 
+var calledToHours = false;
+
 /*
  * Checks student's call status. If the ta has called them to hours,
  * an alert will appear.
