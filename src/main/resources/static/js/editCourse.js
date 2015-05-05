@@ -2,6 +2,23 @@ var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 var courseId = splitURL[splitURL.length -1];
 
+var exams = document.getElementById("examsCoursePanel").innerHTML;
+if(exams.trim() == "none") {
+	document.getElementById("examsCoursePanel").innerHTML = "<h4>There are no exams for this course.</h4>";
+
+}
+
+var assignments = document.getElementById("assignmentsCoursePanel").innerHTML;
+if(assignments.trim() == "none") {
+	document.getElementById("assignmentsCoursePanel").innerHTML = "<h4>There are no assignments for this course.</h4>";
+}
+
+var labs = document.getElementById("labsCoursePanel").innerHTML;
+if(labs.trim() == "none") {
+	document.getElementById("labsCoursePanel").innerHTML = "<h4>There are no labs for this course.</h4>";
+}
+
+
 function startAnalytics() {
 	window.location.href="/analytics_home";
 }
