@@ -24,20 +24,16 @@ function startAnalytics() {
 }
 
 var assName;
-var assStart;
-var assEnd;
 
 $(".ass").bind('click', function(e) {
 	var cells = this.getElementsByTagName('td');
 	
 	assName = cells[0].innerHTML;
-	assStart = cells[1].innerHTML;
-	assEnd = cells[2].innerHTML;
-	var asgnNameForm = document.getElementById("asgnName");
-	var asgnStartForm = document.getElementById("asgnStartDate");
-	var asgnEndForm = document.getElementById("asgnEndDate");
+	var assStart = cells[1].innerHTML;
+	var assEnd = cells[2].innerHTML;
+	var asgnNameForm = document.getElementById("assRelease");
 	
-	asgnNameForm.value = assName;
+	asgnNameForm.innerHTML = "Edit " + assName;
 	asgnStartForm.value = assStart;
 	asgnEndForm.value = assEnd;
 
@@ -46,18 +42,25 @@ $(".ass").bind('click', function(e) {
 function changeAss() {
 	var asgnStartForm = document.getElementById("asgnStartDate");
 	var asgnEndForm = document.getElementById("asgnEndDate");
-	var postParameters = {"table": "assignment", "courseId": courseId, "name": assName, "start": assStartForm.value, "end": assEndForm.value};
-	$.post("/changeAssessment", postParameters, function(responseJSON) {
-		console.log(responseJSON);
-		if(responseJSON == 1) {
-			
-		} else {
-			alert("problems");
-		}
-	});
+	if(validateDate(asgnStartForm, "asgnStartDate") && validateDate(asgnEndForm, "asgnEndDate")) {
+		var postParameters = {"table": "assignment", "courseId": courseId, "name": assName, "start": asgnStartForm.value, "end": asgnEndForm.value};
+		$.post("/changeAssessment", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+			if(responseJSON == 1) {
+				
+			} else {
+				alert("problems");
+			}
+		});
+	} else {
+		alert("There was a problem with your form, please attempt to edit the assignment again.");
+	}
 }
 
 function removeAss() {
+	var asgnStartForm = document.getElementById("asgnStartDate");
+	var asgnEndForm = document.getElementById("asgnEndDate");
+	if(validateDate(asgnStartForm, "asgnStartDate") && validateDate(asgnEndForm, "asgnEndDate")) {
 	var postParameters = {"table": "assignment", "courseId": courseId, "name": assName};
 	$.post("/removeAssessment", postParameters, function(responseJSON) {
 		if(responseJSON == 1) {
@@ -66,39 +69,43 @@ function removeAss() {
 			alert("problems");
 		}
 	});
+	} else {
+		alert("There was a problem with your form, please attempt to edit the assignment again.");
+	}
 }
 
 function addAss() {
 	var newAsgnName = document.getElementById("newAsgnName");
 	var newAsgnStart = document.getElementById("newAsgnStartDate");
 	var newAsgnEnd = document.getElementById("newAsgnEndDate");
+	if(validateFormGroup(newAsgnName, newAsgnStart, newAsgnEnd)) {
 	var postParameters = {"table": "assignment", "courseId": courseId, "name": newAsgnName.value, "start": newAsgnStart.value, "end": newAsgnEnd.value};
-	console.log(postParameters);
 	$.post("/addAssessment", postParameters, function(responseJSON) {
-		console.log(responseJSON  + " - here");
+		console.log(responseJSON);
 		if(responseJSON == 1) {
 			
 		} else {
 			alert("problems");
 		}
 	});
+	} else {
+		alert("There was a problem with your form, please attempt to create the assignment again.");
+	}
 }
 
 var labName;
-var labStart;
-var labEnd;
 
 $(".lab").bind('click', function(e) {
 	var cells = this.getElementsByTagName('td');
 	
 	labName = cells[0].innerHTML;
-	labStart = cells[1].innerHTML;
-	labEnd = cells[2].innerHTML;
-	var labNameForm = document.getElementById("labName");
+	var labStart = cells[1].innerHTML;
+	var labEnd = cells[2].innerHTML;
+	var labNameForm = document.getElementById("labRelease");
 	var labStartForm = document.getElementById("labStartDate");
 	var labEndForm = document.getElementById("labEndDate");
 	
-	labNameForm.value = labName;
+	labNameForm.innerHTML = "Edit " + labName;
 	labStartForm.value = labStart;
 	labEndForm.value = labEnd;
 });
@@ -106,60 +113,66 @@ $(".lab").bind('click', function(e) {
 function changeLab() {
 	var labStartForm = document.getElementById("labStartDate");
 	var labEndForm = document.getElementById("labEndDate");
-	var postParameters = {"table": "lab", "courseId": courseId, "name": labName, "start": labStartForm.value, "end": labEndForm.value};
-	$.post("/changeAssessment", postParameters, function(responseJSON) {
-		console.log(responseJSON);
-		if(responseJSON == 1) {
-			
-		} else {
-			alert("problems");
-		}
-	});
+	if(validateDate(labStartForm, "labStartDate") && validateDate(labEndForm, "labEndDate")) {
+		var postParameters = {"table": "lab", "courseId": courseId, "name": labName, "start": labStartForm.value, "end": labEndForm.value};
+		$.post("/changeAssessment", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+			if(responseJSON == 1) {
+				
+			} else {
+				alert("problems");
+			}
+		});
+	}
 }
 
 function removeLab() {
-	var postParameters = {"table": "lab", "courseId": courseId, "name": labName};
-	$.post("/removeAssessment", postParameters, function(responseJSON) {
-		console.log(responseJSON);
-		if(responseJSON == 1) {
-			
-		} else {
-			alert("problems");
-		}
-	});
+	var labStartForm = document.getElementById("labStartDate");
+	var labEndForm = document.getElementById("labEndDate");
+	if(validateDate(labStartForm, "labStartDate") && validateDate(labEndForm, "labEndDate")) {
+		var postParameters = {"table": "lab", "courseId": courseId, "name": labName};
+		$.post("/removeAssessment", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+			if(responseJSON == 1) {
+				
+			} else {
+				alert("problems");
+			}
+		});
+	}
 }
 
 function addLab() {
 	var newLabName = document.getElementById("newLabName");
 	var newLabStart = document.getElementById("newLabStartDate");
 	var newLabEnd = document.getElementById("newLabEndDate");
-	var postParameters = {"table": "lab", "courseId": courseId, "name": newLabName.value, "start": newLabStart.value, "end": newLabEnd.value};
-	$.post("/addAssessment", postParameters, function(responseJSON) {
-		console.log(responseJSON);
-		if(responseJSON == 1) {
-			
-		} else {
-			alert("problems");
-		}
-	});
+	if(validateFormGroup(newLabName, newLabStart, newLabEnd)) {
+		var postParameters = {"table": "lab", "courseId": courseId, "name": newLabName.value, "start": newLabStart.value, "end": newLabEnd.value};
+		$.post("/addAssessment", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+			if(responseJSON == 1) {
+				
+			} else {
+				alert("problems");
+			}
+		});
+	}
 }
 
 
 var examName;
-var examStart;
-var examEnd;
 
 $(".exam").bind('click', function(e) {
 	var cells = this.getElementsByTagName('td');
 	
 	examName = cells[0].innerHTML;
-	examStart = cells[1].innerHTML;
-	examEnd = cells[2].innerHTML;
-	var examNameForm = document.getElementById("examName");
+	var examStart = cells[1].innerHTML;
+	var examEnd = cells[2].innerHTML;
+	var examNameForm = document.getElementById("examRelease");
 	var examStartForm = document.getElementById("examStartDate");
 	var examEndForm = document.getElementById("examEndDate");
 	
-	examNameForm.value = examName;
+	examNameForm.innerHTML = 	"Edit " + examName;
 	examStartForm.value = examStart;
 	examEndForm.value = examEnd;
 
@@ -168,40 +181,99 @@ $(".exam").bind('click', function(e) {
 function changeExam() {
 	var examStartForm = document.getElementById("examStartDate");
 	var examEndForm = document.getElementById("examEndDate");
-	var postParameters = {"table": "exam", "courseId": courseId, "name": examName, "start": examStartForm.value, "end": examEndForm.value};
-	$.post("/changeAssessment", postParameters, function(responseJSON) {
-		console.log(responseJSON);
-		if(responseJSON == 1) {
-			
-		} else {
-			alert("problems");
-		}
-	});
+	if(validateDate(examStartForm, "examStartDate") && validateDate(examEndForm, "examEndDate")) {
+		var postParameters = {"table": "exam", "courseId": courseId, "name": examName, "start": examStartForm.value, "end": examEndForm.value};
+		$.post("/changeAssessment", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+			if(responseJSON == 1) {
+				
+			} else {
+				alert("problems");
+			}
+		});
+	}
 }
 
 function removeExam() {
-	var postParameters = {"table": "exam", "courseId": courseId, "name": examName};
-	$.post("/removeAssessment", postParameters, function(responseJSON) {
-		console.log(responseJSON);
-		if(responseJSON == 1) {
-			
-		} else {
-			alert("problems");
-		}
-	});
+	var examStartForm = document.getElementById("examStartDate");
+	var examEndForm = document.getElementById("examEndDate");
+	if(validateDate(examStartForm, "examStartDate") && validateDate(examEndForm, "examEndDate")) {
+		var postParameters = {"table": "exam", "courseId": courseId, "name": examName};
+		$.post("/removeAssessment", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+			if(responseJSON == 1) {
+				
+			} else {
+				alert("problems");
+			}
+		});
+	}
 }
 
 function addExam() {
 	var newExamName = document.getElementById("newExamName");
 	var newExamStart = document.getElementById("newExamStartDate");
 	var newExamEnd = document.getElementById("newExamEndDate");
-	var postParameters = {"table": "exam", "courseId": courseId, "name": newExamName.value, "start": newExamStart.value, "end": newExamEnd.value};
-	$.post("/addAssessment", postParameters, function(responseJSON) {
-		console.log(responseJSON);
-		if(responseJSON == 1) {
-			
-		} else {
-			alert("problems");
-		}
-	});
+	if(validateFormGroup(newExamName, newExamStart, newExamEnd)) {
+		var postParameters = {"table": "exam", "courseId": courseId, "name": newExamName.value, "start": newExamStart.value, "end": newExamEnd.value};
+		$.post("/addAssessment", postParameters, function(responseJSON) {
+			console.log(responseJSON);
+			if(responseJSON == 1) {
+				
+			} else {
+				alert("problems");
+			}
+		});
+	}
 }
+function highlightField(field, id) {
+	field.style.borderColor = "red";
+	field.style.borderWidth = "2px";
+	console.log(field);
+	field.title = "Please check this format.";
+	id = "#" + id;
+	$(id).tooltip('show');
+}
+
+function validateDate(s) {
+	console.log(s.value);
+	if(s.value.length == 0) {
+		toReturn = false;
+		highlightField(s);
+	} else {
+		var startInput = s.value.split("-");
+		var sMonth = parseInt(startInput[1]);
+		console.log(sMonth);
+		var sDay = parseInt(startInput[2]);
+		console.log(sDay);
+		var sYear = parseInt(startInput[0]);
+		console.log(sYear);
+		if(sMonth > 12 || sMonth < 1 || sDay > 31 || sDay < 1 || sYear < 2014 || sYear > 2016) {
+			toReturn = false;
+			highlightField(s);
+		}
+	}
+}
+
+
+
+function validateFormGroup(n,s,e) {
+	var toReturn = true;
+	console.log()
+	if(n.value.length == 0) {
+		toReturn = false;
+		highlightField(n);
+	}
+	
+	if(!validateDate(s) || !validateDate(e)) {
+		toReturn = false;
+	}
+	
+
+	return toReturn;
+}
+
+function returnToHours() {
+	window.location.href = "/taHoursSetUp/"+courseId;
+}
+

@@ -43,17 +43,13 @@
 
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
-                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Edit Assignment</h4>
+                            <h4 class="modal-title" id="assRelease" style="color: #000; text-align: center; font-weight:bold;">Edit</h4>
                           </div>
                           <div class="modal-body">
                                         <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
                               <div class="row">
                               <div class="col-sm-12" id="editCourseModalDiv">
                                  <form class="edit_form" id="edit_course_form">
-									<label class="col-sm-5" for="assignmentName">Name</label>
-						            <input class="col-sm-6" type="text" class="form-control" id="asgnName">
-						            <br>
-						            <br>
 						            <label class="col-sm-5" for="start">Start Date</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="asgnStartDate">
 						            <br>
@@ -64,12 +60,10 @@
 						            <br>
 												<br>
 												<br>
-                                            <div class="form-actions">
-                                                <a class="btn btn-primary btn-sm editCourseModalBtn" id="changeAssBtn" data-dismiss="modal" onclick="changeAss()">Change Assignment</a>
+                                                <a class="btn btn-primary btn-block editCourseModalBtn" id="changeAssBtn" data-dismiss="modal" onclick="changeAss()">Change Assignment</a>
                                                 <br>
                                                 <br>
-                                                <a class="btn btn-danger btn-sm editCourseModalBtn" id="removeAssBtn" data-dismiss="modal" onclick="removeAss()">Remove Assignment</a>
-                                            </div>
+                                                <a class="btn btn-danger btn-block editCourseModalBtn" id="removeAssBtn" data-dismiss="modal" onclick="removeAss()">Remove Assignment</a>
                                         </form>
                                                             </div>
                           </div>
@@ -84,14 +78,14 @@
 
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
-                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Create a new assignment</h4>
+                            <h4 class="modal-title" id="addAssRelease" style="color: #000; text-align: center; font-weight:bold;">Create a new assignment</h4>
                           </div>
                           <div class="modal-body">
                                         <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
                               <div class="row">
                               <div class="col-sm-12" id="editCourseModalDiv">
                                  <form class="edit_form" id="edit_course_form">
-									<label class="col-sm-5" for="assignmentName">Name</label>
+                                    <label class="col-sm-5" for="name">Name</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="newAsgnName">
 						            <br>
 						            <br>
@@ -139,17 +133,13 @@
 
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
-                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Edit Lab</h4>
+                            <h4 class="modal-title" id="labRelease" style="color: #000; text-align: center; font-weight:bold;">Edit</h4>
                           </div>
                           <div class="modal-body">
                                         <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
                               <div class="row">
                               <div class="col-sm-12" id="editCourseModalDiv">
                                  <form class="edit_form" id="edit_course_form">
-									<label class="col-sm-5" for="labName">Name</label>
-						            <input class="col-sm-6" type="text" class="form-control" id="labName">
-						            <br>
-						            <br>
 						            <label class="col-sm-5" for="start">Start Date</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="labStartDate">
 						            <br>
@@ -179,14 +169,14 @@
 
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
-                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Create a new lab!</h4>
+                            <h4 class="modal-title" id="addLabRelease" style="color: #000; text-align: center; font-weight:bold;">Create a new lab!</h4>
                           </div>
                           <div class="modal-body">
                                         <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
                               <div class="row">
                               <div class="col-sm-12" id="editCourseModalDiv">
                                  <form class="edit_form" id="edit_course_form">
-									<label class="col-sm-5" for="labName">Name</label>
+                                 	<label class="col-sm-5" for="labName">Name</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="newLabName">
 						            <br>
 						            <br>
@@ -235,17 +225,14 @@
 
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
-                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Edit Exam</h4>
+                            <h4 class="modal-title" id="examRelease" style="color: #000; text-align: center; font-weight:bold;">Edit</h4>
                           </div>
                           <div class="modal-body">
                                         <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
                               <div class="row">
                               <div class="col-sm-12" id="editCourseModalDiv">
                                  <form class="edit_form" id="edit_course_form">
-									<label class="col-sm-5" for="examName">Name</label>
-						            <input class="col-sm-6" type="text" class="form-control" id="examName">
-						            <br>
-						            <br>
+
 						            <label class="col-sm-5" for="start">Start Date</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="examStartDate">
 						            <br>
@@ -256,12 +243,10 @@
 						            <br>
 												<br>
 												<br>
-                                            <div class="form-actions">
                                                 <a class="btn btn-primary btn-block editCourseModalBtn" id="changeExamBtn" data-dismiss="modal" onclick="changeExam()">Change Exam</a>
                                                 <br>
                                                 <br>
                                                 <a class="btn btn-danger btn-block editCourseModalBtn" id="removeExamBtn" data-dismiss="modal" onclick="removeExam()">Remove Exam</a>
-                                            </div>
                                         </form>
                                                             </div>
                           </div>
@@ -275,7 +260,7 @@
 
                           <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button><br>
-                            <h4 class="modal-title" id="release" style="color: #000; text-align: center; font-weight:bold;">Create a new exam!</h4>
+                            <h4 class="modal-title" id="addExamRelease" style="color: #000; text-align: center; font-weight:bold;">Create a new exam!</h4>
                           </div>
                           <div class="modal-body">
                                         <!-- <form class="editCourses_form" id="timeLimit_form" action="taHoursSetUp.html" method="POST"> -->
@@ -307,6 +292,9 @@
                           </div>
                           </div>
      </div>  
+        <div class="startHours">
+   		<a class="btn btn-success btn-lg" id="setUpHours" onclick="returnToHours()" style="margin-left:33%;">Set Up Hours</a>
+   </div>
 
 </div>
 
