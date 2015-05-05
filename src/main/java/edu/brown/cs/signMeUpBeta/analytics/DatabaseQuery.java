@@ -123,29 +123,8 @@ public class DatabaseQuery {
   public List<Integer[]> getStudentsVisits(
       String[] parameters) throws SQLException {
 
-
-
-    //setup the query with a call to getFilter
-    String query =
-        getFilter(parameters)
-        .replaceFirst("<query>", "student.id, COUNT(hours.id)")
-        .replaceFirst("FROM ", "FROM student, ")
-        .replaceFirst("WHERE ", "WHERE student.id = hours.student_id AND ");
-
-    //System.out.println("query2: " + query);
-
-
-    PreparedStatement prep = conn.prepareStatement(query);
-    int paramIndex = parameters.length - 1;
-    if (paramIndex >= 0 && paramIndex < 4) {
-      prep.setInt(1, Integer.parseInt(parameters[paramIndex]));
-    }
-    ResultSet rs = prep.executeQuery();
-    List<Integer[]> studentTimes = new ArrayList<Integer[]>();
-    while(rs.next()) {
-      studentTimes.add(new Integer[]{rs.getInt(1), rs.getInt(2)});
-    }
-    rs.close();
+    PreparedStatement prep;
+    ResultSet rs;
 
     if (parameters.length == 0) {
       prep = conn.prepareStatement(
@@ -156,24 +135,39 @@ public class DatabaseQuery {
       prep.setInt(1, Integer.parseInt(parameters[0]));
     }
     rs = prep.executeQuery();
-    Map<Integer, Integer> studentFreqMap = new HashMap<Integer, Integer>();
+    List<Integer> students = new ArrayList<Integer>();
     while(rs.next()) {
-      studentFreqMap.put(rs.getInt(1), 0);
+      students.add(rs.getInt(1));
     }
     rs.close();
-    for (Integer[] pair : studentTimes) {
-      studentFreqMap.replace(pair[0], pair[1]);
-    }
-    studentTimes.clear();
-    for (int key : studentFreqMap.keySet()) {
-      studentTimes.add(new Integer[]{key, studentFreqMap.get(key)});
+
+
+    List<Integer[]> studentTimes = new ArrayList<Integer[]>();
+    for (int key : students) {
+
+
+      //setup the query with a call to getFilter
+      String query =
+          getFilter(parameters)
+          .replaceFirst("<query>", "COUNT(hours.id)")
+          .replaceFirst("WHERE ", "WHERE hours.student_id = ? AND ");
+
+      prep = conn.prepareStatement(query);
+      prep.setInt(1, key);
+
+      int paramIndex = parameters.length - 1;
+      if (paramIndex >= 0 && paramIndex < 4) {
+        prep.setInt(2, Integer.parseInt(parameters[paramIndex]));
+      }
+
+      rs = prep.executeQuery();
+
+      rs.next();
+
+      studentTimes.add(new Integer[]{key, rs.getInt(1)});
     }
 
     return studentTimes;
-
-    //now add all the zeros:
-    //PreparedStatement prep = conn.prepareStatement("SELECT id FROM student")
-
   }
 
   @SuppressWarnings("deprecation")
