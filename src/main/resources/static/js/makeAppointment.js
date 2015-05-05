@@ -7,6 +7,20 @@ var courseId = splitCourseAndLogin[0];
 var login = splitCourseAndLogin[1];
 
 var chosenTimeString = "Your appointment time <br>";
+var currAsign = document.getElementById("currAss");
+if(currAsign.innerHTML == "none"){
+	currAsign.innerHTML = "There is no assignment assigned for today.";
+	$("#questionsForApt").hide();
+}
+
+var aptTimes = document.getElementById("aptTimes");
+console.log(aptTimes.innerHTML);
+if(aptTimes.innerHTML == "") {
+	var header = document.getElementById("aptHeader");
+	header.innerHTML = "There is no available appointments for today.";
+	console.log(header);
+	$("#aptTimes").hide();
+}
 
 function myCourses() {
 	window.location.href = "/courses/" + login;
@@ -17,7 +31,6 @@ $(".confirmApt").bind('click', function(c) {
 });
 
 var currAsign = document.getElementById("currAss");
-console.log(currAsign.innerHTML);
 if(currAsign.innerHTML == "none"){
 	currAsign.innerHTML = "There is no assignment assigned for today.";
 	$("#questions").hide();
