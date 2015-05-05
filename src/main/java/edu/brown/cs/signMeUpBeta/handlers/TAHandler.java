@@ -62,6 +62,7 @@ public class TAHandler {
         new FreeMarkerEngine());
     Spark.get("/editCourse/:courseId", new EditCourseHandler(),
         new FreeMarkerEngine());
+    Spark.post("/changeAss", new ChangeAssHandler());
     Spark.post("/removeAssessmentItem", new RemoveAssessmentItem());
     Spark.post("/zwriteStudent", new ZWriteStudent());
   }
@@ -331,6 +332,19 @@ public class TAHandler {
       return new ModelAndView(variables, "taEditCourse.html");
     }
   }
+  private class ChangeAssHandler implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String course = qm.value("courseId");
+      String name = qm.value("assName");
+      return null;
+    }
+  }
+  
+  
+  
+  
   private class CreateCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
