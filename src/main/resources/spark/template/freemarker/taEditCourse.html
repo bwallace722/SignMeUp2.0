@@ -13,7 +13,7 @@
     
   </head>
   <body>
-    <a type="button" class="signOutBtn btn-lg btn" onclick="signOut()">Sign Out</a>
+    <a type="button" class="signOutBtn btn-lg btn" onclick="startAnalytics()">Analytics</a>
     <br>
     <br>
     <br>
@@ -31,7 +31,7 @@
 
      <div class="panel-body" id="assignmentsCoursePanel">
 				${allAss}
-							
+					<a class="btn btn-primary btn-sm editCourseBtn">Add Assignment</a>
      <!--loop through classes to display, add a button to drop class for each-->
       </div>
 
@@ -48,15 +48,15 @@
                               <div class="row">
                               <div class="col-sm-12" id="editCourseModalDiv">
                                  <form class="edit_form" id="edit_course_form">
-									<label class="col-sm-4" for="assignmentName">Name</label>
+									<label class="col-sm-5" for="assignmentName">Name</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="asgnName">
 						            <br>
 						            <br>
-						            <label class="col-sm-4" for="start">Start Date</label>
+						            <label class="col-sm-5" for="start">Start Date</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="asgnStartDate">
 						            <br>
 						            <br>
-						            <label class="col-sm-4" for="end">End Date</label>
+						            <label class="col-sm-5" for="end">End Date</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="asgnEndDate">
 						
 						            <br>
@@ -88,7 +88,7 @@
 
      <div class="panel-body" id="labsCoursePanel">
 				${allLabs}
-							
+			<a class="btn btn-primary btn-sm editCourseBtn">Add Lab</a>
      <!--loop through classes to display, add a button to drop class for each-->
       </div>
 
@@ -105,15 +105,15 @@
                               <div class="row">
                               <div class="col-sm-12" id="editCourseModalDiv">
                                  <form class="edit_form" id="edit_course_form">
-									<label class="col-sm-4" for="labName">Name</label>
+									<label class="col-sm-5" for="labName">Name</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="labName">
 						            <br>
 						            <br>
-						            <label class="col-sm-4" for="start">Start Date</label>
+						            <label class="col-sm-5" for="start">Start Date</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="labStartDate">
 						            <br>
 						            <br>
-						            <label class="col-sm-4" for="end">End Date</label>
+						            <label class="col-sm-5" for="end">End Date</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="labEndDate">
 						
 						            <br>
@@ -145,7 +145,7 @@
 
      <div class="panel-body" id="examsCoursePanel">
 				${allExams}
-							
+					<a class="btn btn-primary btn-sm editCourseBtn">Add Exam</a>					
      <!--loop through classes to display, add a button to drop class for each-->
       </div>
 
@@ -162,15 +162,15 @@
                               <div class="row">
                               <div class="col-sm-12" id="editCourseModalDiv">
                                  <form class="edit_form" id="edit_course_form">
-									<label class="col-sm-4" for="examName">Name</label>
+									<label class="col-sm-5" for="examName">Name</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="examName">
 						            <br>
 						            <br>
-						            <label class="col-sm-4" for="start">Start Date</label>
+						            <label class="col-sm-5" for="start">Start Date</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="examStartDate">
 						            <br>
 						            <br>
-						            <label class="col-sm-4" for="end">End Date</label>
+						            <label class="col-sm-5" for="end">End Date</label>
 						            <input class="col-sm-6" type="text" class="form-control" id="examEndDate">
 						
 						            <br>

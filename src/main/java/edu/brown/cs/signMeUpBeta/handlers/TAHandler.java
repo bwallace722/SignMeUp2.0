@@ -216,6 +216,8 @@ public class TAHandler {
               + "</tr></thead><tbody id=\"courseInfoTableBody\">";
       String closeTableTags = "</tbody></table>";
       assList.append(tableTags);
+      labList.append(tableTags);
+      examList.append(tableTags);
       String assStartTags = "<tr class=\"clickable-row ass\" data-toggle=\"modal\" data-target=\"#assModal\">"
           + "<td class=\"itemName\">";
       String labStartTags = "<tr class=\"clickable-row lab\" data-toggle=\"modal\" data-target=\"#labsModal\">"

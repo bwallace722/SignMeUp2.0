@@ -2,6 +2,10 @@ var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 var courseId = splitURL[splitURL.length -1];
 
+function startAnalytics() {
+	window.location.href="/analytics_home";
+}
+
 $(".ass").bind('click', function(e) {
 	console.log("here");
 	var cells = this.getElementsByTagName('td');
