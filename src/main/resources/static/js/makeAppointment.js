@@ -1,11 +1,8 @@
 var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 //url contains student
-var courseIdAndLogin = splitURL[splitURL.length -1];
-var splitCourseAndLogin = courseIdAndLogin.split("~");
-var courseId = splitCourseAndLogin[0];
-var login = splitCourseAndLogin[1];
-
+var courseId = splitURL[splitURL.length -1];
+var login = getCookie("login");
 
 var chosenTimeString = "Your appointment time <br>";
 var currAsign = document.getElementById("currAss");
