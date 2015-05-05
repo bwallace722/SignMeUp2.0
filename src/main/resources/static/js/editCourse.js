@@ -32,6 +32,8 @@ $(".ass").bind('click', function(e) {
 	var assStart = cells[1].innerHTML;
 	var assEnd = cells[2].innerHTML;
 	var asgnNameForm = document.getElementById("assRelease");
+	var asgnStartForm = document.getElementById("asgnStartDate");
+	var asgnEndForm = document.getElementById("asgnEndDate");
 	
 	asgnNameForm.innerHTML = "Edit " + assName;
 	asgnStartForm.value = assStart;
