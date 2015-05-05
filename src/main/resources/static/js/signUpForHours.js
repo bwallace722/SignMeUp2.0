@@ -10,8 +10,9 @@ console.log("course: " + courseId + " , login: " + login);
 
 var currAsign = document.getElementById("currAsign");
 console.log(currAsign.innerHTML);
-if(currAsign.innerHTML == "none"){
+if(currAsign.innerHTML == "<label>none</label>"){
 	currAsign.innerHTML = "There is no assignment assigned for today.";
+	currAsign.style.textAlign = "center";
 	$("#checkbox").hide();
 }
 
