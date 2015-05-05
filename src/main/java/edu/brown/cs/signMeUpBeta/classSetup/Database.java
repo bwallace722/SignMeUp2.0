@@ -495,7 +495,7 @@ public class Database {
   }
   public List<String> getAllAssessments(String courseId) throws SQLException {
     String query =
-        "SELECT assignment_name, start_date, end_date FROM assignment WHERE course_id = ?;";
+        "SELECT assignment_name, start_date, end_date FROM assignment WHERE course_id = ? ORDER BY end_date ASC;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, courseId);
     ResultSet rs = ps.executeQuery();
@@ -518,7 +518,7 @@ public class Database {
   }
   public List<String> getAllLabs(String courseId) throws SQLException {
     String query =
-        "SELECT lab_name, start_date, end_date FROM lab WHERE course_id = ?;";
+        "SELECT lab_name, start_date, end_date FROM lab WHERE course_id = ? ORDER BY end_date ASC;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, courseId);
     ResultSet rs = ps.executeQuery();
@@ -541,7 +541,7 @@ public class Database {
   }
   public List<String> getAllExams(String courseId) throws SQLException {
     String query =
-        "SELECT exam_name, start_date, end_date FROM exam WHERE course_id = ?;";
+        "SELECT exam_name, start_date, end_date FROM exam WHERE course_id = ? ORDER BY end_date ASC;";
     PreparedStatement ps = conn.prepareStatement(query);
     ps.setString(1, courseId);
     ResultSet rs = ps.executeQuery();
