@@ -25,14 +25,16 @@ function startHours() {
 					if(responseJSON == 1) {
 						window.location.href= hoursUrl;
 					} else {
-						alert("Hours haven't been started yet. " +
-								"Check your connection and try again");
+						document.getElementById("resultBody").innerHTML = "Hours haven't been started yet. " +
+						"Check your connection and try again";
+						$("#resultModal").modal('show');
 					}
 				});
 			} else {
 				alert("Please input a valid integer to represent the number of hours for this TA session");
 			}
 		} else {
+			
 			alert("Please specify an hours duration or check the box for no appointments.");
 		}
 	} else {
@@ -42,8 +44,9 @@ function startHours() {
 			if(responseJSON == 1) {
 				window.location.href= hoursUrl;
 			} else {
-				alert("Hours haven't been started yet. " +
-						"Check your connection and try again");
+				document.getElementById("resultBody").innerHTML = "Hours haven't been started yet. " +
+				"Check your connection and try again";
+				$("#resultModal").modal('show');
 			}
 		});
 		
@@ -72,7 +75,8 @@ function addQuestion() {
 		if(responseJSON == 1) {
 			currSubs.append("<h6>" + newQuestion + "</h6>");
 		} else {
-			alert("We couldn't add your question. Refresh this page and try again.");
+			document.getElementById("resultBody").innerHTML = "We couldn't add your question. Refresh this page and try again.";
+			$("#resultModal").modal('show');
 		}
 	});
 }
@@ -87,8 +91,9 @@ function setTimeLimit() {
 		if(responseJSON == 1) {
 			document.getElementById("timeLimMinutes").innerHTML = newTimeLim;
 		} else {
-			alert("The time limit could not be changed for " + courseId + " hours." +
-					"Try again.");
+			document.getElementById("resultBody").innerHTML = "The time limit could not be changed for " + courseId + " hours." +
+			"Try again.";
+			$("#resultModal").modal('show');
 		}
 	});
 	

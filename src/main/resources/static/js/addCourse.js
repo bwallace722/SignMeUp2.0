@@ -32,13 +32,17 @@ function signUp() {
 		if(responseJSON == "Success.") {
 			window.location.href="/courses/" + login;
 		} else if(responseJSON == "Student is a TA.") {
-			alert("It appears you're a TA for this class. You can't be a student too!");
+			document.getElementById("resultBody").innerHTML = "It appears you're a TA for this class. You can't be a student too!";
+			$("#resultModal").modal('show');
 		} else if(responseJSON == "Student already in table." || responseJSON == "TA already in table.") {
-			alert("You've already signed up for this class.");
+			document.getElementById("resultBody").innerHTML = "You've already signed up for this class.";
+			$("#resultModal").modal('show');
 		} else if(responseJSON == "TA is a student.") {
-			alert("It appears you're a student in this class. You can't be a TA too!");
+			document.getElementById("resultBody").innerHTML = "It appears you're a student in this class. You can't be a TA too!";
+			$("#resultModal").modal('show');
 		} else {
-			alert("Some error occured. Please try again.");
+			document.getElementById("resultBody").innerHTML = "Some error occured. Please try again.";
+			$("#resultModal").modal('show');
 		}
 	});
 }

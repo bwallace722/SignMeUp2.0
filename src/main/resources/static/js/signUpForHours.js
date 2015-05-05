@@ -26,6 +26,8 @@ function signOut() {
 		}
 	});
 }
+
+var newURL = "/studentLanding/" + courseIdAndLogin;
 function getOnQueue() {
 	var checkedQ = "";
 	var qs = $('#checkbox :checked');
@@ -49,17 +51,19 @@ function getOnQueue() {
 		 * Otherwise there was most likely a SQL error.
 		 */
 		if(responseJSON == 1) {
-			alert("You've been added to the queue!");
-			console.log("redirect");
-			window.location.href = "/studentLanding/" + courseIdAndLogin;
+			document.getElementById("resultBody").innerHTML = "You've been added to the queue!";
+			$("#resultModal").modal('show');
 			//updateStatus();
 		} else if (responseJSON == 2) {
-			alert("You are already on the queue!");
-
-			console.log("redirect");
-			window.location.href = "/studentLanding/" + courseIdAndLogin;
+			document.getElementById("resultBody").innerHTML = "You are already on the queue!";
+			$("#resultModal").modal('show');
 		} else {
 			console.log("SQL Error.");
 		}
 	});
+}
+
+
+function redirect() {
+	window.location.href = newURL;
 }

@@ -35,6 +35,10 @@ h1 {
 	
 }
 
+#resultBody {
+	color: #000 !important;
+}
+
 #signUpForHrsBtn {
 	margin-bottom: 20%;
 }

@@ -75,7 +75,8 @@ $(document).on('click', '.clinicQ', function(e) {
 				"course": courseId};
 		callClinic(postParameters);
 	} else {
-		alert("there are no students for this topic.");
+		document.getElementById("resultBody").innerHTML = "Nobody has a question for this topic.";
+		$("#resultModal").modal('show');
 	}
 
 	
@@ -83,7 +84,8 @@ $(document).on('click', '.clinicQ', function(e) {
 
 function callClinic(postParameters) {
 	$.post("/getClinicStudents", postParameters, function(responseJSON) {
-		alert("you have just called " + postParameters.students);
+		document.getElementById("resultBody").innerHTML = "you have just called " + postParameters.students;
+		$("#resultModal").modal('show');
 		updateClinic();
 	});
 }
@@ -227,7 +229,6 @@ function callStudent() {
 		$.post(url, postParameters, function(responseJSON) {
 			//confirmation message
 			if(responseJSON == 1) {
-				alert(login + " has been called to hours");
 //				var emailParameters = {"login": login, "message": message, "taEmail": "signmeuptester@gmail.com"};
 //				$.post("/emailStudent", emailParameters, function(responseJSON){
 //					if(responseJSON == 1){
@@ -237,11 +238,13 @@ function callStudent() {
 				var zwriteParameters = {"login": login, "message": message};
 				$.post("/zwriteStudent", zwriteParameters, function(responseJSON){
 					if(responseJSON == 1){
-						alert(login + " has been notified via zwrite");
+						document.getElementById("resultBody").innerHTML = login + " has been called to hours via zwrite";
+						$("#resultModal").modal('show');
 					}
 				});
 			} else {
-				alert(login + " cannot be reached. Maybe they signed out");
+				document.getElementById("resultBody").innerHTML = login +" cannot be reached. Maybe they signed out";
+				$("#resultModal").modal('show');
 			}
 		});
 	}
@@ -353,10 +356,10 @@ function endHours() {
 	var postURL = "/endHours/" + courseId;
 	$.post(postURL, function(responseJSON) {
 		if(responseJSON == 1) {
-			alert("hours have ended. redirecting to hours setup.");
 			window.location.href = "/taHoursSetUp/" + courseId;
-		} else {
-			alert("unable to end hours. Please try again");
+		} else {				
+			document.getElementById("resultBody").innerHTML = "Unable to end hours. please try again.";
+		$("#resultModal").modal('show');
 		}
 	});
 }
