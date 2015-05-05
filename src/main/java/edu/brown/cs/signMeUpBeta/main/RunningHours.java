@@ -34,7 +34,7 @@ public class RunningHours {
       } catch (SQLException e) {
         questions = new ArrayList<Question>();
       }
-      hours.put(courseID, new Hours(currProject, questions));
+      hours.put(courseID, new Hours(currProject, questions, courseID, db));
     }
     return 1;
   }

@@ -395,7 +395,7 @@ public class QueueHandler {
       int toReturn = 0;
       toReturn = hours.scheduleAppointment(time, login);
       if (toReturn == 1) {
-        hours.updateQuestions(login, new ArrayList<String>(Arrays
+        hours.updateQuestions(null, new ArrayList<String>(Arrays
             .asList(questions)));
         hours.incrementQuestion(otherQ);
       }

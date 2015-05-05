@@ -11,6 +11,7 @@ import java.util.Map;
 import java.util.PriorityQueue;
 import java.util.concurrent.ConcurrentHashMap;
 
+import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.project.Question;
 
 public class Hours {
@@ -19,17 +20,26 @@ public class Hours {
   private Map<String, List<String>> studentQuestions;
   private int timeLim;
   private Map<String, String> appointments;
-  private String currAss;
-  public Hours(String currAss, List<Question> questionList) {
+  private String currAss, courseId;
+  private Database db;
+  public Hours(String currAss, List<Question> questionList, String courseId, Database db) {
     questions = questionList;
     questionCount = new ConcurrentHashMap<String, Integer>();
-    for (Question q : questionList) {
-      questionCount.put(q.content(), 0);
-    }
     timeLim = 10;
     this.currAss = currAss;
     appointments = new HashMap<String, String>();
     studentQuestions = new ConcurrentHashMap<String, List<String>>();
+    this.courseId = courseId;
+    for (Question q : questionList) {
+      int count;
+      try {
+        count = db.getQuestionCount(q.content(), courseId, currAss);
+      } catch (Exception e) {
+        System.err.println(e);
+        count = 0;
+      }
+      questionCount.put(q.content(), count);
+    }
   }
   public List<Question> getQuestions() {
     return questions;
@@ -100,7 +110,9 @@ public class Hours {
     }
   }
   public void updateQuestions(String login, List<String> questions) {
-    studentQuestions.put(login, questions);
+    if (login != null) {
+      studentQuestions.put(login, questions);
+    }
     for (String q : questions) {
       incrementQuestion(q);
     }

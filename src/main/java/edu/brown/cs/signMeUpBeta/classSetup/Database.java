@@ -564,6 +564,21 @@ public class Database {
     ps.executeUpdate();
     ps.close();
   }
+  public int getQuestionCount(String q, String courseId, String currAss) throws SQLException {
+    String query = "SELECT count FROM questions WHERE question = ? AND course_id = ? and assessment_name = ?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, q);
+    ps.setString(2, courseId);
+    ps.setString(3, currAss);
+    ResultSet rs = ps.executeQuery();
+    int count = 0;
+    if (rs.next()) {
+      count = rs.getInt(1);
+    }
+    ps.close();
+    rs.close();
+    return count;
+  }
   // SCHEMAS
   // String schema =
   // "CREATE TABLE course(course_id TEXT PRIMARY KEY, course_title TEXT);";
