@@ -11,7 +11,6 @@ var assStart;
 var assEnd;
 
 $(".ass").bind('click', function(e) {
-	console.log("here");
 	var cells = this.getElementsByTagName('td');
 	
 	assName = cells[0].innerHTML;
@@ -28,10 +27,22 @@ $(".ass").bind('click', function(e) {
 });
 
 function changeAss() {
-	
+	var postParameters = {"courseId": courseId, "assName": assName, "assStart": assStart, "assEnd": assEnd};
+	$.post("/changeAss", postParameters, function(responseJSON) {
+		console.log(responseJSON);
+		if(responseJSON == 1) {
+			
+		} else {
+			alert("problems");
+		}
+	});
 }
 
 function removeAss() {
+	
+}
+
+function addAss() {
 	
 }
 

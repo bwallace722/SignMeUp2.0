@@ -56,15 +56,7 @@ public class Database {
     }
     return toReturn;
   }
-  public void removeAssignmentItem(String table, String assignmentName)
-      throws SQLException {
-    String update = "DELETE FROM ? WHERE assignment_name = ?;";
-    PreparedStatement ps = conn.prepareStatement(update);
-    ps.setString(1, table);
-    ps.setString(2, assignmentName);
-    ps.executeUpdate();
-    ps.close();
-  }
+
   public String getStudentEmail(String login) throws SQLException {
     String query = "SELECT email FROM account WHERE login = ?;";
     PreparedStatement ps = conn.prepareStatement(query);
@@ -279,6 +271,15 @@ public class Database {
     ps.setDate(2, java.sql.Date.valueOf(startDate));
     ps.setDate(3, java.sql.Date.valueOf(endDate));
     ps.setString(4, courseId);
+    ps.executeUpdate();
+    ps.close();
+  }
+  public void removeAssignmentItem(String table, String assignmentName)
+      throws SQLException {
+    String update = "DELETE FROM ? WHERE assignment_name = ?;";
+    PreparedStatement ps = conn.prepareStatement(update);
+    ps.setString(1, table);
+    ps.setString(2, assignmentName);
     ps.executeUpdate();
     ps.close();
   }
