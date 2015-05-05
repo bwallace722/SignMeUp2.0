@@ -15,22 +15,22 @@ import edu.brown.cs.signMeUpBeta.classSetup.Database;
 import edu.brown.cs.signMeUpBeta.project.Question;
 
 public class Hours {
-  private Map<String, Integer> questionCount;
-  private List<Question> questions;
+  private Map<String, Integer> topicCount;
+  private List<Question> topics;
   private Map<String, List<String>> studentQuestions;
   private int timeLim;
   private Map<String, String> appointments;
   private String currAss, courseId;
   private Database db;
-  public Hours(String currAss, List<Question> questionList, String courseId, Database db) {
-    questions = questionList;
-    questionCount = new ConcurrentHashMap<String, Integer>();
+  public Hours(String currAss, List<Question> topicList, String courseId, Database db) {
+    topics = topicList;
+    topicCount = new ConcurrentHashMap<String, Integer>();
     timeLim = 10;
     this.currAss = currAss;
     appointments = new HashMap<String, String>();
     studentQuestions = new ConcurrentHashMap<String, List<String>>();
     this.courseId = courseId;
-    for (Question q : questionList) {
+    for (Question q : topics) {
       int count;
       try {
         count = db.getQuestionCount(q.content(), courseId, currAss);
@@ -38,15 +38,15 @@ public class Hours {
         System.err.println(e);
         count = 0;
       }
-      questionCount.put(q.content(), count);
+      topicCount.put(q.content(), count);
     }
   }
   public List<Question> getQuestions() {
-    return questions;
+    return topics;
   }
   public void addQuestion(Question newQuestion) {
-    questions.add(newQuestion);
-    questionCount.putIfAbsent(newQuestion.content(), 0);
+    topics.add(newQuestion);
+    topicCount.putIfAbsent(newQuestion.content(), 0);
   }
   public int getTimeLim() {
     return timeLim;
@@ -103,10 +103,10 @@ public class Hours {
     return currAss;
   }
   public void incrementQuestion(String q) {
-    if (questionCount.containsKey(q)) {
-      questionCount.put(q, questionCount.get(q) + 1);
+    if (topicCount.containsKey(q)) {
+      topicCount.put(q, topicCount.get(q) + 1);
     } else {
-      questionCount.put(q, 1);
+      topicCount.put(q, 1);
     }
   }
   public void updateQuestions(String login, List<String> questions) {
@@ -120,13 +120,13 @@ public class Hours {
   private class CountComp implements Comparator<String> {
     @Override
     public int compare(String a, String b) {
-      return questionCount.get(b)
-          - questionCount.get(a);
+      return topicCount.get(b)
+          - topicCount.get(a);
     }
   }
   public List<String> mostPopularQuestions() {
     PriorityQueue<String> pq = new PriorityQueue<String>(new CountComp());
-    for (String q : questionCount.keySet()) {
+    for (String q : topicCount.keySet()) {
       pq.add(q);
     }
     List<String> ret = new ArrayList<String>();

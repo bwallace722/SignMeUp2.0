@@ -549,22 +549,6 @@ public class Database {
     }
     return allExams;
   }
-  public int getNumberQuestionsAsked(String login, String courseId)
-      throws SQLException {
-    String query =
-        "SELECT questions_asked_curr_project FROM student_course WHERE student_id=? AND course_id=?;";
-    PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, login);
-    ps.setString(2, courseId);
-    ResultSet rs = ps.executeQuery();
-    int num = 0;
-    if (rs.next()) {
-      num = rs.getInt(1);
-    }
-    ps.close();
-    rs.close();
-    return num;
-  }
   public void updateStudentInfo(String login, String courseId,
       String[] questions, String currAss) throws SQLException {
     String query =
@@ -586,6 +570,22 @@ public class Database {
       ps.close();
     }
   }
+  public int getNumberQuestionsAsked(String login, String courseId, String currAss)
+      throws SQLException {
+    String query =
+        "SELECT questions_asked_curr_project FROM student_course WHERE student_id=? AND course_id=?;";
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setString(1, login);
+    ps.setString(2, courseId);
+    ResultSet rs = ps.executeQuery();
+    int num = 0;
+    if (rs.next()) {
+      num = rs.getInt(1);
+    }
+    ps.close();
+    rs.close();
+    return num;
+  }
   public String getLastProject(String login, String course) throws SQLException {
     String query =
         "SELECT last_project FROM student_course WHERE student_id = ? AND course_id = ?;";
@@ -600,16 +600,6 @@ public class Database {
     ps.close();
     rs.close();
     return last;
-  }
-  public void resetNumQuestions(String login, String courseId)
-      throws SQLException {
-    String query =
-        "UPDATE student_course SET questions_asked_curr_project = 0 WHERE student_id = ? AND course_id = ?;";
-    PreparedStatement ps = conn.prepareStatement(query);
-    ps.setString(1, login);
-    ps.setString(2, courseId);
-    ps.executeUpdate();
-    ps.close();
   }
   public int getQuestionCount(String q, String courseId, String currAss) throws SQLException {
     String query = "SELECT count FROM questions WHERE question = ? AND course_id = ? and assessment_name = ?;";

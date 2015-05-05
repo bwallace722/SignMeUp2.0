@@ -37,6 +37,14 @@ public class DatabaseQuery {
   //1: category
   //2: assignment
   //3: topic
+  /**
+   * Gives the name and id of each option.
+   * For example, if the input is ["cs032"], the output is
+   * a list of all the categories in cs032.
+   * @param parameters
+   * @return
+   * @throws SQLException
+   */
   public List<String[]> getSelectOptions(String[] parameters)
       throws SQLException {
 
