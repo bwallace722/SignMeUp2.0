@@ -322,18 +322,17 @@ var timer;
 
 function startTimer() {
 	var timeLimit = document.getElementById("timeLimit").innerHTML;
-	console.log(timeLimit);
-	var tSeconds = parseInt(timeLimit) * 60000;
-	console.log(tSeconds + " seconds");
-	timer = window.setTimeout(timerLimit, tSeconds);
-}
-
-function timerLimit() {
-	var r = confirm("Time's up! Move onto the next Student. Click Cancel to extend time.");
-	if (r != true) {
-		window.clearTimeout(timer);
-	    startTimer();
-	}
+	var tSeconds = parseInt(timeLimit);
+	var dur = tSeconds+'m';
+	$("#t").timer({
+	    duration: dur,
+	    callback: function() {
+	    	var r = confirm("Time's up! Move onto the next Student. Click Cancel to extend time.");
+	    	if (r != true) {
+	    		$("#t").timer('reset');
+	    	}
+	    }
+	});
 }
 
 function stopTimer() {

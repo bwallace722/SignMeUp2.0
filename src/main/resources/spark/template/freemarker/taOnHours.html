@@ -14,8 +14,17 @@
   </head>
   <body>
   <div class="container">
-<a class="btn btn-success btn-lg" style="background-color: #000; border-color: #000;"onclick="startTimer()">Start Timer</a>
      <h1> ${course} Hours</h1>
+     <div class="startHours">
+	     <br>
+	     <br>
+	     <div class="timer">
+		    <div id="t" class="badge">00:00</div>
+			<a class="btn btn-success btn-lg" style="margin-left:30%;" onclick="startTimer()">Start Timer</a>
+			<a class="btn btn-success btn-lg" style="margin-left:5%;" onclick="stopTimer()">Stop Timer</a>
+	     </div>
+     </div>
+          
      <br>
 	 <br>
          <div class="row" style="padding-left:6%;">
@@ -42,7 +51,7 @@
 
 <div id="timeLimit">${time}</div>
 
-     <div class="col-sm-5 panel">
+     <div class="col-sm-5 col-sm-push-1">
       <!--loop through questions from db-->
 
      <div class="onHoursBlock" id="appointments">
@@ -76,8 +85,10 @@
        </div>
     </div>
     <div class="row">
-            <a class="setupBtn btn btn-success btn-lg" onclick="returnToSetup()">Return to Setup</a>
+    <div class="startHours">
+            <a class="setupBtn btn btn-success btn-lg" style="margin-left:5%; margin-right:5%;"onclick="returnToSetup()">Return to Setup</a>
             <a class="setupBtn btn btn-danger btn-lg" onclick="endHours()">End Hours</a>
+            </div>
      </div>
 
      </div>
@@ -87,8 +98,12 @@
      <!-- Again, we're serving up the unminified source for clarity. -->
      <script src="../js/jquery-2.1.1.js"></script>
      <script src="../js/main.js"></script>
+          <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+          <script src="../js/timer.jquery.min.js"></script>
+          <script src="../js/bootstrap.min.js"></script>
           <script src="../js/taOnHours.js"></script>
-     <script src="../js/bootstrap.min.js"></script>
+
+
   </body>
   <!-- See http://html5boilerplate.com/ for a good place to start
        dealing with real world issues like old browsers.  -->

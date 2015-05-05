@@ -57,9 +57,21 @@ h1 {
 }
 
 .startHours {
-	width: 25%;
+	width: 35%;
 	margin-left: auto;
 	margin-right: auto;
+}
+
+.startHours a {
+	display:inline-block;
+}
+.badge {
+	height: 100px;
+	width: 100px;
+	background-color: #000;
+	color: #fff;
+	font-size: 20px !important;
+	padding-top: 10% !important;
 }
 
 .clickable-row:hover {
@@ -492,7 +504,7 @@ a h3:hover {
 	margin-left: 10%;
 }
 #removeCourseBtn {
-		margin-left: 20%;
+	margin-left: 20%;
 }
 
 .studentOnQueue:hover {
