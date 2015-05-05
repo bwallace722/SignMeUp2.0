@@ -35,7 +35,7 @@ function signOut() {
 
 
 function removeCourse() {
-	var courses = document.getElementById("courseDropdown");
+	var courses = document.getElementById("editCourseDropdown");
 	
 	var courseSelected = courses.options[courses.selectedIndex].value;
 	console.log(courseSelected);
@@ -43,7 +43,13 @@ function removeCourse() {
 	var posturl = "/removeCourse";
 	var postParameters = {"course": courseSelected, "login": user};
 	$.post("/removeCourse", postParameters, function(responseJSON) {
-		window.location.href = "/courses/" + user;
+		console.log(responseJSON);
+		if(responseJSON == 1) {
+			window.location.href = "/courses/" + user;
+		} else {
+			alert("problems");
+		}
+
 	});
 }
 

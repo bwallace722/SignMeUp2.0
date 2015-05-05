@@ -205,6 +205,7 @@ public class AccountHandler {
       QueryParamsMap qm = req.queryMap();
       String courseId = qm.value("courseId");
       String login = qm.value("login");
+      //TODO KIERAN CHECK FUNCTIONALITY
       try {
         db.removeAccountCoursePair(login, courseId);
       } catch (Exception e) {

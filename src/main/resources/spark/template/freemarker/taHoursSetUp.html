@@ -26,12 +26,16 @@
     <button class="btn btn-primary btn-sm" id="seeAssignments" data-toggle="collapse" data-target="#allAss" href="">See all Assignments</button>
     <a class="btn btn-primary btn-sm" id="editAssignments" onclick="taCourseSetUp()">Edit Assignments</a><br>
     <!--div for results-->
-         <h3>Today's assignment</h3>
+         
     <div class="panel-body">
+    
      <div class="hoursSetUpCategories">
-
-<h4 id="currAsign">${currAss}</h4>
+		<h3>Today's assignment</h3>
+		<br>
+		<h4 id="currAsign">${currAss}</h4>
+		
       <!--populate with request-->
+      <div class="questionsDiv">
                 <h5 style="text-decoration: underline;">Questions</h5>
       <div class="currSubs" id="currSubs">
 		${questions}
@@ -63,7 +67,13 @@
                           </div>
                           </div>
                           </div>
-      <div id="allAss" class="collapse">
+
+              <br>
+     
+      <!--div for results, loop through-->
+      </div>
+      </div>
+            <div id="allAss" class="collapse">
       <hr>
       <h3>All Assignments</h3>
       ${allAss}
@@ -73,10 +83,6 @@
       <div class="assignment">Maps</div>-->
 
         </div>
-              <br>
-     
-      <!--div for results, loop through-->
-      </div>
       </div>
       </div>
      </div>
@@ -140,6 +146,11 @@
                                               <h4 style="color: #000; text-align: center;">How many hours will hours be held today?</h4>
 												<input type="text" class="form-control" id="hoursLength" placeholder="3">
 												<br>
+												<div class="noApt" id="noApt">
+												
+													<input type="checkbox" id="noAptBox" value="No Appointments for This Session">
+												<label for="noAptBox" style="font-weight: 100;">No Appointments</label>
+												</div>
                                             <div class="form-actions">
                                                 <button class="btn btn-primary" data-dismiss="modal" onclick="startHours()">Start session</button>
                                                 <br>

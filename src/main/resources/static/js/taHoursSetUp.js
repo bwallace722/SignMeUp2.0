@@ -3,29 +3,50 @@ var splitURL = windowURL.split("/");
 var courseId = splitURL[splitURL.length -1];
 
 function startHours() {
-	var postUrl = "/startHours/" + courseId;
+	var postUrl;
 	var hoursUrl = "/onHours/" + courseId;
 	var hoursLength = document.getElementById("hoursLength");
 	var hoursSplit = hoursLength.value.split(" ");
-	if (hoursLength.value != "") {
-		var hours = hoursSplit[0];
-		console.log(hours);
-		console.log(isNaN(hours));
-		if(!isNaN(hours)) {
-			var postParameters = {"duration": hours};
-			$.post(postUrl, postParameters, function(responseJSON) {
-				if(responseJSON == 1) {
-					window.location.href= hoursUrl;
-				} else {
-					alert("Hours haven't been started yet. " +
-							"Check your connection and try again");
-				}
-			});
+	var checkedQ = "";
+	var qs = $('#noApt :checked');
+	qs.each(function() {
+		checkedQ = checkedQ.concat($(this).val());
+    });
+	console.log(checkedQ);
+	if(checkedQ == "") {
+		if (hoursLength.value != "") {
+			var hours = hoursSplit[0];
+			console.log(hours);
+			console.log(isNaN(hours));
+			if(!isNaN(hours)) {
+				postUrl = "/startHours/" + courseId;
+				var postParameters = {"duration": hours};
+				$.post(postUrl, postParameters, function(responseJSON) {
+					if(responseJSON == 1) {
+						window.location.href= hoursUrl;
+					} else {
+						alert("Hours haven't been started yet. " +
+								"Check your connection and try again");
+					}
+				});
+			} else {
+				alert("Please input a valid integer to represent the number of hours for this TA session");
+			}
 		} else {
-			alert("Please input a valid integer to represent the number of hours for this TA session");
+			alert("Please specify an hours duration or check the box for no appointments.");
 		}
 	} else {
-		alert("Please specify an hours duration.");
+		console.log(checkedQ);
+		postUrl = "/startHoursNoApts/"+courseId;
+		$.post(postUrl, function(responseJSON) {
+			if(responseJSON == 1) {
+				window.location.href= hoursUrl;
+			} else {
+				alert("Hours haven't been started yet. " +
+						"Check your connection and try again");
+			}
+		});
+		
 	}
 }
 
@@ -38,7 +59,7 @@ var currAsign = document.getElementById("currAsign");
 console.log(currAsign.innerHTML);
 if(currAsign.innerHTML == "none"){
 	currAsign.innerHTML = "There is no assignment assigned for today.";
-	$(".onHoursBlock").hide();
+	$(".questionsDiv").hide();
 }
 
 function addQuestion() {
@@ -69,7 +90,6 @@ function setTimeLimit() {
 			alert("The time limit could not be changed for " + courseId + " hours." +
 					"Try again.");
 		}
-
 	});
 	
 }

@@ -44,6 +44,7 @@ public class QueueHandler {
         new FreeMarkerEngine());
     Spark.post("/checkAppointments", new CheckAppointmentHandler());
     Spark.post("/startHours/:courseId", new StartCourseHours());
+    Spark.post("/startHoursNoApts/:courseId", new StartCourseNoAptsHours());
     Spark.post("/addStudentToQueue", new AddStudentToQueue());
     Spark.post("/labCheckOff/:login", new AddLabCheckoffToQueue());
     Spark.post("/updateQueue/:courseId", new UpdateQueueHandler());
@@ -353,6 +354,19 @@ public class QueueHandler {
       return toReturn;
     }
   }
+  
+  
+  private class StartCourseNoAptsHours implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      String courseId = req.params(":courseId");
+      Date currentDate = new Date();
+      int toReturn = runningHours.startHours(courseId);
+      Hours currHours = runningHours.getHoursForCourse(courseId);
+      currHours.setUpAppointments(currentDate, 0);
+      return toReturn;
+    }
+  }
   private class ConfirmAppointmentHandler implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -400,12 +414,13 @@ public class QueueHandler {
       String closeTag = "</button>";
       Map<String, String> timesMap =
           runningHours.getHoursForCourse(courseId).getAppointments();
-      // NEEDED: AVAILABLE APPOINTMENT TIMES
       List<String> availTimes = new ArrayList<String>();
+
+      StringBuilder timesHTML = new StringBuilder();
       for (String time : timesMap.keySet()) {
         availTimes.add(time);
       }
-      StringBuilder timesHTML = new StringBuilder();
+      java.util.Collections.sort(availTimes);
       for (String a : availTimes) {
         String t = timesHTMLTags
             + a
