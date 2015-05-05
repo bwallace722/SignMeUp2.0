@@ -17,7 +17,6 @@ function getCookie(name) {
 }
 
 var aptTimes = document.getElementById("aptTimes");
-console.log(aptTimes.innerHTML);
 if(aptTimes.innerHTML == "") {
 	var header = document.getElementById("aptHeader");
 	header.innerHTML = "There is no available appointments for today.";
@@ -37,6 +36,7 @@ if(currAsign.innerHTML == "none"){
 
 $(".confirmAptContainer").hide(0);
 var aptTime;
+
 $(".aptTime").bind('click', function(a) {
 	var timeClicked = $(this)[0].innerHTML;
 	var time= timeClicked.split(" ")[0];
@@ -44,11 +44,12 @@ $(".aptTime").bind('click', function(a) {
 	aptTime = $(this)[0].innerHTML;
 	var timeString = chosenTimeString + $(this)[0].innerHTML;
 	var chosenTime = document.getElementById("chosenTime");
+	console.log(aptTime + " - time");
 	chosenTime.innerHTML = timeString;
 	$(".confirmAptContainer").show(1000);
 });
 
-var successMessage = "You're all set for you appointment! Just head up to hours at "+aptTime+".";
+var successMessage = "You're all set for you appointment! Just head up to hours at "+ aptTime +".";
 var onQueueMessage = "You're already on the queue. You can't make an appointment and be signed up for hours.";
 var takenMessage = "It looks like this appointment time is taken. Try another";
 
@@ -67,7 +68,7 @@ function confirmApt() {
  			"otherQ": otherQ};
  	$.post("/confirmAppointment", postParameters, function(responseJSON){
 		if (responseJSON == 1) {
-			document.getElementById("resultBody").innerHTML = successMessage;
+			document.getElementById("resultBody").innerHTML = "You're all set for you appointment! Just head up to hours at "+ aptTime +".";
 			$("#resultModal").modal('show');
 			//figure out some animation for showing time
 			//show time and reveal questions container
@@ -83,10 +84,10 @@ function confirmApt() {
 }
 
 function returnToCourse() {
-	window.location.href = "/studentLanding/"+courseIdAndLogin;
+	window.location.href = "/studentLanding/"+courseId;
 }
 function redirect() {
-	window.location.href = "/studentLanding/"+courseIdAndLogin;
+	window.location.href = "/studentLanding/"+courseId;
 }
 
 
