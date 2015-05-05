@@ -6,6 +6,9 @@ var splitCourseAndLogin = courseIdAndLogin.split("~");
 var courseId = splitCourseAndLogin[0];
 var login = splitCourseAndLogin[1];
 
+var successMessage = "You're already on the queue. You can't make an appointment and be signed up for hours.";
+var takenMessage = "It looks like this appointment time is taken. Try another";
+
 var chosenTimeString = "Your appointment time <br>";
 var currAsign = document.getElementById("currAss");
 if(currAsign.innerHTML == "none"){
@@ -69,9 +72,9 @@ function confirmApt() {
 			//figure out some animation for showing time
 			//show time and reveal questions container
 		} else if (responseJSON == 2) {
-			alert("You're already on the queue. You can't make an appointment and be signed up for hours.");
+			alert(successMessage);
  		} else {
-			alert("It looks like this appointment time is taken. Try another");
+			alert(takenMessage);
 		}
 
 	});
