@@ -76,7 +76,6 @@ function makeAppointment() {
 
 //interval set to every second.
 
-setInterval(checkStatus, 1000);
 
 var calledToHours = false;
 
@@ -84,7 +83,8 @@ var calledToHours = false;
  * Checks student's call status. If the ta has called them to hours,
  * an alert will appear.
  */
-var checkStatus = function() {
+setInterval(function(t) {
+	console.log("hi");
 	if(!calledToHours) {
 	var postParameters = {"course": courseId, "login": login};
 	$.post("/checkCallStatus", postParameters, function(responseJSON) {
@@ -101,7 +101,7 @@ var checkStatus = function() {
 		}
 	});
 	}
-}
+}, 1000);
 
 function updateQueue() {
  	var postUrl = "/updateQueue/" + courseId;
