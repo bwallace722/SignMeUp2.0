@@ -233,7 +233,7 @@ public class TAHandler {
           "<tr class=\"clickable-row lab\" data-toggle=\"modal\" data-target=\"#labsModal\">"
               + "<td class=\"itemName\">";
       String examStartTags =
-          "<tr class=\"clickable-row exam\" data-toggle=\"modal\" data-target=\"#examModal\">"
+          "<tr class=\"clickable-row exam\" data-toggle=\"modal\" data-target=\"#examsModal\">"
               + "<td class=\"itemName\">";
       String middleTags = "</td><td>";
       String endTags = "</td></tr>";
