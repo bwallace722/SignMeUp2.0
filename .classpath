@@ -27,6 +27,5 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/gpfs/main/home/omadarik/course/cs032/javax.mail.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

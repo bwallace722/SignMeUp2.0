@@ -3,6 +3,10 @@
 <head>
 	<title>SignMeUp Analytics </title>
 	<link rel="stylesheet" href="/css/analytics.css" type="text/css" media="screen" />
+
+    <link rel="stylesheet" href="../css/normalize.css">
+    <link rel="stylesheet" href="../css/html5bp.css">
+    <link rel="stylesheet" href="../css/main.css">
 </head>
 
 <body>

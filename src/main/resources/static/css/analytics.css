@@ -32,7 +32,7 @@ body {
 
 .tabbed_area {
     border:1px solid #494e52;
-    background-color:#636d76;
+    background-color: rgba(127,127,127,0.4);
     padding:8px;    
 }
 
