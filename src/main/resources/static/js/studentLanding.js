@@ -26,6 +26,7 @@ $(".checkOffButton").bind('click', function(c) {
 	var postParameters = {"course": courseId, "login": login };
 	$.post(url, postParameters, function(responseJSON) {
 		//TODO : based on response, give message and put into modal.
+		console.log(responseJSON);
 		if(responseJSON == 1) {
 			alert("You're signed up for lab!");
 		} else if (responseJSON == 2) {

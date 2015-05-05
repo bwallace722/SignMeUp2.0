@@ -72,8 +72,8 @@ h1 {
 	margin-right: 8%;
 }
 
-.quetionContainer {
-	width:50%;
+.questionContainer {
+	width:75%;
 	margin-left: auto;
 	margin-right: auto;
 }
@@ -486,6 +486,10 @@ a h3:hover {
 		margin-left: 20%;
 }
 
+.studentOnQueue:hover {
+	  cursor: pointer;
+	  color: 
+}
 
 button .time {
   display:block;
