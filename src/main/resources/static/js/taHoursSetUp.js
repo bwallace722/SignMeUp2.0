@@ -1,6 +1,20 @@
 var windowURL = window.location.href;
 var splitURL = windowURL.split("/");
 var courseId = splitURL[splitURL.length -1];
+var login = getCookie("login");
+
+console.log(document.cookie);
+console.log(login);
+
+function getCookie(name) {
+	  var regexp = new RegExp("(?:^" + name + "|;\s*"+ name + ")=(.*?)(?:;|$)", "g");
+	  var result = regexp.exec(document.cookie);
+	  return (result === null) ? null : result[1];
+}
+
+function myCourses() {
+	window.location.href = "/courses";
+}
 
 function startHours() {
 	var postUrl;
