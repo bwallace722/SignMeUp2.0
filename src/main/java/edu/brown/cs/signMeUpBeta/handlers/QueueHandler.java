@@ -38,8 +38,8 @@ public class QueueHandler {
   }
   public void runSpark() {
     Spark.post("/confirmAppointment", new ConfirmAppointmentHandler());
-    Spark.get("/makeAppointment/:courseId",
-        new MakeAppointmentHandler(), new FreeMarkerEngine());
+    Spark.get("/makeAppointment/:courseId", new MakeAppointmentHandler(),
+        new FreeMarkerEngine());
     Spark.get("/signUpForHours/:courseId", new StudentSignUpForHours(),
         new FreeMarkerEngine());
     Spark.post("/checkAppointments", new CheckAppointmentHandler());
@@ -294,7 +294,6 @@ public class QueueHandler {
         queue.add(account, 2);
         toReturn = 1;
       }
-
       return toReturn;
     }
   }
@@ -460,7 +459,7 @@ public class QueueHandler {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
-      String login = req.cookie("login"); 
+      String login = req.cookie("login");
       String p = req.cookie("password");
       String qStartTags = "<label ><input type=\"checkbox\" value=\"";
       String closeValTags = "\">";
