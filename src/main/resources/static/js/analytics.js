@@ -6,10 +6,7 @@ function setupFilterSelectButtons() {
 
   var NUM_SELECT_BUTTONS = 4;
   var selectButtons = [];
-  var selectOptions = [[["cs0170", 170], ["cs0320", 320], ["cs0330", 330], ["cs0510", 510]],
-                       [["homeworks", 1], ["projects", 2], ["labs", 3], ["exams", 4]],
-                       [["hw01", 1], ["hw02", 2], ["hw03", 3]],
-                       [["sheep score", 1], ["course policies", 2]]];
+  var selectOptions = [[]];
 
   //updates the global data and also
   //the selectOptions

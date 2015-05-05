@@ -44,8 +44,16 @@ public class DatabaseQuery {
 
     int paramIndex = parameters.length - 1;
     //blank search:
-    if (paramIndex < 0 || paramIndex >= 3) {
+    if (paramIndex < -1 || paramIndex >= 3) {
       toReturn = new ArrayList<String[]>();
+    } else if (paramIndex == -1) {
+      PreparedStatement prep = conn.prepareStatement(
+          "SELECT id, id FROM course;");
+      ResultSet rs = prep.executeQuery();
+      while (rs.next()) {
+        toReturn.add(new String[]{("cs" + rs.getString(1)), rs.getString(2)});
+      }
+      rs.close();
     } else {
       String param = parameters[paramIndex];
       String table = tables[paramIndex + 1];
