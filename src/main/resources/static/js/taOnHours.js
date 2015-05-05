@@ -208,11 +208,10 @@ function updateClinic() {
 
 //}
 function callStudent() {
-	var text = $(this).text();
+
 	var message = prompt("Please enter a message to call the student to hours", "You're up for hours!");
-	var text = text.trim();
-	var textList = text.split(" ");
-	var login = text.split(" ")[textList.length - 1];
+	var login = studentToCall;
+	console.log(login);
 	//TODO: find some way of parsing studentlogin from the div
 	//that was clicked.
 	var url = "/callStudent/" + courseId;
@@ -223,6 +222,18 @@ function callStudent() {
 			//confirmation message
 			if(responseJSON == 1) {
 				alert(login + " has been called to hours");
+//				var emailParameters = {"login": login, "message": message, "taEmail": "signmeuptester@gmail.com"};
+//				$.post("/emailStudent", emailParameters, function(responseJSON){
+//					if(responseJSON == 1){
+//						alert(login + " has been notified via email");
+//					}
+//				});
+				var zwriteParameters = {"login": login, "message": message};
+				$.post("/zwriteStudent", zwriteParameters, function(responseJSON){
+					if(responseJSON == 1){
+						alert(login + " has been notified via zwrite");
+					}
+				});
 			} else {
 				alert(login + " cannot be reached. Maybe they signed out");
 			}

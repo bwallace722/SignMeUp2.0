@@ -214,7 +214,8 @@ public class QueueHandler {
       }
       queue.remove(account);
       hours.removeStudent(studentLogin);
-      System.out.println(queue.getStudentsInOrder().size() + " - queue");
+      System.out.println(queue.getStudentsInOrder().size()
+          + " - queue");
       return 1;
     }
   }
@@ -354,8 +355,6 @@ public class QueueHandler {
       return toReturn;
     }
   }
-  
-  
   private class StartCourseNoAptsHours implements Route {
     @Override
     public Object handle(Request req, Response res) {
@@ -415,7 +414,6 @@ public class QueueHandler {
       Map<String, String> timesMap =
           runningHours.getHoursForCourse(courseId).getAppointments();
       List<String> availTimes = new ArrayList<String>();
-
       StringBuilder timesHTML = new StringBuilder();
       for (String time : timesMap.keySet()) {
         availTimes.add(time);

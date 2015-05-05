@@ -1,5 +1,6 @@
 package edu.brown.cs.signMeUpBeta.handlers;
 
+import java.io.IOException;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.sql.SQLException;
@@ -62,16 +63,18 @@ public class TAHandler {
     Spark.get("/editCourse/:courseId", new EditCourseHandler(),
         new FreeMarkerEngine());
     Spark.post("/removeAssessmentItem", new RemoveAssessmentItem());
-    Spark.post("/emailStudent", new EmailStudent());
+    Spark.post("/zwriteStudent", new ZWriteStudent());
   }
   private class EmailStudent implements Route {
     @Override
     public Object handle(Request req, Response res) {
-      Properties props = new Properties();
-      Session session = Session.getDefaultInstance(props, null);
+      Properties props = System.getProperties();
+      props.setProperty("mail.smtp.host", "localhost");
+      props.setProperty("mail.smtp.port", "4455");
+      Session session = Session.getInstance(props, null);
       QueryParamsMap qm = req.queryMap();
       String messageBody = qm.value("message");
-      String studentLogin = qm.value("studentLogin");
+      String studentLogin = qm.value("login");
       String taEmail = qm.value("taEmail");
       String recipient;
       try {
@@ -84,6 +87,29 @@ public class TAHandler {
         msg.setText(messageBody);
         Transport.send(msg);
       } catch (SQLException | MessagingException e) {
+        System.out.println("ERROR: "
+            + e.getMessage());
+        return 0;
+      }
+      return 1;
+    }
+  }
+  private class ZWriteStudent implements Route {
+    @Override
+    public Object handle(Request req, Response res) {
+      QueryParamsMap qm = req.queryMap();
+      String messageBody = qm.value("message");
+      String studentLogin = qm.value("login");
+      Runtime rt = Runtime.getRuntime();
+      try {
+        StringBuilder sb = new StringBuilder();
+        sb.append("zwrite ");
+        sb.append(studentLogin);
+        sb.append(" -m ");
+        sb.append(messageBody);
+        String command = sb.toString();
+        Process pr = rt.exec(command);
+      } catch (IOException e) {
         System.out.println("ERROR: "
             + e.getMessage());
         return 0;
@@ -202,20 +228,19 @@ public class TAHandler {
       return 1;
     }
   }
-  
   private class EditCourseHandler implements TemplateViewRoute {
     @Override
     public ModelAndView handle(final Request req, final Response res) {
       String courseId = req.params(":courseId");
       StringBuilder assList = new StringBuilder();
-      String tableTags =
-          "<table class=\"table table-hover courseInfoTable\">"
-              + "<thead><tr><th>Name</th><th>Start Date</th><th>End Date</th>"
-              + "</tr></thead><tbody id=\"courseInfoTableBody\">";
+      String tableTags = "<table class=\"table table-hover courseInfoTable\">"
+          + "<thead><tr><th>Name</th><th>Start Date</th><th>End Date</th>"
+          + "</tr></thead><tbody id=\"courseInfoTableBody\">";
       String closeTableTags = "</tbody></table>";
       assList.append(tableTags);
-      String startTags = "<tr class=\"clickable-row\" data-toggle=\"modal\" data-target=\"#assModal\">"
-          + "<td class=\"itemName\">";
+      String startTags =
+          "<tr class=\"clickable-row\" data-toggle=\"modal\" data-target=\"#assModal\">"
+              + "<td class=\"itemName\">";
       String middleTags = "</td><td>";
       String endTags = "</td></tr>";
       List<String> allAss = new ArrayList<String>();
@@ -225,19 +250,24 @@ public class TAHandler {
         System.err.println(e);
       }
       StringBuilder allAssTags = new StringBuilder();
-      for(String s : allAss) {
+      for (String s : allAss) {
         String[] sSplit = s.split(":");
         String name = sSplit[0];
         String[] date = sSplit[1].split(",");
         String start = date[0];
         String end = date[1];
-        assList.append(startTags + name + middleTags + start + middleTags + end + endTags);
+        assList.append(startTags
+            + name
+            + middleTags
+            + start
+            + middleTags
+            + end
+            + endTags);
       }
       assList.append(closeTableTags);
       Map<String, Object> variables =
-          new ImmutableMap.Builder().put("title", "SignMeUp 2.0")
-          .put("course", courseId)
-          .put("allAss", assList.toString()).build();
+          new ImmutableMap.Builder().put("title", "SignMeUp 2.0").put("course",
+              courseId).put("allAss", assList.toString()).build();
       return new ModelAndView(variables, "taEditCourse.html");
     }
   }
@@ -281,11 +311,16 @@ public class TAHandler {
         String[] sSplit = s.split(":");
         String name = sSplit[0];
         String[] date = sSplit[1].split(",");
-        String start = "Start: " + date[0];
-        String end = "<br> End: " + date[1]; 
-        
-        allAssTags.append(assStartTag + name + assDateTag + start + end + assEndTag);
-
+        String start = "Start: "
+            + date[0];
+        String end = "<br> End: "
+            + date[1];
+        allAssTags.append(assStartTag
+            + name
+            + assDateTag
+            + start
+            + end
+            + assEndTag);
       }
       // System.out.println(courseId);
       Map<String, Object> variables =
@@ -375,7 +410,7 @@ public class TAHandler {
       String newTimeLimit = qm.value("newTimeLimit");
       Hours hours = runningHours.getHoursForCourse(courseId);
       hours.setTimeLim(Integer.parseInt(newTimeLimit));
-      //TODO KIERAN: this method never returns one. where is it getting stuck?
+      // TODO KIERAN: this method never returns one. where is it getting stuck?
       System.out.println("hi");
       return 1;
     }
