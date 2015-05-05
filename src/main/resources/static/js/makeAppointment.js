@@ -83,6 +83,8 @@ function confirmApt() {
 function returnToCourse() {
 	window.location.href = "/studentLanding/"+courseIdAndLogin;
 }
-
+function redirect() {
+	window.location.href = "/studentLanding/"+courseIdAndLogin;
+}
 
 
