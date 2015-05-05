@@ -41,6 +41,10 @@ $(".checkOffButton").bind('click', function(c) {
 			$("#resultModal").modal('show');
 		}
 		window.location.href= "/studentLanding/" + courseIdAndLogin ;
+<<<<<<< HEAD
+
+=======
+>>>>>>> 0a0427883de555bf7aaef27998d350bba086e5c7
 	});
 });
 
@@ -84,11 +88,10 @@ var calledToHours = false;
  * an alert will appear.
  */
 setInterval(function(t) {
-	console.log("hi");
 	if(!calledToHours) {
 	var postParameters = {"course": courseId, "login": login};
 	$.post("/checkCallStatus", postParameters, function(responseJSON) {
-		console.log(responseJSON);
+//		console.log(responseJSON);
 		/*
 		 * responseJSON is a boolean, returning true 
 		 * if the student has been called to hours

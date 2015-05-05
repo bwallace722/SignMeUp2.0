@@ -274,12 +274,25 @@ public class Database {
     ps.executeUpdate();
     ps.close();
   }
-  public void removeAssignmentItem(String table, String assignmentName)
+  public void removeAssessmentItem(String table, String name, String courseId)
       throws SQLException {
-    String update = "DELETE FROM ? WHERE assignment_name = ?;";
+    String update = "DELETE FROM " + table + " WHERE " + table + "_name = ? AND course_id = ?;";
     PreparedStatement ps = conn.prepareStatement(update);
-    ps.setString(1, table);
-    ps.setString(2, assignmentName);
+    ps.setString(1, name);
+    ps.setString(2, courseId);
+    ps.executeUpdate();
+    ps.close();
+  }
+  public void editAssessmentItem(String table, String name, String startDate,
+      String endDate, String courseId) throws SQLException {
+    String query =
+        "UPDATE " + table + " SET start_date = ?, end_date = ? WHERE " + table + "_name = ? AND course_id = ?;";
+    System.out.println(query);
+    PreparedStatement ps = conn.prepareStatement(query);
+    ps.setDate(1, java.sql.Date.valueOf(startDate));
+    ps.setDate(2, java.sql.Date.valueOf(endDate));
+    ps.setString(3, name);
+    ps.setString(4, courseId);
     ps.executeUpdate();
     ps.close();
   }
